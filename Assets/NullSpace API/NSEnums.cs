@@ -40,23 +40,7 @@ namespace NullSpace.API.Enums
         /// <summary>
         /// Chest IMU
         /// </summary>
-        Chest = 0,
-        /// <summary>
-        /// Left Forearm IMU
-        /// </summary>
-        Left_Forearm = 1,
-        /// <summary>
-        /// Left Upper Arm IMU
-        /// </summary>
-        Left_Upper_Arm = 2,
-        /// <summary>
-        /// Right Arm IMU
-        /// </summary>
-        Right_Forearm = 3,
-        /// <summary>
-        /// Right Upper Arm IMU
-        /// </summary>
-        Right_Upper_Arm = 4
+        Chest = 0
     }
     public enum Location
     {

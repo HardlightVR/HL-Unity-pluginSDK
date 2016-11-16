@@ -99,6 +99,7 @@
     <Compile Include="Assets\NullSpace API\SuitPacket.cs" />
     <Compile Include="Assets\NullSpace API\Synchronizer.cs" />
     <Compile Include="Assets\NullSpace API\TestHaptics.cs" />
+    <Compile Include="Assets\TrackingTest.cs" />
     <Compile Include="Assets\UnityLitJson\Extensions.cs" />
     <Compile Include="Assets\UnityLitJson\IJsonWrapper.cs" />
     <Compile Include="Assets\UnityLitJson\JsonAttribute.cs" />

@@ -37,7 +37,7 @@ namespace NullSpace.SDK
             get { return suit; }
         }
         private PacketDispatcher packetDispatcher;
-
+		private ImuInterface imuInterface;
         #region Public fields 
         [Header("Default Data Model")]
         [Tooltip("The default method of layering haptic effects and providing durations")]
@@ -58,7 +58,10 @@ namespace NullSpace.SDK
         private bool GameTimestamp = false;
 
         [Header("Suit Options")]
-        [Tooltip("Attempt to automatically reconnect to the suit if USB is unplugged")]
+		[Tooltip("Enable IMU tracking (performance hit)")]
+		[SerializeField]
+		private bool EnableImus = true;
+		[Tooltip("Attempt to automatically reconnect to the suit if USB is unplugged")]
         [SerializeField]
         private bool AutoReconnect = true;
         [Tooltip("Use a mock serial adapter (useful if no suit is present)")]
@@ -108,18 +111,18 @@ namespace NullSpace.SDK
             this.suit = new SuitHardwareInterface();
           
             this.loader = new HapticsLoader();
-
+			this.imuInterface = new ImuInterface();
 
         }
 
 		void EnableTracking()
 		{
-
+			this.suit.EnableIMUs();
 		}
 
 		void DisableTracking()
 		{
-
+			this.suit.DisableIMUs();
 		}
         private void OnSuitConnected(SuitConnectionArgs a)
         {
@@ -136,21 +139,39 @@ namespace NullSpace.SDK
 
         public void Start()
         {
-            //If the user checked mock, we should use a mock adapter. Else we should try to use a real
-            //one, but it might fail, and fallback to a mock adapter. 
-            suit.Adapter = Mock ? this.setupMockAdapter() : this.trySetupSerialAdapter();
-
-            this.loader.DataModel = this.DataModel;
+			if (EnableImus)
+			{
+				this.SuitConnected += ActivateImus;
+			}
+			//If the user checked mock, we should use a mock adapter. Else we should try to use a real
+			//one, but it might fail, and fallback to a mock adapter. 
+			suit.Adapter = Mock ? this.setupMockAdapter() : this.trySetupSerialAdapter();
+			if (!Mock && suit.Adapter.IsConnected)
+			{
+				OnSuitConnected(new SuitConnectionArgs());
+			}
+			this.loader.DataModel = this.DataModel;
             packetDispatcher = new PacketDispatcher(this.suit.Adapter.suitDataStream);
             packetDispatcher.AddSubscriber(new PingConsumer(), SuitPacket.PacketType.Ping);
+			packetDispatcher.AddSubscriber(imuInterface.ImuConsumer, SuitPacket.PacketType.ImuData);
             if (!Mock)
             {
                 StartCoroutine(SuitKeepAliveRoutine());
                 StartCoroutine(AutoReconnectRoutine());
             }
-        }
 
-        private MockAdapter setupMockAdapter()
+			
+        }
+		public ImuInterface GetImuInterface()
+		{
+			return imuInterface;
+		}
+		private void ActivateImus(object sender, SuitConnectionArgs e)
+		{
+			this.EnableTracking();
+		}
+
+		private MockAdapter setupMockAdapter()
         {
             MockAdapter adapter = new MockAdapter();
             adapter.Connect();
@@ -166,7 +187,6 @@ namespace NullSpace.SDK
             if (didConnect)
             {
                 Log.Message("Suit connected");
-                OnSuitConnected(new SuitConnectionArgs());
                 PortName = adapter.ToString();
                 return adapter;
             } else

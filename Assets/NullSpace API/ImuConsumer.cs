@@ -33,7 +33,8 @@ namespace NullSpace.API.Tracking
         /// <param name="packet"></param>
 		public void ConsumePacket (byte[] packet)
 		{
-			Imu id = (Imu) packet [11];
+			//Imu id = (Imu) packet [11];
+			Imu id = Imu.Chest;
 			if (imuDict.ContainsKey(id))
 			{
 				imuDict[id].Orientation = this.ParseQuaternion(packet);

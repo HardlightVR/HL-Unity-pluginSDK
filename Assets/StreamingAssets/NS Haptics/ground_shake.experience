@@ -1,0 +1,11 @@
+{
+	"experience": [
+		
+		{
+			"time" : 0.0,
+			"pattern" : "lower_pads_rumble.pattern",
+			"side" : "mirror",
+			"repeat" : 5
+		}
+	]
+}

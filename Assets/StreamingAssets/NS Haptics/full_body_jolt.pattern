@@ -1,0 +1,32 @@
+{"pattern":[{
+  "time": 0.0,
+  "frame": [{
+    "sequence": "strong_click.sequence",
+    "location": "shoulder",
+    "side": "mirror"
+  }, {
+    "sequence": "strong_click.sequence",
+    "location": "upper_arm",
+    "side": "mirror"
+  }, {
+    "sequence": "strong_click.sequence",
+    "location": "chest",
+    "side": "mirror"
+  }, {
+    "sequence": "strong_click.sequence",
+    "location": "upper_ab",
+    "side": "mirror"
+  }, {
+    "sequence": "strong_click.sequence",
+    "location": "mid_ab",
+    "side": "mirror"
+  }, {
+    "sequence": "strong_click.sequence",
+    "location": "lower_ab",
+    "side": "mirror"
+  }, {
+    "sequence": "strong_click.sequence",
+    "location": "upper_back",
+    "side": "mirror"
+  }]
+}]}

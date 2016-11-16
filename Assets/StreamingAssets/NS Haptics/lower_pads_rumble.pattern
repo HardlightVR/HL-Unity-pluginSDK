@@ -1,0 +1,10 @@
+{"pattern":[ {
+    "time": 0.0,
+    "frame": [{
+      "sequence": "rumble.sequence",
+      "location": "lower_ab",
+      "side": "inherit",
+      "repeat" : 2
+    }]
+  }
+]}

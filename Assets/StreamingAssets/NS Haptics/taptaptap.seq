@@ -1,0 +1,16 @@
+{"sequence":
+  [
+    {
+      "time" : 0.0,
+      "atom" : {"waveform" : "Sharp_Tick_100"}
+    },
+    {
+      "time" : 0.2,
+      "atom" : {"waveform" : "Sharp_Tick_100"}
+    },
+     {
+      "time" : 0.4,
+      "atom" : {"waveform" : "Sharp_Tick_100"}
+    }
+  ] 
+}

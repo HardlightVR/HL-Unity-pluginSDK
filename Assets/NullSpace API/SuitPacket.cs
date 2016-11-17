@@ -17,6 +17,10 @@ namespace NullSpace.API
 		public enum PacketType
 		{
 			/// <summary>
+			/// Represents a packet containing suit version information
+			/// </summary>
+			SuitInfo = 0x01,
+			/// <summary>
 			/// Represents a packet containing IMU sensor quaternion data
 			/// </summary>
 			ImuData = 0x33,

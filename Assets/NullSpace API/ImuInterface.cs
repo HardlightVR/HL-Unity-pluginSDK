@@ -8,7 +8,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using NullSpace.API.Enums;
-
+using NullSpace.SDK;
 namespace NullSpace.API.Tracking
 {
     /// <summary>
@@ -65,7 +65,7 @@ namespace NullSpace.API.Tracking
         /// <returns></returns>
 		public Quaternion GetOrientation(Imu which)
 		{
-
+			
 			if (imuDict.ContainsKey(which))
 			{
 				Quaternion thisOrientation = imuDict[which].Orientation;

@@ -93,6 +93,16 @@ namespace NullSpace.SDK
             get { return this.packetDispatcher.SyncState; }
         }
 
+		private SuitInfo _suitInfo;
+
+		public SuitInfo SuitInfo
+		{
+			get
+			{
+				return _suitInfo;
+			}
+		}
+
         void Awake()
         {
             if (Instance == null)
@@ -139,21 +149,29 @@ namespace NullSpace.SDK
 
         public void Start()
         {
+			//If the user wants IMUs, we need to tell the suit to activate tracking once it is connected
 			if (EnableImus)
 			{
 				this.SuitConnected += ActivateImus;
 			}
+
+
 			//If the user checked mock, we should use a mock adapter. Else we should try to use a real
 			//one, but it might fail, and fallback to a mock adapter. 
 			suit.Adapter = Mock ? this.setupMockAdapter() : this.trySetupSerialAdapter();
 			if (!Mock && suit.Adapter.IsConnected)
 			{
+				//We have a real suit and it is connected, so raise the connection event
 				OnSuitConnected(new SuitConnectionArgs());
 			}
+
 			this.loader.DataModel = this.DataModel;
+
             packetDispatcher = new PacketDispatcher(this.suit.Adapter.suitDataStream);
             packetDispatcher.AddSubscriber(new PingConsumer(), SuitPacket.PacketType.Ping);
+			packetDispatcher.AddSubscriber(new SuitInfoConsumer(updateSuitInfo), SuitPacket.PacketType.SuitInfo);
 			packetDispatcher.AddSubscriber(imuInterface.ImuConsumer, SuitPacket.PacketType.ImuData);
+
             if (!Mock)
             {
                 StartCoroutine(SuitKeepAliveRoutine());
@@ -162,6 +180,18 @@ namespace NullSpace.SDK
 
 			
         }
+		private void updateSuitInfo(SuitInfo f) {
+			_suitInfo = f;
+			if (f.MajorVersion == 2 && f.MinorVersion == 4)
+			{
+				imuInterface.ImuConsumer.SetMapping(3, API.Enums.Imu.Chest);
+			} else if (f.MajorVersion == 2 && f.MinorVersion == 3)
+			{
+				imuInterface.ImuConsumer.SetMapping(0, API.Enums.Imu.Chest);
+			}
+		}
+		
+
 		public ImuInterface GetImuInterface()
 		{
 			return imuInterface;
@@ -203,6 +233,7 @@ namespace NullSpace.SDK
             while (true)
             {
                 suit.PingSuit();
+				suit.RequestSuitInfo();
                 yield return new WaitForSeconds(1);
             }  
         }

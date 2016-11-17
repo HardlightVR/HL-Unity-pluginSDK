@@ -8,6 +8,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using NullSpace.API.Enums;
+using NullSpace.SDK;
 
 namespace NullSpace.API.Tracking
 {
@@ -17,7 +18,7 @@ namespace NullSpace.API.Tracking
 	public class ImuConsumer : PacketConsumer
 	{
 		private Dictionary<Imu, IMU> imuDict;
-
+		private Dictionary<byte, Imu> _imuIdMap;
         /// <summary>
         /// Create a new ImuConsumer
         /// </summary>
@@ -25,23 +26,33 @@ namespace NullSpace.API.Tracking
 		public ImuConsumer (Dictionary<Imu, IMU> imuDict)
 		{
 			this.imuDict = imuDict;
+			this._imuIdMap = new Dictionary<byte, Imu>();
 		}
 
+		public void SetMapping(byte b, Imu i)
+		{
+			_imuIdMap[b] = i;
+		}
         /// <summary>
         /// Consume a packet, extracting the quaternion information from within
         /// </summary>
         /// <param name="packet"></param>
 		public void ConsumePacket (byte[] packet)
 		{
-			//Imu id = (Imu) packet [11];
-			Imu id = Imu.Chest;
-			if (imuDict.ContainsKey(id))
+			var idByte = packet[11];
+			if (_imuIdMap.ContainsKey(idByte))
 			{
-				imuDict[id].Orientation = this.ParseQuaternion(packet);
-			} else
-			{
-				imuDict[id] = new IMU(id, id.ToString());
-				imuDict[id].Orientation = this.ParseQuaternion(packet);
+				var imu = _imuIdMap[idByte];
+				//mapping exists, so
+				if (imuDict.ContainsKey(imu))
+				{
+					imuDict[imu].Orientation = this.ParseQuaternion(packet);
+				}
+				else
+				{
+					imuDict[imu] = new IMU(imu, imu.ToString());
+					imuDict[imu].Orientation = this.ParseQuaternion(packet);
+				}
 			}
 
 		}

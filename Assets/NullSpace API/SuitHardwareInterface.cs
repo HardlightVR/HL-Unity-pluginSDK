@@ -284,6 +284,17 @@ namespace NullSpace.API
 			this.Execute(builder.Build());
 
 		}
+
+		public void RequestSuitInfo()
+		{
+			if (builder.UseInstruction("GET_VERSION").Verify())
+			{
+				this.Execute(builder.Build());
+			} else
+			{
+				Log.Warning("Failed to build instruction {0}", builder.GetDebugString());
+			}
+		}
 		public void EnableIMUs()
 		{
 			if (builder.UseInstruction("IMU_ENABLE").Verify())

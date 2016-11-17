@@ -1,4 +1,0 @@
-sceneSetups:
-- path: Assets/NullSpace API/Nullspace API Test Tracking.unity
-  isLoaded: 1
-  isActive: 1

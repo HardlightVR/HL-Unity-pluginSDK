@@ -1,0 +1,10 @@
+{
+	"experience": [
+		
+		{
+			"time" : 0.0,
+			"pattern" : "ns.full_body_jolt",
+			"side" : "inherit"
+		}
+	]
+}

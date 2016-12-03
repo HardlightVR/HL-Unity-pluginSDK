@@ -1,7 +1,15 @@
-﻿using UnityEngine;
+﻿/* This code is licensed under the NullSpace Developer Agreement, available here:
+** ***********************
+** http://nullspacevr.com/?wpdmpro=nullspace-developer-agreement
+** ***********************
+** Make sure that you have read, understood, and agreed to the Agreement before using the SDK
+*/
+
+
+using UnityEngine;
 using System.Collections;
 
-namespace NullSpace.API.Enums
+namespace NullSpace.SDK.Enums
 {
     /// <summary>
     /// Side of the suit to play on

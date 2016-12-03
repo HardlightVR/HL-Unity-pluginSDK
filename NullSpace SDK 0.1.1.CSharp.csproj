@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.3.4f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -61,20 +63,14 @@
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
-    <Reference Include="NSLogger">
-      <HintPath>Assets\NSLogger.dll</HintPath>
-    </Reference>
     <Reference Include="NSLoaderWrapper">
       <HintPath>Assets\NullSpace SDK\Plugins\x86_64\NSLoaderWrapper.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\NullSpace SDK\BasicCalibrator.cs" />
-    <Compile Include="Assets\NullSpace SDK\HapticArgs.cs" />
-    <Compile Include="Assets\NullSpace SDK\HapticClasses.cs" />
     <Compile Include="Assets\NullSpace SDK\HapticCollider.cs" />
     <Compile Include="Assets\NullSpace SDK\HapticTrigger.cs" />
-    <Compile Include="Assets\NullSpace SDK\HapticsLoader.cs" />
+    <Compile Include="Assets\NullSpace SDK\NSVRPluginWrapper.cs" />
     <Compile Include="Assets\NullSpace SDK\IMUTest.cs" />
     <Compile Include="Assets\NullSpace SDK\ImuInterface.cs" />
     <Compile Include="Assets\NullSpace SDK\NSEnums.cs" />
@@ -83,7 +79,7 @@
     <Compile Include="Assets\NullSpace SDK\SuitConnectionArgs.cs" />
     <Compile Include="Assets\NullSpace SDK\SuitIndicator.cs" />
     <Compile Include="Assets\NullSpace SDK\TestHaptics.cs" />
-    <Compile Include="Assets\TrackingTest.cs" />
+    <Compile Include="Assets\NullSpace SDK\TrackingTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

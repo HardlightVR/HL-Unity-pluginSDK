@@ -7,95 +7,89 @@
 
 using UnityEngine;
 using System.Collections.Generic;
-using NullSpace.API.Enums;
-using NullSpace.API.Logger;
+using NullSpace.SDK.Enums;
 
-using Quaternion = UnityEngine.Quaternion;
-namespace NullSpace.API.Tracking
+namespace NullSpace.SDK.Tracking
 {
+	using Quaternion = UnityEngine.Quaternion;
 
+	/// <summary>
+	/// If you implement this interface and add your calibration script to the NSManager prefab object, 
+	/// the SDK will 
+	/// </summary>
+	public interface IImuCalibrator
+	{
+		void ReceiveUpdate(Imu imu, Quaternion rotation);
+		Quaternion GetOrientation(Imu imu);
+	}
+	/// <summary>
+	///	Container for a quaternion representing the rotation of an IMU
+	/// </summary>
 	public class RawIMU
-    {
-        public Quaternion Orientation;
+	{
+		public Quaternion Orientation;
 
-        public RawIMU(Quaternion q)
-        {
-            Orientation = q;
-        }
-    }
-    public class ImuInterface : MonoBehaviour
-    {
-     
-        private IDictionary<Imu, RawIMU> _rawImuQuaternions;
-        private IDictionary<Imu, Quaternion> _processedQuaternions;
+		public RawIMU(Quaternion q)
+		{
+			Orientation = q;
+		}
+	}
 
-        public IDictionary<Imu, Quaternion> Orientations
-        {
-            get { return _processedQuaternions; }
-        }
+	/// <summary>
+	/// A stripped down interface which acts as a converter between raw suit orientation data and calibrated data.
+	/// This interface does no calibration.
+	/// </summary>
+	public class ImuInterface : MonoBehaviour, IImuCalibrator
+	{
 
-        private static ImuInterface _instance = null;
-        public static ImuInterface Instance
-        {
-            get
-            {
-                if (_instance != null)
-                {
-                    return _instance;
-                }
+		private IDictionary<Imu, RawIMU> _rawImuQuaternions;
+		private IDictionary<Imu, Quaternion> _processedQuaternions;
 
-                Log.Error("There should only be one ImuInterface instantiated!");
-                return null;
-            }
-        }
+		public IDictionary<Imu, Quaternion> Orientations
+		{
+			get { return _processedQuaternions; }
+		}
 
-        private BasicCalibrator _calibrator;
-
-       
-        public void Awake()
-        {
-            _instance = this;
-            _rawImuQuaternions = new Dictionary<Imu, RawIMU>();
-            _processedQuaternions = new Dictionary<Imu, Quaternion>();
-			_rawImuQuaternions[Imu.Chest] = new RawIMU(new Quaternion());
-
-        }
-
-        public Quaternion GetOrientation(Imu imu)
-        {
-            if (_processedQuaternions.ContainsKey(imu))
-            {
-                return _processedQuaternions[imu];
-            }
-            else
-            {
-                return Quaternion.identity;
-            }
-        }
-        public void Start()
-        {
+	
 
 
-        }
+		public void Awake()
+		{
+			_rawImuQuaternions = new Dictionary<Imu, RawIMU>();
+			_processedQuaternions = new Dictionary<Imu, Quaternion>();
+
+		}
+
+		public Quaternion GetOrientation(Imu imu)
+		{
+			if (_processedQuaternions.ContainsKey(imu))
+			{
+				return _processedQuaternions[imu];
+			}
+			else
+			{
+				return Quaternion.identity;
+			}
+		}
+		public void Start()
+		{
+			NSManager.Instance.UseImuCalibrator(this);
+
+		}
 		public void ReceiveUpdate(Imu key, Quaternion q)
 		{
-			_rawImuQuaternions[key].Orientation = q;
+			if (_rawImuQuaternions.ContainsKey(key))
+			{
+				_rawImuQuaternions[key].Orientation = q;
+			}
+			else
+			{
+				_rawImuQuaternions[key] = new RawIMU(q);
+			}
 		}
-        public void Update()
-        {
-           
-				_processedQuaternions[Imu.Chest] = _rawImuQuaternions[Imu.Chest].Orientation;
-			
-
-
-        }
-  
-
-      
-
-
-
-        
-
-    }
+		public void Update()
+		{
+			_processedQuaternions[Imu.Chest] = _rawImuQuaternions[Imu.Chest].Orientation;
+		}
+	}
 }

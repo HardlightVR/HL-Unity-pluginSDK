@@ -1,10 +1,17 @@
-﻿using UnityEngine;
+﻿/* This code is licensed under the NullSpace Developer Agreement, available here:
+** ***********************
+** http://nullspacevr.com/?wpdmpro=nullspace-developer-agreement
+** ***********************
+** Make sure that you have read, understood, and agreed to the Agreement before using the SDK
+*/
+
+using UnityEngine;
 using System.Collections;
 using System;
-using NullSpace.API;
-using NullSpace.API.Tracking;
-using NullSpace.API.Logger;
-using NullSpace.SDK.Editor;
+using NullSpace.SDK;
+using NullSpace.SDK.Tracking;
+
+
 
 namespace NullSpace.SDK
 {
@@ -31,17 +38,7 @@ namespace NullSpace.SDK
         #region Public fields 
     
    
-        [Header("Logging")]
-        [Tooltip("Log to the Unity Console")]
-        [SerializeField]
-        private bool EnableLogging = true;
-        [Tooltip("Record a timestamp")]
-        [SerializeField]
-        private bool EnableTimestamps = false;
-        [Tooltip("Toggle between real system time and elapsed game time")]
-        [SerializeField]
-        private bool GameTimestamp = false;
-
+  
         [Header("Suit Options")]
         
 
@@ -55,8 +52,8 @@ namespace NullSpace.SDK
         //in seconds
         private const int AUTO_RECONNECT_INTERVAL = 3;
 
-		private NS loader;
-        public NS HapticLoader
+		private NSVRPluginWrapper loader;
+        public NSVRPluginWrapper HapticLoader
         {
             get { return loader; }
         }
@@ -74,7 +71,7 @@ namespace NullSpace.SDK
 		/// The synchronization status of the suit with the NullSpace software
 		/// </summary>
 
-		private ImuInterface imuInterface;
+		private IImuCalibrator imuInterface;
         void Awake()
         {
             if (Instance == null)
@@ -83,25 +80,26 @@ namespace NullSpace.SDK
             }
             else
             {
-                Log.Error("NSManager Instance is not null\nThere should only be one NSManager.");
+                Debug.LogError("NSManager Instance is not null\nThere should only be one NSManager.");
             }
 			
 	
-            //Update logger settings upon awakening from a deep slumber
-            updateSettings();
+
 
             //Create a new hardware interface, which will allow us to directly communicate with the suit
           //  this.suit = new SuitHardwareInterface();
 
-            imuInterface = GetComponent<ImuInterface>();
 		
 
 			StreamingAssetsPath = Application.streamingAssetsPath;
 			//loader = new NS(StreamingAssetsPath);
-			loader = new NS(StreamingAssetsPath);
+			loader = new NSVRPluginWrapper(StreamingAssetsPath);
 		}
 
-
+		public void UseImuCalibrator(IImuCalibrator calibrator)
+		{
+			imuInterface = calibrator;
+		}
 		private void OnSuitConnected(SuitConnectionArgs a)
         {
             var handler = SuitConnected;
@@ -142,7 +140,10 @@ namespace NullSpace.SDK
 		{
 			while (true)
 			{
-				imuInterface.ReceiveUpdate(API.Enums.Imu.Chest, NSManager.Instance.HapticLoader.GetTracking());
+				if (imuInterface != null)
+				{
+					imuInterface.ReceiveUpdate(SDK.Enums.Imu.Chest, NSManager.Instance.HapticLoader.GetTracking());
+				}
 				yield return null;
 			}
 		}
@@ -176,15 +177,7 @@ namespace NullSpace.SDK
 
         void Update()
         {
-            //Update logging uptions during gameplay
-            updateSettings();
-			
-            //Read raw data from the suit. Since packetDispatcher has it's hand in this stream,
-            //we'll need to tell it to process what is available
-          //  this.suit.Adapter.Read();
-
-          //  packetDispatcher.DispatchAvailable();
-            
+        
         }
 
         void OnApplicationPause()
@@ -204,28 +197,9 @@ namespace NullSpace.SDK
 
 
 
-        private void updateSettings()
-        {
-            Log.Enable = EnableLogging;
+      
 
-            if (EnableTimestamps)
-            {
-                if (GameTimestamp)
-                {
-                    Log.SetTimestampGametime();
-                }
-                else
-                {
-                    Log.SetTimestampRealtime();
-                }
-            }
-            else
-            {
-                Log.DisableTimestamps();
-            }
-        }
-
-		public ImuInterface GetImuInterface()
+		public IImuCalibrator GetImuCalibrator()
 		{
 			return imuInterface;
 		}

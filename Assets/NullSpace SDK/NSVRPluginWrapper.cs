@@ -1,17 +1,16 @@
-﻿using System;
+﻿/* This code is licensed under the NullSpace Developer Agreement, available here:
+** ***********************
+** http://nullspacevr.com/?wpdmpro=nullspace-developer-agreement
+** ***********************
+** Make sure that you have read, understood, and agreed to the Agreement before using the SDK
+*/
 
-using NullSpace.API.Enums;
-using NullSpace.API.Logger;
 using UnityEngine;
-using NullSpace.SDK.Haptics;
-using NullSpace.SDK;
 
-namespace NullSpace.SDK.Editor
+namespace NullSpace.SDK
 {
-    public static class Extensions
+	public static class Extensions
     {
-
-		
         public static UnityEngine.Quaternion Normalize(this UnityEngine.Quaternion q)
         {
             float d = Mathf.Sqrt(q.w*q.w + q.x*q.x + q.y*q.y + q.z*q.z);
@@ -30,41 +29,35 @@ namespace NullSpace.SDK.Editor
         }
     }
 
-    /// <summary>
-    /// This system is responsible for kicking off the loading routines for haptic files,
-    /// as well as providing an easy-to-use interface to play haptic files.
-    /// </summary>
-    public partial class NS
+	/// <summary>
+	/// A simple wrapper to interface with the NullSpace plugin
+	/// </summary>
+    public class NSVRPluginWrapper
     {
 		
 		private NSVR.NSVR_Plugin _plugin;
-        public NS(string path)
+
+        public NSVRPluginWrapper(string path)
         {
 			_plugin = new NSVR.NSVR_Plugin(path);
         }
-		
-		
-		
 		
 		public void SetTrackingEnabled(bool wantTracking)
 		{
 			_plugin.SetTrackingEnabled(wantTracking);
 		}
+
 		public int GetSuitStatus()
 		{
 			return _plugin.PollStatus();
 		}
+
 		public UnityEngine.Quaternion GetTracking()
 		{
-
 			var update = _plugin.PollTracking();
 			var q = update.chest;
 			return new UnityEngine.Quaternion(q.x, q.y, q.z, q.w);
 		}
     
-		
-       
-
-		
 	}
 }

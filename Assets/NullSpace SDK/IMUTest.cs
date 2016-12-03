@@ -1,10 +1,18 @@
-﻿using UnityEngine;
+﻿/* This code is licensed under the NullSpace Developer Agreement, available here:
+** ***********************
+** http://nullspacevr.com/?wpdmpro=nullspace-developer-agreement
+** ***********************
+** Make sure that you have read, understood, and agreed to the Agreement before using the SDK
+*/
+
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using NullSpace.API.Tracking;
-using NullSpace.API.Enums;
+using NullSpace.SDK.Tracking;
+using NullSpace.SDK.Enums;
 using System;
-using NullSpace.API.Logger;
+
 namespace NullSpace.SDK.Demos
 {
     public class IMUTest : MonoBehaviour

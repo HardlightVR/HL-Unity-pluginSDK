@@ -7,30 +7,25 @@
 
 
 using UnityEngine;
-using System.Collections.Generic;
+using System.Collections;
 using NullSpace.SDK;
 using NullSpace.SDK.Enums;
+using NullSpace.SDK.Tracking;
 
-/// <summary>
-/// Scene-specific script to trigger haptic effects
-/// </summary>
-public class HapticTrigger : MonoBehaviour {
+public class TrackingTest : MonoBehaviour {
 
+	private IImuCalibrator imus;
+	public GameObject TrackedObject;
 	// Use this for initialization
 	void Start () {
-	
+		imus = NSManager.Instance.GetImuCalibrator();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
-	}
-
-
-	void OnTriggerEnter(Collider collider)
-	{
-		new Sequence("ns.bump").CreateHandle(collider.GetComponent<HapticCollider>().regionID).Play();
-		  
-		
+		if (TrackedObject != null)
+		{
+			TrackedObject.transform.rotation = imus.GetOrientation(Imu.Chest);
+		}
 	}
 }

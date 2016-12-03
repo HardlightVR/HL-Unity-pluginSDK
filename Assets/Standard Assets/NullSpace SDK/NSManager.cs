@@ -60,10 +60,20 @@ namespace NullSpace.SDK
         {
             get { return loader; }
         }
-        /// <summary>
-        /// The synchronization status of the suit with the NullSpace software
-        /// </summary>
-       
+
+		void EnableTracking()
+		{
+			this.loader.SetTrackingEnabled(true);
+		}
+
+		void DisableTracking()
+		{
+			this.loader.SetTrackingEnabled(false);
+		}
+		/// <summary>
+		/// The synchronization status of the suit with the NullSpace software
+		/// </summary>
+
 		private ImuInterface imuInterface;
         void Awake()
         {
@@ -112,14 +122,32 @@ namespace NullSpace.SDK
 			if (UseImus)
 			{
 				StartCoroutine(UpdateTracking());
+				this.SuitConnected += ActivateImus;
+
 			}
-
-
-
 		
-			
 
-        }
+
+
+
+		}
+
+		private void updateSuitInfo(SuitInfo f)
+		{
+			if (f.MajorVersion == 2 && f.MinorVersion == 4)
+			{
+				imuInterface.ImuConsumer.SetMapping(3, API.Enums.Imu.Chest);
+			}
+			else if (f.MajorVersion == 2 && f.MinorVersion == 3)
+			{
+				imuInterface.ImuConsumer.SetMapping(0, API.Enums.Imu.Chest);
+			}
+		}
+		private void ActivateImus(object sender, SuitConnectionArgs e)
+		{
+			this.EnableTracking();
+		}
+
 		IEnumerator UpdateTracking()
 		{
 			while (true)

@@ -65,21 +65,24 @@
       <HintPath>Assets\NSLogger.dll</HintPath>
     </Reference>
     <Reference Include="NSLoaderWrapper">
-      <HintPath>Assets\Plugins\x86_64\NSLoaderWrapper.dll</HintPath>
+      <HintPath>Assets\NullSpace SDK\Plugins\x86_64\NSLoaderWrapper.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="NullSpace SDK 0.1.1.CSharp.Plugins.csproj">
-      <Project>{371ECB70-D574-D4FA-7EA6-E976BA3F5C9E}</Project>
-      <Name>NullSpace SDK 0.1.1.CSharp.Plugins</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Assets\NullSpace SDK Assets\HapticTrigger.cs" />
-    <Compile Include="Assets\NullSpace SDK Assets\IMUTest.cs" />
-    <Compile Include="Assets\NullSpace SDK Assets\RaycastHaptics.cs" />
-    <Compile Include="Assets\NullSpace SDK Assets\SuitIndicator.cs" />
-    <Compile Include="Assets\NullSpace SDK Assets\TestHaptics.cs" />
+    <Compile Include="Assets\NullSpace SDK\BasicCalibrator.cs" />
+    <Compile Include="Assets\NullSpace SDK\HapticArgs.cs" />
+    <Compile Include="Assets\NullSpace SDK\HapticClasses.cs" />
+    <Compile Include="Assets\NullSpace SDK\HapticCollider.cs" />
+    <Compile Include="Assets\NullSpace SDK\HapticTrigger.cs" />
+    <Compile Include="Assets\NullSpace SDK\HapticsLoader.cs" />
+    <Compile Include="Assets\NullSpace SDK\IMUTest.cs" />
+    <Compile Include="Assets\NullSpace SDK\ImuInterface.cs" />
+    <Compile Include="Assets\NullSpace SDK\NSEnums.cs" />
+    <Compile Include="Assets\NullSpace SDK\NSManager.cs" />
+    <Compile Include="Assets\NullSpace SDK\RaycastHaptics.cs" />
+    <Compile Include="Assets\NullSpace SDK\SuitConnectionArgs.cs" />
+    <Compile Include="Assets\NullSpace SDK\SuitIndicator.cs" />
+    <Compile Include="Assets\NullSpace SDK\TestHaptics.cs" />
     <Compile Include="Assets\TrackingTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />

@@ -132,17 +132,7 @@ namespace NullSpace.SDK
 
 		}
 
-		private void updateSuitInfo(SuitInfo f)
-		{
-			if (f.MajorVersion == 2 && f.MinorVersion == 4)
-			{
-				imuInterface.ImuConsumer.SetMapping(3, API.Enums.Imu.Chest);
-			}
-			else if (f.MajorVersion == 2 && f.MinorVersion == 3)
-			{
-				imuInterface.ImuConsumer.SetMapping(0, API.Enums.Imu.Chest);
-			}
-		}
+		
 		private void ActivateImus(object sender, SuitConnectionArgs e)
 		{
 			this.EnableTracking();

@@ -52,11 +52,23 @@ namespace NullSpace.SDK
 			return _plugin.PollStatus();
 		}
 
-		public UnityEngine.Quaternion GetTracking()
+		public void PauseAllEffects()
 		{
-			var update = _plugin.PollTracking();
-			var q = update.chest;
-			return new UnityEngine.Quaternion(q.x, q.y, q.z, q.w);
+			_plugin.PauseAll();
+		}
+
+		public void ResumeAllEffects()
+		{
+			_plugin.ResumeAll();
+		}
+
+		public void ClearAllEffects()
+		{
+			_plugin.ClearAll();
+		}
+		public TrackingUpdate GetTrackingUpdate()
+		{
+			return _plugin.PollTracking();
 		}
     
 	}

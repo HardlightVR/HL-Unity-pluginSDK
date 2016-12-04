@@ -16,12 +16,26 @@ public class TrackingTest : MonoBehaviour {
 
 	private IImuCalibrator imus;
 	public GameObject TrackedObject;
-	// Use this for initialization
+
+
 	void Start () {
+		
 		imus = NSManager.Instance.GetImuCalibrator();
+		NSManager.Instance.SetImuCalibrator(GetComponent<DefaultImuCalibrator>());
+
 	}
-	
-	// Update is called once per frame
+
+	void OnGUI()
+	{
+		if (GUI.Button(new Rect(25, 25, 120, 80), "Enable Tracking"))
+		{
+			NSManager.Instance.EnableTracking();
+		}
+		if (GUI.Button(new Rect(25, 110, 120, 80), "Disable Tracking"))
+		{
+			NSManager.Instance.DisableTracking();
+		}
+	}
 	void Update () {
 		if (TrackedObject != null)
 		{

@@ -137,6 +137,17 @@ namespace NullSpace.SDK.Demos
 
 			}
 
+			if (GUI.Button(new Rect(500, 150, 100,50), "RESUME")) {
+				
+			}
+			if (GUI.Button(new Rect(600, 150, 100, 50), "PAUSE"))
+			{
+
+			}
+			if (GUI.Button(new Rect(700, 150, 100, 50), "CLEAR"))
+			{
+
+			}
 			if (GUI.Button(new Rect(20, 20, 100, 40), "Massage"))
 			{
 				massage = !massage;

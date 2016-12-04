@@ -68,10 +68,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\NullSpace SDK\DefaultImuCalibrator.cs" />
     <Compile Include="Assets\NullSpace SDK\HapticCollider.cs" />
     <Compile Include="Assets\NullSpace SDK\HapticTrigger.cs" />
     <Compile Include="Assets\NullSpace SDK\NSVRPluginWrapper.cs" />
-    <Compile Include="Assets\NullSpace SDK\IMUTest.cs" />
     <Compile Include="Assets\NullSpace SDK\ImuInterface.cs" />
     <Compile Include="Assets\NullSpace SDK\NSEnums.cs" />
     <Compile Include="Assets\NullSpace SDK\NSManager.cs" />

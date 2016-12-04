@@ -20,59 +20,74 @@ namespace NullSpace.SDK
     /// </summary>
 	public sealed class NSManager : MonoBehaviour
     {
-        /// <summary>
-        /// Raised when the suit disconnects
-        /// </summary>
-        public event EventHandler<SuitConnectionArgs> SuitDisconnected;
+		#region Events 
+		/// <summary>
+		/// Raised when the suit disconnects
+		/// </summary>
+		public event EventHandler<SuitConnectionArgs> SuitDisconnected;
         /// <summary>
         /// Raised when the suit connects
         /// </summary>
         public event EventHandler<SuitConnectionArgs> SuitConnected;
-        /// <summary>
-        /// Use Instance to access the NS Manager object
-        /// </summary>
-        public static NSManager Instance;
+		#endregion
 
-		public string StreamingAssetsPath;
+		/// <summary>
+		/// Use the Instance variable to access the NSManager object
+		/// </summary>
+		public static NSManager Instance;
 
-        #region Public fields 
-    
+        #region Suit Options 
    
-  
-        [Header("Suit Options")]
-        
-
-        [Header("Experimental")]
-        [Tooltip("EXPERIMENTAL: enabling will result in severe performance penalty. Note: currently disabled in firmware.")]
+        [Header("- Suit Options -")]
+        [Tooltip("EXPERIMENTAL: may impact performance of haptics on suit, and data refresh rate may be low")]
         [SerializeField]
-        private bool UseImus = false;
-
+        private bool EnableSuitTracking = false;
+		private bool _lastSuitTrackingEnabledValue = false;
+		private bool _isTrackingCoroutineRunning = false;
         #endregion
 
-        //in seconds
-        private const int AUTO_RECONNECT_INTERVAL = 3;
+		private NSVRPluginWrapper _pluginWrapper;
+		private IImuCalibrator _imuCalibrator;
+		private IEnumerator _trackingUpdateLoop;
 
-		private NSVRPluginWrapper loader;
-        public NSVRPluginWrapper HapticLoader
-        {
-            get { return loader; }
-        }
-
-		void EnableTracking()
-		{
-			this.loader.SetTrackingEnabled(true);
-		}
-
-		void DisableTracking()
-		{
-			this.loader.SetTrackingEnabled(false);
-		}
 		/// <summary>
-		/// The synchronization status of the suit with the NullSpace software
+		/// Enable experimental tracking on the suit. Only the chest is enabled.
 		/// </summary>
+		public void EnableTracking()
+		{
+			
+			EnableSuitTracking = true;
+			if (!_isTrackingCoroutineRunning)
+			{
+				StartCoroutine(_trackingUpdateLoop);
+				_isTrackingCoroutineRunning = true;
+			}
+			_pluginWrapper.SetTrackingEnabled(true);
+			
+		}
 
-		private IImuCalibrator imuInterface;
-        void Awake()
+		/// <summary>
+		/// Disable experimental tracking on the suit
+		/// </summary>
+		public void DisableTracking()
+		{
+			EnableSuitTracking = false;
+			StopCoroutine(_trackingUpdateLoop);
+			_isTrackingCoroutineRunning = false;
+			_pluginWrapper.SetTrackingEnabled(false);
+		}
+
+
+		/// <summary>
+		/// Tell the manager to use a different IMU calibrator
+		/// </summary>
+		/// <param name="calibrator">A custom calibrator which will receive raw orientation data from the suit in order to calibrate it for your game</param>
+		public void SetImuCalibrator(IImuCalibrator calibrator)
+		{
+			((CalibratorWrapper)_imuCalibrator).SetCalibrator(calibrator);
+		}
+
+		void Awake()
         {
             if (Instance == null)
             {
@@ -80,31 +95,20 @@ namespace NullSpace.SDK
             }
             else
             {
-                Debug.LogError("NSManager Instance is not null\nThere should only be one NSManager.");
+                Debug.LogError("There should only be one NSManager! Make sure there is only one NSManager prefab in the scene");
             }
-			
-	
 
+			_imuCalibrator = new CalibratorWrapper(new MockImuCalibrator());
+			_pluginWrapper = new NSVRPluginWrapper(Application.streamingAssetsPath);
+			_trackingUpdateLoop = UpdateTracking();
 
-            //Create a new hardware interface, which will allow us to directly communicate with the suit
-          //  this.suit = new SuitHardwareInterface();
-
-		
-
-			StreamingAssetsPath = Application.streamingAssetsPath;
-			//loader = new NS(StreamingAssetsPath);
-			loader = new NSVRPluginWrapper(StreamingAssetsPath);
 		}
 
-		public void UseImuCalibrator(IImuCalibrator calibrator)
-		{
-			imuInterface = calibrator;
-		}
+
 		private void OnSuitConnected(SuitConnectionArgs a)
         {
             var handler = SuitConnected;
             if (handler != null) { handler(this, a); }
-			
         }
 
         private void OnSuitDisconnected(SuitConnectionArgs a)
@@ -115,19 +119,17 @@ namespace NullSpace.SDK
 
         public void Start()
         {
-         
+			//Begin monitoring the status of the suit, so that we can raise relevent events
 			StartCoroutine(CheckSuitConnection());
-			if (UseImus)
+			_lastSuitTrackingEnabledValue = EnableSuitTracking;
+
+			if (EnableSuitTracking)
 			{
-				StartCoroutine(UpdateTracking());
+
+				StartCoroutine(_trackingUpdateLoop);
+				_isTrackingCoroutineRunning = true;
 				this.SuitConnected += ActivateImus;
-
 			}
-		
-
-
-
-
 		}
 
 		
@@ -140,20 +142,18 @@ namespace NullSpace.SDK
 		{
 			while (true)
 			{
-				if (imuInterface != null)
-				{
-					imuInterface.ReceiveUpdate(SDK.Enums.Imu.Chest, NSManager.Instance.HapticLoader.GetTracking());
-				}
+				
+				_imuCalibrator.ReceiveUpdate(_pluginWrapper.GetTrackingUpdate());
+
 				yield return null;
 			}
 		}
 		IEnumerator CheckSuitConnection()
 		{
 			int prevStatus = 0;
-			bool appRunningSafely = true;
-			while (appRunningSafely)
+			while (true)
 			{
-				int newStatus = loader.GetSuitStatus();
+				int newStatus = _pluginWrapper.GetSuitStatus();
 				if (newStatus != prevStatus)
 				{
 					if (newStatus == 2)
@@ -165,7 +165,6 @@ namespace NullSpace.SDK
 						OnSuitDisconnected(new SuitConnectionArgs());
 					}
 					prevStatus = newStatus;
-
 				}
 				
 				yield return new WaitForSeconds(0.25f);
@@ -177,7 +176,17 @@ namespace NullSpace.SDK
 
         void Update()
         {
-        
+			if (_lastSuitTrackingEnabledValue != EnableSuitTracking)
+			{
+				if (EnableSuitTracking)
+				{
+					this.EnableTracking();
+				}else
+				{
+					this.DisableTracking();
+				}
+				_lastSuitTrackingEnabledValue = EnableSuitTracking;
+			}
         }
 
         void OnApplicationPause()
@@ -187,8 +196,7 @@ namespace NullSpace.SDK
 
         void OnDestroy()
         {
-			// suit.Shutdown();
-	//dispose
+		
         }
 
 
@@ -201,7 +209,7 @@ namespace NullSpace.SDK
 
 		public IImuCalibrator GetImuCalibrator()
 		{
-			return imuInterface;
+			return _imuCalibrator;
 		}
 	}
 }

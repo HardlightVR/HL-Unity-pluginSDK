@@ -7,30 +7,26 @@
 
 
 using UnityEngine;
-using System.Collections.Generic;
 using NullSpace.SDK;
-using NullSpace.SDK.Enums;
+
 
 /// <summary>
 /// Scene-specific script to trigger haptic effects
 /// </summary>
 public class HapticTrigger : MonoBehaviour {
 
-	// Use this for initialization
+	Sequence bump;
+
 	void Start () {
-	
+		bump = new Sequence("ns.bump");
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
 	
 	}
 
-
 	void OnTriggerEnter(Collider collider)
 	{
-		new Sequence("ns.bump").CreateHandle(collider.GetComponent<HapticCollider>().regionID).Play();
-		  
-		
+		bump.CreateHandle(collider.GetComponent<HapticCollider>().regionID).Play();
 	}
 }

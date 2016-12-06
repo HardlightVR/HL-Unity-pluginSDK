@@ -24,10 +24,7 @@ namespace NullSpace.SDK.Demos
 	{
 		Rigidbody myRB;
 
-		/// <summary>
-		/// The Haptic JEffect ID that will play. Check the reference sheet included in the NullSpace API.
-		/// </summary>
-		public Effect selectedHapticEffectID;
+	
 		/// <summary>
 		/// This is controlled based on the suit and contents within NSEnums.
 		/// This number exists for easier testing of experimental hardware.
@@ -35,16 +32,13 @@ namespace NullSpace.SDK.Demos
 		private bool massage = false;
 		public float CodeHapticDuration = 5.5f;
 		Sequence clicker;
+		HapticHandle clickerHandle;
 		int[] playingIDs;
 		//	public Sequence s;
 
 		void Awake()
 		{
-			playingIDs = new int[Enum.GetValues(typeof(Location)).Length];
-			for (int i = 0; i < playingIDs.Length; i++)
-			{
-				playingIDs[i] = -1;
-			}
+			
 		}
 		void Start()
 		{
@@ -54,6 +48,7 @@ namespace NullSpace.SDK.Demos
 			//a.CreateHandle(AreaFlag.All_Areas).Play();	
 
 			clicker = new Sequence("ns.demos.click_click_click");
+			clickerHandle = clicker.CreateHandle(AreaFlag.All_Areas);
 			//clicker.CreateHandle(AreaFlag.All_Areas).Play();
 		}
 
@@ -114,7 +109,7 @@ namespace NullSpace.SDK.Demos
 
 
 
-
+			
 
 
 
@@ -133,20 +128,25 @@ namespace NullSpace.SDK.Demos
 		{
 			if (GUI.Button(new Rect(500, 100, 100, 50), "ENUMS!"))
 			{
-				clicker.CreateHandle(AreaFlag.All_Areas).Play();
-
+				//clicker.CreateHandle(AreaFlag.All_Areas).Play();
+				clickerHandle.Play();
+			}
+			if (GUI.Button(new Rect(600, 100, 100, 50), "ENUMSpause"))
+			{
+				//clicker.CreateHandle(AreaFlag.All_Areas).Play();
+				clickerHandle.Pause();
 			}
 
 			if (GUI.Button(new Rect(500, 150, 100,50), "RESUME")) {
-				
+				NSManager.Instance.UnfreezeActiveEffects();
 			}
 			if (GUI.Button(new Rect(600, 150, 100, 50), "PAUSE"))
 			{
-
+				NSManager.Instance.FreezeActiveEffects();
 			}
 			if (GUI.Button(new Rect(700, 150, 100, 50), "CLEAR"))
 			{
-
+				NSManager.Instance.ClearAllEffects();
 			}
 			if (GUI.Button(new Rect(20, 20, 100, 40), "Massage"))
 			{

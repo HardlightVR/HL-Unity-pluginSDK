@@ -1,9 +1,16 @@
-﻿using System;
+﻿/* This code is licensed under the NullSpace Developer Agreement, available here:
+** ***********************
+** http://nullspacevr.com/?wpdmpro=nullspace-developer-agreement
+** ***********************
+** Make sure that you have read, understood, and agreed to the Agreement before using the SDK
+*/
+
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NullSpace.SDK.Enums;
 using UnityEngine;
+
 namespace NullSpace.SDK.Tracking {
 	using Quaternion = UnityEngine.Quaternion;
 
@@ -14,14 +21,11 @@ namespace NullSpace.SDK.Tracking {
 	public class DefaultImuCalibrator : MonoBehaviour, IImuCalibrator
 	{
 		/// <summary>
-		/// We will store the incoming data in a dictionary. We wrap the quaternions in a structure which could be
+		/// Store the incoming data in a dictionary. Wrap the quaternions in a structure which could be
 		/// augmented with information and/or delegates specific to calibrating particular IMUs
 		/// </summary>
 		private IDictionary<Imu, ImuOrientation> _rawQuaternions;
 
-		/// <summary>
-		/// Calibrated data will be stored in a dictionary
-		/// </summary>
 		private IDictionary<Imu, Quaternion> _processedQuaternions;
 
 
@@ -52,8 +56,8 @@ namespace NullSpace.SDK.Tracking {
 		}
 
 		/// <summary>
-		/// Every frame, do something with the data. In this case we simply copy from the raw data into the 
-		/// processed data.
+		/// Every frame, do something with the data. In this case simply copy raw chest data to the 
+		/// processed chest data.
 		/// </summary>
 		public void Update()
 		{

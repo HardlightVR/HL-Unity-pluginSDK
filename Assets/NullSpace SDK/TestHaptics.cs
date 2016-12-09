@@ -47,7 +47,7 @@ namespace NullSpace.SDK.Demos
 			//var a = new Sequence("ns.basic.click_click_click");
 			//a.CreateHandle(AreaFlag.All_Areas).Play();	
 
-			clicker = new Sequence("ns.demos.click_click_click");
+			clicker = new Sequence("ns.demos.five_second_hum");
 			clickerHandle = clicker.CreateHandle(AreaFlag.All_Areas);
 			//clicker.CreateHandle(AreaFlag.All_Areas).Play();
 		}
@@ -126,55 +126,56 @@ namespace NullSpace.SDK.Demos
 
 		public void OnGUI()
 		{
-			if (GUI.Button(new Rect(500, 100, 100, 50), "ENUMS!"))
+			if (GUI.Button(new Rect(50, 50, 120, 50), "Test Experience"))
 			{
-				//clicker.CreateHandle(AreaFlag.All_Areas).Play();
-				clickerHandle.Play();
+				new Experience("ns.demos.test").CreateHandle().Play();
 			}
-			if (GUI.Button(new Rect(600, 100, 100, 50), "ENUMSpause"))
+			if (GUI.Button(new Rect(50, 100, 120, 50), "Test Pattern"))
 			{
-				//clicker.CreateHandle(AreaFlag.All_Areas).Play();
-				clickerHandle.Pause();
+				new Pattern("ns.demos.test").CreateHandle().Play();
 			}
 
-			if (GUI.Button(new Rect(500, 150, 100,50), "RESUME")) {
-				NSManager.Instance.UnfreezeActiveEffects();
-			}
-			if (GUI.Button(new Rect(600, 150, 100, 50), "PAUSE"))
+			if (GUI.Button(new Rect(50, 150, 150, 50), "Test Sequence"))
 			{
-				NSManager.Instance.FreezeActiveEffects();
+				new Sequence("ns.demos.five_second_hum").CreateHandle(AreaFlag.Chest_Both).Play();
 			}
-			if (GUI.Button(new Rect(700, 150, 100, 50), "CLEAR"))
+
+			if (GUI.Button(new Rect(400, 100, 100, 50), "Play Hum"))
+			{
+				clickerHandle.Play();
+			}
+
+			if (GUI.Button(new Rect(500, 100, 100,50), "Pause Hum")) {
+				clickerHandle.Pause();
+			}
+			if (GUI.Button(new Rect(600, 100, 100, 50), "Reset Hum"))
+			{
+				clickerHandle.Reset();
+			}
+			if (GUI.Button(new Rect(740, 100, 120, 50), "Clear All Effects"))
 			{
 				NSManager.Instance.ClearAllEffects();
 			}
-			if (GUI.Button(new Rect(20, 20, 100, 40), "Massage"))
+			if (GUI.Button(new Rect(50, 250, 150, 50), "Massage"))
 			{
+			
 				massage = !massage;
 				StartCoroutine(MoveFromTo(new Vector3(0, -3.5f, 0), new Vector3(0, 4.5f, 0), .8f));
 			}
 
 
-			if (GUI.Button(new Rect(160, 80, 150, 40), "Continuous Play All"))
-			{
-				new Sequence("ns.demos.five_second_hum").CreateHandle(AreaFlag.All_Areas).Play();
-			}
-			if (GUI.Button(new Rect(20, 140, 100, 40), "Halt All"))
-			{
-				//model.ClearAllPlaying();
-			}
-
-			if (GUI.Button(new Rect(20, 200, 100, 40), "Jolt Left Body"))
+			if (GUI.Button(new Rect(50, 200, 100, 40), "Jolt Left Body"))
 			{
 				new Sequence("ns.click").CreateHandle(AreaFlag.Left_All).Play();
+				
 
 			}
-			if (GUI.Button(new Rect(140, 200, 100, 40), "Jolt Full Body"))
+			if (GUI.Button(new Rect(150, 200, 100, 40), "Jolt Full Body"))
 			{
 				new Sequence("ns.click").CreateHandle(AreaFlag.All_Areas).Play();
 
 			}
-			if (GUI.Button(new Rect(260, 200, 100, 40), "Jolt Right Body"))
+			if (GUI.Button(new Rect(250, 200, 100, 40), "Jolt Right Body"))
 			{
 				new Sequence("ns.click").CreateHandle(AreaFlag.Right_All).Play();
 

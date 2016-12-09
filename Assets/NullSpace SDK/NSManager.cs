@@ -227,11 +227,11 @@ namespace NullSpace.SDK
 		{
 			if (hasFocus)
 			{
-				UnfreezeActiveEffects();
+				//UnfreezeActiveEffects();
 			}
 			else
 			{
-				FreezeActiveEffects();
+				//FreezeActiveEffects();
 			}
 		}
 

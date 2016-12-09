@@ -7,7 +7,6 @@
 
 
 using UnityEngine;
-using System.Collections;
 using NullSpace.SDK;
 using NullSpace.SDK.Enums;
 using NullSpace.SDK.Tracking;

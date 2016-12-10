@@ -11,14 +11,16 @@ using NullSpace.SDK;
 using NullSpace.SDK.Enums;
 using NullSpace.SDK.Tracking;
 
-public class TrackingTest : MonoBehaviour {
+public class TrackingTest : MonoBehaviour
+{
 
 	private IImuCalibrator imus;
 	public GameObject TrackedObject;
 
 
-	void Start () {
-		
+	void Start()
+	{
+
 		imus = NSManager.Instance.GetImuCalibrator();
 		NSManager.Instance.SetImuCalibrator(GetComponent<DefaultImuCalibrator>());
 
@@ -35,7 +37,8 @@ public class TrackingTest : MonoBehaviour {
 			NSManager.Instance.DisableTracking();
 		}
 	}
-	void Update () {
+	void Update()
+	{
 		if (TrackedObject != null)
 		{
 			TrackedObject.transform.rotation = imus.GetOrientation(Imu.Chest);

@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.3.4f1</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -68,18 +66,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\NullSpace SDK\DefaultImuCalibrator.cs" />
-    <Compile Include="Assets\NullSpace SDK\HapticCollider.cs" />
-    <Compile Include="Assets\NullSpace SDK\HapticTrigger.cs" />
-    <Compile Include="Assets\NullSpace SDK\ImuInterface.cs" />
-    <Compile Include="Assets\NullSpace SDK\NSEnums.cs" />
-    <Compile Include="Assets\NullSpace SDK\NSManager.cs" />
-    <Compile Include="Assets\NullSpace SDK\NSExtensions.cs" />
-    <Compile Include="Assets\NullSpace SDK\RaycastHaptics.cs" />
-    <Compile Include="Assets\NullSpace SDK\SuitConnectionArgs.cs" />
-    <Compile Include="Assets\NullSpace SDK\SuitIndicator.cs" />
-    <Compile Include="Assets\NullSpace SDK\TestHaptics.cs" />
-    <Compile Include="Assets\NullSpace SDK\TrackingTest.cs" />
+    <Compile Include="Assets\NullSpace SDK\Scripts\DefaultImuCalibrator.cs" />
+    <Compile Include="Assets\NullSpace SDK\Scripts\Demos\RaycastHaptics.cs" />
+    <Compile Include="Assets\NullSpace SDK\Scripts\Demos\TestHaptics.cs" />
+    <Compile Include="Assets\NullSpace SDK\Scripts\Demos\TrackingTest.cs" />
+    <Compile Include="Assets\NullSpace SDK\Scripts\HapticCollider.cs" />
+    <Compile Include="Assets\NullSpace SDK\Scripts\HapticTrigger.cs" />
+    <Compile Include="Assets\NullSpace SDK\Scripts\ImuInterface.cs" />
+    <Compile Include="Assets\NullSpace SDK\Scripts\NSEnums.cs" />
+    <Compile Include="Assets\NullSpace SDK\Scripts\NSExtensions.cs" />
+    <Compile Include="Assets\NullSpace SDK\Scripts\NSManager.cs" />
+    <Compile Include="Assets\NullSpace SDK\Scripts\SuitConnectionArgs.cs" />
+    <Compile Include="Assets\NullSpace SDK\Scripts\SuitIndicator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

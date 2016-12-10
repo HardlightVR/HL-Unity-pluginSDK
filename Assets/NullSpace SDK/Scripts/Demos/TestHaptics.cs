@@ -128,11 +128,11 @@ namespace NullSpace.SDK.Demos
 		{
 			if (GUI.Button(new Rect(50, 50, 120, 50), "Test Experience"))
 			{
-				new Experience("ns.demos.test").CreateHandle().Play();
+				new Experience("ns.demos.recharge_demo").CreateHandle().Play();
 			}
 			if (GUI.Button(new Rect(50, 100, 120, 50), "Test Pattern"))
 			{
-				new Pattern("ns.demos.test").CreateHandle().Play();
+				new Pattern("ns.demos.recharge_reverse").CreateHandle().Play();
 			}
 
 			if (GUI.Button(new Rect(50, 150, 150, 50), "Test Sequence"))
@@ -144,7 +144,18 @@ namespace NullSpace.SDK.Demos
 			{
 				clickerHandle.Play();
 			}
+			if (Input.GetKeyDown(KeyCode.I))
+			{
 
+			//	new Sequence("ns.click").CreateHandle(AreaFlag.Lower_Ab_Both).Play();
+				new Pattern("ns.demos.pulse").CreateHandle().Play();
+			}
+			if (Input.GetKeyDown(KeyCode.O))
+			{
+
+				//	new Sequence("ns.click").CreateHandle(AreaFlag.Lower_Ab_Both).Play();
+				//new Pattern("ns.demos.pulse").CreateHandle().Play();
+			}
 			if (GUI.Button(new Rect(500, 100, 100,50), "Pause Hum")) {
 				clickerHandle.Pause();
 			}

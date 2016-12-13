@@ -24,12 +24,12 @@ namespace NullSpace.SDK
         {
             suitConnectedSprite = Resources.Load<Sprite>("suit_on");
             suitDisconnectedSprite = Resources.Load<Sprite>("suit_off");
-           
-        }
-		public void Start()
-		{
 			NSManager.Instance.SuitConnected += HandleSuitConnect;
 			NSManager.Instance.SuitDisconnected += HandleSuitDisconnect;
+		}
+		public void Start()
+		{
+			
 		}
         void HandleSuitConnect(object sender, SuitConnectionArgs s)
         {

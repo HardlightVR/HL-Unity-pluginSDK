@@ -54,7 +54,10 @@ namespace NullSpace.SDK
 		private IImuCalibrator _imuCalibrator;
 		private IEnumerator _trackingUpdateLoop;
 
-		private NSVR.NSVR_Plugin _plugin;
+		private SuitStatus _suitStatus;
+		
+
+	private NSVR.NSVR_Plugin _plugin;
 
 		/// <summary>
 		/// Enable experimental tracking on the suit. Only the chest sensor is enabled.
@@ -91,6 +94,21 @@ namespace NullSpace.SDK
 			((CalibratorWrapper)_imuCalibrator).SetCalibrator(calibrator);
 		}
 
+		private void ChangeSuitStatus(SuitStatus newStatus)
+		{
+			if (newStatus != _suitStatus)
+			{
+
+				if (newStatus == SuitStatus.Connected)
+				{
+					OnSuitConnected(new SuitConnectionArgs());
+				} else
+				{
+					OnSuitDisconnected(new SuitConnectionArgs());
+				}
+				_suitStatus = newStatus;
+			}
+		}
 
 		void Awake()
 		{
@@ -109,6 +127,7 @@ namespace NullSpace.SDK
 			_plugin = new NSVR.NSVR_Plugin(Application.streamingAssetsPath);
 
 			_trackingUpdateLoop = UpdateTracking();
+			_suitStatus = SuitStatus.Disconnected;
 
 		}
 
@@ -188,24 +207,9 @@ namespace NullSpace.SDK
 
 		IEnumerator CheckSuitConnection()
 		{
-			SuitStatus prevStatus = SuitStatus.Disconnected;
-			bool firstPoll = true;
 			while (true)
 			{
-				SuitStatus newStatus = _plugin.PollStatus();
-				if (firstPoll || newStatus != prevStatus)
-				{
-					firstPoll = false;
-					if (newStatus == SuitStatus.Connected)
-					{
-						OnSuitConnected(new SuitConnectionArgs());
-					}
-					if (newStatus == SuitStatus.Disconnected)
-					{
-						OnSuitDisconnected(new SuitConnectionArgs());
-					}
-					prevStatus = newStatus;
-				}
+				ChangeSuitStatus(_plugin.PollStatus());
 				yield return new WaitForSeconds(0.15f);
 			}
 		}

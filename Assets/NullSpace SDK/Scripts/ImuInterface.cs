@@ -7,7 +7,7 @@
 
 using UnityEngine;
 using System.Collections.Generic;
-using NullSpace.SDK.Enums;
+
 
 namespace NullSpace.SDK.Tracking
 {

@@ -8,7 +8,6 @@
 
 using System;
 using System.Collections.Generic;
-using NullSpace.SDK.Enums;
 using UnityEngine;
 
 namespace NullSpace.SDK.Tracking {

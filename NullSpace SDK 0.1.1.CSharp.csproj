@@ -66,18 +66,28 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\NullSpace SDK\Demos\Scripts\ContainerHelper\ContainerItem.cs" />
+    <Compile Include="Assets\NullSpace SDK\Demos\Scripts\ContainerHelper\PopulateContainer.cs" />
+    <Compile Include="Assets\NullSpace SDK\Demos\Scripts\DirectoryToNamespace.cs" />
+    <Compile Include="Assets\NullSpace SDK\Demos\Scripts\HapticCollider.cs" />
+    <Compile Include="Assets\NullSpace SDK\Demos\Scripts\HapticTrigger.cs" />
+    <Compile Include="Assets\NullSpace SDK\Demos\Scripts\LibraryElement.cs" />
+    <Compile Include="Assets\NullSpace SDK\Demos\Scripts\LibraryHapticControls.cs" />
+    <Compile Include="Assets\NullSpace SDK\Demos\Scripts\LibraryManager.cs" />
+    <Compile Include="Assets\NullSpace SDK\Demos\Scripts\PackageViewer.cs" />
+    <Compile Include="Assets\NullSpace SDK\Demos\Scripts\RaycastHaptics.cs" />
+    <Compile Include="Assets\NullSpace SDK\Demos\Scripts\SuitIndicator.cs" />
+    <Compile Include="Assets\NullSpace SDK\Demos\Scripts\TestHaptics.cs" />
+    <Compile Include="Assets\NullSpace SDK\Demos\Scripts\TrackingTest.cs" />
     <Compile Include="Assets\NullSpace SDK\Scripts\DefaultImuCalibrator.cs" />
-    <Compile Include="Assets\NullSpace SDK\Scripts\Demos\RaycastHaptics.cs" />
-    <Compile Include="Assets\NullSpace SDK\Scripts\Demos\TestHaptics.cs" />
-    <Compile Include="Assets\NullSpace SDK\Scripts\Demos\TrackingTest.cs" />
-    <Compile Include="Assets\NullSpace SDK\Scripts\HapticCollider.cs" />
-    <Compile Include="Assets\NullSpace SDK\Scripts\HapticTrigger.cs" />
     <Compile Include="Assets\NullSpace SDK\Scripts\ImuInterface.cs" />
-    <Compile Include="Assets\NullSpace SDK\Scripts\NSEnums.cs" />
     <Compile Include="Assets\NullSpace SDK\Scripts\NSExtensions.cs" />
     <Compile Include="Assets\NullSpace SDK\Scripts\NSManager.cs" />
     <Compile Include="Assets\NullSpace SDK\Scripts\SuitConnectionArgs.cs" />
-    <Compile Include="Assets\NullSpace SDK\Scripts\SuitIndicator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\NullSpace SDK\Demos\Resources\Icons\Icon Credits.txt" />
+    <None Include="Assets\StreamingAssets\Haptics\Your Haptics\README.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

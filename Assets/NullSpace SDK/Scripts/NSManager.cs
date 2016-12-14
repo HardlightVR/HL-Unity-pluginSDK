@@ -124,7 +124,7 @@ namespace NullSpace.SDK
 			_imuCalibrator = new CalibratorWrapper(new MockImuCalibrator());
 
 			//The plugin needs to load resources from your app's Streaming Assets folder
-			_plugin = new NSVR.NSVR_Plugin(Application.streamingAssetsPath);
+			_plugin = new NSVR.NSVR_Plugin(Application.streamingAssetsPath + "/Haptics");
 
 			_trackingUpdateLoop = UpdateTracking();
 			_suitStatus = SuitStatus.Disconnected;

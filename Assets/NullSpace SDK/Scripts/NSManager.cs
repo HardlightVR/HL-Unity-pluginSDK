@@ -242,6 +242,7 @@ namespace NullSpace.SDK
 
 		void OnApplicationQuit()
 		{
+			
 			_plugin.SetTrackingEnabled(false);
 			ClearAllEffects();
 			System.Threading.Thread.Sleep(100);

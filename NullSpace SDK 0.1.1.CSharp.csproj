@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.3.4f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -69,6 +71,7 @@
     <Compile Include="Assets\NullSpace SDK\Demos\Scripts\ContainerHelper\ContainerItem.cs" />
     <Compile Include="Assets\NullSpace SDK\Demos\Scripts\ContainerHelper\PopulateContainer.cs" />
     <Compile Include="Assets\NullSpace SDK\Demos\Scripts\DirectoryToNamespace.cs" />
+    <Compile Include="Assets\NullSpace SDK\Demos\Scripts\Generators.cs" />
     <Compile Include="Assets\NullSpace SDK\Demos\Scripts\HapticCollider.cs" />
     <Compile Include="Assets\NullSpace SDK\Demos\Scripts\HapticTrigger.cs" />
     <Compile Include="Assets\NullSpace SDK\Demos\Scripts\LibraryElement.cs" />

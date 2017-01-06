@@ -77,15 +77,15 @@ namespace NullSpace.SDK.Demos
 			if (myType == LibraryElementType.Sequence)
 			{
 				//If sequence, use the specific pads selected (unsupported atm)
-				new Sequence(myNamespace + fileName).CreateHandle(AreaFlag.All_Areas).Play();
+				new Sequence(myNamespace + fileName).CreateHandle(AreaFlag.All_Areas).Play().Dispose();
 			}
 			if (myType == LibraryElementType.Pattern)
 			{
-				new Pattern(myNamespace + fileName).CreateHandle().Play();
+				new Pattern(myNamespace + fileName).CreateHandle().Play().Dispose();
 			}
 			if (myType == LibraryElementType.Experience)
 			{
-				new Experience(myNamespace + fileName).CreateHandle().Play();
+				new Experience(myNamespace + fileName).CreateHandle().Play().Dispose();
 			}
 		}
 

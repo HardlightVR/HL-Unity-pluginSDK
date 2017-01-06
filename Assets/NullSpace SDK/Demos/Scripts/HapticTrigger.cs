@@ -7,26 +7,31 @@
 
 
 using UnityEngine;
-using NullSpace.SDK;
 
+namespace NullSpace.SDK
+{
 
-/// <summary>
-/// Scene-specific script to trigger haptic effects
-/// </summary>
-public class HapticTrigger : MonoBehaviour {
-
-	Sequence bump;
-
-	void Start () {
-		bump = new Sequence("ns.bump");
-	}
-
-	void Update () {
-	
-	}
-
-	void OnTriggerEnter(Collider collider)
+	/// <summary>
+	/// Scene-specific script to trigger haptic effects
+	/// </summary>
+	public class HapticTrigger : MonoBehaviour
 	{
-		bump.CreateHandle(collider.GetComponent<HapticCollider>().regionID).Play();
+
+		Sequence bump;
+
+		void Start()
+		{
+			bump = new Sequence("ns.bump");
+		}
+
+		void Update()
+		{
+
+		}
+
+		void OnTriggerEnter(Collider collider)
+		{
+			bump.CreateHandle(collider.GetComponent<HapticCollider>().regionID).Play();
+		}
 	}
 }

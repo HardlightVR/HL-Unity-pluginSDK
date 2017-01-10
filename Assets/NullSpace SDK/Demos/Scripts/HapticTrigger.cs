@@ -7,31 +7,49 @@
 
 
 using UnityEngine;
+using NullSpace.SDK;
 
-namespace NullSpace.SDK
+
+/// <summary>
+/// Scene-specific script to trigger haptic effects
+/// </summary>
+public class HapticTrigger : MonoBehaviour
 {
+	Sequence onTriggerEnterSequence;
+	public string fileName = "ns.pulse";
 
-	/// <summary>
-	/// Scene-specific script to trigger haptic effects
-	/// </summary>
-	public class HapticTrigger : MonoBehaviour
+	void Awake()
 	{
+	}
 
-		Sequence bump;
+	void Start()
+	{
+		NSManager.Instance.DisableTracking();
+		onTriggerEnterSequence = new Sequence(fileName);
+	}
 
-		void Start()
+	public void SetSequence(string sequenceName)
+	{
+		try
 		{
-			bump = new Sequence("ns.bump");
+			Sequence newSeq = new Sequence(sequenceName);
+			if (newSeq != null)
+			{
+				fileName = sequenceName;
+				onTriggerEnterSequence = newSeq;
+			}
 		}
-
-		void Update()
+		catch (HapticsLoadingException hExcept)
 		{
-
+			Debug.LogError("[Haptic Trigger - Haptics Loading Exception]   Attempted to set invalid sequence " + sequenceName + "\n\tLoad failed and set was disallowed, defaulted to previous sequence " + fileName + "\n" + hExcept.Message);
 		}
+	}
 
-		void OnTriggerEnter(Collider collider)
-		{
-			bump.CreateHandle(collider.GetComponent<HapticCollider>().regionID).Play();
-		}
+	void OnTriggerEnter(Collider collider)
+	{
+		//Unused variable --v
+		//AreaFlag flag = collider.GetComponent<SuitBodyCollider>().regionID;
+		//Debug.Log(flag.ToString() + "  " + (int)flag + "\n");
+		onTriggerEnterSequence.CreateHandle(collider.GetComponent<SuitBodyCollider>().regionID).Play();
 	}
 }

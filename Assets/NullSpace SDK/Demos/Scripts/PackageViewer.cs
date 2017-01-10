@@ -15,8 +15,7 @@ namespace NullSpace.SDK.Demos
 		public string path;
 		public string myName = "";
 		public string myNameSpace = "";
-
-
+		public TestHaptics testHaptics;
 		
 		//When a directory is 'opened'
 		public void Init(string filePath, string newNamespace)
@@ -42,20 +41,35 @@ namespace NullSpace.SDK.Demos
 							  select validFile.FullName).ToList();
 
 			//A natural result of the haptics being loaded by order of folder means they'll be pre-sorted.
-			foreach (string s in validFiles)
+			foreach (string element in validFiles)
 			{
-				//Debug.Log(s + "\n");
-				LibraryElement libEle = fileContainer.AddPrefabToContainerReturn().GetComponent<LibraryElement>();
-				libEle.myButton.transform.localScale = Vector3.one;
-				libEle.myButton.name = s;
-
-				//Elements need to be initialized so they get the proper name/icon/color
-				libEle.Init(s, myNameSpace);
+				CreateRepresentations(element);
 			}
 
 			//Make sure we scroll to the top of the ScrollRect
 			ScrollRect sRect = GetComponentInChildren<ScrollRect>();
 			sRect.verticalNormalizedPosition = 1;
+		}
+
+		//This returns a bool to prep for future failure possibilities, such as initialize/validation failure.
+		public bool CreateRepresentations(string element)
+		{
+			//Debug.Log(s + "\n");
+			LibraryElement libEle = fileContainer.AddPrefabToContainerReturn().GetComponent<LibraryElement>();
+			libEle.playButton.transform.localScale = Vector3.one;
+			libEle.playButton.name = element;
+
+			//Elements need to be initialized so they get the proper name/icon/color
+			libEle.Init(element, myNameSpace);
+
+			return true;
+		}
+
+		public bool SortElements()
+		{
+			//Sort the elements in the specified order.
+			//TODO: Add element sorting.
+			return true;
 		}
 	}
 }

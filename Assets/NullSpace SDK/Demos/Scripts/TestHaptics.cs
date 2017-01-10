@@ -5,23 +5,16 @@
 ** Make sure that you have read, understood, and agreed to the Agreement before using the SDK
 */
 
-
 using UnityEngine;
 
 using System.Collections;
 using NullSpace.SDK;
-
-
-
-
-
 
 namespace NullSpace.SDK.Demos
 {
 	public class TestHaptics : MonoBehaviour
 	{
 		Rigidbody myRB;
-
 	
 		/// <summary>
 		/// This is controlled based on the suit and contents within NSEnums.
@@ -105,12 +98,6 @@ namespace NullSpace.SDK.Demos
 			}
 			#endregion
 
-
-
-			
-
-
-
 			#region Application Quit Code
 			if (Input.GetKeyDown(KeyCode.Escape))
 			{
@@ -118,9 +105,6 @@ namespace NullSpace.SDK.Demos
 			}
 			#endregion
 		}
-
-
-
 
 		public void OnGUI()
 		{
@@ -144,13 +128,11 @@ namespace NullSpace.SDK.Demos
 			}
 			if (Input.GetKeyDown(KeyCode.I))
 			{
-
-			//	new Sequence("ns.click").CreateHandle(AreaFlag.Lower_Ab_Both).Play();
+				//	new Sequence("ns.click").CreateHandle(AreaFlag.Lower_Ab_Both).Play();
 				new Pattern("ns.demos.pulse").CreateHandle().Play();
 			}
 			if (Input.GetKeyDown(KeyCode.O))
 			{
-
 				//	new Sequence("ns.click").CreateHandle(AreaFlag.Lower_Ab_Both).Play();
 				//new Pattern("ns.demos.pulse").CreateHandle().Play();
 			}
@@ -167,30 +149,22 @@ namespace NullSpace.SDK.Demos
 			}
 			if (GUI.Button(new Rect(50, 250, 150, 50), "Massage"))
 			{
-			
 				massage = !massage;
 				StartCoroutine(MoveFromTo(new Vector3(0, -3.5f, 0), new Vector3(0, 4.5f, 0), .8f));
 			}
 
-
 			if (GUI.Button(new Rect(50, 200, 100, 40), "Jolt Left Body"))
 			{
 				new Sequence("ns.click").CreateHandle(AreaFlag.Left_All).Play();
-				
-
 			}
 			if (GUI.Button(new Rect(150, 200, 100, 40), "Jolt Full Body"))
 			{
 				new Sequence("ns.click").CreateHandle(AreaFlag.All_Areas).Play();
-
 			}
 			if (GUI.Button(new Rect(250, 200, 100, 40), "Jolt Right Body"))
 			{
 				new Sequence("ns.click").CreateHandle(AreaFlag.Right_All).Play();
-
 			}
-
-
 		}
 	}
 }

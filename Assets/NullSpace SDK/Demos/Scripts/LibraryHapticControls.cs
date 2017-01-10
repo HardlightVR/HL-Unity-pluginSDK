@@ -7,11 +7,10 @@
 
 
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System.Collections;
 using System;
-
 
 namespace NullSpace.SDK.Demos
 {
@@ -27,7 +26,7 @@ namespace NullSpace.SDK.Demos
 	
 		void Start()
 		{
-			myRB = GameObject.Find("Haptic Trigger").GetComponent<Rigidbody>();
+			myRB = LibraryManager.Inst.greenBox.GetComponent<Rigidbody>();
 		}
 
 		IEnumerator MoveFromTo(Vector3 pointA, Vector3 pointB, float time)
@@ -89,17 +88,24 @@ namespace NullSpace.SDK.Demos
 			#endregion
 		}
 
-		public void OnGUI()
+		public void ToggleMassage()
 		{
-			if (GUI.Button(new Rect(10, Screen.height - 60, 150, 50), "Massage"))
-			{
-				massage = !massage;
-				StartCoroutine(MoveFromTo(new Vector3(0, -3.5f, 0), new Vector3(0, 4.5f, 0), .8f));
-			}
-			if (GUI.Button(new Rect(10, Screen.height - 110, 150, 50), "<color=#ff3333>Stop All</color>"))
-			{
-				NSManager.Instance.ClearAllEffects();
-			}
+			massage = !massage;
+			StartCoroutine(MoveFromTo(new Vector3(0, -3.5f, 0), new Vector3(0, 5.8f, 0), .8f));
+		}
+		public void ClearAllEffects()
+		{
+			NSManager.Instance.ClearAllEffects();
+		}
+		public void ReloadScene()
+		{
+			Application.LoadLevel(Application.loadedLevel);
+			//SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+		}
+		public void QuitScene()
+		{
+			Application.Quit();
+			//SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
 	}
 }

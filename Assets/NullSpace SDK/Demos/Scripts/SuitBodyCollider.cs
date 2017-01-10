@@ -12,9 +12,14 @@ namespace NullSpace.SDK
 	/// <summary>
 	/// A simple class to link up a collider with a certain area on the suit
 	/// </summary>
-	public class HapticCollider : MonoBehaviour
+	public class SuitBodyCollider : MonoBehaviour
 	{
-		[Header("Note: Region ID is set during runtime")]
+		[Header("Note: Attach this to your player's body.")]
+		[Header("You can select multiple areas for a single collider.")]
+		//You can enable [EnumFlag] over [RegionFlag] if you're having problems with the more customized inspector.
+		//Additionally, I provided EnumFlag for 
+		//[EnumFlag]
+		[RegionFlag]
 		public AreaFlag regionID;
 		public Collider myCollider;
 
@@ -25,14 +30,7 @@ namespace NullSpace.SDK
 				myCollider = gameObject.GetComponent<Collider>();
 			}
 		}
-
-		void Start()
-		{
-			if (!myCollider.isTrigger)
-			{
-				Debug.LogWarning("Haptic Collider " + regionID + " is not attached to a trigger volume.\n");
-			}
-		}
+		
 
 	}
 }

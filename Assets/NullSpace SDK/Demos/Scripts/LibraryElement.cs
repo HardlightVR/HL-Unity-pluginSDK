@@ -2,6 +2,8 @@
 using UnityEngine.UI;
 using System.Collections;
 using NullSpace.SDK;
+using System;
+using IOHelper;
 
 namespace NullSpace.SDK.Demos
 {
@@ -16,50 +18,184 @@ namespace NullSpace.SDK.Demos
 		public Image visual;
 		public Image myIcon;
 		public Text displayName;
-		public Button myButton;
+		public Button playButton;
+		public Button openLocationButton;
+		public Button copyButton;
 		public string myNamespace;
 		public string fileAndExt;
 		public string fileName;
+		public DateTime lastModified;
+
+		private bool initialized = false;
+		private string validationFailureReasons = string.Empty;
 
 		public void Init(string fullPath, string packageName = "")
 		{
-			fullFilePath = fullPath;
-			fileAndExt = LibraryManager.CleanPathToFile(fullFilePath);
-			string[] fileParts = fileAndExt.Split('.');
-			fileName = fileParts[0];
-			displayName.text = fileParts[0];
-			myNamespace = packageName;
+			if (fullPath.Length == 0)
+			{
+				Debug.Log("Cleaning up: " + name + " from editor modification\n");
+				Destroy(gameObject);
+			}
+			else if (!initialized)
+			{
+				fullFilePath = fullPath;
+				fileAndExt = LibraryManager.CleanPathToFile(fullFilePath);
+				string[] fileParts = fileAndExt.Split('.');
+				fileName = fileParts[0];
+				displayName.text = fileParts[0];
+				myNamespace = packageName;
 
-			if (fullFilePath.Contains(".seq"))
-			{
-				myType = LibraryElementType.Sequence;
-				myIcon.sprite = LibraryManager.Inst.seqIcon;
-				visual.color = LibraryManager.Inst.seqColor;
-			}
-			else if (fullFilePath.Contains(".pat"))
-			{
-				myType = LibraryElementType.Pattern;
-				myIcon.sprite = LibraryManager.Inst.patIcon;
-				visual.color = LibraryManager.Inst.patColor;
-			}
-			else if (fullFilePath.Contains(".exp"))
-			{
-				myType = LibraryElementType.Experience;
-				myIcon.sprite = LibraryManager.Inst.expIcon;
-				visual.color = LibraryManager.Inst.expColor;
-			}
-			else
-			{
-				myType = LibraryElementType.Folder;
-				myIcon.sprite = LibraryManager.Inst.folderIcon;
-				visual.color = LibraryManager.Inst.folderColor;
-			}
+				if (fullFilePath.Contains(".seq"))
+				{
+					myType = LibraryElementType.Sequence;
+					myIcon.sprite = LibraryManager.Inst.seqIcon;
+					visual.color = LibraryManager.Inst.seqColor;
+				}
+				else if (fullFilePath.Contains(".pat"))
+				{
+					myType = LibraryElementType.Pattern;
+					myIcon.sprite = LibraryManager.Inst.patIcon;
+					visual.color = LibraryManager.Inst.patColor;
+				}
+				else if (fullFilePath.Contains(".exp"))
+				{
+					myType = LibraryElementType.Experience;
+					myIcon.sprite = LibraryManager.Inst.expIcon;
+					visual.color = LibraryManager.Inst.expColor;
+				}
+				else
+				{
+					myType = LibraryElementType.Folder;
+					myIcon.sprite = LibraryManager.Inst.folderIcon;
+					visual.color = LibraryManager.Inst.folderColor;
+					if (copyButton != null)
+					{
+						copyButton.transform.parent.parent.gameObject.SetActive(false);
+					}
+				}
 
+				//Temporary disabling of the copy-me feature.
+				if (copyButton != null)
+				{
+					copyButton.transform.parent.parent.gameObject.SetActive(false);
+				}
+				if (!ValidateFile())
+				{
+					MarkElementBroken();
+				}
+
+				lastModified = FileModifiedHelper.GetLastModified(fullFilePath);
+
+				initialized = true;
+			}
 		}
 
 		void Start()
 		{
-			myButton.onClick.AddListener(() => { PlayHaptic(); });
+			if (openLocationButton != null)
+			{
+				openLocationButton.onClick.AddListener(() =>
+				{
+					bool playResult = OpenFile();
+					if (!playResult)
+					{
+						MarkElementBroken();
+					}
+				});
+			}
+			if (playButton != null)
+			{
+				playButton.onClick.AddListener(() =>
+				{
+					bool playResult = ExecuteLibraryElement();
+					if (!playResult)
+					{
+						MarkElementBroken();
+					}
+				});
+			}
+			if (copyButton != null)
+			{
+				copyButton.onClick.AddListener(() =>
+				{
+					bool playResult = CopyFile(true);
+					if (!playResult)
+					{
+						MarkElementBroken();
+					}
+				});
+
+			}
+		}
+
+		private void MarkElementBroken()
+		{
+			Debug.LogError("This element [" + fileAndExt + "] is broken\n");
+			//This doesn't prevent the action of the element, but it indicates that the element is broken.
+
+			//Only update the color for now.
+			//myIcon.sprite = LibraryManager.Inst.errorIcon;
+			visual.color = LibraryManager.Inst.errorColor;
+		}
+
+		private void MarkElementChanged()
+		{
+			Debug.LogError("The element [" + fileAndExt + "] has been changed since it was loaded\nThis functionality is not yet supported. You can reload the scene.");
+			visual.color = LibraryManager.Inst.changedColor;
+
+			//Debug.Log("This element [" + fileAndExt + "] is changed\n");
+			//This doesn't prevent the action of the element, but it indicates that the element is broken.
+
+			//Only update the color for now.
+			//myIcon.sprite = LibraryManager.Inst.errorIcon;
+			//visual.color = LibraryManager.Inst.changedColor;
+		}
+
+		private bool ValidateFile()
+		{
+			//Open the file
+
+			//Check each of the validation conditions
+			//Keep track of the returned reasons.
+			validationFailureReasons += ValidateForCommaAfterLastElement();
+			validationFailureReasons += ValidateFileName();
+
+			//Then return true or false.
+			if (validationFailureReasons.Length > 0)
+			{
+				return false;
+			}
+			return true;
+		}
+
+		private bool FileHasBeenModified()
+		{
+			DateTime dt = FileModifiedHelper.GetLastModified(fullFilePath);
+			//Debug.Log(dt.ToString() + "\n");
+
+			return dt != lastModified;
+		}
+
+		private string ValidateFileName()
+		{
+			//Debug.Log("[" + myType.ToString() + "]  [" + fileName + "]  [" + fileAndExt + "]  [" + myNamespace + "]\n", this);
+
+			return string.Empty;
+			//Unreachable
+		//	return "Failed due to comma after the last element\n";
+		}
+
+		private string ValidateForCommaAfterLastElement()
+		{
+			//Test case to check the broken marking is working.
+			//return UnityEngine.Random.Range(0, 40) > 35 ? "FAILED" : string.Empty;
+
+			//Do some JSON validation here?
+			//Possibly get API calls to validate file format?
+
+			return string.Empty;
+
+			return "Failed due to comma after the last element\n";
 		}
 
 		private string EvaluateName(string packageName)
@@ -70,28 +206,111 @@ namespace NullSpace.SDK.Demos
 			return fileName;
 		}
 
-		public void PlayHaptic()
+		public bool CopyFile(bool editImmediately = false)
 		{
-			//Get the file path
-			//Debug.Log("[" + myNamespace + "] [" + fileName + "]\n" + myNamespace + "" + fileName);
-			if (myType == LibraryElementType.Sequence)
+			try
 			{
-				//If sequence, use the specific pads selected (unsupported atm)
-				new Sequence(myNamespace + fileName).CreateHandle(AreaFlag.All_Areas).Play().Dispose();
+				string copyResult = CopyHelper.SafeFileDuplicate(fullFilePath);
+
+				if (copyResult.Length > 0)
+				{
+					//Debug.Log("Successful copy: [" + copyResult + "]\n");
+
+					//Ask PackageViewer to create a representation of that file.
+					LibraryManager.Inst.Selection.CreateRepresentations(copyResult);
+					LibraryManager.Inst.Selection.SortElements();
+
+					if (editImmediately)
+					{
+						//If we want to edit it immediately, open it.
+						OpenFile(copyResult);
+					}
+				}
 			}
-			if (myType == LibraryElementType.Pattern)
+
+			catch (Exception)
 			{
-				new Pattern(myNamespace + fileName).CreateHandle().Play().Dispose();
+				Debug.LogError("Failure to duplicate file \n\t[" + fullFilePath + "]\n");
+				return false;
 			}
-			if (myType == LibraryElementType.Experience)
-			{
-				new Experience(myNamespace + fileName).CreateHandle().Play().Dispose();
-			}
+
+			return true;
 		}
+
+		//Make this return a bool and it'll mark the LibraryElement as broken.
+		public bool ExecuteLibraryElement()
+		{
+			if (FileHasBeenModified())
+			{
+				MarkElementChanged();
+			}
+
+			//Debug.Log("File has been modified since load: [" + FileHasBeenModified() + "]\n");
+			try
+			{
+				HapticHandle newHandle = null;
+				if (LibraryManager.Inst.LastPlayed != null && LibraryManager.Inst.StopLastPlaying)
+				{
+					LibraryManager.Inst.LastPlayed.Pause();
+					LibraryManager.Inst.LastPlayed.Dispose();
+				}
+
+				//Get the file path
+				//Debug.Log("[" + myNamespace + "] [" + fileName + "]\n" + myNamespace + "" + fileName);
+				if (myType == LibraryElementType.Sequence)
+				{
+					//If sequence, use the specific pads selected (unsupported atm)
+					AreaFlag flag = LibraryManager.Inst.GetActiveAreas();
+					newHandle = new Sequence(myNamespace + fileName).CreateHandle(flag);
+					LibraryManager.Inst.SetTriggerSequence(myNamespace + fileName);
+				}
+				if (myType == LibraryElementType.Pattern)
+				{
+					newHandle = new Pattern(myNamespace + fileName).CreateHandle();
+				}
+				if (myType == LibraryElementType.Experience)
+				{
+					newHandle = new Experience(myNamespace + fileName).CreateHandle();
+				}
+
+				LibraryManager.Inst.LastPlayed = newHandle;
+
+				if (LibraryManager.Inst.LastPlayed != null)
+				{
+					LibraryManager.Inst.LastPlayed.Play();
+				}
+			}
+			catch (Exception e)
+			{
+				Debug.LogError("Failed to play haptic [" + fullFilePath + "]" + "\n" + e.Message);
+				return false;
+			}
+			return true;
+		}
+
+		public bool OpenFile(string requestedFilePath = "")
+		{
+			//Test case to check the broken marking is working.
+			//return UnityEngine.Random.Range(0, 40) > 35 ? false : true;
+
+			try
+			{
+				requestedFilePath = requestedFilePath.Length > 0 ? requestedFilePath : fullFilePath;
+				OpenPathHelper.Open(requestedFilePath);
+			}
+			catch (Exception e)
+			{
+				Debug.LogError("Failed to open file path [" + fullFilePath + "]" + "\n" + e.Message);
+				return false;
+			}
+			return true;
+		}
+
 
 		void Update()
 		{
-
+			if (!initialized)
+				Init("");
 		}
 	}
 }

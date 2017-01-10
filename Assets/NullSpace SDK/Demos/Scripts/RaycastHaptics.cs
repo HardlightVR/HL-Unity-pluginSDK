@@ -48,7 +48,7 @@ public class RaycastHaptics : MonoBehaviour
 
                 if (hit.collider.gameObject.tag == "Haptic Region")
                 {
-                    HapticCollider haptic = hit.collider.gameObject.GetComponent<HapticCollider>();
+					SuitBodyCollider haptic = hit.collider.gameObject.GetComponent<SuitBodyCollider>();
 
                     if (haptic != null)
                     {

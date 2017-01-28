@@ -53,7 +53,7 @@ namespace NullSpace.SDK
 
 		private IImuCalibrator _imuCalibrator;
 		private IEnumerator _trackingUpdateLoop;
-
+		private IEnumerator _suitStatusLoop;
 		private SuitStatus _suitStatus;
 		
 
@@ -94,20 +94,16 @@ namespace NullSpace.SDK
 			((CalibratorWrapper)_imuCalibrator).SetCalibrator(calibrator);
 		}
 
-		private void ChangeSuitStatus(SuitStatus newStatus)
+		private SuitStatus ChangeSuitStatus(SuitStatus newStatus)
 		{
-			if (newStatus != _suitStatus)
+			if (newStatus == SuitStatus.Connected)
 			{
-
-				if (newStatus == SuitStatus.Connected)
-				{
-					OnSuitConnected(new SuitConnectionArgs());
-				} else
-				{
-					OnSuitDisconnected(new SuitConnectionArgs());
-				}
-				_suitStatus = newStatus;
+				OnSuitConnected(new SuitConnectionArgs());
+			} else
+			{
+				OnSuitDisconnected(new SuitConnectionArgs());
 			}
+			return newStatus;
 		}
 
 		void Awake()
@@ -127,8 +123,25 @@ namespace NullSpace.SDK
 			_plugin = new NSVR.NSVR_Plugin(Application.streamingAssetsPath + "/Haptics");
 
 			_trackingUpdateLoop = UpdateTracking();
-			_suitStatus = SuitStatus.Disconnected;
+			_suitStatusLoop = CheckSuitConnection();
+			
+			DoDelayedAction(1.0f, delegate ()
+			{
+				_suitStatus = ChangeSuitStatus(_plugin.PollStatus());
+				StartCoroutine(_suitStatusLoop);
+			});
 
+		}
+
+		private void DoDelayedAction(float delay, Action action)
+		{
+			StartCoroutine(DoDelayedActionHelper(delay, action));
+		}
+
+		private IEnumerator DoDelayedActionHelper(float delay, Action action)
+		{
+			yield return new WaitForSeconds(delay);
+			action();
 		}
 
 		private void OnSuitConnected(SuitConnectionArgs a)
@@ -146,7 +159,7 @@ namespace NullSpace.SDK
 		public void Start()
 		{
 			//Begin monitoring the status of the suit
-			StartCoroutine(CheckSuitConnection());
+			StartCoroutine(_suitStatusLoop);
 			_lastSuitTrackingEnabledValue = EnableSuitTracking;
 
 			if (EnableSuitTracking)
@@ -209,7 +222,11 @@ namespace NullSpace.SDK
 		{
 			while (true)
 			{
-				ChangeSuitStatus(_plugin.PollStatus());
+				var status = _plugin.PollStatus();
+				if (status != _suitStatus)
+				{
+					_suitStatus = ChangeSuitStatus(status);
+				}
 				yield return new WaitForSeconds(0.15f);
 			}
 		}

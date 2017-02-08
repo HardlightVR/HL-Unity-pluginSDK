@@ -1,4 +1,11 @@
-﻿using System;
+﻿/* This code is licensed under the NullSpace Developer Agreement, available here:
+** ***********************
+** http://www.hardlightvr.com/wp-content/uploads/2017/01/NullSpace-SDK-License-Rev-3-Jan-2016-2.pdf
+** ***********************
+** Make sure that you have read, understood, and agreed to the Agreement before using the SDK
+*/
+
+using System;
 using System.IO;
 using Diag = System.Diagnostics;
 using UnityEngine;
@@ -53,8 +60,7 @@ namespace IOHelper
 			}
 			try
 			{
-				//Unused variable --v
-				//string[] pathSplit = macPath.Split(new char[] { '.' });
+				string[] pathSplit = macPath.Split(new char[] { '.' });
 				int attempts = 1;
 				addedName = " " + attempts;
 				bool exists = false;
@@ -118,8 +124,7 @@ namespace IOHelper
 			{
 				try
 				{
-					//Unused variable --v
-					//string[] pathSplit = winPath.Split(new char[] { '.' });
+					string[] pathSplit = winPath.Split(new char[] { '.' });
 					int attempts = 1;
 					addedName = " " + attempts;
 					bool exists = false;

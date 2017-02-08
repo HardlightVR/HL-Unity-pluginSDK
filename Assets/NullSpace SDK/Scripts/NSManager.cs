@@ -1,6 +1,6 @@
 ﻿/* This code is licensed under the NullSpace Developer Agreement, available here:
 ** ***********************
-** http://nullspacevr.com/?wpdmpro=nullspace-developer-agreement
+** http://www.hardlightvr.com/wp-content/uploads/2017/01/NullSpace-SDK-License-Rev-3-Jan-2016-2.pdf
 ** ***********************
 ** Make sure that you have read, understood, and agreed to the Agreement before using the SDK
 */
@@ -37,15 +37,48 @@ namespace NullSpace.SDK
 		/// Use the Instance variable to access the NSManager object. There should only be one NSManager
 		/// in the scene. 
 		/// </summary>
-		public static NSManager Instance;
+		private static NSManager instance;
+		public static NSManager Instance
+		{
+			get
+			{
+				if (instance == null)
+				{
+					instance = FindObjectOfType<NSManager>();
+
+					if (FindObjectsOfType<NSManager>().Length > 1)
+					{
+						Debug.LogError("[NSManager] There is more than one NSManager Singleton\n" +
+							"There shouldn't be multiple NSManager objects");
+						return instance;
+					}
+
+					if (instance == null)
+					{
+						GameObject singleton = new GameObject();
+						instance = singleton.AddComponent<NSManager>();
+						singleton.name = "NSManager [Runtime Singleton]";
+					}
+					else
+					{
+						//Debug.Log("[Singleton] Using instance already created: " +
+						//	_instance.gameObject.name + "\n");
+					}
+				}
+				return instance;
+			}
+			set { instance = value; }
+		}
 
 		#region Suit Options 
 		[Header("- Suit Options -")]
 		[Tooltip("EXPERIMENTAL: may impact performance of haptics on suit, and data refresh rate may be low")]
 		[SerializeField]
 		private bool EnableSuitTracking = false;
+		//[Tooltip("Creates a suit connection indicator on runtime.")]
+		//[SerializeField]
+		//private bool CreateDebugDisplay = false;
 		#endregion
-
 
 		private bool _lastSuitTrackingEnabledValue = false;
 		private bool _isTrackingCoroutineRunning = false;
@@ -53,11 +86,11 @@ namespace NullSpace.SDK
 
 		private IImuCalibrator _imuCalibrator;
 		private IEnumerator _trackingUpdateLoop;
-		private IEnumerator _suitStatusLoop;
-		private SuitStatus _suitStatus;
-		
 
-	private NSVR.NSVR_Plugin _plugin;
+		private SuitStatus _suitStatus;
+
+
+		private NSVR.NSVR_Plugin _plugin;
 
 		/// <summary>
 		/// Enable experimental tracking on the suit. Only the chest sensor is enabled.
@@ -94,16 +127,21 @@ namespace NullSpace.SDK
 			((CalibratorWrapper)_imuCalibrator).SetCalibrator(calibrator);
 		}
 
-		private SuitStatus ChangeSuitStatus(SuitStatus newStatus)
+		private void ChangeSuitStatus(SuitStatus newStatus)
 		{
-			if (newStatus == SuitStatus.Connected)
+			if (newStatus != _suitStatus)
 			{
-				OnSuitConnected(new SuitConnectionArgs());
-			} else
-			{
-				OnSuitDisconnected(new SuitConnectionArgs());
+
+				if (newStatus == SuitStatus.Connected)
+				{
+					OnSuitConnected(new SuitConnectionArgs());
+				}
+				else
+				{
+					OnSuitDisconnected(new SuitConnectionArgs());
+				}
+				_suitStatus = newStatus;
 			}
-			return newStatus;
 		}
 
 		void Awake()
@@ -112,9 +150,10 @@ namespace NullSpace.SDK
 			{
 				Instance = this;
 			}
-			else
+			else if(Instance != this)
 			{
-				Debug.LogError("There should only be one NSManager! Make sure there is only one NSManager prefab in the scene");
+				Debug.LogError("There should only be one NSManager! Make sure there is only one NSManager prefab in the scene\n" +
+					"If there is no NSManager, one will be created for you!");
 			}
 
 			_imuCalibrator = new CalibratorWrapper(new MockImuCalibrator());
@@ -123,25 +162,8 @@ namespace NullSpace.SDK
 			_plugin = new NSVR.NSVR_Plugin(Application.streamingAssetsPath + "/Haptics");
 
 			_trackingUpdateLoop = UpdateTracking();
-			_suitStatusLoop = CheckSuitConnection();
-			
-			DoDelayedAction(1.0f, delegate ()
-			{
-				_suitStatus = ChangeSuitStatus(_plugin.PollStatus());
-				StartCoroutine(_suitStatusLoop);
-			});
+			_suitStatus = SuitStatus.Disconnected;
 
-		}
-
-		private void DoDelayedAction(float delay, Action action)
-		{
-			StartCoroutine(DoDelayedActionHelper(delay, action));
-		}
-
-		private IEnumerator DoDelayedActionHelper(float delay, Action action)
-		{
-			yield return new WaitForSeconds(delay);
-			action();
 		}
 
 		private void OnSuitConnected(SuitConnectionArgs a)
@@ -159,7 +181,7 @@ namespace NullSpace.SDK
 		public void Start()
 		{
 			//Begin monitoring the status of the suit
-			StartCoroutine(_suitStatusLoop);
+			StartCoroutine(CheckSuitConnection());
 			_lastSuitTrackingEnabledValue = EnableSuitTracking;
 
 			if (EnableSuitTracking)
@@ -222,15 +244,10 @@ namespace NullSpace.SDK
 		{
 			while (true)
 			{
-				var status = _plugin.PollStatus();
-				if (status != _suitStatus)
-				{
-					_suitStatus = ChangeSuitStatus(status);
-				}
+				ChangeSuitStatus(_plugin.PollStatus());
 				yield return new WaitForSeconds(0.15f);
 			}
 		}
-
 
 		void Update()
 		{
@@ -259,7 +276,6 @@ namespace NullSpace.SDK
 
 		void OnApplicationQuit()
 		{
-			
 			_plugin.SetTrackingEnabled(false);
 			ClearAllEffects();
 			System.Threading.Thread.Sleep(100);
@@ -273,5 +289,6 @@ namespace NullSpace.SDK
 		{
 			return _imuCalibrator;
 		}
+
 	}
 }

@@ -31,8 +31,7 @@ public class RegionFlagsAttributeDrawer : PropertyDrawer
 		int buttonsIntValue = _property.intValue;
 		int enumLength = _property.enumNames.Length;
 		int buttonCount = CountValidEntries(_property) + 4;
-		//Unused variable --v
-		//int bothCount = _property.enumNames.Where(x => x.Contains("Both")).Count();
+		int bothCount = _property.enumNames.Where(x => x.Contains("Both")).Count();
 		bool[] buttonPressed = new bool[enumLength];
 		bool[] pressedLastFrame = new bool[enumLength];
 		float buttonWidth = EditorGUIUtility.currentViewWidth - (EditorGUIUtility.labelWidth + EditorGUIUtility.fieldWidth);
@@ -44,8 +43,7 @@ public class RegionFlagsAttributeDrawer : PropertyDrawer
 				buttonWidth,
 				20);
 
-		//Unused variable --v
-		//GUIStyle gStyle = new GUIStyle(GUI.skin.button);
+		GUIStyle gStyle = new GUIStyle(GUI.skin.button);
 		FoldoutOpened = EditorGUI.Toggle(buttonPos, (FoldoutOpened ? "Hide Areas" : "Show Areas"), FoldoutOpened);
 
 		int offset = 0;
@@ -120,6 +118,7 @@ public class RegionFlagsAttributeDrawer : PropertyDrawer
 							buttonPressed[i] = pressedLastFrame[i];
 						}
 					}
+
 					bool wasPressed = false;
 					#region Debugging Buttons
 					if (ShowDebugButtons)

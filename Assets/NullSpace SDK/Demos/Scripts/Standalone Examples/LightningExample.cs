@@ -16,7 +16,7 @@ namespace NullSpace.SDK.Demos
 
 		private void Start()
 		{
-			string whichEffect = "pulse";           //What's more electrical than pulses.
+			Effect whichEffect = Effect.Pulse;           //What's more electrical than pulses.
 			float totalImpulseDuration = .35f;      //How long does the shock take to traverse to the heart.
 			float effectDuration = 0.0f;            //0.0 defaults to the natural duration of the pulse effect.
 			float effectStrength = 1;               //How strong is the pulse effect
@@ -72,7 +72,7 @@ namespace NullSpace.SDK.Demos
 			}
 
 			//If we stop shocking the player, we want to clean up the last effect played. This means when the player stops touching the outlet, they stop getting shocked.
-			shockHandle.Reset();
+			shockHandle.Stop();
 
 			//Mark that we aren't shocking the player.
 			CurrentlyShocking = false;

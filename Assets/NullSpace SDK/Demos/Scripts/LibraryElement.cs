@@ -11,13 +11,16 @@ using System.Collections;
 using NullSpace.SDK;
 using System;
 using IOHelper;
+using NullSpace.SDK.FileUtilities;
+using System.IO;
+using System.Runtime.Remoting.Messaging;
 
 namespace NullSpace.SDK.Demos
 {
 	public class LibraryElement : MonoBehaviour
 	{
+		private AssetTool _assetTool;
 		string fullFilePath = "";
-
 		//For the visual representation of the haptic effect.
 		public enum LibraryElementType { Sequence, Pattern, Experience, Folder }
 		public LibraryElementType myType = LibraryElementType.Sequence;
@@ -36,20 +39,42 @@ namespace NullSpace.SDK.Demos
 		private bool initialized = false;
 		private string validationFailureReasons = string.Empty;
 
-		public void Init(string fullPath, string packageName = "")
+		public void Init(AssetTool.PackageInfo package, AssetTool tool)
+		{
+			if (!initialized)
+			{
+				_assetTool = tool;
+				name = package.path;
+				fullFilePath = package.path;
+				myType = LibraryElementType.Folder;
+				fileAndExt = Path.GetFileName(package.path);
+				myIcon.sprite = LibraryManager.Inst.folderIcon;
+				visual.color = LibraryManager.Inst.folderColor;
+				copyButton.transform.parent.parent.gameObject.SetActive(false);
+				displayName.text = Path.GetFileName(package.path);
+				myNamespace = package.@namespace;
+				fileName = package.path;
+				TooltipDescriptor.AddDescriptor(gameObject, fileName, "Haptic Package: A collection of sequences, patterns and experiences\nDefined by its config.json");
+				TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "Open Explorer", "View directories of " + fileName);
+
+				initialized = true;
+			}
+		}
+		public void Init(AssetTool tool, string fullPath, string packageName = "")
 		{
 			if (fullPath.Length == 0)
 			{
 				Debug.Log("Cleaning up: " + name + " from editor modification\n");
 				Destroy(gameObject);
 			}
-			else if (!initialized)
+			else
+			if (!initialized)
 			{
+				_assetTool = tool;
 				fullFilePath = fullPath;
-				fileAndExt = LibraryManager.CleanPathToFile(fullFilePath);
-				string[] fileParts = fileAndExt.Split('.');
-				fileName = fileParts[0];
-				displayName.text = fileParts[0];
+				fileAndExt = System.IO.Path.GetFileName(fullPath);
+				fileName = System.IO.Path.GetFileNameWithoutExtension(fullPath);
+				displayName.text = fileName;
 				myNamespace = packageName;
 
 				if (fullFilePath.Contains(".seq"))
@@ -57,43 +82,35 @@ namespace NullSpace.SDK.Demos
 					myType = LibraryElementType.Sequence;
 					myIcon.sprite = LibraryManager.Inst.seqIcon;
 					visual.color = LibraryManager.Inst.seqColor;
-					TooltipDescriptor.AddDescriptor(gameObject, fileParts[0] + " - Sequence", "Plays on all selected pads\nOr when the green haptic trigger touches a pad");
-					TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "Edit File", "View Source of " + fileParts[0] + "\nWe recommend a text editor");
+					TooltipDescriptor.AddDescriptor(gameObject, fileName + " - Sequence", "Plays on all selected pads\nOr when the green haptic trigger touches a pad");
+					TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "Edit File", "View Source of " + fileName + "\nWe recommend a text editor");
 				}
 				else if (fullFilePath.Contains(".pat"))
 				{
 					myType = LibraryElementType.Pattern;
 					myIcon.sprite = LibraryManager.Inst.patIcon;
 					visual.color = LibraryManager.Inst.patColor;
-					TooltipDescriptor.AddDescriptor(gameObject, fileParts[0] + " - Pattern", "Plays pattern which is composed of sequences on specified areas");
-					TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "Edit File", "View Source of " + fileParts[0] + "\nWe recommend a text editor");
+					TooltipDescriptor.AddDescriptor(gameObject, fileName + " - Pattern", "Plays pattern which is composed of sequences on specified areas");
+					TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "Edit File", "View Source of " + fileName + "\nWe recommend a text editor");
 				}
 				else if (fullFilePath.Contains(".exp"))
 				{
 					myType = LibraryElementType.Experience;
 					myIcon.sprite = LibraryManager.Inst.expIcon;
 					visual.color = LibraryManager.Inst.expColor;
-					TooltipDescriptor.AddDescriptor(gameObject, fileParts[0] + " - Experience", "Plays experience which is composed of multiple Patterns.");
-					TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "Edit File", "View Source of " + fileParts[0] + "\nWe recommend a text editor");
+					TooltipDescriptor.AddDescriptor(gameObject, fileName + " - Experience", "Plays experience which is composed of multiple Patterns.");
+					TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "Edit File", "View Source of " + fileName + "\nWe recommend a text editor");
 				}
-				else
-				{
-					myType = LibraryElementType.Folder;
-					myIcon.sprite = LibraryManager.Inst.folderIcon;
-					visual.color = LibraryManager.Inst.folderColor;
-					copyButton.transform.parent.parent.gameObject.SetActive(false);
-
-					TooltipDescriptor.AddDescriptor(gameObject, fileParts[0], "Haptic Package: A collection of sequences, patterns and experiences\nDefined by its config.json");
-					TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "Open Explorer", "View directories of " + fileParts[0]);
-				}
+				
 
 				//Temporary disabling of the copy-me feature.
 				copyButton.transform.parent.parent.gameObject.SetActive(false);
 
-				if (!ValidateFile())
-				{
-					MarkElementBroken();
-				}
+				//casey removed: because the asset tool does it now
+			//	if (!ValidateFile())
+				//{
+			//		MarkElementBroken();
+			//	}
 
 				lastModified = FileModifiedHelper.GetLastModified(fullFilePath);
 
@@ -250,6 +267,27 @@ namespace NullSpace.SDK.Demos
 			return true;
 		}
 
+		private delegate void HapticDefinitionCallback(HapticDefinitionFile file);
+		private delegate HapticDefinitionFile AsyncMethodCaller(string path);
+
+		/// <summary>
+		/// Retrieve a haptic definition file from a given path asynchronously
+		/// </summary>
+		/// <param name="path">The path to the raw asset</param>
+		/// <param name="callback">The callback to be executed upon receiving the file</param>
+		private void GetHapticDefinitionAsync(string path, HapticDefinitionCallback callback)
+		{
+			AsyncMethodCaller caller = new AsyncMethodCaller(_assetTool.GetHapticDefinitionFile);
+			IAsyncResult r = caller.BeginInvoke(path,delegate(IAsyncResult iar) {
+				AsyncResult result = (AsyncResult)iar;
+				AsyncMethodCaller caller2 = (AsyncMethodCaller)result.AsyncDelegate;
+				HapticDefinitionCallback hdfCallback = (HapticDefinitionCallback)iar.AsyncState;
+				HapticDefinitionFile hdf = caller2.EndInvoke(iar);
+				hdfCallback(hdf);
+			}, callback);
+		}
+
+
 		//Make this return a bool and it'll mark the LibraryElement as broken.
 		public bool ExecuteLibraryElement()
 		{
@@ -264,34 +302,56 @@ namespace NullSpace.SDK.Demos
 				HapticHandle newHandle = null;
 				if (LibraryManager.Inst.LastPlayed != null && LibraryManager.Inst.StopLastPlaying)
 				{
-					LibraryManager.Inst.LastPlayed.Pause();
-					LibraryManager.Inst.LastPlayed.Dispose();
+					LibraryManager.Inst.LastPlayed.Stop();
+					//Todo: implement dispose again
+				//	LibraryManager.Inst.LastPlayed
 				}
+
+				Action<HapticHandle> playHandleAndSetLastPlayed = delegate(HapticHandle h)
+				{
+
+					LibraryManager.Inst.LastPlayed = h;
+
+					if (LibraryManager.Inst.LastPlayed != null)
+					{
+						LibraryManager.Inst.LastPlayed.Play();
+					}
+				};
 
 				//Get the file path
 				//Debug.Log("[" + myNamespace + "] [" + fileName + "]\n" + myNamespace + "" + fileName);
 				if (myType == LibraryElementType.Sequence)
 				{
-					//If sequence, use the specific pads selected (unsupported atm)
-					AreaFlag flag = LibraryManager.Inst.GetActiveAreas();
-					newHandle = new Sequence(myNamespace + fileName).CreateHandle(flag);
-					LibraryManager.Inst.SetTriggerSequence(myNamespace + fileName);
+					GetHapticDefinitionAsync(fullFilePath, delegate (HapticDefinitionFile hdf) {
+						Debug.Log("Playing?");
+
+						var seq = CodeHapticFactory.CreateSequence(hdf.rootEffect.name, hdf);
+						Debug.Log("Playing?");
+
+						//If sequence, use the specific pads selected (unsupported atm)
+						AreaFlag flag = LibraryManager.Inst.GetActiveAreas();
+						LibraryManager.Inst.SetTriggerSequence(myNamespace + fileName);
+
+						playHandleAndSetLastPlayed(seq.CreateHandle(flag));
+					});
+
+				
 				}
 				if (myType == LibraryElementType.Pattern)
 				{
-					newHandle = new Pattern(myNamespace + fileName).CreateHandle();
+					GetHapticDefinitionAsync(fullFilePath, delegate (HapticDefinitionFile hdf)
+					{
+						var pat = CodeHapticFactory.CreatePattern(hdf.rootEffect.name, hdf);
+						playHandleAndSetLastPlayed(pat.CreateHandle());
+					});
 				}
 				if (myType == LibraryElementType.Experience)
 				{
-					newHandle = new Experience(myNamespace + fileName).CreateHandle();
+				//	newHandle = new Experience(myNamespace + fileName).CreateHandle();
 				}
 
-				LibraryManager.Inst.LastPlayed = newHandle;
-
-				if (LibraryManager.Inst.LastPlayed != null)
-				{
-					LibraryManager.Inst.LastPlayed.Play();
-				}
+				
+				
 			}
 			catch (Exception e)
 			{
@@ -322,12 +382,12 @@ namespace NullSpace.SDK.Demos
 		public HapticHandle CreateCodeHaptic()
 		{
 			//Debug.Log("Hit\n");
-			CodeSequence seq = new CodeSequence();
-			seq.AddEffect(0.0f, new CodeEffect("buzz", .2f));
-			seq.AddEffect(0.3f, new CodeEffect("click", 0.0f));
+			HapticSequence seq = new HapticSequence();
+			seq.AddEffect(0.0f, new HapticEffect(Effect.Buzz, .2f));
+			seq.AddEffect(0.3f, new HapticEffect(Effect.Click, 0.0f));
 			//seq.Play(AreaFlag.All_Areas);
 
-			CodePattern pat = new CodePattern();
+			HapticPattern pat = new HapticPattern();
 			pat.AddSequence(0.5f, AreaFlag.Lower_Ab_Both, seq);
 			pat.AddSequence(1.0f, AreaFlag.Mid_Ab_Both, seq);
 			pat.AddSequence(1.5f, AreaFlag.Upper_Ab_Both, seq);
@@ -342,7 +402,7 @@ namespace NullSpace.SDK.Demos
 		void Update()
 		{
 			if (!initialized)
-				Init("");
+				Init(_assetTool, "");
 		}
 	}
 }

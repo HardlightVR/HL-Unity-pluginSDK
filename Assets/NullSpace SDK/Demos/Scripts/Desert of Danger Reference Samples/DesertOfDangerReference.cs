@@ -222,11 +222,11 @@ namespace NullSpace.SDK.Demos
 		public static ImpulseGenerator.Impulse DesertOfDangerRecoil(AreaFlag StartLocation = AreaFlag.Forearm_Left, AreaFlag EndLocation = AreaFlag.Upper_Arm_Left)
 		{
 			//A simple code sequence
-			CodeSequence seq = new CodeSequence();
+			HapticSequence seq = new HapticSequence();
 
 			//The elements we will add
-			CodeEffect eff = new CodeEffect("buzz", 0.00f, 1.0f);
-			CodeEffect eff2 = new CodeEffect("buzz", 0.15f, 0.5f);
+			HapticEffect eff = new HapticEffect(Effect.Buzz, 0.00f, 1.0f);
+			HapticEffect eff2 = new HapticEffect(Effect.Buzz, 0.15f, 0.5f);
 
 			//The time stamps of the different effects.
 			seq.AddEffect(0, eff);
@@ -247,14 +247,14 @@ namespace NullSpace.SDK.Demos
 		/// <returns>Don't forget to call .Play() on the returned Impulse to create an instance of the haptic effect it defines.</returns>
 		public static ImpulseGenerator.Impulse DesertOfDangerShot(AreaFlag ShotWhere = AreaFlag.Chest_Right)
 		{
-			CodeSequence seq = new CodeSequence();
+			HapticSequence seq = new HapticSequence();
 
-			//This will be slightly different then the default "buzz" effect Impulse. If you ask for an effect with a duration of 0, it'll play the natural duration.
+			//This will be slightly different then the default Effect.Buzz effect Impulse. If you ask for an effect with a duration of 0, it'll play the natural duration.
 			//Natural durations range from .05s (click, buzz, etc) to .25s (the multiple click families)
 			//So by providing a duration of .1, this will be slightly different than the line:
-			//		CodeEffect eff = new CodeEffect("buzz", 0.00f, 1.0f);
+			//		HapticEffect eff = new HapticEffect(Effect.Buzz, 0.00f, 1.0f);
 
-			CodeEffect eff = new CodeEffect("buzz", 0.10f, 1.0f);
+			HapticEffect eff = new HapticEffect(Effect.Buzz, 0.10f, 1.0f);
 			
 			seq.AddEffect(0, eff);
 
@@ -271,8 +271,8 @@ namespace NullSpace.SDK.Demos
 		/// </summary>
 		/// <param name="pos">This is used in tandem with the FindNearest() function that finds the AreaFlag that represents the closest point to the 'HitImpulse'</param>
 		/// <param name="effect">This takes a different effect which can vary from projectile to projectile.
-		/// You could also make a version that takes a CodeSequence for projectiles with varying characteristics</param>
-		public void HitImpulse(Vector3 pos, string effect = "buzz")
+		/// You could also make a version that takes a HapticSequence for projectiles with varying characteristics</param>
+		public void HitImpulse(Vector3 pos, Effect effect = Effect.Buzz)
 		{
 			//We have a function called FindNearestPos, which finds the closest AreaFlag on the player's body
 			AreaFlag loc = AreaFlag.None;//FindNearest(pos);
@@ -376,9 +376,9 @@ namespace NullSpace.SDK.Demos
 						//Give the total effect a short duration (which you could choose to modify)
 						.WithDuration(.15f)
 						//Start with a natural duration click for the initial hit. This is good because it gets the motors going earlier on
-						.WithEffect("click", .00f, strength)
+						.WithEffect(Effect.Click, .00f, strength)
 						//Finish with a buzz which will last longer than natural duration. This gives the explosion a residual impact feeling
-						.WithEffect("buzz", .15f, strength);
+						.WithEffect(Effect.Buzz, .15f, strength);
 
 				//Finally, we call the coroutine that will repeatedly create new handles of the impulse with Play().
 				//Remember, an Impulse is like a prefab or a building plan for haptics. You can 'instantiate' multiple haptic effects off the same Impulse.
@@ -414,7 +414,7 @@ namespace NullSpace.SDK.Demos
 		/// The intention is to give an effect that goes up the body.
 		/// It has been slightly adapted to take different effect families (click, double-click, hum, etc)
 		/// </summary>
-		public static void GiantScorpionLanding(string effect = "buzz")
+		public static void GiantScorpionLanding(Effect effect = Effect.Buzz)
 		{
 			//TWo different Impulses are used here even though the same one could be re-assigned. Two variables are more readable at neglible CPU cost.
 			ImpulseGenerator.Impulse leftUp = ImpulseGenerator.BeginTraversingImpulse(AreaFlag.Lower_Ab_Left, AreaFlag.Forearm_Left)

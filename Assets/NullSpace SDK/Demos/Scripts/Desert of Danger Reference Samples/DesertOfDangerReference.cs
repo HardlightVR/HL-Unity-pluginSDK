@@ -225,12 +225,12 @@ namespace NullSpace.SDK.Demos
 			HapticSequence seq = new HapticSequence();
 
 			//The elements we will add
-			HapticEffect eff = new HapticEffect(Effect.Buzz, 0.00f, 1.0f);
-			HapticEffect eff2 = new HapticEffect(Effect.Buzz, 0.15f, 0.5f);
+			HapticEffect eff = new HapticEffect(Effect.Buzz, 0.00f);
+			HapticEffect eff2 = new HapticEffect(Effect.Buzz, 0.15f);
 
 			//The time stamps of the different effects.
-			seq.AddEffect(0, eff);
-			seq.AddEffect(.1, eff2);
+			seq.AddEffect(0, 1.0, eff);
+			seq.AddEffect(.1, 0.5, eff2);
 
 			//In Desert of Danger, we used a duration of .1 seconds. This means the recoil effect took .1 seconds to hit ALL pads it aimed to. If you hand in different pads, it'll likely want a longer duration.
 			//Since we only used the forearm and the upper arm, .1s is more than sufficient.
@@ -254,7 +254,7 @@ namespace NullSpace.SDK.Demos
 			//So by providing a duration of .1, this will be slightly different than the line:
 			//		HapticEffect eff = new HapticEffect(Effect.Buzz, 0.00f, 1.0f);
 
-			HapticEffect eff = new HapticEffect(Effect.Buzz, 0.10f, 1.0f);
+			HapticEffect eff = new HapticEffect(Effect.Buzz, 0.10f);
 			
 			seq.AddEffect(0, eff);
 

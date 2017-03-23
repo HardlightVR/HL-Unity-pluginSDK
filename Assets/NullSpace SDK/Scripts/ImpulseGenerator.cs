@@ -125,7 +125,7 @@ namespace NullSpace.SDK
 				}
 
 				HapticSequence seq = new HapticSequence();
-				seq.AddEffect(0.0f, new HapticEffect(effect, duration, strength));
+				seq.AddEffect(0.0f, strength, new HapticEffect(effect, duration));
 				if (seq == null)
 				{
 					throw new ArgumentException("Attempted to assign a null HapticSequence seq - retaining previous HapticSequence", "seq");

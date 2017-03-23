@@ -18,7 +18,7 @@ namespace NullSpace.SDK
 	/// including enabling/disabling tracking, monitoring suit connection status, 
 	/// globally pausing and playing effects, and clearing all playing effects.
 	/// 
-	/// If you prefer to interact directly with the plugin, you may instantiate your own
+	/// If you prefer to interact directly with the plugin, you may instantiate and destroy your own
 	/// NSVR_Plugin and remove NSManager.
 	/// </summary>
 	public sealed class NSManager : MonoBehaviour
@@ -105,7 +105,7 @@ namespace NullSpace.SDK
 				StartCoroutine(_trackingUpdateLoop);
 				_isTrackingCoroutineRunning = true;
 			}
-			_plugin.SetTrackingEnabled(true);
+			_plugin.EnableTracking();
 		}
 
 		/// <summary>
@@ -116,14 +116,14 @@ namespace NullSpace.SDK
 			EnableSuitTracking = false;
 			StopCoroutine(_trackingUpdateLoop);
 			_isTrackingCoroutineRunning = false;
-			_plugin.SetTrackingEnabled(false);
+			_plugin.DisableTracking();
 		}
 
 
 		/// <summary>
 		/// Tell the manager to use a different IMU calibrator
 		/// </summary>
-		/// <param name="calibrator">A custom calibrator which will receive raw orientation data from the suit and calibrate it for your game</param>
+		/// <param name="calibrator">A custom calibrator which will receive raw orientation data from the suit and calibrate it for your game. Create a class that implements IImuCalibrator and pass it to this method to receive data.</param>
 		public void SetImuCalibrator(IImuCalibrator calibrator)
 		{
 			((CalibratorWrapper)_imuCalibrator).SetCalibrator(calibrator);
@@ -157,7 +157,7 @@ namespace NullSpace.SDK
 			_imuCalibrator = new CalibratorWrapper(new MockImuCalibrator());
 
 			//The plugin needs to load resources from your app's Streaming Assets folder
-			_plugin = new NSVR.NSVR_Plugin(Application.streamingAssetsPath + "/Haptics");
+			_plugin = new NSVR.NSVR_Plugin();
 
 			_trackingUpdateLoop = UpdateTracking();
 			_suitStatusLoop = CheckSuitConnection();
@@ -229,7 +229,7 @@ namespace NullSpace.SDK
 		}
 
 		/// <summary>
-		/// Cancels and destroys all effects immediately, invalidating any handles
+		/// Cancels and destroys all effects immediately, invalidating any HapticHandles
 		/// </summary>
 		public void ClearAllEffects()
 		{
@@ -275,24 +275,10 @@ namespace NullSpace.SDK
 		}
 
 
-		//This method is for demonstration only. Normally the Unfreeze and Freeze 
-		//calls should be in your application pause/resume code.  
-		void OnApplicationFocus(bool hasFocus)
-		{
-			if (hasFocus)
-			{
-				//UnfreezeActiveEffects();
-			}
-			else
-			{
-				//FreezeActiveEffects();
-			}
-		}
-
 
 		void OnApplicationQuit()
 		{
-			_plugin.SetTrackingEnabled(false);
+			_plugin.DisableTracking();
 			ClearAllEffects();
 			System.Threading.Thread.Sleep(100);
 		}

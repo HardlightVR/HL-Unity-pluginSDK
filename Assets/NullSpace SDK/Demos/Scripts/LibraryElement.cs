@@ -7,8 +7,6 @@
 
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
-using NullSpace.SDK;
 using System;
 using IOHelper;
 using NullSpace.SDK.FileUtilities;
@@ -323,11 +321,10 @@ namespace NullSpace.SDK.Demos
 				if (myType == LibraryElementType.Sequence)
 				{
 					GetHapticDefinitionAsync(fullFilePath, delegate (HapticDefinitionFile hdf) {
-						Debug.Log("Playing?");
+
 
 						var seq = CodeHapticFactory.CreateSequence(hdf.rootEffect.name, hdf);
-						Debug.Log("Playing?");
-
+						Debug.Log(seq.ToString());
 						//If sequence, use the specific pads selected (unsupported atm)
 						AreaFlag flag = LibraryManager.Inst.GetActiveAreas();
 						LibraryManager.Inst.SetTriggerSequence(myNamespace + fileName);
@@ -341,7 +338,10 @@ namespace NullSpace.SDK.Demos
 				{
 					GetHapticDefinitionAsync(fullFilePath, delegate (HapticDefinitionFile hdf)
 					{
+						
 						var pat = CodeHapticFactory.CreatePattern(hdf.rootEffect.name, hdf);
+						Debug.Log(pat.ToString());
+
 						playHandleAndSetLastPlayed(pat.CreateHandle());
 					});
 				}

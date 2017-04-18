@@ -132,7 +132,11 @@ namespace NullSpace.SDK.Demos
 
 			//Minor tweak to get the scroll position to start at the top.
 			DirectoryScroll.verticalNormalizedPosition = 1;
+
+		
 		}
+
+		
 
 		void Update()
 		{
@@ -146,10 +150,7 @@ namespace NullSpace.SDK.Demos
 			{
 				Application.Quit();
 			}
-			//if (Input.GetKeyDown(KeyCode.Delete))
-			//{
-			//	LastPackageAccessed = "";
-			//}
+		
 		}
 	
 		public void SetupLibraries()

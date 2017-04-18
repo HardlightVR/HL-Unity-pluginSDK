@@ -23,21 +23,54 @@ namespace NullSpace.SDK
 	/// </summary>
 	public sealed class NSManager : MonoBehaviour
 	{
-		#region Events 
+		#region Public Events 
 		/// <summary>
-		/// Raised when the suit disconnects
+		/// Raised when a suit disconnects
 		/// </summary>
 		public event EventHandler<SuitConnectionArgs> SuitDisconnected;
 		/// <summary>
-		/// Raised when the suit connects
+		/// Raised when a suit connects
 		/// </summary>
 		public event EventHandler<SuitConnectionArgs> SuitConnected;
+		/// <summary>
+		/// Raised when the plugin establishes connection with the NullSpace VR Runtime
+		/// </summary>
+		public event EventHandler<ServiceConnectionArgs> ServiceConnected;
+		/// <summary>
+		/// Raised when the plugin loses connection to the NullSpace VR Runtime
+		/// </summary>
+		public event EventHandler<ServiceConnectionArgs> ServiceDisconnected;
 		#endregion
 
+
 		/// <summary>
-		/// Use the Instance variable to access the NSManager object. There should only be one NSManager
+		/// Returns DeviceConnectionStatus.Connected if a suit is connected, else returns DeviceConnectionStatus.Disconnected
+		/// </summary>
+		public bool IsSuitConnected
+		{
+			get
+			{
+				return _DeviceConnectionStatus == DeviceConnectionStatus.Connected;
+			}
+		}
+
+		/// <summary>
+		/// Returns ServiceConnectionStatus.Connected if the plugin is connected to the NullSpace VR Runtime service, else returns ServiceConnectionStatus.Disconnected
+		/// </summary>
+		public bool IsServiceConnected
+		{
+			get
+			{
+				return _ServiceConnectionStatus == ServiceConnectionStatus.Connected;
+			}
+		}
+
+
+		/// <summary>
+		/// Use the Instance variable to access the NSManager object. There should only be one NSManager in a scene.
 		/// in the scene. 
 		/// </summary>
+		
 		private static NSManager instance;
 		public static NSManager Instance
 		{
@@ -87,15 +120,15 @@ namespace NullSpace.SDK
 
 		private IImuCalibrator _imuCalibrator;
 		private IEnumerator _trackingUpdateLoop;
-		private IEnumerator _suitStatusLoop;
+		private IEnumerator _ServiceConnectionStatusLoop;
 
-		private SuitStatus _suitStatus;
-
+		private DeviceConnectionStatus _DeviceConnectionStatus;
+		private ServiceConnectionStatus _ServiceConnectionStatus;
 
 		private NSVR.NSVR_Plugin _plugin;
 
 		/// <summary>
-		/// Enable experimental tracking on the suit. Only the chest sensor is enabled.
+		/// Enable experimental tracking on the suit
 		/// </summary>
 		public void EnableTracking()
 		{
@@ -129,9 +162,9 @@ namespace NullSpace.SDK
 			((CalibratorWrapper)_imuCalibrator).SetCalibrator(calibrator);
 		}
 
-		private SuitStatus ChangeSuitStatus(SuitStatus newStatus)
+		private DeviceConnectionStatus ChangeDeviceConnectionStatus(DeviceConnectionStatus newStatus)
 		{
-			if (newStatus == SuitStatus.Connected)
+			if (newStatus == DeviceConnectionStatus.Connected)
 			{
 				OnSuitConnected(new SuitConnectionArgs());
 			}
@@ -142,6 +175,20 @@ namespace NullSpace.SDK
 			return newStatus;
 		}
 
+		private ServiceConnectionStatus ChangeServiceConnectionStatus(ServiceConnectionStatus newStatus)
+		{
+			if (newStatus == ServiceConnectionStatus.Connected)
+			{
+				OnServiceConnected(new ServiceConnectionArgs());
+
+			}
+			else
+			{
+				OnServiceDisconnected(new ServiceConnectionArgs());
+			}
+
+			return newStatus;
+		}
 		void Awake()
 		{
 			if (Instance == null)
@@ -159,14 +206,7 @@ namespace NullSpace.SDK
 			//The plugin needs to load resources from your app's Streaming Assets folder
 			_plugin = new NSVR.NSVR_Plugin();
 
-			_trackingUpdateLoop = UpdateTracking();
-			_suitStatusLoop = CheckSuitConnection();
-
-			DoDelayedAction(1.0f, delegate ()
-			{
-				_suitStatus = ChangeSuitStatus(_plugin.PollStatus());
-				StartCoroutine(_suitStatusLoop);
-			});
+			
 
 		}
 		private void DoDelayedAction(float delay, Action action)
@@ -190,10 +230,20 @@ namespace NullSpace.SDK
 			if (handler != null) { handler(this, a); }
 		}
 
+		private void OnServiceConnected(ServiceConnectionArgs a)
+		{
+			var handler = ServiceConnected; 
+			if (handler != null) { handler(this, a); }
+		}
+
+		private void OnServiceDisconnected(ServiceConnectionArgs a)
+		{
+			var handler = ServiceDisconnected;
+			if (handler != null) { handler(this, a); }
+		}
 		public void Start()
 		{
 			//Begin monitoring the status of the suit
-			StartCoroutine(_suitStatusLoop);
 			_lastSuitTrackingEnabledValue = EnableSuitTracking;
 
 			if (EnableSuitTracking)
@@ -202,16 +252,24 @@ namespace NullSpace.SDK
 				_isTrackingCoroutineRunning = true;
 				this.SuitConnected += ActivateImus;
 			}
+
+			_trackingUpdateLoop = UpdateTracking();
+			_ServiceConnectionStatusLoop = CheckServiceConnection();
+
+			DoDelayedAction(1.0f, delegate ()
+			{
+				StartCoroutine(_ServiceConnectionStatusLoop);
+			});
 		}
 
 		/// <summary>
 		/// For use in application pause routine. Pauses currently executing haptic effects and is a no-op if called more than once. 
 		/// </summary>
-		public void FreezeActiveEffects()
+		public void PauseAllEffects()
 		{
 			if (_isFrozen)
 			{
-				Debug.LogWarning("FreezeActiveEffects() and UnfreezeActiveEffects() are intended for use in an application's play/pause routines: FreezeActiveEffects() should be followed by UnfreezeActiveEffects().");
+				Debug.LogWarning("PauseAllEffects() and ResumePausedEffects() are intended for use in an application's play/pause routines: pause should be paired with a resume.");
 				return;
 			}
 			_plugin.PauseAll();
@@ -219,9 +277,9 @@ namespace NullSpace.SDK
 		}
 
 		/// <summary>
-		/// For use in an application unpause routine. Resumes effects that were paused by FreezeActiveEffects(). If the effects were paused by you, i.e. mySequence.Pause(), they will remain paused.
+		/// For use in an application unpause routine. Resumes effects that were paused by PauseAllEffects(). If the effects were paused by you, i.e. mySequence.Pause(), they will remain paused.
 		/// </summary>
-		public void UnfreezeActiveEffects()
+		public void ResumePausedEffects()
 		{
 			_plugin.ResumeAll();
 			_isFrozen = false;
@@ -243,7 +301,7 @@ namespace NullSpace.SDK
 		}
 
 
-		IEnumerator UpdateTracking()
+		private IEnumerator UpdateTracking()
 		{
 			while (true)
 			{
@@ -252,24 +310,52 @@ namespace NullSpace.SDK
 			}
 		}
 
-		IEnumerator CheckSuitConnection()
+		private IEnumerator CheckServiceConnection()
 		{
 			while (true)
 			{
-				var status = _plugin.PollStatus();
-				if (status != _suitStatus)
+				var status = _plugin.TestServiceConnection();
+				if (status != _ServiceConnectionStatus)
 				{
-					_suitStatus = ChangeSuitStatus(status);
+					_ServiceConnectionStatus = ChangeServiceConnectionStatus(status);
 				}
-				yield return new WaitForSeconds(0.15f);
+
+				if (status == ServiceConnectionStatus.Connected)
+				{
+					
+					var suitConnection = _plugin.TestDeviceConnection();
+					if (suitConnection != _DeviceConnectionStatus)
+					{
+
+						_DeviceConnectionStatus = ChangeDeviceConnectionStatus(suitConnection);
+					}
+				}
+				else
+				{
+
+					if (_DeviceConnectionStatus != DeviceConnectionStatus.Disconnected)
+					{
+						_DeviceConnectionStatus = ChangeDeviceConnectionStatus(DeviceConnectionStatus.Disconnected);
+					}
+
+				}
+				yield return new WaitForSeconds(0.5f);
 			}
 		}
+	
 
 		void Update()
 		{
 			if (_lastSuitTrackingEnabledValue != EnableSuitTracking)
 			{
-				_plugin.SetTrackingEnabled(EnableSuitTracking);
+				if (EnableSuitTracking)
+				{
+					this.EnableTracking();
+				} else
+				{
+					this.DisableTracking();
+				}
+			
 				_lastSuitTrackingEnabledValue = EnableSuitTracking;
 			}
 		}

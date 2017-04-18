@@ -276,12 +276,17 @@ namespace NullSpace.SDK.Demos
 		private void GetHapticDefinitionAsync(string path, HapticDefinitionCallback callback)
 		{
 			AsyncMethodCaller caller = new AsyncMethodCaller(_assetTool.GetHapticDefinitionFile);
+		
 			IAsyncResult r = caller.BeginInvoke(path,delegate(IAsyncResult iar) {
+
 				AsyncResult result = (AsyncResult)iar;
 				AsyncMethodCaller caller2 = (AsyncMethodCaller)result.AsyncDelegate;
 				HapticDefinitionCallback hdfCallback = (HapticDefinitionCallback)iar.AsyncState;
 				HapticDefinitionFile hdf = caller2.EndInvoke(iar);
+
+
 				hdfCallback(hdf);
+
 			}, callback);
 		}
 
@@ -324,7 +329,6 @@ namespace NullSpace.SDK.Demos
 
 
 						var seq = CodeHapticFactory.CreateSequence(hdf.rootEffect.name, hdf);
-						Debug.Log(seq.ToString());
 						//If sequence, use the specific pads selected (unsupported atm)
 						AreaFlag flag = LibraryManager.Inst.GetActiveAreas();
 						LibraryManager.Inst.SetTriggerSequence(myNamespace + fileName);
@@ -340,14 +344,20 @@ namespace NullSpace.SDK.Demos
 					{
 						
 						var pat = CodeHapticFactory.CreatePattern(hdf.rootEffect.name, hdf);
-						Debug.Log(pat.ToString());
 
 						playHandleAndSetLastPlayed(pat.CreateHandle());
 					});
 				}
 				if (myType == LibraryElementType.Experience)
 				{
-				//	newHandle = new Experience(myNamespace + fileName).CreateHandle();
+					GetHapticDefinitionAsync(fullFilePath, delegate (HapticDefinitionFile hdf)
+					{
+
+						var exp = CodeHapticFactory.CreateExperience(hdf.rootEffect.name, hdf);
+				
+						playHandleAndSetLastPlayed(exp.CreateHandle());
+
+					});
 				}
 
 				
@@ -396,7 +406,7 @@ namespace NullSpace.SDK.Demos
 			pat.AddSequence(2.5f, AreaFlag.Back_Both, seq);
 			pat.AddSequence(3.0f, AreaFlag.Upper_Arm_Both, seq);
 			pat.AddSequence(3.5f, AreaFlag.Forearm_Both, seq);
-			return pat.Play();
+			return pat.CreateHandle().Play();
 		}
 
 		void Update()

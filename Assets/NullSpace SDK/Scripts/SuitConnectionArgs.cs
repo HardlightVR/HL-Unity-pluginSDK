@@ -17,4 +17,12 @@ namespace NullSpace.SDK
 
         }
     }
+
+	public class ServiceConnectionArgs : EventArgs
+	{
+		public ServiceConnectionArgs()
+		{
+
+		}
+	}
 }

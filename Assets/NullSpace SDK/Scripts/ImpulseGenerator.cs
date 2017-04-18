@@ -56,7 +56,7 @@ namespace NullSpace.SDK
 					time += timeStep;
 				}
 
-				return emanation.Play();
+				return emanation.CreateHandle().Play();
 			};
 
 			return new Impulse(creation);
@@ -91,7 +91,7 @@ namespace NullSpace.SDK
 					time += timeStep;
 				}
 
-				return emanation.Play();
+				return emanation.CreateHandle().Play();
 			};
 
 			return new Impulse(creation);

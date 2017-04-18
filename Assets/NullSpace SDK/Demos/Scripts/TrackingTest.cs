@@ -32,17 +32,7 @@ namespace NullSpace.SDK.Demos
 
 		void OnGUI()
 		{
-			if (ShowOnGUI)
-			{
-				if (GUI.Button(new Rect(25, 25, 120, 80), "Enable Tracking"))
-				{
-					EnableTracking();
-				}
-				if (GUI.Button(new Rect(25, 110, 120, 80), "Disable Tracking"))
-				{
-					DisableTracking();
-				}
-			}
+		
 		}
 
 		public void EnableTracking()

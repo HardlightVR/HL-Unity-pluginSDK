@@ -1,0 +1,1 @@
+{"sequence_definitions":{"ns.demos.click_hum":[{"effect":"sharp_click","duration":0.0,"strength":1.0,"time":0.0},{"effect":"click","duration":0.0,"strength":1.0,"time":0.10000000149011612},{"effect":"hum","duration":1.0,"strength":1.0,"time":0.20000000298023225}]},"pattern_definitions":{},"experience_definitions":{},"root_effect":{"name":"ns.demos.click_hum","type":"sequence"}}

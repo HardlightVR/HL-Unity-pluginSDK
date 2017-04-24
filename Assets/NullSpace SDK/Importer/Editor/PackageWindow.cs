@@ -45,7 +45,6 @@ namespace NullSpace.SDK.Editor
 		private ImportStatus _lastImport = new ImportStatus(0,0);
 		public void init()
 		{
-			Debug.Log("Initting");
 			if (_assetTool == null)
 			{
 				_assetTool = new AssetTool();
@@ -65,7 +64,7 @@ namespace NullSpace.SDK.Editor
 			{
 				if (_assetTool == null)
 				{
-					Debug.Log("It's null");
+					Debug.Log("AssetTool is null");
 				}
 				Debug.Assert(_assetTool != null);
 				_packages = _assetTool.TryGetPackageInfo();
@@ -89,12 +88,12 @@ namespace NullSpace.SDK.Editor
 				_status = string.Format("Found {0} packages.", _packages.Count);
 
 			}
-			catch (System.ComponentModel.Win32Exception e)
+			catch (System.ComponentModel.Win32Exception )
 			{
 				Debug.LogError("[NSVR] Problem communicating with HapticAssetTools.exe");
 				_status = "Problem communicating with HapticAssetTools.exe";
 			}
-			catch (InvalidOperationException e)
+			catch (InvalidOperationException)
 			{
 				//The filename was not set. This could be if the registry key was not found
 				Debug.LogError("[NSVR] Could not locate the HapticAssetTools.exe program, make sure the NSVR Service was installed. Try reinstalling if the problem persists.");

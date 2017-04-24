@@ -168,8 +168,7 @@ namespace NullSpace.SDK.Demos
 
 		private void MarkElementChanged()
 		{
-			Debug.LogError("The element [" + fileAndExt + "] has been changed since it was loaded\nThis functionality is not yet supported. You can reload the scene.");
-			visual.color = LibraryManager.Inst.changedColor;
+			
 
 			//Debug.Log("This element [" + fileAndExt + "] is changed\n");
 			//This doesn't prevent the action of the element, but it indicates that the element is broken.

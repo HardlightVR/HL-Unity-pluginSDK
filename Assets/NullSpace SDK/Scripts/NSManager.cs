@@ -314,7 +314,7 @@ namespace NullSpace.SDK
 		{
 			while (true)
 			{
-				var status = _plugin.TestServiceConnection();
+				ServiceConnectionStatus status = _plugin.TestServiceConnection();
 				if (status != _ServiceConnectionStatus)
 				{
 					_ServiceConnectionStatus = ChangeServiceConnectionStatus(status);

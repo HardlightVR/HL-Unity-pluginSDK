@@ -1,6 +1,6 @@
 ﻿/* This code is licensed under the NullSpace Developer Agreement, available here:
 ** ***********************
-** http://nullspacevr.com/?wpdmpro=nullspace-developer-agreement
+** http://www.hardlightvr.com/wp-content/uploads/2017/01/NullSpace-SDK-License-Rev-3-Jan-2016-2.pdf
 ** ***********************
 ** Make sure that you have read, understood, and agreed to the Agreement before using the SDK
 */
@@ -9,6 +9,7 @@ using UnityEngine;
 
 using System.Collections;
 using NullSpace.SDK;
+using System;
 
 namespace NullSpace.SDK.Demos
 {
@@ -22,7 +23,6 @@ namespace NullSpace.SDK.Demos
 		/// </summary>
 		private bool massage = false;
 		public float CodeHapticDuration = 5.5f;
-		Sequence clicker;
 		HapticHandle clickerHandle;
 		int[] playingIDs;
 		//	public Sequence s;
@@ -38,8 +38,6 @@ namespace NullSpace.SDK.Demos
 			//var a = new Sequence("ns.basic.click_click_click");
 			//a.CreateHandle(AreaFlag.All_Areas).Play();	
 
-			clicker = new Sequence("ns.demos.five_second_hum");
-			clickerHandle = clicker.CreateHandle(AreaFlag.All_Areas);
 			//clicker.CreateHandle(AreaFlag.All_Areas).Play();
 		}
 
@@ -104,66 +102,41 @@ namespace NullSpace.SDK.Demos
 				Application.Quit();
 			}
 			#endregion
+
+			if (Input.GetKeyDown(KeyCode.T))
+			{
+				var s = new HapticSequence();
+				s.AddEffect(0.0, new HapticEffect(Effect.Click));
+				s.Play(AreaFlag.Left_All);
+				long milliseconds = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+				Debug.Log("Milliseconds: " + milliseconds);
+			}
 		}
 
 		public void OnGUI()
 		{
-			if (GUI.Button(new Rect(50, 50, 120, 50), "Test Experience"))
-			{
-				new Experience("ns.demos.recharge_demo").CreateHandle().Play();
-			}
-			if (GUI.Button(new Rect(50, 100, 120, 50), "Test Pattern"))
-			{
-				new Pattern("ns.demos.recharge_reverse").CreateHandle().Play();
-			}
-
-			if (GUI.Button(new Rect(50, 150, 150, 50), "Test Sequence"))
-			{
-				new Sequence("ns.demos.five_second_hum").CreateHandle(AreaFlag.Chest_Both).Play();
-			}
-
-			if (GUI.Button(new Rect(400, 100, 100, 50), "Play Hum"))
-			{
-				clickerHandle.Play();
-			}
-			if (Input.GetKeyDown(KeyCode.I))
-			{
-				//	new Sequence("ns.click").CreateHandle(AreaFlag.Lower_Ab_Both).Play();
-				new Pattern("ns.demos.pulse").CreateHandle().Play();
-			}
-			if (Input.GetKeyDown(KeyCode.O))
-			{
-				//	new Sequence("ns.click").CreateHandle(AreaFlag.Lower_Ab_Both).Play();
-				//new Pattern("ns.demos.pulse").CreateHandle().Play();
-			}
-			if (GUI.Button(new Rect(500, 100, 100,50), "Pause Hum")) {
-				clickerHandle.Pause();
-			}
-			if (GUI.Button(new Rect(600, 100, 100, 50), "Reset Hum"))
-			{
-				clickerHandle.Reset();
-			}
-			if (GUI.Button(new Rect(740, 100, 120, 50), "Clear All Effects"))
-			{
-				NSManager.Instance.ClearAllEffects();
-			}
-			if (GUI.Button(new Rect(50, 250, 150, 50), "Massage"))
-			{
-				massage = !massage;
-				StartCoroutine(MoveFromTo(new Vector3(0, -3.5f, 0), new Vector3(0, 4.5f, 0), .8f));
-			}
+			
+		
 
 			if (GUI.Button(new Rect(50, 200, 100, 40), "Jolt Left Body"))
 			{
-				new Sequence("ns.click").CreateHandle(AreaFlag.Left_All).Play();
+				new HapticSequence()
+					.AddEffect(0.0, new HapticEffect(Effect.Click))
+					.Play(AreaFlag.Left_All);
 			}
+
 			if (GUI.Button(new Rect(150, 200, 100, 40), "Jolt Full Body"))
 			{
-				new Sequence("ns.click").CreateHandle(AreaFlag.All_Areas).Play();
+				new HapticSequence()
+					.AddEffect(0.0, new HapticEffect(Effect.Click))
+					.Play(AreaFlag.All_Areas);
 			}
+
 			if (GUI.Button(new Rect(250, 200, 100, 40), "Jolt Right Body"))
 			{
-				new Sequence("ns.click").CreateHandle(AreaFlag.Right_All).Play();
+				new HapticSequence()
+					.AddEffect(0.0, new HapticEffect(Effect.Click))
+					.Play(AreaFlag.Right_All);
 			}
 		}
 	}

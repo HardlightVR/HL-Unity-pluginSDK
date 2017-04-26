@@ -1,0 +1,1 @@
+{"sequence_definitions":{"ns.click":[{"effect":"click","duration":0.0,"strength":1.0,"time":0.0}]},"pattern_definitions":{"ns.dod.scorpion_smash_layer4":[{"sequence":"ns.click","area":"Forearm_Both|Upper_Arm_Both|Back_Both","strength":1.0,"time":0.0}]},"experience_definitions":{},"root_effect":{"name":"ns.dod.scorpion_smash_layer4","type":"pattern"}}

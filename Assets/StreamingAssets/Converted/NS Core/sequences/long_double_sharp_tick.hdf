@@ -1,0 +1,1 @@
+{"sequence_definitions":{"ns.long_double_sharp_tick":[{"effect":"long_double_sharp_tick","duration":0.0,"strength":1.0,"time":0.0}]},"pattern_definitions":{},"experience_definitions":{},"root_effect":{"name":"ns.long_double_sharp_tick","type":"sequence"}}

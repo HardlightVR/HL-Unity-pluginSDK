@@ -1,15 +1,24 @@
-﻿using System.IO;
+﻿/* This code is licensed under the NullSpace Developer Agreement, available here:
+** ***********************
+** http://www.hardlightvr.com/wp-content/uploads/2017/01/NullSpace-SDK-License-Rev-3-Jan-2016-2.pdf
+** ***********************
+** Make sure that you have read, understood, and agreed to the Agreement before using the SDK
+*/
+
+using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
-
+using NullSpace.SDK.FileUtilities;
 namespace NullSpace.SDK.Demos
 {
 	public class LibraryManager : MonoBehaviour
 	{
 		public static LibraryManager Inst;
+
+		public GameObject tempRef;
 
 		public Sprite seqIcon;
 		public Color seqColor;
@@ -33,6 +42,8 @@ namespace NullSpace.SDK.Demos
 
 		private ScrollRect DirectoryScroll;
 		private PackageViewer currentSelected;
+
+		private AssetTool assetTool;
 		public PackageViewer Selection
 		{
 			set
@@ -110,6 +121,7 @@ namespace NullSpace.SDK.Demos
 
 			//This is where we will keep reference to previously opened files/directories.
 			ContentsDict = new Dictionary<string, PackageViewer>();
+			assetTool = new AssetTool();
 		}
 
 		void Start()
@@ -120,7 +132,11 @@ namespace NullSpace.SDK.Demos
 
 			//Minor tweak to get the scroll position to start at the top.
 			DirectoryScroll.verticalNormalizedPosition = 1;
+
+		
 		}
+
+		
 
 		void Update()
 		{
@@ -134,63 +150,51 @@ namespace NullSpace.SDK.Demos
 			{
 				Application.Quit();
 			}
-			//if (Input.GetKeyDown(KeyCode.Delete))
-			//{
-			//	LastPackageAccessed = "";
-			//}
+		
 		}
-
+	
 		public void SetupLibraries()
 		{
 			//Base for the path - has ALL the folders
 			string path = Application.streamingAssetsPath;
 
-			//Find the folder with config.json
-			List<string> folders = GetSubdirectoriesContainingOnlyFiles(path, "config.json").ToList();
-			//This finds subfolders
-			List<string> subFolders = GetSubdirectoriesContainingOnlyFiles(path, "config.json", SearchOption.AllDirectories).ToList();
+			assetTool.SetRootHapticsFolder(path + "/Haptics/");
+			var packages = assetTool.TryGetPackageInfo();
+			
+			
 
-			//Adds ones that are in subfolders
-			for (int i = 0; i < subFolders.Count; i++)
-			{
-				//No double dipping
-				if (!folders.Contains(subFolders[i]))
-				{
-					folders.Add(subFolders[i]);
-				}
-			}
-
-			//Debug.Log("We have found " + folders.Count + " subfolders\n\t\t" + path);
-			for (int i = 0; i < folders.Count; i++)
+			for (int i = 0; i < packages.Count; i++)
 			{
 				//Debug.Log("Directory: " + folders[i] + "\n");
-
 				//A library element represents either a folder or a haptic file. It will configure it's appearance based on its name (if it has .seq/.exp/.pat in its name, it'll adjust accordingly)
 				LibraryElement libEle = FolderContainer.AddPrefabToContainerReturn().GetComponent<LibraryElement>();
-				libEle.Init(folders[i]);
+				libEle.Init(packages[i], assetTool);
 				libEle.playButton.transform.localScale = Vector3.one;
-				libEle.playButton.name = folders[i];
-				string folderName = folders[i];
+				libEle.playButton.name = Path.GetFileName(packages[i].path);
+				string folderName = packages[i].path;
+				AssetTool.PackageInfo tempP = packages[i];
 				libEle.playButton.onClick.AddListener(
-					() => { SelectDirectory(folderName, libEle.playButton); }
+					() => { SelectDirectory(tempP, libEle.playButton); }
 					);
+				tempRef = libEle.gameObject;
 
 				//Debug.Log(Selection == null);
 				//string lastAccessed = LastOpened;
 
 				//If we have something that we last accessed
-				if (LastPackageAccessed.Length > 0 && folders.Contains(LastPackageAccessed))
+				var found = packages.Find(item => item.path == LastPackageAccessed);
+				if (LastPackageAccessed.Length > 0 && found != null)
 				{
 					if (folderName == LastPackageAccessed)
 					{
-						SelectDirectory(folderName, libEle.playButton);
+						SelectDirectory(packages[i], libEle.playButton);
 					}
 				}
-				else if (folders.Count > 0)
+				else if (packages.Count > 0)
 				{
 					//Select the first folder
-					string first = folders[0];
-					SelectDirectory(first, libEle.playButton);
+					string first = packages[0].path;
+					SelectDirectory(packages[i], libEle.playButton);
 				}
 			}
 		}
@@ -222,38 +226,39 @@ namespace NullSpace.SDK.Demos
 
 		public void SetTriggerSequence(string sequenceName)
 		{
-			greenBox.SetSequence(sequenceName);
-			greenBoxText.text = greenBox.fileName;
+			//TODO[casey]: FIX THIS
+			//greenBox.SetSequence(sequenceName);
+			//greenBoxText.text = greenBox.fileName;
 		}
 
 		//Creates a viewer for the given folder.
-		public PackageViewer SelectDirectory(string folderSelected, Button button)
+		public PackageViewer SelectDirectory(AssetTool.PackageInfo packageInfo, Button button)
 		{
 			//If we haven't already opened one, make a new one
-			if (!ContentsDict.ContainsKey(folderSelected))
+			if (!ContentsDict.ContainsKey(packageInfo.path))
 			{
 				//LastOpened = folderSelected;
 
-				PackageViewer go = ContentContainer.AddPrefabToContainerReturn().GetComponent<PackageViewer>();
+				PackageViewer pv = ContentContainer.AddPrefabToContainerReturn().GetComponent<PackageViewer>();
 				//So we could change the color of opened folder...
-				go.commander = button;
+				pv.commander = button;
 
 				//Ask the package viewer to do it's own setup.
-				go.Init(folderSelected, folderSelected);
+				pv.Init(assetTool, packageInfo);
 
 				//Hold onto the parent object so we can easily switch between opened ones.
-				ContentsDict.Add(folderSelected, go);
+				ContentsDict.Add(packageInfo.path, pv);
 			}
 
 			//Open the one we asked for (it was made if it didn't exist, or it already exists)
 			//Debug.Log("Entry already exists for: " + folderSelected + "\n");
-			Selection = ContentsDict[folderSelected];
+			Selection = ContentsDict[packageInfo.path];
 
 			//Remember what they had open
-			LastPackageAccessed = folderSelected;
+			LastPackageAccessed = packageInfo.path;
 			//Debug.Log("Opened Directory:" + LastPackageAccessed + "\n");
 
-			return ContentsDict[folderSelected];
+			return ContentsDict[packageInfo.path];
 		}
 
 		#region Static Helper Methods

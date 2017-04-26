@@ -201,6 +201,9 @@ namespace NullSpace.SDK
 					"If there is no NSManager, one will be created for you!");
 			}
 
+			_trackingUpdateLoop = UpdateTracking();
+			_ServiceConnectionStatusLoop = CheckServiceConnection();
+
 			_imuCalibrator = new CalibratorWrapper(new MockImuCalibrator());
 
 			//The plugin needs to load resources from your app's Streaming Assets folder
@@ -245,6 +248,7 @@ namespace NullSpace.SDK
 		{
 			//Begin monitoring the status of the suit
 			_lastSuitTrackingEnabledValue = EnableSuitTracking;
+		
 
 			if (EnableSuitTracking)
 			{
@@ -253,8 +257,6 @@ namespace NullSpace.SDK
 				this.SuitConnected += ActivateImus;
 			}
 
-			_trackingUpdateLoop = UpdateTracking();
-			_ServiceConnectionStatusLoop = CheckServiceConnection();
 
 			DoDelayedAction(1.0f, delegate ()
 			{

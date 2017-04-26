@@ -52,7 +52,7 @@ namespace NullSpace.SDK.Demos
 
 		/// <summary>
 		/// Which base effect will be used by the impulse. 
-		/// Cannot use file sequences, only raw effects or CodeSequences (constructed of raw effects)
+		/// Cannot use file sequences, only raw effects or HapticSequences (constructed of raw effects)
 		/// Options are (in order): bump, buzz, click, double_click, fuzz, hum, 
 		/// long_double_sharp_tick, pulse, pulse_sharp, sharp_click, 
 		/// sharp_tick, short_double_click, short_double_sharp_tick, 
@@ -61,7 +61,7 @@ namespace NullSpace.SDK.Demos
 		[Range(0, 15)]
 		private int currentEffect = 6;
 
-		private int selectedCodeSequence = -1;
+		private int selectedHapticSequence = -1;
 
 		#region Properties
 		public float Depth
@@ -100,7 +100,7 @@ namespace NullSpace.SDK.Demos
 		/// <summary>
 		/// Which base effect will be used by the impulse. 
 		/// Converted to an Int. Only a float for UI-Slider tricks
-		/// Cannot use file sequences, only raw effects or CodeSequences (constructed of raw effects)
+		/// Cannot use file sequences, only raw effects or HapticSequences (constructed of raw effects)
 		/// Options are (in order): bump, buzz, click, double_click, fuzz, hum, 
 		/// long_double_sharp_tick, pulse, pulse_sharp, sharp_click, 
 		/// sharp_tick, short_double_click, short_double_sharp_tick, 
@@ -117,15 +117,15 @@ namespace NullSpace.SDK.Demos
 				currentEffect = Mathf.RoundToInt(value);
 			}
 		}
-		public float SelectedCodeSequence
+		public float SelectedHapticSequence
 		{
 			get
 			{
-				return selectedCodeSequence;
+				return selectedHapticSequence;
 			}
 			set
 			{
-				selectedCodeSequence = Mathf.RoundToInt(value);
+				selectedHapticSequence = Mathf.RoundToInt(value);
 			}
 		}
 		#endregion
@@ -135,24 +135,16 @@ namespace NullSpace.SDK.Demos
 
 		//Have a list of all base families?
 		#region Basic Effects
-		public static string[] effectOptions =
+		public static Effect[] effectOptions =
 		{
-			"bump",
-			"buzz",
-			"click",
-			"double_click",
-			"fuzz",
-			"hum",
-			"long_double_sharp_tick",
-			"pulse",
-			"pulse_sharp",
-			"sharp_click",
-			"sharp_tick",
-			"short_double_click",
-			"short_double_sharp_tick",
-			"transition_click",
-			"transition_hum",
-			"triple_click"
+			Effect.Bump,
+			Effect.Buzz,
+			Effect.Click,
+			Effect.Double_Click,
+			Effect.Triple_Click,
+			Effect.Hum, 
+			Effect.Pulse,
+			Effect.Fuzz
 		};
 
 		#endregion
@@ -322,8 +314,8 @@ namespace NullSpace.SDK.Demos
 				StartCoroutine(ColorSuitForTraversal());
 			}
 
-			//To support CodeSequence Samples
-			if (SelectedCodeSequence < 0)
+			//To support HapticSequence Samples
+			if (SelectedHapticSequence < 0)
 			{
 				//These are broken up by lines for readability
 				imp.WithDuration(ImpulseDuration);
@@ -340,14 +332,14 @@ namespace NullSpace.SDK.Demos
 				//These are broken up by lines for readability
 				imp.WithDuration(ImpulseDuration);
 				imp.WithAttenuation(Attenuation);
-				imp.WithEffect(GetCodeSequence());
+				imp.WithEffect(GetHapticSequence());
 				imp.Play();
 			}
 		}
 
 		#region Code Sequence Names
 		//Note: This is a junky way to do Code Sequences but I wanted to include them as samples
-		public static string[] SampleCodeSequence =
+		public static string[] SampleHapticSequence =
 		{
 			"ClickHum",
 			"ThockClunk",
@@ -369,55 +361,55 @@ namespace NullSpace.SDK.Demos
 		};
 		#endregion
 
-		CodeSequence GetCodeSequence()
+		HapticSequence GetHapticSequence()
 		{
-			if (SelectedCodeSequence == 0)
+			if (SelectedHapticSequence == 0)
 			{
-				return ImpulseCodeSequenceSamples.ClickHum();
+				return ImpulseHapticSequenceSamples.ClickHum();
 			}
-			else if (SelectedCodeSequence == 1)
+			else if (SelectedHapticSequence == 1)
 			{
-				return ImpulseCodeSequenceSamples.ThockClunk();
+				return ImpulseHapticSequenceSamples.ThockClunk();
 			}
-			else if (SelectedCodeSequence == 2)
+			else if (SelectedHapticSequence == 2)
 			{
-				return ImpulseCodeSequenceSamples.ClickStorm();
+				return ImpulseHapticSequenceSamples.ClickStorm();
 			}
-			else if (SelectedCodeSequence == 3)
+			else if (SelectedHapticSequence == 3)
 			{
-				return ImpulseCodeSequenceSamples.DoubleClickImpact();
+				return ImpulseHapticSequenceSamples.DoubleClickImpact();
 			}
-			else if (SelectedCodeSequence == 4)
+			else if (SelectedHapticSequence == 4)
 			{
-				return ImpulseCodeSequenceSamples.Shimmer();
+				return ImpulseHapticSequenceSamples.Shimmer();
 			}
-			else if (SelectedCodeSequence == 5)
+			else if (SelectedHapticSequence == 5)
 			{
-				return ImpulseCodeSequenceSamples.ClickHumDoubleClick();
+				return ImpulseHapticSequenceSamples.ClickHumDoubleClick();
 			}
-			else if (SelectedCodeSequence == 6)
+			else if (SelectedHapticSequence == 6)
 			{
-				return ImpulseCodeSequenceSamples.PulseBumpPulse();
+				return ImpulseHapticSequenceSamples.PulseBumpPulse();
 			}
-			else if (SelectedCodeSequence == 7)
+			else if (SelectedHapticSequence == 7)
 			{
-				return ImpulseCodeSequenceSamples.TripleClickFuzzFalloff();
+				return ImpulseHapticSequenceSamples.TripleClickFuzzFalloff();
 			}
-			else if (SelectedCodeSequence == 8)
+			else if (SelectedHapticSequence == 8)
 			{
-				return ImpulseCodeSequenceSamples.RandomPulses(Random.Range(0, 10000));
+				return ImpulseHapticSequenceSamples.RandomPulses(Random.Range(0, 10000));
 			}
-			else if (SelectedCodeSequence == 9)
+			else if (SelectedHapticSequence == 9)
 			{
-				return ImpulseCodeSequenceSamples.ThreeRandomEffects(Random.Range(0, 10000));
+				return ImpulseHapticSequenceSamples.ThreeRandomEffects(Random.Range(0, 10000));
 			}
-			else if (SelectedCodeSequence == 10)
+			else if (SelectedHapticSequence == 10)
 			{
-				return ImpulseCodeSequenceSamples.VeryRandomEffect(Random.Range(0, 10000));
+				return ImpulseHapticSequenceSamples.VeryRandomEffect(Random.Range(0, 10000));
 			}
-			else //if (SelectedCodeSequence == 10)
+			else //if (SelectedHapticSequence == 10)
 			{
-				return ImpulseCodeSequenceSamples.VeryRandomEffect(Random.Range(0, 10000));
+				return ImpulseHapticSequenceSamples.VeryRandomEffect(Random.Range(0, 10000));
 			}
 		}
 

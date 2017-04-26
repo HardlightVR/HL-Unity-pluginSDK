@@ -1,0 +1,1 @@
+{"sequence_definitions":{"ns.demos.left":[{"effect":"transition_hum","duration":0.0,"strength":0.5,"time":0.0},{"effect":"bump","duration":0.0,"strength":0.20000000298023225,"time":0.05000000074505806}]},"pattern_definitions":{},"experience_definitions":{},"root_effect":{"name":"ns.demos.left","type":"sequence"}}

@@ -23,7 +23,7 @@ namespace NullSpace.SDK
 		/// </summary>
 		/// <param name="origin">The starting AreaFlag. Only provided a single AreaFlag pad.</param>
 		/// <param name="depth">How many pads this will traverse before ending (will not reverb off 'end paths')</param>
-		/// <returns>An Impulse object which can be given a CodeSequence, duration or Attenuation parameters
+		/// <returns>An Impulse object which can be given a HapticSequence, duration or Attenuation parameters
 		/// Remember to call Play() on the returned object to begin the emanation
 		/// <returns>The Impulse that you can call .Play() on to play a create a HapticHandle referencing that Haptic</returns>
 		public static Impulse BeginEmanatingEffect(AreaFlag origin, int depth = 2)
@@ -33,11 +33,11 @@ namespace NullSpace.SDK
 				Debug.LogError("Depth for emanation is negative: " + depth + "\n\tThis will be clamped to 0 under the hood, negative numbers will likely do nothing");
 			}
 
-			CreateImpulse creation = delegate (float attenuation, float totalLength, CodeSequence seq)
+			CreateImpulse creation = delegate (float attenuation, float totalLength, HapticSequence seq)
 			{
-				CodePattern emanation = new CodePattern();
+				HapticPattern emanation = new HapticPattern();
 				var stages = _grapher.BFS(origin, depth);
-
+				float baseStrength = 1.0f;
 				float timeStep = totalLength / stages.Count;
 				float time = 0.0f;
 				for (int i = 0; i < stages.Count; i++)
@@ -49,16 +49,14 @@ namespace NullSpace.SDK
 					}
 					if (i > 0)
 					{
-						seq.Strength *= (1.0f - attenuation);
+						baseStrength *= (1.0f - attenuation);
 					}
 
-					seq.Strength = Mathf.Clamp((float)seq.Strength, 0, 1.0f);
-
-					emanation.AddSequence(time, area, seq);
+					emanation.AddSequence(time, area, Mathf.Clamp(baseStrength, 0f, 1f), seq);
 					time += timeStep;
 				}
 
-				return emanation.Play();
+				return emanation.CreateHandle().Play();
 			};
 
 			return new Impulse(creation);
@@ -75,45 +73,46 @@ namespace NullSpace.SDK
 		/// <returns>The Impulse that you can call .Play() on to play a create a HapticHandle referencing that Haptic</returns>
 		public static Impulse BeginTraversingImpulse(AreaFlag origin, AreaFlag destination)
 		{
-			CreateImpulse creation = delegate (float attenuation, float totalLength, CodeSequence seq)
+			CreateImpulse creation = delegate (float attenuation, float totalLength, HapticSequence seq)
 			{
-				CodePattern emanation = new CodePattern();
+				HapticPattern emanation = new HapticPattern();
 				var stages = _grapher.Dijkstras(origin, destination);
 
 				float timeStep = totalLength / stages.Count;
 				float time = 0.0f;
+				float baseStrength = 1f;
 				for (int i = 0; i < stages.Count; i++)
 				{
 					if (i > 0)
 					{
-						seq.Strength *= (1.0f - attenuation);
+						baseStrength *= (1.0f - attenuation);
 					}
-					emanation.AddSequence(time, stages[i].Location, seq);
+					emanation.AddSequence(time, stages[i].Location, Mathf.Clamp(baseStrength, 0f, 1f),seq);
 					time += timeStep;
 				}
 
-				return emanation.Play();
+				return emanation.CreateHandle().Play();
 			};
 
 			return new Impulse(creation);
 		}
 
-		internal delegate HapticHandle CreateImpulse(float attenuation, float totalLength, CodeSequence seq);
+		internal delegate HapticHandle CreateImpulse(float attenuation, float totalLength, HapticSequence seq);
 		public class Impulse
 		{
 			private float totalLength;
 			private float attenuation;
 			private CreateImpulse process;
-			private CodeSequence seq;
+			private HapticSequence seq;
 
 			/// <summary>
-			/// Creates a new CodeSequence and overwrites this Impulse's current Sequence. 
+			/// Creates a new HapticSequence and overwrites this Impulse's current Sequence. 
 			/// </summary>
 			/// <param name="effect">The effect family to play.</param>
 			/// <param name="duration">The duration of the sequence.</param>
 			/// <param name="strength">The strength of the effect (which selects the corresponding family member under the hood)</param>
 			/// <returns>The Impulse that you can call .Play() on to play a create a HapticHandle referencing that Haptic</returns>
-			public Impulse WithEffect(string effect, float duration = 0.0f, float strength = 1.0f)
+			public Impulse WithEffect(Effect effect, float duration = 0.0f, float strength = 1.0f)
 			{
 				if (duration < 0.0f)
 				{
@@ -125,11 +124,11 @@ namespace NullSpace.SDK
 					strength = 0.0f;
 				}
 
-				CodeSequence seq = new CodeSequence();
-				seq.AddEffect(0.0f, new CodeEffect(effect, duration, strength));
+				HapticSequence seq = new HapticSequence();
+				seq.AddEffect(0.0f, strength, new HapticEffect(effect, duration));
 				if (seq == null)
 				{
-					throw new ArgumentException("Attempted to assign a null CodeSequence seq - retaining previous CodeSequence", "seq");
+					throw new ArgumentException("Attempted to assign a null HapticSequence seq - retaining previous HapticSequence", "seq");
 				}
 				this.seq = seq;
 				return this;
@@ -140,11 +139,11 @@ namespace NullSpace.SDK
 			/// </summary>
 			/// <param name="seq"></param>
 			/// <returns></returns>
-			public Impulse WithEffect(CodeSequence seq)
+			public Impulse WithEffect(HapticSequence seq)
 			{
 				if (seq == null)
 				{
-					throw new ArgumentException("Attempted to assign a null CodeSequence seq - retaining previous CodeSequence", "seq");
+					throw new ArgumentException("Attempted to assign a null HapticSequence seq - retaining previous HapticSequence", "seq");
 				}
 				this.seq = seq;
 				return this;
@@ -189,7 +188,7 @@ namespace NullSpace.SDK
 			{
 				if (seq == null)
 				{
-					throw new ArgumentException("Impulse's Sequence cannot be null - it must have been assigned an invalid CodeSequence earlier in the code flow", "seq");
+					throw new ArgumentException("Impulse's Sequence cannot be null - it must have been assigned an invalid HapticSequence earlier in the code flow", "seq");
 				}
 				else
 				{
@@ -198,13 +197,13 @@ namespace NullSpace.SDK
 			}
 
 			/// <summary>
-			/// Provide a CodeSequence and then Play the impulse.
+			/// Provide a HapticSequence and then Play the impulse.
 			/// Each Play() creates a new HapticHandle instance for that individual played effect.
 			/// A helper function for WithEffect(sequence).Play()
 			/// </summary>
-			/// <param name="sequence">A valid CodeSequence</param>
+			/// <param name="sequence">A valid HapticSequence</param>
 			/// <returns>The HapticHandle for resetting, pausing or stopping the haptic effect</returns>
-			public HapticHandle Play(CodeSequence sequence)
+			public HapticHandle Play(HapticSequence sequence)
 			{
 				return WithEffect(sequence).Play();
 			}
@@ -214,7 +213,7 @@ namespace NullSpace.SDK
 				this.process = process;
 				this.attenuation = 0.0f;
 				this.totalLength = 2.0f;
-				WithEffect("hum");
+				WithEffect(Effect.Hum);
 			}
 		}
 
@@ -232,7 +231,7 @@ namespace NullSpace.SDK
 		//		this.process = process;
 		//		this.attenuation = 0.0f;
 		//		this.totalLength = 2.0f;
-		//		WithEffect("hum");
+		//		WithEffect(Effect.Hum);
 
 		//	}
 		//}

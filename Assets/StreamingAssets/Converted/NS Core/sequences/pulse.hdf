@@ -1,0 +1,1 @@
+{"sequence_definitions":{"ns.pulse":[{"effect":"pulse","duration":0.0,"strength":1.0,"time":0.0}]},"pattern_definitions":{},"experience_definitions":{},"root_effect":{"name":"ns.pulse","type":"sequence"}}

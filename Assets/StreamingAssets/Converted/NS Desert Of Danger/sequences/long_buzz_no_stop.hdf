@@ -1,0 +1,1 @@
+{"sequence_definitions":{"ns.dod.long_buzz_no_stop":[{"effect":"buzz","duration":0.30000001192092898,"strength":1.0,"time":0.0}]},"pattern_definitions":{},"experience_definitions":{},"root_effect":{"name":"ns.dod.long_buzz_no_stop","type":"sequence"}}

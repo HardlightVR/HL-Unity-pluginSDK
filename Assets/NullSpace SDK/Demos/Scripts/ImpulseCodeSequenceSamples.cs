@@ -3,142 +3,142 @@ using System.Collections;
 
 namespace NullSpace.SDK.Demos
 {
-	public class ImpulseCodeSequenceSamples : MonoBehaviour
+	public class ImpulseHapticSequenceSamples : MonoBehaviour
 	{
-		public static CodeSequence ClickHum()
+		public static HapticSequence ClickHum()
 		{
-			CodeSequence seq = new CodeSequence();
-			CodeEffect eff = new CodeEffect("click", 0.0f, 1.0f);
+			HapticSequence seq = new HapticSequence();
+			HapticEffect eff = new HapticEffect(Effect.Click, 0.0f);
 			seq.AddEffect(0, eff);
-			eff = new CodeEffect("hum", .2f, .5f);
+			eff = new HapticEffect(Effect.Hum, .2f);
+			seq.AddEffect(.15, 0.5f, eff);
+			return seq;
+		}
+
+		public static HapticSequence ThockClunk()
+		{
+			HapticSequence seq = new HapticSequence();
+			HapticEffect eff = new HapticEffect(Effect.Click, 0.15f);
+			seq.AddEffect(0, eff);
+			eff = new HapticEffect(Effect.Fuzz, .2f);
 			seq.AddEffect(.15, eff);
 			return seq;
 		}
 
-		public static CodeSequence ThockClunk()
+		public static HapticSequence ClickStorm()
 		{
-			CodeSequence seq = new CodeSequence();
-			CodeEffect eff = new CodeEffect("sharp_click", 0.15f, 1.0f);
-			seq.AddEffect(0, eff);
-			eff = new CodeEffect("fuzz", .2f, 1.0f);
-			seq.AddEffect(.15, eff);
-			return seq;
-		}
+			HapticSequence seq = new HapticSequence();
 
-		public static CodeSequence ClickStorm()
-		{
-			CodeSequence seq = new CodeSequence();
-
-			CodeEffect eff = new CodeEffect("double_click", .0f, 1.0f);
+			HapticEffect eff = new HapticEffect(Effect.Double_Click, .0f);
 			seq.AddEffect(0, eff);
 
-			eff = new CodeEffect("click", .0f, 1.0f);
+			eff = new HapticEffect(Effect.Click, .0f);
 			seq.AddEffect(0.1, eff);
 
-			eff = new CodeEffect("long_double_sharp_tick", .0f, 1.0f);
+			eff = new HapticEffect(Effect.Click, .0f);
 			seq.AddEffect(0.2, eff);
 
-			eff = new CodeEffect("sharp_click", .0f, 1.0f);
+			eff = new HapticEffect(Effect.Double_Click, .0f);
 			seq.AddEffect(0.3, eff);
 
-			eff = new CodeEffect("sharp_tick", .0f, 1.0f);
+			eff = new HapticEffect(Effect.Triple_Click, .0f);
 			seq.AddEffect(0.4, eff);
 
-			eff = new CodeEffect("short_double_click", .0f, 1.0f);
+			eff = new HapticEffect(Effect.Double_Click, .0f);
 			seq.AddEffect(0.5, eff);
 
-			eff = new CodeEffect("short_double_sharp_tick", .0f, 1.0f);
+			eff = new HapticEffect(Effect.Click, .0f);
 			seq.AddEffect(0.6, eff);
 
-			eff = new CodeEffect("triple_click", .0f, 1.0f);
+			eff = new HapticEffect(Effect.Triple_Click, .0f);
 			seq.AddEffect(0.7, eff);
 
 			return seq;
 		}
 
-		public static CodeSequence DoubleClickImpact()
+		public static HapticSequence DoubleClickImpact()
 		{
-			CodeSequence seq = new CodeSequence();
-			CodeEffect eff = new CodeEffect("double_click", 0.00f, 1.0f);
+			HapticSequence seq = new HapticSequence();
+			HapticEffect eff = new HapticEffect(Effect.Double_Click, 0.00f);
 
 			seq.AddEffect(0, eff);
-			eff = new CodeEffect("buzz", .05f, 1.0f);
+			eff = new HapticEffect(Effect.Buzz, .05f);
 			seq.AddEffect(.05, eff);
-			eff = new CodeEffect("buzz", .10f, .6f);
-			seq.AddEffect(.10, eff);
-			eff = new CodeEffect("buzz", .15f, .2f);
-			seq.AddEffect(.2, eff);
+			eff = new HapticEffect(Effect.Buzz, .10f);
+			seq.AddEffect(.10, 0.6f, eff);
+			eff = new HapticEffect(Effect.Buzz, .15f);
+			seq.AddEffect(.2, 0.2f, eff);
 
 			return seq;
 		}
 
-		public static CodeSequence Shimmer()
+		public static HapticSequence Shimmer()
 		{
-			CodeSequence seq = new CodeSequence();
-			CodeEffect eff = new CodeEffect("double_click", 0.00f, 1.0f);
+			HapticSequence seq = new HapticSequence();
+			HapticEffect eff = new HapticEffect(Effect.Double_Click);
 
-			//This is from the NS.DoD.Shimmer.sequence reimplemented as CodeSequence. this is because we don't yet have CodeSequence+File Sequence cross use.
+			//This is from the NS.DoD.Shimmer.sequence reimplemented as HapticSequence. this is because we don't yet have HapticSequence+File Sequence cross use.
 			//{ "time" : 0.0, "effect" : "transition_hum", "strength" : 0.1, "duration" : 0.05},
-			//{ "time" : 0.05, "effect" : "hum", "strength" : 0.1, "duration" : 0.1},
-			//{ "time" : 0.15, "effect" : "hum", "strength" : 0.5, "duration" : 0.1},
-			//{ "time" : 0.25, "effect" : "hum", "strength" : 0.1, "duration" : 0.1}
+			//{ "time" : 0.05, "effect" : Effect.Hum, "strength" : 0.1, "duration" : 0.1},
+			//{ "time" : 0.15, "effect" : Effect.Hum, "strength" : 0.5, "duration" : 0.1},
+			//{ "time" : 0.25, "effect" : Effect.Hum, "strength" : 0.1, "duration" : 0.1}
 
-			seq.AddEffect(0, eff);
-			eff = new CodeEffect("transition_hum", 0.05f, 0.1f);
+			//Todo: new api, now we do have cross use
+		//	seq.AddEffect(0, eff);
+			//eff = new HapticEffect("transition_hum", 0.05f, 0.1f);
 			seq.AddEffect(.05, eff);
-			eff = new CodeEffect("hum", .1f, .1f);
-			seq.AddEffect(.15, eff);
-			eff = new CodeEffect("hum", .1f, .5f);
-			seq.AddEffect(.25, eff);
-			eff = new CodeEffect("hum", .1f, .1f);
+			eff = new HapticEffect(Effect.Hum, .1f);
+			seq.AddEffect(.15, 0.1f, eff);
+			eff = new HapticEffect(Effect.Hum, .1f);
+			seq.AddEffect(.25,.5f, eff);
 
 			return seq;
 		}
-
-		public static CodeSequence ClickHumDoubleClick()
+		//todo: reimplement all these as assets
+		public static HapticSequence ClickHumDoubleClick()
 		{
-			CodeSequence seq = new CodeSequence();
+			HapticSequence seq = new HapticSequence();
 
-			CodeEffect eff = new CodeEffect("click", 0.0f, 1.0f);
+			HapticEffect eff = new HapticEffect(Effect.Click);
 			seq.AddEffect(0, eff);
 
-			eff = new CodeEffect("transition_hum", .50f, 1.0f);
+		//	eff = new HapticEffect("transition_hum", .50f, 1.0f);
 			seq.AddEffect(0.10, eff);
 
-			eff = new CodeEffect("double_click", .0f, 1.0f);
+			eff = new HapticEffect(Effect.Double_Click);
 			seq.AddEffect(0.6, eff);
 
 			return seq;
 		}
 
-		public static CodeSequence PulseBumpPulse()
+		public static HapticSequence PulseBumpPulse()
 		{
-			CodeSequence seq = new CodeSequence();
+			HapticSequence seq = new HapticSequence();
 
-			CodeEffect eff = new CodeEffect("pulse", 0.40f, 0.7f);
-			seq.AddEffect(0.0, eff);
+			HapticEffect eff = new HapticEffect(Effect.Pulse, 0.40f);
+			seq.AddEffect(0.0, 0.7f, eff);
 
-			eff = new CodeEffect("bump", .0f, 1.0f);
+			eff = new HapticEffect(Effect.Bump, .0f);
 			seq.AddEffect(0.40, eff);
 
-			eff = new CodeEffect("pulse", 0.0f, 0.2f);
-			seq.AddEffect(0.55, eff);
+			eff = new HapticEffect(Effect.Pulse, 0.0f);
+			seq.AddEffect(0.55, 0.2f, eff);
 
 			return seq;
 		}
 
-		public static CodeSequence TripleClickFuzzFalloff()
+		public static HapticSequence TripleClickFuzzFalloff()
 		{
-			CodeSequence seq = new CodeSequence();
+			HapticSequence seq = new HapticSequence();
 
-			CodeEffect eff = new CodeEffect("triple_click", 0.20f, 0.7f);
-			seq.AddEffect(0.0, eff);
+			HapticEffect eff = new HapticEffect(Effect.Triple_Click, 0.20f);
+			seq.AddEffect(0.0, 0.7f, eff);
 
-			eff = new CodeEffect("fuzz", .20f, 1.0f);
+			eff = new HapticEffect(Effect.Fuzz, .20f);
 			seq.AddEffect(0.2, eff);
 
-			eff = new CodeEffect("fuzz", .20f, 0.5f);
-			seq.AddEffect(0.4, eff);
+			eff = new HapticEffect(Effect.Fuzz, .20f);
+			seq.AddEffect(0.4, 0.5f, eff);
 
 			return seq;
 		}
@@ -149,32 +149,32 @@ namespace NullSpace.SDK.Demos
 		/// In your code you shouldn't use a static method like this (Do as I say, not as I do)
 		/// </summary>
 		/// <param name="randSeed">Hand in a random seed (or better yet, don't use random in static functions</param>
-		/// <returns>A CodeSequence reference for use in Impulses</returns>
-		public static CodeSequence RandomPulses(int randSeed)
+		/// <returns>A HapticSequence reference for use in Impulses</returns>
+		public static HapticSequence RandomPulses(int randSeed)
 		{
 			//Debug.Log(randSeed + "\n");
 			System.Random rand = new System.Random(randSeed);
 
-			CodeSequence seq = new CodeSequence();
+			HapticSequence seq = new HapticSequence();
 
 			float dur = ((float)rand.Next(0, 15)) / 10;
 			float delay = ((float)rand.Next(0, 10)) / 20;
-			CodeEffect eff = new CodeEffect("pulse", dur, ((float)rand.Next(0, 10)) / 10);
-			seq.AddEffect(0.0, eff);
+			HapticEffect eff = new HapticEffect(Effect.Pulse, dur);
+			seq.AddEffect(0.0, ((float)rand.Next(0, 10)) / 10, eff);
 			float offset = dur;
 
 			dur = ((float)rand.Next(0, 15)) / 20;
 			delay = ((float)rand.Next(0, 8)) / 20;
 			//Debug.Log(dur + "\n");
-			eff = new CodeEffect("pulse", dur, ((float)rand.Next(0, 10)) / 10);
-			seq.AddEffect(offset + delay, eff);
+			eff = new HapticEffect(Effect.Pulse, dur);
+			seq.AddEffect(offset + delay, ((float)rand.Next(0, 10)) / 10, eff);
 			offset = dur;
 
 			dur = ((float)rand.Next(0, 15)) / 20;
 			delay = ((float)rand.Next(0, 8)) / 20;
 			//Debug.Log(dur + "\n");
-			eff = new CodeEffect("pulse", dur, ((float)rand.Next(0, 10)) / 10);
-			seq.AddEffect(offset + delay, eff);
+			eff = new HapticEffect(Effect.Pulse, dur);
+			seq.AddEffect(offset + delay, ((float)rand.Next(0, 10)) / 10, eff);
 
 			return seq;
 		}
@@ -187,26 +187,26 @@ namespace NullSpace.SDK.Demos
 		/// This one is about picking three effects at random (with random strength levels as well)
 		/// </summary>
 		/// <param name="randSeed">Hand in a random seed (or better yet, don't use random in static functions</param>
-		/// <returns>A CodeSequence reference for use in Impulses</returns>
-		public static CodeSequence ThreeRandomEffects(int randSeed)
+		/// <returns>A HapticSequence reference for use in Impulses</returns>
+		public static HapticSequence ThreeRandomEffects(int randSeed)
 		{
 			//Debug.Log(randSeed + "\n");
 			System.Random rand = new System.Random(randSeed);
 
-			CodeSequence seq = new CodeSequence();
+			HapticSequence seq = new HapticSequence();
 
 			int effIndex = rand.Next(0, SuitImpulseDemo.effectOptions.Length);
 
-			CodeEffect eff = new CodeEffect(SuitImpulseDemo.effectOptions[effIndex], 0.0f, ((float)rand.Next(2, 10)) / 10);
-			seq.AddEffect(0.0, eff);
+			HapticEffect eff = new HapticEffect(SuitImpulseDemo.effectOptions[effIndex], 0.0f);
+			seq.AddEffect(0.0, ((float)rand.Next(2, 10)) / 10,eff);
 
 			effIndex = rand.Next(0, SuitImpulseDemo.effectOptions.Length);
-			eff = new CodeEffect(SuitImpulseDemo.effectOptions[effIndex], 0.0f, ((float)rand.Next(2, 10)) / 10);
-			seq.AddEffect(.20f, eff);
+			eff = new HapticEffect(SuitImpulseDemo.effectOptions[effIndex], 0.0f);
+			seq.AddEffect(.20f, ((float)rand.Next(2, 10)) / 10, eff);
 
 			effIndex = rand.Next(0, SuitImpulseDemo.effectOptions.Length);
-			eff = new CodeEffect(SuitImpulseDemo.effectOptions[effIndex], 0.0f, ((float)rand.Next(2, 10)) / 10);
-			seq.AddEffect(.4f, eff);
+			eff = new HapticEffect(SuitImpulseDemo.effectOptions[effIndex], 0.0f);
+			seq.AddEffect(.4f, ((float)rand.Next(2, 10)) / 10, eff);
 
 			return seq;
 		}
@@ -217,19 +217,19 @@ namespace NullSpace.SDK.Demos
 		/// </summary>
 		/// <param name="randSeed"></param>
 		/// <returns></returns>
-		public static CodeSequence VeryRandomEffect(int randSeed)
+		public static HapticSequence VeryRandomEffect(int randSeed)
 		{
 			//Debug.Log(randSeed + "\n");
 			System.Random rand = new System.Random(randSeed);
 
-			CodeSequence seq = new CodeSequence();
+			HapticSequence seq = new HapticSequence();
 
 			int effIndex = rand.Next(0, SuitImpulseDemo.effectOptions.Length);
 
 			float dur = ((float)rand.Next(0, 6)) / 3;
 			float delay = 0;
 			float offset = 0;
-			CodeEffect eff = null;
+			HapticEffect eff = null;
 
 			int HowManyEffects = rand.Next(2, 11);
 			//Debug.Log("How many effects: " + HowManyEffects + "\n");
@@ -238,8 +238,8 @@ namespace NullSpace.SDK.Demos
 				effIndex = rand.Next(0, SuitImpulseDemo.effectOptions.Length);
 				dur = ((float)rand.Next(0, 6)) / 3;
 				delay = ((float)rand.Next(0, 8)) / 20;
-				eff = new CodeEffect(SuitImpulseDemo.effectOptions[effIndex], dur, ((float)rand.Next(0, 10)) / 10);
-				seq.AddEffect(offset + delay, eff);
+				eff = new HapticEffect(SuitImpulseDemo.effectOptions[effIndex], dur);
+				seq.AddEffect(offset + delay, ((float)rand.Next(0, 10)) / 10, eff);
 				offset = dur;
 			}
 

@@ -11,6 +11,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using NullSpace.SDK.FileUtilities;
 
 namespace NullSpace.SDK.Demos
 {
@@ -23,32 +24,45 @@ namespace NullSpace.SDK.Demos
 		public string myName = "";
 		public string myNameSpace = "";
 		public TestHaptics testHaptics;
-		
+
+		private AssetTool _assetTool;
 		//When a directory is 'opened'
-		public void Init(string filePath, string newNamespace)
+		public void Init(AssetTool tool, AssetTool.PackageInfo package)
 		{
-			string[] split = filePath.Split(new string[] { "StreamingAssets\\" }, System.StringSplitOptions.None);
-			//Debug.Log(split[split.Length - 1] + "\n");
-			myName = split[split.Length - 1];
-			myNameSpace = DirectoryToNamespace.GetNameSpace(filePath);
-			//Debug.Log(myName + "\n");
+			_assetTool = tool;
+			myName = Path.GetFileName(package.path);
+			myNameSpace = package.@namespace;
 			Folder.text = myName + " Contents";
-			path = filePath;
+
+			path = package.path;
 
 			PopulateMyDirectory(path);
 		}
+		private List<string> retrieveFilesInFolder(string folderPath)
+		{
+			
+			string[] unfilteredFiles = Directory.GetFiles(folderPath);
+			
+			return unfilteredFiles.Where((string filename) =>
+			{
+				string ext = Path.GetExtension(filename);
+				return ext == ".pattern"
+					|| ext == ".sequence"
+					|| ext == ".experience";
 
+			}).ToList();
+		}
 		//Fill the directory with library elements based on the haptics found
 		void PopulateMyDirectory(string path)
 		{
-			List<FileInfo> hapticFiles = new DirectoryInfo(path).GetFiles("*", SearchOption.AllDirectories).ToList();
+			var validSequences = retrieveFilesInFolder(path + "/sequences");
+			var validPatterns = retrieveFilesInFolder(path + "/patterns");
+			var validExperiences = retrieveFilesInFolder(path + "/experiences");
 
-			var validFiles = (from validFile in hapticFiles
-							  where ((validFile.Extension.Contains(".seq") || validFile.Extension.Contains(".pat") || validFile.Extension.Contains(".exp")) && !validFile.Extension.Contains(".meta"))
-							  select validFile.FullName).ToList();
-
+			var allFiles = validSequences.Concat(validPatterns).Concat(validExperiences);
+		
 			//A natural result of the haptics being loaded by order of folder means they'll be pre-sorted.
-			foreach (string element in validFiles)
+			foreach (string element in allFiles)
 			{
 				CreateRepresentations(element);
 			}
@@ -67,7 +81,7 @@ namespace NullSpace.SDK.Demos
 			libEle.playButton.name = element;
 
 			//Elements need to be initialized so they get the proper name/icon/color
-			libEle.Init(element, myNameSpace);
+			libEle.Init(_assetTool, element, myNameSpace);
 
 			return true;
 		}

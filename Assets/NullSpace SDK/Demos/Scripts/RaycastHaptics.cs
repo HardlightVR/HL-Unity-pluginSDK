@@ -13,11 +13,11 @@ using NullSpace.SDK;
 
 public class RaycastHaptics : MonoBehaviour
 {
-	Sequence five_second_hum;
-
+	HapticSequence five_second_hum;
 	void Start()
 	{
-		five_second_hum = new Sequence("ns.demos.PulseIntoDoubleClick");
+		five_second_hum = new HapticSequence();
+		five_second_hum.AddEffect(0.0, new HapticEffect(Effect.Hum, 2.0));
 	}
 
 

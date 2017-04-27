@@ -103,7 +103,7 @@ namespace NullSpace.SDK.Editor
 		}
 
 
-		[MenuItem("Window/Haptic Packages")]
+		[MenuItem("Tools/Hardlight/Haptic Packages")]
 		public static void ShowPackageWindow()
 		{
 
@@ -130,7 +130,7 @@ namespace NullSpace.SDK.Editor
 			catch (InvalidOperationException e)
 			{
 				//The filename was not set. This could be if the registry key was not found
-				Debug.LogError("[NSVR] Could not locate the HapticAssetTools.exe program, make sure the NSVR Service was installed. Try reinstalling if the problem persists.");
+				Debug.LogError("[NSVR] Could not locate the HapticAssetTools.exe program, make sure the NSVR Service was installed. Try reinstalling if the problem persists." + e.Message);
 				return new KeyValuePair<string, string>("NSVR_NO_HAT", "NSVR_FAILED");
 			}
 			catch (System.ComponentModel.Win32Exception e)
@@ -171,7 +171,7 @@ namespace NullSpace.SDK.Editor
 				catch (InvalidOperationException e)
 				{
 					//The filename was not set. This could be if the registry key was not found
-					Debug.LogError("[NSVR] Could not locate the HapticAssetTools.exe program, make sure the NSVR Service was installed. Try reinstalling if the problem persists.");
+					Debug.LogError("[NSVR] Could not locate the HapticAssetTools.exe program, make sure the NSVR Service was installed. Try reinstalling if the problem persists." + e.Message);
 					continue;
 				}
 				catch (System.ComponentModel.Win32Exception e)
@@ -235,7 +235,7 @@ namespace NullSpace.SDK.Editor
 			catch (InvalidOperationException e)
 			{
 				//The filename was not set. This could be if the registry key was not found
-				Debug.LogError("[NSVR] Could not locate the HapticAssetTools.exe program, make sure the NSVR Service was installed. Try reinstalling if the problem persists.");
+				Debug.LogError("[NSVR] Could not locate the HapticAssetTools.exe program, make sure the NSVR Service was installed. Try reinstalling if the problem persists." + e.Message);
 				return;
 			}
 			catch (System.ComponentModel.Win32Exception e)

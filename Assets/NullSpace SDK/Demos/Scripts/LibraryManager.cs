@@ -84,6 +84,8 @@ namespace NullSpace.SDK.Demos
 
 		public bool StopLastPlaying;
 		public HapticHandle LastPlayed;
+		public HapticSequence LastSequence;
+		public string LastSequenceName;
 
 		public string currentFolderSelected = "";
 		public string lastFileSelected = "";
@@ -130,17 +132,21 @@ namespace NullSpace.SDK.Demos
 			SetupLibraries();
 			DirectoryScroll = transform.FindChild("Folder Viewer").FindChild("Sub Directory").FindChild("Scroll View").GetComponent<ScrollRect>();
 
+			SetTriggerSequence("Haptics/pulse", "ns.pulse");
+
 			//Minor tweak to get the scroll position to start at the top.
 			DirectoryScroll.verticalNormalizedPosition = 1;
-
-		
 		}
-
-		
 
 		void Update()
 		{
+			SetGUI();
+
 			GetInput();
+		}
+		void SetGUI()
+		{
+			greenBoxText.text = LastSequenceName;
 		}
 
 		//This includes a quit condition
@@ -150,9 +156,9 @@ namespace NullSpace.SDK.Demos
 			{
 				Application.Quit();
 			}
-		
+
 		}
-	
+
 		public void SetupLibraries()
 		{
 			//Base for the path - has ALL the folders
@@ -160,8 +166,8 @@ namespace NullSpace.SDK.Demos
 
 			assetTool.SetRootHapticsFolder(path + "/Haptics/");
 			var packages = assetTool.TryGetPackageInfo();
-			
-			
+
+
 
 			for (int i = 0; i < packages.Count; i++)
 			{
@@ -206,13 +212,13 @@ namespace NullSpace.SDK.Demos
 			//Safely proceed to avoid broken refs.
 			if (selector != null)
 			{
-				for (int i = 0; i < selector.selected.Count; i++)
+				for (int i = 0; i < selector.suitObjects.Count; i++)
 				{
 					//If this selected element isn't null
-					if (selector.selected[i] != null)
+					if (selector.suitObjects[i] != null)
 					{
 						//Add that flag
-						flag = flag | selector.selected[i].regionID;
+						flag = flag | selector.suitObjects[i].regionID;
 					}
 				}
 			}
@@ -224,11 +230,33 @@ namespace NullSpace.SDK.Demos
 			return flag;
 		}
 
-		public void SetTriggerSequence(string sequenceName)
+		public void SetTriggerSequence(HapticSequence sequence, string labelName)
 		{
-			//TODO[casey]: FIX THIS
-			//greenBox.SetSequence(sequenceName);
-			//greenBoxText.text = greenBox.fileName;
+			LastSequence = sequence;
+			greenBox.SetSequence(sequence);
+			LastSequenceName = labelName;
+			//Debug.Log("Set Last Sequence! \t" + (LastSequence != null) + "\n");
+		}
+
+		public void SetTriggerSequence(string sequenceName, string visibleName)
+		{
+			//HapticSequence newSeq = new HapticSequence();
+			try
+			{
+				LastSequence = new HapticSequence();
+				LastSequence.LoadFromAsset(sequenceName);
+				greenBox.SetSequence(LastSequence);
+			}
+			catch (HapticsAssetException hExcept)
+			{
+				Debug.LogError("[Library Manager - Haptics Asset Exception]   Exception while loading sequence - " + sequenceName + "\n\t" + hExcept.Message);
+			}
+			catch (System.Exception e)
+			{
+				Debug.LogError("[Exception]   \n\tLoad failed and set was disallowed\n" + e.Message);
+			}
+			LastSequenceName = visibleName;
+			greenBoxText.text = visibleName;
 		}
 
 		//Creates a viewer for the given folder.

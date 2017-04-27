@@ -142,7 +142,7 @@ namespace NullSpace.SDK.Demos
 			Effect.Click,
 			Effect.Double_Click,
 			Effect.Triple_Click,
-			Effect.Hum, 
+			Effect.Hum,
 			Effect.Pulse,
 			Effect.Fuzz
 		};
@@ -225,6 +225,11 @@ namespace NullSpace.SDK.Demos
 				ClickedSuitInTraversalMode(clicked, hit);
 			}
 		}
+
+		public override void OnSuitClicking(SuitBodyCollider suit, RaycastHit hit)
+		{ }
+		public override void OnSuitNoInput()
+		{ }
 
 		private void ClickedSuitInTraversalMode(SuitBodyCollider clicked, RaycastHit hit)
 		{

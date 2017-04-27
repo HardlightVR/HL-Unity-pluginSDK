@@ -34,5 +34,10 @@ namespace NullSpace.SDK.Demos
 
 			//Click to play that pad?
 		}
+
+		public override void OnSuitClicking(SuitBodyCollider suit, RaycastHit hit)
+		{ }
+		public override void OnSuitNoInput()
+		{ }
 	}
 }

@@ -53,7 +53,7 @@ namespace NullSpace.SDK.Demos
 				myNamespace = package.@namespace;
 				fileName = package.path;
 				TooltipDescriptor.AddDescriptor(gameObject, fileName, "Haptic Package: A collection of sequences, patterns and experiences\nDefined by its config.json");
-				TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "Open Explorer", "View directories of " + fileName);
+				TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "<color=#FF4500>Open Folder</color>", "View directories of " + fileName, new Color32(135, 206, 255, 225));
 
 				initialized = true;
 			}
@@ -81,7 +81,7 @@ namespace NullSpace.SDK.Demos
 					myIcon.sprite = LibraryManager.Inst.seqIcon;
 					visual.color = LibraryManager.Inst.seqColor;
 					TooltipDescriptor.AddDescriptor(gameObject, fileName + " - Sequence", "Plays on all selected pads\nOr when the green haptic trigger touches a pad");
-					TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "Edit File", "View Source of " + fileName + "\nWe recommend a text editor");
+					TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "<color=#FF4500>Edit File</color>", "View Source of " + fileName + "\nWe recommend a text editor", new Color32(135, 206, 255, 225));
 				}
 				else if (fullFilePath.Contains(".pat"))
 				{
@@ -89,7 +89,7 @@ namespace NullSpace.SDK.Demos
 					myIcon.sprite = LibraryManager.Inst.patIcon;
 					visual.color = LibraryManager.Inst.patColor;
 					TooltipDescriptor.AddDescriptor(gameObject, fileName + " - Pattern", "Plays pattern which is composed of sequences on specified areas");
-					TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "Edit File", "View Source of " + fileName + "\nWe recommend a text editor");
+					TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "<color=#FF4500>Edit File</color>", "View Source of " + fileName + "\nWe recommend a text editor", new Color32(135, 206, 255, 225));
 				}
 				else if (fullFilePath.Contains(".exp"))
 				{
@@ -97,7 +97,7 @@ namespace NullSpace.SDK.Demos
 					myIcon.sprite = LibraryManager.Inst.expIcon;
 					visual.color = LibraryManager.Inst.expColor;
 					TooltipDescriptor.AddDescriptor(gameObject, fileName + " - Experience", "Plays experience which is composed of multiple Patterns.");
-					TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "Edit File", "View Source of " + fileName + "\nWe recommend a text editor");
+					TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "<color=#FF4500>Edit File</color>", "View Source of " + fileName + "\nWe recommend a text editor", new Color32(135, 206, 255, 225));
 				}
 				
 
@@ -326,11 +326,10 @@ namespace NullSpace.SDK.Demos
 				{
 					GetHapticDefinitionAsync(fullFilePath, delegate (HapticDefinitionFile hdf) {
 
-
 						var seq = CodeHapticFactory.CreateSequence(hdf.rootEffect.name, hdf);
 						//If sequence, use the specific pads selected (unsupported atm)
 						AreaFlag flag = LibraryManager.Inst.GetActiveAreas();
-						LibraryManager.Inst.SetTriggerSequence(myNamespace + fileName);
+						LibraryManager.Inst.SetTriggerSequence(seq, hdf.rootEffect.name);
 
 						playHandleAndSetLastPlayed(seq.CreateHandle(flag));
 					});

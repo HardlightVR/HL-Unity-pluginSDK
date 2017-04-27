@@ -14,16 +14,21 @@ namespace NullSpace.SDK.Demos
 	/// </summary>
 	public class HapticTrigger : MonoBehaviour
 	{
+		public HapticSequence sequence;
 
-		void Awake()
+		public void SetSequence(HapticSequence seq)
 		{
+			//Debug.Log("Set Sequence: " + seq + "\n");
+			sequence = seq;
 		}
 
-		void Start()
+		void OnTriggerEnter(Collider collider)
 		{
-			NSManager.Instance.DisableTracking();
+			SuitBodyCollider hit = collider.GetComponent<SuitBodyCollider>();
+			if (hit != null)
+			{
+				LibraryManager.Inst.LastSequence.CreateHandle(hit.regionID).Play();
+			}
 		}
 	}
-	
-		
 }

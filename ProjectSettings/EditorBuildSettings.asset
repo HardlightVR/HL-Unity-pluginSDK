@@ -5,11 +5,5 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/NullSpace SDK/Demos/Suit.unity
-  - enabled: 0
-    path: Assets/NullSpace SDK/Nullspace API Test Haptics.unity
-  - enabled: 0
-    path: Assets/NullSpace SDK/Demos/Haptic Library.unity
   - enabled: 1
-    path: Assets/whatever.unity
+    path: Assets/NullSpace SDK/Demos/Haptics Explorer.unity

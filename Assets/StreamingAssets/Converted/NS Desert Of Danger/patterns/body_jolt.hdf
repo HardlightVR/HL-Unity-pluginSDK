@@ -1,1 +1,0 @@
-{"sequence_definitions":{"ns.dod.sharp_buzz":[{"effect":"buzz","duration":0.07999999821186066,"strength":1.0,"time":0.0}]},"pattern_definitions":{"ns.dod.body_jolt":[{"sequence":"ns.dod.sharp_buzz","area":"All_Areas","strength":1.0,"time":0.0}]},"experience_definitions":{},"root_effect":{"name":"ns.dod.body_jolt","type":"pattern"}}

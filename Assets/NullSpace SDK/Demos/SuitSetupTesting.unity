@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.44692558, g: 0.49678743, b: 0.57508624, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -131,10 +131,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 40332476}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1462123129}
+  m_Script: {fileID: 11500000, guid: a2807e96cd25e074a8de8616cdfec025, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _definition: {fileID: 0}
+  _definition: {fileID: 1674025597}
 --- !u!1 &183197478
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,6 +146,8 @@ GameObject:
   - 4: {fileID: 183197479}
   - 33: {fileID: 183197481}
   - 23: {fileID: 183197480}
+  - 114: {fileID: 183197482}
+  - 65: {fileID: 183197483}
   m_Layer: 31
   m_Name: Forearm Left
   m_TagString: Haptic Region
@@ -205,6 +207,31 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 183197478}
   m_Mesh: {fileID: 4300000, guid: 57648bc34a2513c49a5f16bd85c10fc4, type: 3}
+--- !u!114 &183197482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 183197478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  regionID: 1
+  myCollider: {fileID: 183197483}
+--- !u!65 &183197483
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 183197478}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.5220136, y: 1.3890098, z: 0.9645576}
+  m_Center: {x: -8.516507, y: 1.6223227, z: 13.447301}
 --- !u!1 &231229452
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,6 +243,8 @@ GameObject:
   - 4: {fileID: 231229453}
   - 33: {fileID: 231229455}
   - 23: {fileID: 231229454}
+  - 114: {fileID: 231229456}
+  - 65: {fileID: 231229457}
   m_Layer: 31
   m_Name: Forearm Right
   m_TagString: Haptic Region
@@ -275,6 +304,31 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 231229452}
   m_Mesh: {fileID: 4300000, guid: 57648bc34a2513c49a5f16bd85c10fc4, type: 3}
+--- !u!114 &231229456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 231229452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  regionID: 65536
+  myCollider: {fileID: 231229457}
+--- !u!65 &231229457
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 231229452}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.52201366, y: 1.38901, z: 0.9645576}
+  m_Center: {x: -8.516508, y: 1.622323, z: 13.447301}
 --- !u!1 &234841482
 GameObject:
   m_ObjectHideFlags: 0
@@ -286,6 +340,8 @@ GameObject:
   - 4: {fileID: 234841483}
   - 33: {fileID: 234841485}
   - 23: {fileID: 234841484}
+  - 114: {fileID: 234841486}
+  - 65: {fileID: 234841487}
   m_Layer: 31
   m_Name: Chest Left
   m_TagString: Haptic Region
@@ -345,6 +401,31 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 234841482}
   m_Mesh: {fileID: 4300000, guid: 6b4738fc4b745da4d9a29e39b2d92853, type: 3}
+--- !u!114 &234841486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 234841482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  regionID: 16
+  myCollider: {fileID: 234841487}
+--- !u!65 &234841487
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 234841482}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.12608796, y: 0.141811, z: 0.080220096}
+  m_Center: {x: -0.58104897, y: 0.46654448, z: 1.5869448}
 --- !u!1 &239886858
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,6 +437,8 @@ GameObject:
   - 4: {fileID: 239886859}
   - 33: {fileID: 239886861}
   - 23: {fileID: 239886860}
+  - 114: {fileID: 239886862}
+  - 65: {fileID: 239886863}
   m_Layer: 31
   m_Name: Back Left
   m_TagString: Haptic Region
@@ -415,6 +498,31 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 239886858}
   m_Mesh: {fileID: 4300000, guid: 57648bc34a2513c49a5f16bd85c10fc4, type: 3}
+--- !u!114 &239886862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 239886858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  regionID: 8
+  myCollider: {fileID: 239886863}
+--- !u!65 &239886863
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 239886858}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.52201366, y: 1.3890098, z: 0.9645576}
+  m_Center: {x: -8.516508, y: 1.6223228, z: 13.447301}
 --- !u!1 &484693888
 GameObject:
   m_ObjectHideFlags: 0
@@ -576,6 +684,8 @@ GameObject:
   - 4: {fileID: 549744282}
   - 33: {fileID: 549744284}
   - 23: {fileID: 549744283}
+  - 114: {fileID: 549744285}
+  - 65: {fileID: 549744286}
   m_Layer: 31
   m_Name: Lower Ab Left
   m_TagString: Haptic Region
@@ -635,6 +745,31 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 549744281}
   m_Mesh: {fileID: 4300000, guid: 31ad58e0d7f406046889ce008419a1bf, type: 3}
+--- !u!114 &549744285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 549744281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  regionID: 128
+  myCollider: {fileID: 549744286}
+--- !u!65 &549744286
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 549744281}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.2278619, y: 1.169816, z: 0.4168768}
+  m_Center: {x: -4.1364956, y: 2.513215, z: 14.577175}
 --- !u!1 &873237045
 GameObject:
   m_ObjectHideFlags: 0
@@ -646,6 +781,8 @@ GameObject:
   - 4: {fileID: 873237046}
   - 33: {fileID: 873237048}
   - 23: {fileID: 873237047}
+  - 114: {fileID: 873237049}
+  - 65: {fileID: 873237050}
   m_Layer: 31
   m_Name: Back Right
   m_TagString: Haptic Region
@@ -705,6 +842,31 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 873237045}
   m_Mesh: {fileID: 4300000, guid: 57648bc34a2513c49a5f16bd85c10fc4, type: 3}
+--- !u!114 &873237049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 873237045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  regionID: 524288
+  myCollider: {fileID: 873237050}
+--- !u!65 &873237050
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 873237045}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.52201366, y: 1.38901, z: 0.96455765}
+  m_Center: {x: -8.516508, y: 1.622323, z: 13.447302}
 --- !u!1 &918297298
 GameObject:
   m_ObjectHideFlags: 0
@@ -716,6 +878,8 @@ GameObject:
   - 4: {fileID: 918297299}
   - 33: {fileID: 918297301}
   - 23: {fileID: 918297300}
+  - 114: {fileID: 918297302}
+  - 65: {fileID: 918297303}
   m_Layer: 31
   m_Name: Mid Ab Left
   m_TagString: Haptic Region
@@ -775,6 +939,31 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 918297298}
   m_Mesh: {fileID: 4300000, guid: 31ad58e0d7f406046889ce008419a1bf, type: 3}
+--- !u!114 &918297302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 918297298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  regionID: 64
+  myCollider: {fileID: 918297303}
+--- !u!65 &918297303
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 918297298}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.2278619, y: 1.169816, z: 0.4168768}
+  m_Center: {x: -4.1364956, y: 2.513215, z: 14.577175}
 --- !u!1 &1005226872
 GameObject:
   m_ObjectHideFlags: 0
@@ -818,6 +1007,8 @@ GameObject:
   - 4: {fileID: 1057777683}
   - 33: {fileID: 1057777685}
   - 23: {fileID: 1057777684}
+  - 114: {fileID: 1057777686}
+  - 65: {fileID: 1057777687}
   m_Layer: 31
   m_Name: Chest Right
   m_TagString: Haptic Region
@@ -877,6 +1068,31 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1057777682}
   m_Mesh: {fileID: 4300000, guid: 6b4738fc4b745da4d9a29e39b2d92853, type: 3}
+--- !u!114 &1057777686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1057777682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  regionID: 1048576
+  myCollider: {fileID: 1057777687}
+--- !u!65 &1057777687
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1057777682}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.12608796, y: 0.14181101, z: 0.0802201}
+  m_Center: {x: -0.58104897, y: 0.4665445, z: 1.586945}
 --- !u!1 &1101501917
 GameObject:
   m_ObjectHideFlags: 0
@@ -958,6 +1174,8 @@ GameObject:
   - 4: {fileID: 1123554542}
   - 33: {fileID: 1123554544}
   - 23: {fileID: 1123554543}
+  - 114: {fileID: 1123554545}
+  - 65: {fileID: 1123554546}
   m_Layer: 31
   m_Name: Upper Ab Right
   m_TagString: Haptic Region
@@ -1017,6 +1235,31 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1123554541}
   m_Mesh: {fileID: 4300000, guid: ab4d2a00e03e34c458f97047e4a43704, type: 3}
+--- !u!114 &1123554545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1123554541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  regionID: 2097152
+  myCollider: {fileID: 1123554546}
+--- !u!65 &1123554546
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1123554541}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.073072, y: 0.834728, z: 0.7143297}
+  m_Center: {x: -4.2091208, y: 3.290567, z: 13.447426}
 --- !u!1 &1364784845
 GameObject:
   m_ObjectHideFlags: 0
@@ -1028,6 +1271,8 @@ GameObject:
   - 4: {fileID: 1364784846}
   - 33: {fileID: 1364784848}
   - 23: {fileID: 1364784847}
+  - 114: {fileID: 1364784849}
+  - 65: {fileID: 1364784850}
   m_Layer: 31
   m_Name: Upper Arm Right
   m_TagString: Haptic Region
@@ -1087,6 +1332,31 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1364784845}
   m_Mesh: {fileID: 4300000, guid: 57648bc34a2513c49a5f16bd85c10fc4, type: 3}
+--- !u!114 &1364784849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1364784845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  regionID: 131072
+  myCollider: {fileID: 1364784850}
+--- !u!65 &1364784850
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1364784845}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.52201366, y: 1.3890101, z: 0.96455765}
+  m_Center: {x: -8.516508, y: 1.6223233, z: 13.447302}
 --- !u!1 &1401278252
 GameObject:
   m_ObjectHideFlags: 0
@@ -1098,6 +1368,8 @@ GameObject:
   - 4: {fileID: 1401278253}
   - 33: {fileID: 1401278255}
   - 23: {fileID: 1401278254}
+  - 114: {fileID: 1401278256}
+  - 65: {fileID: 1401278257}
   m_Layer: 31
   m_Name: Shoulder Right
   m_TagString: Haptic Region
@@ -1157,21 +1429,31 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1401278252}
   m_Mesh: {fileID: 4300000, guid: 57648bc34a2513c49a5f16bd85c10fc4, type: 3}
---- !u!115 &1462123129
-MonoScript:
+--- !u!114 &1401278256
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1401278252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
-  serializedVersion: 4
-  m_Script: 
-  m_DefaultReferences: {}
-  m_Icon: {fileID: 0}
-  m_ExecutionOrder: 0
-  m_ClassName: HardlightSuit
-  m_Namespace: NullSpace.SDK.Demos
-  m_AssemblyName: Assembly-CSharp
-  m_IsEditorScript: 0
+  m_EditorClassIdentifier: 
+  regionID: 262144
+  myCollider: {fileID: 1401278257}
+--- !u!65 &1401278257
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1401278252}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.52201366, y: 1.38901, z: 0.9645576}
+  m_Center: {x: -8.516508, y: 1.622323, z: 13.447301}
 --- !u!1 &1483772827
 GameObject:
   m_ObjectHideFlags: 0
@@ -1183,6 +1465,8 @@ GameObject:
   - 4: {fileID: 1483772828}
   - 33: {fileID: 1483772830}
   - 23: {fileID: 1483772829}
+  - 114: {fileID: 1483772831}
+  - 65: {fileID: 1483772832}
   m_Layer: 31
   m_Name: Shoulder Left
   m_TagString: Haptic Region
@@ -1242,6 +1526,31 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1483772827}
   m_Mesh: {fileID: 4300000, guid: 57648bc34a2513c49a5f16bd85c10fc4, type: 3}
+--- !u!114 &1483772831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1483772827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  regionID: 4
+  myCollider: {fileID: 1483772832}
+--- !u!65 &1483772832
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1483772827}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.5220137, y: 1.38901, z: 0.96455765}
+  m_Center: {x: -8.516509, y: 1.6223226, z: 13.447302}
 --- !u!1 &1573201570
 GameObject:
   m_ObjectHideFlags: 0
@@ -1280,6 +1589,57 @@ Transform:
   - {fileID: 2122235577}
   m_Father: {fileID: 1005226873}
   m_RootOrder: 1
+--- !u!114 &1674025597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6889c24a981d6a14f9f58eff74f4ffaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SuitName: Player Body
+  SuitRoot: {fileID: 40332476}
+  DefaultOptions: 01000000020000000400000008000000100000002000000040000000800000000000010000000200000004000000080000001000000020000000400000008000
+  SuitHolders:
+  - {fileID: 183197478}
+  - {fileID: 2085533200}
+  - {fileID: 1483772827}
+  - {fileID: 239886858}
+  - {fileID: 234841482}
+  - {fileID: 2046536737}
+  - {fileID: 918297298}
+  - {fileID: 549744281}
+  - {fileID: 231229452}
+  - {fileID: 1364784845}
+  - {fileID: 1401278252}
+  - {fileID: 873237045}
+  - {fileID: 1057777682}
+  - {fileID: 1123554541}
+  - {fileID: 2068022709}
+  - {fileID: 2122235576}
+  SceneReferences:
+  - {fileID: 183197482}
+  - {fileID: 2085533204}
+  - {fileID: 1483772831}
+  - {fileID: 239886862}
+  - {fileID: 234841486}
+  - {fileID: 2046536741}
+  - {fileID: 918297302}
+  - {fileID: 549744285}
+  - {fileID: 231229456}
+  - {fileID: 1364784849}
+  - {fileID: 1401278256}
+  - {fileID: 873237049}
+  - {fileID: 1057777686}
+  - {fileID: 1123554545}
+  - {fileID: 2068022713}
+  - {fileID: 2122235580}
+  HapticsLayer: 31
+  AddChildObjects: 0
+  AddExclusiveTriggerCollider: 1
 --- !u!1 &1733963843
 GameObject:
   m_ObjectHideFlags: 0
@@ -1329,6 +1689,8 @@ GameObject:
   - 4: {fileID: 2046536738}
   - 33: {fileID: 2046536740}
   - 23: {fileID: 2046536739}
+  - 114: {fileID: 2046536741}
+  - 65: {fileID: 2046536742}
   m_Layer: 31
   m_Name: Upper Ab Left
   m_TagString: Haptic Region
@@ -1388,6 +1750,31 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2046536737}
   m_Mesh: {fileID: 4300000, guid: ab4d2a00e03e34c458f97047e4a43704, type: 3}
+--- !u!114 &2046536741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2046536737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  regionID: 32
+  myCollider: {fileID: 2046536742}
+--- !u!65 &2046536742
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2046536737}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.073072, y: 0.83472794, z: 0.7143297}
+  m_Center: {x: -4.2091208, y: 3.2905667, z: 13.447426}
 --- !u!1 &2068022709
 GameObject:
   m_ObjectHideFlags: 0
@@ -1399,6 +1786,8 @@ GameObject:
   - 4: {fileID: 2068022710}
   - 33: {fileID: 2068022712}
   - 23: {fileID: 2068022711}
+  - 114: {fileID: 2068022713}
+  - 65: {fileID: 2068022714}
   m_Layer: 31
   m_Name: Mid Ab Right
   m_TagString: Haptic Region
@@ -1458,6 +1847,31 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2068022709}
   m_Mesh: {fileID: 4300000, guid: 31ad58e0d7f406046889ce008419a1bf, type: 3}
+--- !u!114 &2068022713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2068022709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  regionID: 4194304
+  myCollider: {fileID: 2068022714}
+--- !u!65 &2068022714
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2068022709}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.2278618, y: 1.1698159, z: 0.41687676}
+  m_Center: {x: -4.136495, y: 2.5132148, z: 14.577174}
 --- !u!1 &2085533200
 GameObject:
   m_ObjectHideFlags: 0
@@ -1469,6 +1883,8 @@ GameObject:
   - 4: {fileID: 2085533201}
   - 33: {fileID: 2085533203}
   - 23: {fileID: 2085533202}
+  - 114: {fileID: 2085533204}
+  - 65: {fileID: 2085533205}
   m_Layer: 31
   m_Name: Upper Arm Left
   m_TagString: Haptic Region
@@ -1528,6 +1944,31 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2085533200}
   m_Mesh: {fileID: 4300000, guid: 57648bc34a2513c49a5f16bd85c10fc4, type: 3}
+--- !u!114 &2085533204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2085533200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  regionID: 2
+  myCollider: {fileID: 2085533205}
+--- !u!65 &2085533205
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2085533200}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.5220137, y: 1.38901, z: 0.96455765}
+  m_Center: {x: -8.516508, y: 1.622323, z: 13.447302}
 --- !u!1 &2122235576
 GameObject:
   m_ObjectHideFlags: 0
@@ -1539,6 +1980,8 @@ GameObject:
   - 4: {fileID: 2122235577}
   - 33: {fileID: 2122235579}
   - 23: {fileID: 2122235578}
+  - 114: {fileID: 2122235580}
+  - 65: {fileID: 2122235581}
   m_Layer: 31
   m_Name: Lower Ab Right
   m_TagString: Haptic Region
@@ -1598,3 +2041,28 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2122235576}
   m_Mesh: {fileID: 4300000, guid: 31ad58e0d7f406046889ce008419a1bf, type: 3}
+--- !u!114 &2122235580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2122235576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  regionID: 8388608
+  myCollider: {fileID: 2122235581}
+--- !u!65 &2122235581
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2122235576}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.2278619, y: 1.169816, z: 0.4168768}
+  m_Center: {x: -4.1364956, y: 2.513215, z: 14.577175}

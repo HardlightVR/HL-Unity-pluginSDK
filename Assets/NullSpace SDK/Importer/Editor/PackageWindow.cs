@@ -13,7 +13,7 @@ namespace NullSpace.SDK.Editor
 
 	public class PackageWindow : EditorWindow
 	{
-		
+
 		static bool _created = false;
 		static string _path;
 		static Vector2 _scrollPos;
@@ -42,7 +42,7 @@ namespace NullSpace.SDK.Editor
 			}
 		}
 
-		private ImportStatus _lastImport = new ImportStatus(0,0);
+		private ImportStatus _lastImport = new ImportStatus(0, 0);
 		public void init()
 		{
 			if (_assetTool == null)
@@ -57,7 +57,7 @@ namespace NullSpace.SDK.Editor
 
 		private void RescanPackages()
 		{
-			Debug.Log("Using root folder " + _path);
+			Debug.Log("Using root folder " + _path + "\n");
 			_assetTool.SetRootHapticsFolder(_path);
 
 			try
@@ -88,7 +88,7 @@ namespace NullSpace.SDK.Editor
 				_status = string.Format("Found {0} packages.", _packages.Count);
 
 			}
-			catch (System.ComponentModel.Win32Exception )
+			catch (System.ComponentModel.Win32Exception)
 			{
 				Debug.LogError("[NSVR] Problem communicating with HapticAssetTools.exe");
 				_status = "Problem communicating with HapticAssetTools.exe";
@@ -106,14 +106,13 @@ namespace NullSpace.SDK.Editor
 		[MenuItem("Tools/Hardlight/Haptic Packages")]
 		public static void ShowPackageWindow()
 		{
-
 			var window = EditorWindow.GetWindow<PackageWindow>("Packages") as PackageWindow;
 			window.init();
 		}
 
 		KeyValuePair<string, string> getJsonFromPath(string path)
 		{
-			
+
 			//If they clicked away from the file dialog, we won't have a valid path
 			if (path == "")
 			{
@@ -215,7 +214,7 @@ namespace NullSpace.SDK.Editor
 
 			AssetDatabase.CreateAsset(asset, newAssetPath);
 			//Undo.RegisterCreatedObjectUndo(asset, "Create " + asset.name);
-		
+
 		}
 		private void CreateHapticAsset(string path)
 		{
@@ -297,8 +296,8 @@ namespace NullSpace.SDK.Editor
 
 			if (_importing)
 			{
-			
-				EditorUtility.DisplayProgressBar("Hang in there!",string.Format( "Importing haptics.. ({0}/{1})", currentProgress, totalProgress), currentProgress / totalProgress);
+
+				EditorUtility.DisplayProgressBar("Hang in there!", string.Format("Importing haptics.. ({0}/{1})", currentProgress, totalProgress), currentProgress / totalProgress);
 			}
 
 			if (_fetching)
@@ -326,9 +325,9 @@ namespace NullSpace.SDK.Editor
 				if (GUILayout.Button("All", GUILayout.MaxWidth(60)))
 				{
 					_importing = true;
-					
-					importAll(selectedPackage);
-				
+
+					ImportAll(selectedPackage);
+
 				}
 				EditorGUI.EndDisabledGroup();
 
@@ -338,17 +337,17 @@ namespace NullSpace.SDK.Editor
 				if (GUILayout.Button("Sequence", GUILayout.MaxWidth(80)))
 				{
 
-					openFileDialogAndMakeAsset(selectedPackage.path, "sequence");
+					OpenFileDialogAndMakeAsset(selectedPackage.path, "sequence");
 				}
 
 
 				if (GUILayout.Button("Pattern", GUILayout.MaxWidth(80)))
 				{
-					openFileDialogAndMakeAsset(selectedPackage.path, "pattern");
+					OpenFileDialogAndMakeAsset(selectedPackage.path, "pattern");
 				}
 				if (GUILayout.Button("Experience", GUILayout.MaxWidth(80)))
 				{
-					openFileDialogAndMakeAsset(selectedPackage.path, "experience");
+					OpenFileDialogAndMakeAsset(selectedPackage.path, "experience");
 				}
 				EditorGUI.EndDisabledGroup();
 
@@ -372,10 +371,10 @@ namespace NullSpace.SDK.Editor
 				//RescanPackages();
 			}
 
-	
+
 
 		}
-		private void openFileDialogAndMakeAsset(string path, string hapticType)
+		private void OpenFileDialogAndMakeAsset(string path, string hapticType)
 		{
 			var asd = string.Format("{0}/{1}s/", path, hapticType);
 			string newPath = EditorUtility.OpenFilePanel("Import " + hapticType, asd, hapticType);
@@ -388,7 +387,7 @@ namespace NullSpace.SDK.Editor
 
 		void Update()
 		{
-			
+
 			if (_workQueue.Count > 0 && !_fetching)
 			{
 				int importRate = Mathf.Min(20, Mathf.Max(1, _workQueue.Count / 5));
@@ -396,26 +395,27 @@ namespace NullSpace.SDK.Editor
 				if (timeElapsed > 0.005f)
 				{
 					timeElapsed = 0;
-					for (int i = 0; i <importRate; i++)
+					for (int i = 0; i < importRate; i++)
 					{
 						var item = _workQueue.Dequeue();
 						CreateHapticAsset(item.Key, item.Value);
-						
+
 					}
 					currentProgress += importRate;
 					this.Repaint();
 				}
-				
-				
-			} else if (_workQueue.Count == 0 && _importing)
-			{
-				
-					_status = string.Format("Imported {0}/{1} files successfully", _lastImport.TotalSucceeded, _lastImport.Total);
-					_importing = false;
-					EditorUtility.ClearProgressBar();
 
-					this.Repaint();
-				
+
+			}
+			else if (_workQueue.Count == 0 && _importing)
+			{
+
+				_status = string.Format("Imported {0}/{1} files successfully A", _lastImport.Total, _lastImport.TotalSucceeded);
+				_importing = false;
+				EditorUtility.ClearProgressBar();
+
+				this.Repaint();
+
 			}
 
 			if (_fetchQueue.Count > 0)
@@ -432,7 +432,8 @@ namespace NullSpace.SDK.Editor
 						if (result.Value == "NSVR_FAILED")
 						{
 							continue;
-						} else
+						}
+						else
 						{
 							_workQueue.Enqueue(result);
 						}
@@ -443,7 +444,8 @@ namespace NullSpace.SDK.Editor
 				}
 
 
-			} else
+			}
+			else
 			{
 				if (_fetching)
 				{
@@ -460,10 +462,10 @@ namespace NullSpace.SDK.Editor
 				}
 			}
 		}
-		private void importAll(object state)
+		private void ImportAll(object state)
 		{
 			AssetTool.PackageInfo package = (AssetTool.PackageInfo)(state);
-			
+
 			var allSequences = getFilesWithExtension(package.path + "/sequences/", ".sequence");
 			currentProgress = 0f;
 			totalProgress = allSequences.Count;
@@ -493,9 +495,9 @@ namespace NullSpace.SDK.Editor
 			}
 			return outPaths;
 		}
-	
+
 
 	}
 
-	
+
 }

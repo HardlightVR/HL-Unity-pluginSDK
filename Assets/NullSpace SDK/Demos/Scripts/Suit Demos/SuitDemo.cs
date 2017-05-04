@@ -134,6 +134,37 @@ namespace NullSpace.SDK.Demos
 		{
 			ColorSuitCollider(suitCollider.gameObject, setColor);
 		}
+
+		/// <summary>
+		/// Colors a particular suit visual to the labeled color.
+		/// Performs a null check on suit first.
+		/// </summary>
+		/// <param name="suit"></param>
+		/// <param name="col"></param>
+		protected void ColorSuit(SuitBodyCollider suit, Color col)
+		{
+			//This is just sanitization and to make the code more robust.
+			if (suit != null)
+			{
+				//We could easily be more efficient than getting the MeshRenderer each time (like having SuitBodyCollider hold onto a ref to it's MeshRenderer)
+				//However this isn't a VR application, so ease of programming/readability is the priority here.
+				suit.GetComponent<MeshRenderer>().material.color = col;
+			}
+		}
+
+		public IEnumerator ColorPadForXDuration(SuitBodyCollider suit, Color targetColor, Color revertColor, float MinDuration = 0.0f)
+		{
+			//I don't think we need to save this local reference. Just in case.
+			SuitBodyCollider current = suit;
+
+			//You could do a fancy color lerp functionality here...
+			ColorSuit(current, targetColor);
+
+			var duration = Mathf.Clamp(MinDuration, .1f, 100.0f);
+			//I clamp this to a min of .1 for user visibility.
+			yield return new WaitForSeconds(MinDuration);
+			ColorSuit(current, revertColor);
+		}
 	}
 
 	public class SuitClickDemo : SuitDemo

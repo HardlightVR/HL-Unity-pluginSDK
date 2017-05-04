@@ -1,1 +1,0 @@
-{"sequence_definitions":{"ns.click":[{"effect":"click","duration":0.0,"strength":1.0,"time":0.0}]},"pattern_definitions":{"ns.dod.all_pad_med":[{"sequence":"ns.click","area":"All_Areas","strength":0.6000000238418579,"time":0.0}]},"experience_definitions":{},"root_effect":{"name":"ns.dod.all_pad_med","type":"pattern"}}

@@ -198,7 +198,6 @@ namespace NullSpace.SDK.Demos
 			HandleRequiredObjects(false);
 			ColorSuit(ImpulseOrigin, unselectedColor);
 			ColorSuit(ImpulseDestination, unselectedColor);
-
 		}
 
 		public override void OnSuitClicked(SuitBodyCollider clicked, RaycastHit hit)
@@ -286,22 +285,7 @@ namespace NullSpace.SDK.Demos
 			}
 		}
 
-		/// <summary>
-		/// Colors a particular suit visual to the labeled color.
-		/// Performs a null check on suit first.
-		/// </summary>
-		/// <param name="suit"></param>
-		/// <param name="col"></param>
-		private void ColorSuit(SuitBodyCollider suit, Color col)
-		{
-			//This is just sanitization and to make the code more robust.
-			if (suit != null)
-			{
-				//We could easily be more efficient than getting the MeshRenderer each time (like having SuitBodyCollider hold onto a ref to it's MeshRenderer)
-				//However this isn't a VR application, so ease of programming/readability is the priority here.
-				suit.GetComponent<MeshRenderer>().material.color = col;
-			}
-		}
+
 		/// <summary>
 		/// Takes an impulse and plays it with the ImpulseDemo's parameters.
 		/// This takes an impulse so you don't need to instantiate one every time.

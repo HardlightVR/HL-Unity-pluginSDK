@@ -7,12 +7,13 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 using NullSpace.SDK.Tracking;
 
 namespace NullSpace.SDK
 {
-	
+
 	/// <summary>
 	/// NSManager provides access to a essential suit functions, 
 	/// including enabling/disabling tracking, monitoring suit connection status, 
@@ -70,7 +71,7 @@ namespace NullSpace.SDK
 		/// Use the Instance variable to access the NSManager object. There should only be one NSManager in a scene.
 		/// in the scene. 
 		/// </summary>
-		
+
 		private static NSManager instance;
 		public static NSManager Instance
 		{
@@ -152,6 +153,10 @@ namespace NullSpace.SDK
 			_plugin.DisableTracking();
 		}
 
+		public Dictionary<AreaFlag, ushort> SamplePlayingStatus()
+		{
+			return _plugin.SampleStrengths();
+		}
 
 		/// <summary>
 		/// Tell the manager to use a different IMU calibrator
@@ -195,7 +200,7 @@ namespace NullSpace.SDK
 			{
 				Instance = this;
 			}
-			else if(Instance != this)
+			else if (Instance != this)
 			{
 				Debug.LogError("There should only be one NSManager! Make sure there is only one NSManager prefab in the scene\n" +
 					"If there is no NSManager, one will be created for you!");
@@ -209,7 +214,7 @@ namespace NullSpace.SDK
 			//The plugin needs to load resources from your app's Streaming Assets folder
 			_plugin = new NSVR.NSVR_Plugin();
 
-			
+
 
 		}
 		private void DoDelayedAction(float delay, Action action)
@@ -235,7 +240,7 @@ namespace NullSpace.SDK
 
 		private void OnServiceConnected(ServiceConnectionArgs a)
 		{
-			var handler = ServiceConnected; 
+			var handler = ServiceConnected;
 			if (handler != null) { handler(this, a); }
 		}
 
@@ -248,7 +253,7 @@ namespace NullSpace.SDK
 		{
 			//Begin monitoring the status of the suit
 			_lastSuitTrackingEnabledValue = EnableSuitTracking;
-		
+
 
 			if (EnableSuitTracking)
 			{
@@ -263,7 +268,6 @@ namespace NullSpace.SDK
 				StartCoroutine(_ServiceConnectionStatusLoop);
 			});
 		}
-
 		/// <summary>
 		/// For use in application pause routine. Pauses currently executing haptic effects and is a no-op if called more than once. 
 		/// </summary>
@@ -324,7 +328,7 @@ namespace NullSpace.SDK
 
 				if (status == ServiceConnectionStatus.Connected)
 				{
-					
+
 					var suitConnection = _plugin.TestDeviceConnection();
 					if (suitConnection != _DeviceConnectionStatus)
 					{
@@ -344,7 +348,7 @@ namespace NullSpace.SDK
 				yield return new WaitForSeconds(0.5f);
 			}
 		}
-	
+
 
 		void Update()
 		{
@@ -353,11 +357,12 @@ namespace NullSpace.SDK
 				if (EnableSuitTracking)
 				{
 					this.EnableTracking();
-				} else
+				}
+				else
 				{
 					this.DisableTracking();
 				}
-			
+
 				_lastSuitTrackingEnabledValue = EnableSuitTracking;
 			}
 		}

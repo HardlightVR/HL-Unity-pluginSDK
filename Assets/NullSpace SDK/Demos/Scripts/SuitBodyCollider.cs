@@ -12,6 +12,9 @@ namespace NullSpace.SDK
 	/// <summary>
 	/// A simple class to link up a collider with a certain area on the suit
 	/// </summary>
+	/// ZoneCollider
+	/// HapticCollider
+	/// HapticZoneCollider
 	public class SuitBodyCollider : MonoBehaviour
 	{
 		[Header("Note: Attach this to your player's body.")]

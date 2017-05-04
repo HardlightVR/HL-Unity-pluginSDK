@@ -10,11 +10,11 @@ namespace NullSpace.SDK.Demos
 		public GameObject SuitRoot;
 
 		[SerializeField]
-		public List<AreaFlag> DefaultOptions;
+		public List<AreaFlag> DefinedAreas;
 
 		//The Game Objects to fill the fields (which will get suit body references
 		[SerializeField]
-		public List<GameObject> SuitHolders;
+		public List<GameObject> ZoneHolders;
 
 		//the objects added. Will get a nice button list to quick get to each of them.
 		[SerializeField]
@@ -26,60 +26,68 @@ namespace NullSpace.SDK.Demos
 
 		public void Init()
 		{
-			#region Setup Default Options
-			if (DefaultOptions == null || DefaultOptions.Count == 0)
+			SetDefaultAreas();
+
+			SetupParents();
+
+			GenerateSceneReferences();
+		}
+		public void SetDefaultAreas()
+		{
+			if (DefinedAreas == null || DefinedAreas.Count == 0)
 			{
-				DefaultOptions = new List<AreaFlag>();
+				DefinedAreas = new List<AreaFlag>();
 
-				DefaultOptions.Add(AreaFlag.Forearm_Left);
-				DefaultOptions.Add(AreaFlag.Upper_Arm_Left);
+				DefinedAreas.Add(AreaFlag.Forearm_Left);
+				DefinedAreas.Add(AreaFlag.Upper_Arm_Left);
 
-				DefaultOptions.Add(AreaFlag.Shoulder_Left);
-				DefaultOptions.Add(AreaFlag.Back_Left);
-				DefaultOptions.Add(AreaFlag.Chest_Left);
+				DefinedAreas.Add(AreaFlag.Shoulder_Left);
+				DefinedAreas.Add(AreaFlag.Back_Left);
+				DefinedAreas.Add(AreaFlag.Chest_Left);
 
-				DefaultOptions.Add(AreaFlag.Upper_Ab_Left);
-				DefaultOptions.Add(AreaFlag.Mid_Ab_Left);
-				DefaultOptions.Add(AreaFlag.Lower_Ab_Left);
+				DefinedAreas.Add(AreaFlag.Upper_Ab_Left);
+				DefinedAreas.Add(AreaFlag.Mid_Ab_Left);
+				DefinedAreas.Add(AreaFlag.Lower_Ab_Left);
 
-				DefaultOptions.Add(AreaFlag.Forearm_Right);
-				DefaultOptions.Add(AreaFlag.Upper_Arm_Right);
+				DefinedAreas.Add(AreaFlag.Forearm_Right);
+				DefinedAreas.Add(AreaFlag.Upper_Arm_Right);
 
-				DefaultOptions.Add(AreaFlag.Shoulder_Right);
-				DefaultOptions.Add(AreaFlag.Back_Right);
-				DefaultOptions.Add(AreaFlag.Chest_Right);
+				DefinedAreas.Add(AreaFlag.Shoulder_Right);
+				DefinedAreas.Add(AreaFlag.Back_Right);
+				DefinedAreas.Add(AreaFlag.Chest_Right);
 
-				DefaultOptions.Add(AreaFlag.Upper_Ab_Right);
-				DefaultOptions.Add(AreaFlag.Mid_Ab_Right);
-				DefaultOptions.Add(AreaFlag.Lower_Ab_Right);
+				DefinedAreas.Add(AreaFlag.Upper_Ab_Right);
+				DefinedAreas.Add(AreaFlag.Mid_Ab_Right);
+				DefinedAreas.Add(AreaFlag.Lower_Ab_Right);
 			}
-			#endregion
+		}
 
-			#region Game Object Parents
-			if (SuitHolders == null || SuitHolders.Count == 0)
+		public void SetupParents()
+		{
+			if (ZoneHolders == null || ZoneHolders.Count == 0)
 			{
 				//Debug.Log("Resetting Suit Holders\n");
-				SuitHolders = new List<GameObject>();
+				ZoneHolders = new List<GameObject>();
 
-				for (int i = 0; i < DefaultOptions.Count; i++)
+				for (int i = 0; i < DefinedAreas.Count; i++)
 				{
-					SuitHolders.Add(null);
+					ZoneHolders.Add(null);
 				}
 			}
-			#endregion
+		}
 
-			#region Suit Body Colliders
+		public void GenerateSceneReferences()
+		{
 			if (SceneReferences == null || SceneReferences.Count == 0)
 			{
 				//Debug.Log("Resetting Filled Areas\n");
 				SceneReferences = new List<SuitBodyCollider>();
 
-				for (int i = 0; i < DefaultOptions.Count; i++)
+				for (int i = 0; i < DefinedAreas.Count; i++)
 				{
 					SceneReferences.Add(null);
 				}
 			}
-			#endregion
 		}
 	}
 }

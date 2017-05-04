@@ -14,13 +14,18 @@ namespace NullSpace.SDK.Demos
 
 		public GameObject AddPrefabToContainerReturn(bool worldPositionStays = false)
 		{
-			var instance = Instantiate<GameObject>(prefab);
-			instance.transform.SetParent(container, worldPositionStays);
+			if (prefab != null)
+			{
+				var instance = Instantiate<GameObject>(prefab);
+				instance.transform.SetParent(container, worldPositionStays);
 
-			var indexer = instance.GetComponent<ContainerItem>();
-			if (indexer) indexer.Index(count++);
+				var indexer = instance.GetComponent<ContainerItem>();
+				if (indexer) indexer.Index(count++);
 
-			return instance;
+				return instance;
+			}
+			Debug.LogError("[" + name + "]'s Populate Container Prefab has not been assigned\n", this);
+			return null;
 		}
 
 		public void AddPrefabToContainer()

@@ -387,7 +387,6 @@ namespace NullSpace.SDK.Editor
 
 		void Update()
 		{
-
 			if (_workQueue.Count > 0 && !_fetching)
 			{
 				int importRate = Mathf.Min(20, Mathf.Max(1, _workQueue.Count / 5));
@@ -404,8 +403,6 @@ namespace NullSpace.SDK.Editor
 					currentProgress += importRate;
 					this.Repaint();
 				}
-
-
 			}
 			else if (_workQueue.Count == 0 && _importing)
 			{

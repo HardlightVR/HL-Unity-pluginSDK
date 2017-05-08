@@ -20,41 +20,529 @@ namespace NullSpace.SDK.Editor
 		List<AssetTool.PackageInfo> _packages = new List<AssetTool.PackageInfo>();
 		Dictionary<string, List<AssetTool.PackageInfo>> _uniqueCompanies = new Dictionary<string, List<AssetTool.PackageInfo>>();
 		Dictionary<string, int> _packageSelectionIndices = new Dictionary<string, int>();
-		HelpMessage _status = new HelpMessage("", MessageType.None);
+		public HelpMessage _status = new HelpMessage("", MessageType.None);
+
 		Queue<KeyValuePair<string, string>> _workQueue = new Queue<KeyValuePair<string, string>>();
 		Queue<string> _fetchQueue = new Queue<string>();
-		static bool _importing = false;
-		static bool _fetching = false;
-		float timeElapsed = 0;
 
-		float totalProgress = 0f;
-		float currentProgress = -1f;
-		private class ImportStatus
+		private enum ImportState { Idle, Fetching, Importing }
+		private PackageImport CurrentImport;
+
+		private class PackageImport
 		{
-			private int totalSucceeded;
-			public int Total;
+			private class ImportStatus
+			{
+				private int totalSucceeded;
+				public int Total;
 
-			public int TotalSucceeded
+				public int TotalSucceeded
+				{
+					get
+					{
+						return totalSucceeded;
+					}
+
+					set
+					{
+						totalSucceeded = value;
+					}
+				}
+
+				public ImportStatus(int totalS, int total)
+				{
+					TotalSucceeded = totalS;
+					Total = total;
+				}
+			}
+			private ImportStatus _lastImport = new ImportStatus(0, 0);
+
+			public PackagingPane MyPane;
+			private ImportStatus CurrentStatus;
+			private enum ImportState { Idle, Fetching, Importing, Finished }
+			private ImportState activeState = ImportState.Idle;
+			bool HasSuccessfulImport = false;
+			float timeElapsed = 0;
+			float updateRate = .03f;
+			int maxImportedPerStep = 5;
+			string directory;
+
+			public bool Idle
 			{
 				get
 				{
-					return totalSucceeded;
+					return activeState == ImportState.Idle;
 				}
-
-				set
+			}
+			public bool Fetching
+			{
+				get
 				{
-					totalSucceeded = value;
+					return activeState == ImportState.Fetching;
+				}
+			}
+			public bool Importing
+			{
+				get
+				{
+					return activeState == ImportState.Importing;
+				}
+			}
+			public bool Finished
+			{
+				get
+				{
+					return activeState == ImportState.Finished;
 				}
 			}
 
-			public ImportStatus(int totalS, int total)
+			float totalProgress = 0f;
+			float currentProgress = -1f;
+			bool ShouldRepaint = false;
+			public JsonAsset lastCreatedAsset;
+
+			Queue<KeyValuePair<string, string>> _workQueue = new Queue<KeyValuePair<string, string>>();
+			Queue<string> _fetchQueue = new Queue<string>();
+
+			public PackageImport(PackagingPane pane)
 			{
-				TotalSucceeded = totalS;
-				Total = total;
+				MyPane = pane;
+				_workQueue = new Queue<KeyValuePair<string, string>>();
+				_fetchQueue = new Queue<string>();
+			}
+			//TODO: Turn this into one function with parameter intake.
+
+			private void DrawProgressBar(float percentProgress, string content, float width = 300, float height = 45)
+			{
+				Rect r = GUILayoutUtility.GetRect(width, height);
+				EditorGUI.ProgressBar(r, percentProgress, content);
+			}
+			public void DrawCurrentState()
+			{
+				NSEditorStyles.DrawLabel("Current State: [" + activeState.ToString() + "]");
+			}
+			public void DrawFetchingHaptics()
+			{
+				if (Fetching)
+				{
+					float prog = currentProgress / (2 * totalProgress);
+					DrawProgressBar(prog, string.Format("Fetching haptics.. ({0}/~{1})", currentProgress, 2 * totalProgress));
+					ShouldRepaint = true;
+				}
+				//else
+				//{
+				//	NSEditorStyles.DrawLabel("[Not Fetching]");
+				//}
+			}
+			public void DrawImportingHaptics()
+			{
+				if (Importing)
+				{
+					float prog = currentProgress / (2 * totalProgress);
+					DrawProgressBar(prog, string.Format("Importing haptics.. ({0}/{1})", currentProgress, 2 * totalProgress));
+
+					ShouldRepaint = true;
+				}
+				//else
+				//{
+				//	NSEditorStyles.DrawLabel("[Not Importing]");
+				//}
+			}
+			public void DrawFinishedImport()
+			{
+				if (Finished)
+				{
+					float prog = currentProgress / (2 * totalProgress);
+					DrawProgressBar(prog, string.Format("Import Complete: ({0}) fetched & imported", totalProgress));
+					//Draw a box to click and go to the target directory.
+				}
+			}
+			private void FinishImport()
+			{
+				HardlightEditor.myWindow.ActivateSpecificEditorPane(typeof(PackagingPane));
+				HardlightEditor.myWindow.Focus();
+				MyPane._status = new HelpMessage(string.Format("Imported {0}/{1} files successfully", _lastImport.TotalSucceeded, _lastImport.Total), MessageType.Info);
+				ChangeState(ImportState.Finished);
+				
+				MyPane.Repaint();
+			}
+
+			private void ChangeState(ImportState targetState)
+			{
+				#region Idle
+				if (Idle)
+				{
+					if (targetState == ImportState.Fetching)
+					{
+						activeState = ImportState.Fetching;
+					}
+					else if (targetState == ImportState.Importing)
+					{
+						activeState = ImportState.Importing;
+					}
+					else if (targetState == ImportState.Idle)
+					{
+						//This line performs no change
+						activeState = ImportState.Idle;
+					}
+					else if (targetState == ImportState.Finished)
+					{
+						activeState = ImportState.Finished;
+					}
+					else
+					{
+						MyPane.OutputMessage("[PackageImport] Attempted transition to invalid state [" + targetState.ToString() + "] from current state [" + activeState.ToString() + "])");
+					}
+
+				}
+				#endregion
+				#region Fetching
+				else if (Fetching)
+				{
+					if (targetState == ImportState.Fetching)
+					{
+						//This line performs no change
+						activeState = ImportState.Fetching;
+					}
+					else if (targetState == ImportState.Importing)
+					{
+						activeState = ImportState.Importing;
+					}
+					else if (targetState == ImportState.Idle)
+					{
+						activeState = ImportState.Idle;
+					}
+					else if (targetState == ImportState.Finished)
+					{
+						activeState = ImportState.Finished;
+					}
+					else
+					{
+						MyPane.OutputMessage("[PackageImport] Attempted transition to invalid state [" + targetState.ToString() + "] from current state [" + activeState.ToString() + "])");
+					}
+				}
+				#endregion
+				#region Importing
+				else if (Importing)
+				{
+					if (targetState == ImportState.Fetching)
+					{
+						activeState = ImportState.Fetching;
+					}
+					else if (targetState == ImportState.Importing)
+					{
+						//This line performs no change
+						activeState = ImportState.Importing;
+					}
+					else if (targetState == ImportState.Idle)
+					{
+						activeState = ImportState.Idle;
+					}
+					else if (targetState == ImportState.Finished)
+					{
+						activeState = ImportState.Finished;
+					}
+					else
+					{
+						MyPane.OutputMessage("[PackageImport] Attempted transition to invalid state [" + targetState.ToString() + "] from current state [" + activeState.ToString() + "])");
+					}
+				}
+				#endregion
+				#region Finished
+				else if (Finished)
+				{
+					if (targetState == ImportState.Fetching)
+					{
+						activeState = ImportState.Fetching;
+					}
+					else if (targetState == ImportState.Importing)
+					{
+						//This line performs no change
+						activeState = ImportState.Importing;
+					}
+					else if (targetState == ImportState.Idle)
+					{
+						activeState = ImportState.Idle;
+					}
+					else if (targetState == ImportState.Finished)
+					{
+						//This line performs no change
+						activeState = ImportState.Finished;
+					}
+					else
+					{
+						MyPane.OutputMessage("[PackageImport] Attempted transition to invalid state [" + targetState.ToString() + "] from current state [" + activeState.ToString() + "])");
+					}
+				}
+				#endregion
+
+				//Debug.Log("New State: " + activeState.ToString() + "\n");
+			}
+			public void Update()
+			{
+				UpdateFetch();
+				UpdateImport();
+
+				if (ShouldRepaint)
+				{
+					ShouldRepaint = false;
+					MyPane.Repaint();
+				}
+			}
+
+			private void UpdateFetch()
+			{
+				#region Fetch Queue populates work queue
+				if (_fetchQueue.Count > 0)
+				{
+					//Debug.Log("Wut, moar werk? Fetching " + _fetchQueue.Count + "\n");
+
+					int importRate = Mathf.Min(maxImportedPerStep, Mathf.Max(1, _fetchQueue.Count / 5));
+					timeElapsed += Time.fixedDeltaTime;
+					if (timeElapsed > updateRate)
+					{
+						timeElapsed = 0;
+						for (int i = 0; i < importRate; i++)
+						{
+							var item = _fetchQueue.Dequeue();
+							if (item.Length > 0)
+							{
+								var result = GetJsonFromPath(item);
+								if (result.Value == "NSVR_FAILED")
+								{
+									continue;
+								}
+								else
+								{
+									_workQueue.Enqueue(result);
+								}
+							}
+						}
+						currentProgress += importRate;
+
+						ShouldRepaint = true;
+					}
+				}
+				#endregion
+				#region Finish Fetching
+				else
+				{
+					//If we're still fetching
+					if (Fetching)
+					{
+						//Debug.Log("Fetching complete " + _fetchQueue.Count + "\n");
+
+						//We're ready to import.
+						_lastImport.TotalSucceeded = _workQueue.Count;
+						MyPane._status = new HelpMessage(string.Format("Fetched {0}/{1} files, preparing for import..", _lastImport.TotalSucceeded, _lastImport.Total), MessageType.Info);
+						ChangeState(ImportState.Importing);
+						totalProgress = _lastImport.TotalSucceeded;
+
+						ShouldRepaint = true;
+					}
+				}
+				#endregion
+			}
+			private void UpdateImport()
+			{
+				#region Handle Importing
+				//If we have a work queue and aren't still fetching
+				if (_workQueue.Count > 0 && !Fetching)
+				{
+					//Debug.Log("Importing : " + _workQueue.Count + "\n");
+					int importRate = Mathf.Min(maxImportedPerStep, Mathf.Max(1, _workQueue.Count / 5));
+					timeElapsed += Time.fixedDeltaTime;
+					if (timeElapsed > updateRate)
+					{
+						timeElapsed = 0;
+						for (int i = 0; i < importRate; i++)
+						{
+							var item = _workQueue.Dequeue();
+							lastCreatedAsset = MyPane.CreateHapticAsset(item.Key, item.Value);
+						}
+						currentProgress += importRate;
+						MyPane.Repaint();
+					}
+				}
+				#endregion
+				#region Finish Import
+				//We're done!
+				else if (_fetchQueue.Count == 0 && _workQueue.Count == 0 && !Idle && !Finished)
+				{
+					FinishImport();
+				}
+				//Debug.Log(_workQueue.Count + "  " + _fetchQueue.Count + "   " + activeState + "\n");
+				#endregion
+			}
+
+			public void ImportAll(object state)
+			{
+				AssetTool.PackageInfo package = (AssetTool.PackageInfo)(state);
+
+				var allHapticFiles = GetFilesWithExtension(package.path + "/sequences/", ".sequence");
+				allHapticFiles.AddRange(GetFilesWithExtension(package.path + "/patterns/", ".pattern"));
+				allHapticFiles.AddRange(GetFilesWithExtension(package.path + "/experiences/", ".experience"));
+				HasSuccessfulImport = false;
+				currentProgress = 0f;
+				totalProgress = allHapticFiles.Count;
+				_lastImport.Total = allHapticFiles.Count;
+
+				#region Debug found haptic files
+				if (HardlightEditor.myWindow.DebugHardlightEditor)
+				{
+					string li = string.Empty;
+					for (int i = 0; i < allHapticFiles.Count; i++)
+					{
+						li += allHapticFiles[i] + "\n";
+					}
+					Debug.Log("All Haptic Files: Count [" + allHapticFiles.Count + "]\n" + li);
+				} 
+				#endregion
+
+				_fetchQueue = new Queue<string>(allHapticFiles);
+				ChangeState(ImportState.Fetching);
+				//Debug.Log("Created Fetch Queue: " + _fetchQueue.Count + "\n");
+
+				var results = GetAllJsonFromPaths(allHapticFiles);
+				_lastImport.TotalSucceeded = results.Count;
+				_lastImport.Total = allHapticFiles.Count;
+				//Debug.Log("Last Import: " + _lastImport.Total + "   " + _lastImport.Total + "\n");
+				_workQueue = new Queue<KeyValuePair<string, string>>();
+			}
+
+			public KeyValuePair<string, string> GetJsonFromPath(string path)
+			{
+				//It is likely very difficult to provide an empty path here.
+				if (path == "")
+				{
+					MyPane.OutputMessage("Invalid path provided to getJsonFromPath.", MessageType.Error);
+					return new KeyValuePair<string, string>("NSVR_EMPTY_PATH", "NSVR_FAILED");
+				}
+
+				bool continueInstead;
+				//Attempt to get json of the haptic definition file from the tool
+				var json = TryGetJsonHapticDefinition(path, out continueInstead);
+
+				#region Old Block (before making TryGetJSonHapticDefinition)
+				//try
+				//{
+				//	json = _assetTool.GetHapticDefinitionFileJson(path);
+				//}
+				//catch (InvalidOperationException e)
+				//{
+				//	_pathError = true;
+				//	//The filename was not set. This could be if the registry key was not found
+				//	OutputMessage("Invalid Operation Exception - Could not locate the HapticAssetTools.exe program, make sure the NSVR Service was installed. Try reinstalling if the problem persists.", MessageType.Error);
+
+				//	Debug.LogError("[NSVR] Could not locate the HapticAssetTools.exe program, make sure the NSVR Service was installed. Try reinstalling if the problem persists." + e.Message);
+				//	return new KeyValuePair<string, string>("NSVR_NO_HAT", "NSVR_FAILED");
+				//}
+				//catch (System.ComponentModel.Win32Exception e)
+				//{
+				//	_pathError = true;
+				//	OutputMessage("Win32Exception - Could not open the HapticAssetTools.exe program (was it renamed? Does it exist within the service install directory?)", MessageType.Error);
+
+				//	Debug.LogError("[NSVR] Could not open the HapticAssetTools.exe program (was it renamed? Does it exist within the service install directory?): " + e.Message);
+				//	return new KeyValuePair<string, string>("NSVR_NO_OPEN", "NSVR_FAILED");
+				//} 
+				#endregion
+
+				//If the asset tool succeeded in running, but returned nothing, it's an error
+				if (json.Length < 1)
+				{
+					//_pathError = true;
+					Debug.LogWarning("[NSVR] Unable to load path [" + path + "] it's probably malformed\n");
+
+					MyPane.OutputMessage("Empty json result - likely a failure to load from\n\tpath [" + path + "]", MessageType.Error);
+
+					return new KeyValuePair<string, string>("NSVR_EMPTY_RESPONSE", "NSVR_FAILED");
+				}
+				else
+				{
+					_pathError = false;
+				}
+
+				return new KeyValuePair<string, string>(path, json);
+			}
+
+			public List<KeyValuePair<string, string>> GetAllJsonFromPaths(List<string> paths)
+			{
+				var results = new List<KeyValuePair<string, string>>();
+				foreach (var path in paths)
+				{
+					//If they clicked away from the file dialog, we won't have a valid path
+					if (path.Length < 1)
+					{
+						continue;
+					}
+
+					//Attempt to get json of the haptic definition file from the tool
+					bool continueInstead;
+					var json = TryGetJsonHapticDefinition(path, out continueInstead);
+
+					//If the asset tool succeeded in running, but returned nothing, it's an error
+					if (json.Length < 1)
+					{
+						Debug.LogWarning("[NSVR] Unable to load " + path + " it's probably malformed");
+						MyPane.OutputMessage("Unable to load path [" + path + "] - it is probably malformed", MessageType.Warning);
+						continue;
+					}
+
+					results.Add(new KeyValuePair<string, string>(path, json));
+				}
+				MyPane.OutputMessage("Getting all JSON from paths.\n\tAttempted: [" + paths.Count + "]\n\tSuccesses: [" + results.Count + "]", MessageType.None);
+				//Debug.Log("Get all JSON from paths\n" + paths.Count + "   " + results.Count);
+
+				return results;
+			}
+
+			private string TryGetJsonHapticDefinition(string path, out bool continueInstead)
+			{
+				continueInstead = false;
+				string json = "";
+				try
+				{
+					if (HLEditor != null && HLEditor.DebugHardlightEditor)
+					{
+						Debug.Log("\tGet haptic definition file from path\n\t\t[" + path + "]\n");
+					}
+					json = _assetTool.GetHapticDefinitionFileJson(path);
+				}
+				catch (InvalidOperationException e)
+				{
+					//The filename was not set. This could be if the registry key was not found
+					Debug.LogError("[NSVR] Could not locate the HapticAssetTools.exe program, make sure the NSVR Service was installed. Try reinstalling if the problem persists." + e.Message);
+					continueInstead = true;
+				}
+				catch (System.ComponentModel.Win32Exception e)
+				{
+					Debug.LogError("[NSVR] Could not open the HapticAssetTools.exe program (was it renamed? Does it exist within the service install directory?): " + e.Message);
+					continueInstead = true;
+				}
+				catch (HapticsAssetException e)
+				{
+					Debug.LogError("[NSVR] Haptics Asset Exception loading item at path [" + path + "]: " + e.Message);
+					continueInstead = true;
+				}
+				return json;
+			}
+
+			List<string> GetFilesWithExtension(string directory, string extension)
+			{
+				List<string> outPaths = new List<string>();
+				var allFiles = System.IO.Directory.GetFiles(directory);
+				foreach (var potentialFile in allFiles)
+				{
+					if (System.IO.Path.GetExtension(potentialFile) == extension)
+					{
+						outPaths.Add(potentialFile);
+					}
+				}
+				return outPaths;
 			}
 		}
 
-		private ImportStatus _lastImport = new ImportStatus(0, 0);
+		//Keep delegate reference for holding repaint?
+
 		public override void Setup()
 		{
 			PaneTitle = "Package Importer";
@@ -68,14 +556,21 @@ namespace NullSpace.SDK.Editor
 			_pathError = false;
 			RescanPackages();
 			_created = true;
+
+			SetupImport();
+
 			base.Setup();
 			//Debug.Log("We have found: " + _uniqueCompanies.Count + " companies\n");
+		}
+		private void SetupImport()
+		{
+			CurrentImport = new PackageImport(this);
 		}
 
 		public override bool IsValid()
 		{
 			bool isValid = base.IsValid();
-			if (_assetTool == null || !_created || !isValid)
+			if (_assetTool == null || !_created || CurrentImport == null || !isValid)
 			{
 				isValid = false;
 				Initialized = false;
@@ -140,8 +635,12 @@ namespace NullSpace.SDK.Editor
 				return;
 			}
 		}
+		private void NavigateToNewDirectory()
+		{
 
-		private void CreateHapticAsset(string oldPath, string json)
+		}
+
+		protected JsonAsset CreateHapticAsset(string oldPath, string json)
 		{
 
 			//Create our simple json holder. Later, this could be a complex object
@@ -153,7 +652,6 @@ namespace NullSpace.SDK.Editor
 			//If we don't replace . with _, then Unity has serious trouble locating the file
 			var newAssetName = fileName.Replace('.', '_') + ".asset";
 
-
 			//This is where we'd want to change the default location of new haptic assets
 			CreateAssetFolderIfNotExists();
 
@@ -162,6 +660,8 @@ namespace NullSpace.SDK.Editor
 
 			AssetDatabase.CreateAsset(asset, newAssetPath);
 			//Undo.RegisterCreatedObjectUndo(asset, "Create " + asset.name);
+
+			return asset;
 
 		}
 		private void CreateHapticAsset(string path)
@@ -241,48 +741,68 @@ namespace NullSpace.SDK.Editor
 		}
 		public override void DrawPaneContent()
 		{
+			#region [OLD] Migrated into PackageImport class object
 			#region Importing Progress Bar
-			if (_importing)
-			{
-				//EditorUtility.DisplayProgressBar("Hang in there!", string.Format("Importing haptics.. ({0}/{1})", currentProgress, totalProgress), currentProgress / totalProgress);
+			//if (_importing)
+			//{
+			//	//EditorUtility.DisplayProgressBar("Hang in there!", string.Format("Importing haptics.. ({0}/{1})", currentProgress, totalProgress), currentProgress / totalProgress);
 
-				Rect r = GUILayoutUtility.GetRect(300, 25);
-				EditorGUI.ProgressBar(r, currentProgress / totalProgress, string.Format("Importing haptics.. ({0}/{1})", currentProgress, totalProgress));
-
-			}
+			//	Rect r = GUILayoutUtility.GetRect(300, 25);
+			//	EditorGUI.ProgressBar(r, currentProgress / totalProgress, string.Format("Importing haptics.. ({0}/{1})", currentProgress, totalProgress));
+			//}
 			#endregion
 
-			//Rect r = GUILayoutUtility.GetRect(300, 25);
-			//EditorGUI.ProgressBar(r, 0.5f, "Halfway there!");
-			//GUILayout.Space(16);
-
 			#region Fetching Progress Bar
-			if (_fetching)
-			{
-				//TODO: Adjust the text for fetching haptics
-				//TODO: Ensure the display progress bars ALWAYS close.
-				//EditorUtility.DisplayProgressBar("Looking around the room!", string.Format("Fetching haptics.. ({0}/{1})", currentProgress, totalProgress), currentProgress / totalProgress);
+			//if (_fetching)
+			//{
+			//	//TODO: Adjust the text for fetching haptics
+			//	//TODO: Ensure the display progress bars ALWAYS close.
+			//	//EditorUtility.DisplayProgressBar("Looking around the room!", string.Format("Fetching haptics.. ({0}/{1})", currentProgress, totalProgress), currentProgress / totalProgress);
 
-				//Rect r = GUILayoutUtility.GetRect(300, 25);
-				//EditorGUI.ProgressBar(r, currentProgress / totalProgress, string.Format("Fetching haptics.. ({0}/{1})", currentProgress, totalProgress));
-			}
+			//	//Rect r = GUILayoutUtility.GetRect(300, 25);
+			//	//EditorGUI.ProgressBar(r, currentProgress / totalProgress, string.Format("Fetching haptics.. ({0}/{1})", currentProgress, totalProgress));
+			//}
+			#endregion
 			#endregion
 
 			DrawHapticDirectory();
 
 			DrawSelectHapticRootButton();
-			if (_fetching)
-			{
-				DrawFetchingHaptics();
-			}
+
 			if (GUILayout.Button("Rescan for Packages"))
 			{
 				RescanPackages();
 			}
 
-			NSEditorStyles.DrawSliderDivider();
+			#region Current Import
+			if (CurrentImport != null)
+			{
+				//Don't draw a divider if we're idle.
+				if (!CurrentImport.Idle)
+				{
+					NSEditorStyles.DrawSliderDivider();
+				}
+				if (HardlightEditor.myWindow.DebugHardlightEditor)
+				{
+					CurrentImport.DrawCurrentState();
+				}
+
+				CurrentImport.DrawFetchingHaptics();
+				CurrentImport.DrawImportingHaptics();
+				CurrentImport.DrawFinishedImport();
+
+				if (CurrentImport.Finished && CurrentImport.lastCreatedAsset != null)
+				{
+					if (GUILayout.Button("Navigate to new assets!"))
+					{
+						Selection.activeObject = CurrentImport.lastCreatedAsset;
+					}
+				}
+			}
+			#endregion
 
 			#region Draw Each Package
+			NSEditorStyles.DrawSliderDivider();
 			DrawPackages();
 			#endregion
 		}
@@ -332,11 +852,6 @@ namespace NullSpace.SDK.Editor
 			}
 		}
 
-		private void DrawFetchingHaptics()
-		{
-			Rect r = GUILayoutUtility.GetRect(300, 25);
-			EditorGUI.ProgressBar(r, currentProgress / totalProgress, string.Format("Fetching haptics.. ({0}/{1})", currentProgress, totalProgress));
-		}
 		private void DrawPackages()
 		{
 			//Begin the scrollview
@@ -404,16 +919,28 @@ namespace NullSpace.SDK.Editor
 
 			var selectedPackage = info[_packageSelectionIndices[packageKey]];
 
+			//Do we have an import currently?
+			bool HaveImport = CurrentImport != null;
+
+			//Are we currently importing (or fetching)
+			bool importing = HaveImport ? CurrentImport.Importing || CurrentImport.Fetching : false;
+
+			if (!HaveImport)
+			{
+				SetupImport();
+			}
+
 			//TODO: Tutorial Highlights want a MaxWidth parameter?
 			TutorialHighlight(3, packageIndex == 0, () =>
 			{
-				using (new EditorGUI.DisabledGroupScope(_importing || _fetching))
+
+				//Disable if we're importing (which is only if we have a current import in progress)
+				using (new EditorGUI.DisabledGroupScope(importing))
 				{
 					if (GUILayout.Button("All", GUILayout.MaxWidth(60)))
 					{
-						_importing = true;
 
-						ImportAll(selectedPackage);
+						CurrentImport.ImportAll(selectedPackage);
 					}
 				}
 			});
@@ -421,7 +948,7 @@ namespace NullSpace.SDK.Editor
 			#region Import Individual
 			EditorGUILayout.LabelField("Individual..", EditorStyles.miniBoldLabel, GUILayout.Width(65));
 
-			using (new EditorGUI.DisabledGroupScope(_importing || _fetching))
+			using (new EditorGUI.DisabledGroupScope(importing))
 			{
 				TutorialHighlight(4, packageIndex == 0, () =>
 				{
@@ -481,7 +1008,7 @@ namespace NullSpace.SDK.Editor
 			string newPath = EditorUtility.OpenFilePanel("Import " + hapticType, asd, hapticType);
 			if (newPath.Length > 0)
 			{
-				var json = getJsonFromPath(newPath);
+				var json = CurrentImport.GetJsonFromPath(newPath);
 				if (json.Value != "NSVR_FAILED")
 				{
 					this.CreateHapticAsset(json.Key, json.Value);
@@ -495,251 +1022,263 @@ namespace NullSpace.SDK.Editor
 
 		public override void Update()
 		{
-			UpdateFetch();
-			UpdateImport();
+			if (CurrentImport != null)
+			{
+				CurrentImport.Update();
+			}
+			//UpdateFetch();
+			//UpdateImport();
 		}
 
-		private void UpdateFetch()
-		{
-			#region Handle Fetching
-			//If we have a work queue and aren't still fetching
-			if (_workQueue.Count > 0 && !_fetching)
-			{
-				int importRate = Mathf.Min(20, Mathf.Max(1, _workQueue.Count / 5));
-				timeElapsed += .005f;
-				if (timeElapsed > 0.005f)
-				{
-					timeElapsed = 0;
-					for (int i = 0; i < importRate; i++)
-					{
-						var item = _workQueue.Dequeue();
-						CreateHapticAsset(item.Key, item.Value);
+		#region Moved into PackageImport class
+		//private void UpdateFetch()
+		//{
+		//	#region Handle Fetching
+		//	//If we have a work queue and aren't still fetching
+		//	if (_workQueue.Count > 0 && !_fetching)
+		//	{
+		//		int importRate = Mathf.Min(20, Mathf.Max(1, _workQueue.Count / 5));
+		//		timeElapsed += updateRate;
+		//		if (timeElapsed > updateRate)
+		//		{
+		//			timeElapsed = 0;
+		//			for (int i = 0; i < importRate; i++)
+		//			{
+		//				var item = _workQueue.Dequeue();
+		//				CreateHapticAsset(item.Key, item.Value);
 
-					}
-					currentProgress += importRate;
-					this.Repaint();
-				}
-			}
-			#endregion
-			#region Finish Fetching
-			//We're done!
-			else if (_workQueue.Count == 0 && _importing)
-			{
-				_status = new HelpMessage(string.Format("Imported {0}/{1} files successfully", _lastImport.TotalSucceeded, _lastImport.Total), MessageType.Info);
-				_importing = false;
-				EditorUtility.ClearProgressBar();
+		//			}
+		//			currentProgress += importRate;
+		//			this.Repaint();
+		//		}
+		//	}
+		//	else if (_workQueue.Count == 0 && !_fetching)
+		//	{
+		//		//Debug.Log("Work Queue fully dequeued: " + _workQueue.Count + "\n");
+		//	}
 
-				this.Repaint();
+		//	#endregion
+		//	#region Finish Fetching
+		//	//We're done!
+		//	else if (_workQueue.Count == 0 && _importing)
+		//	{
+		//		//_status = new HelpMessage(string.Format("Imported {0}/{1} files successfully", _lastImport.TotalSucceeded, _lastImport.Total), MessageType.Info);
+		//		_importing = false;
+		//		EditorUtility.ClearProgressBar();
 
-			}
-			#endregion
-		}
-		private void UpdateImport()
-		{
-			#region Fetch Queue is populated
-			if (_fetchQueue.Count > 0)
-			{
-				int importRate = Mathf.Min(20, Mathf.Max(1, _fetchQueue.Count / 5));
-				timeElapsed += .005f;
-				if (timeElapsed > 0.005f)
-				{
-					timeElapsed = 0;
-					for (int i = 0; i < importRate; i++)
-					{
-						var item = _fetchQueue.Dequeue();
-						if (item.Length > 0)
-						{
-							var result = getJsonFromPath(item);
-							if (result.Value == "NSVR_FAILED")
-							{
-								continue;
-							}
-							else
-							{
-								_workQueue.Enqueue(result);
-							}
-						}
-					}
-					currentProgress += importRate;
-					Repaint();
-				}
-			}
-			#endregion
-			#region Finish Fetching
-			else
-			{
-				//If we're still fetching
-				if (_fetching)
-				{
-					//We're ready to import.
-					//_lastImport.TotalSucceeded = _workQueue.Count;
-					_status = new HelpMessage(string.Format("Fetched {0}/{1} files, preparing for import..", _lastImport.TotalSucceeded, _lastImport.Total), MessageType.Info);
-					_fetching = false;
-					_importing = true;
-					totalProgress = _lastImport.TotalSucceeded;
-					EditorUtility.ClearProgressBar();
+		//		this.Repaint();
+		//	}
+		//	#endregion
+		//}
+		//private void UpdateImport()
+		//{
+		//	#region Fetch Queue is populated
+		//	if (_fetchQueue.Count > 0)
+		//	{
+		//		int importRate = Mathf.Min(20, Mathf.Max(1, _fetchQueue.Count / 5));
+		//		timeElapsed += updateRate;
+		//		if (timeElapsed > updateRate)
+		//		{
+		//			timeElapsed = 0;
+		//			for (int i = 0; i < importRate; i++)
+		//			{
+		//				var item = _fetchQueue.Dequeue();
+		//				if (item.Length > 0)
+		//				{
+		//					var result = getJsonFromPath(item);
+		//					if (result.Value == "NSVR_FAILED")
+		//					{
+		//						continue;
+		//					}
+		//					else
+		//					{
+		//						_workQueue.Enqueue(result);
+		//					}
+		//				}
+		//			}
+		//			currentProgress += importRate;
+		//			Repaint();
+		//		}
+		//	}
+		//	#endregion
+		//	#region Finish Fetching
+		//	else
+		//	{
+		//		//If we're still fetching
+		//		if (_fetching)
+		//		{
+		//			//We're ready to import.
+		//			//_lastImport.TotalSucceeded = _workQueue.Count;
+		//			//_status = new HelpMessage(string.Format("Fetched {0}/{1} files, preparing for import..", _lastImport.TotalSucceeded, _lastImport.Total), MessageType.Info);
+		//			_fetching = false;
+		//			_importing = true;
+		//			//totalProgress = _lastImport.TotalSucceeded;
+		//			EditorUtility.ClearProgressBar();
 
-					this.Repaint();
-				}
-			}
-			#endregion
-		}
+		//			this.Repaint();
+		//		}
+		//	}
+		//	#endregion
+		//}
 
-		private void ImportAll(object state)
-		{
-			AssetTool.PackageInfo package = (AssetTool.PackageInfo)(state);
 
-			var allHapticFiles = getFilesWithExtension(package.path + "/sequences/", ".sequence");
-			allHapticFiles.AddRange(getFilesWithExtension(package.path + "/patterns/", ".pattern"));
-			allHapticFiles.AddRange(getFilesWithExtension(package.path + "/experiences/", ".experience"));
-			currentProgress = 0f;
-			totalProgress = allHapticFiles.Count;
-			_lastImport.Total = allHapticFiles.Count;
-			string li = string.Empty;
-			for (int i = 0; i < allHapticFiles.Count; i++)
-			{
-				li += allHapticFiles[i] + "\n";
-			}
-			Debug.Log(li + "\n" + allHapticFiles.Count);
-			_fetchQueue = new Queue<string>(allHapticFiles);
-			_fetching = true;
+		//private void ImportAll(object state)
+		//{
+		//	AssetTool.PackageInfo package = (AssetTool.PackageInfo)(state);
 
-			var results = getAllJsonFromPaths(allHapticFiles);
-			_lastImport.TotalSucceeded = results.Count;
-			_lastImport.Total = allHapticFiles.Count;
-			//Debug.Log("Last Import: " + _lastImport.Total + "   " + _lastImport.Total);
-			_workQueue = new Queue<KeyValuePair<string, string>>(results);
-		}
+		//	var allHapticFiles = getFilesWithExtension(package.path + "/sequences/", ".sequence");
+		//	allHapticFiles.AddRange(getFilesWithExtension(package.path + "/patterns/", ".pattern"));
+		//	allHapticFiles.AddRange(getFilesWithExtension(package.path + "/experiences/", ".experience"));
+		//	currentProgress = 0f;
+		//	totalProgress = allHapticFiles.Count;
+		//	//_lastImport.Total = allHapticFiles.Count;
+		//	string li = string.Empty;
+		//	for (int i = 0; i < allHapticFiles.Count; i++)
+		//	{
+		//		li += allHapticFiles[i] + "\n";
+		//	}
+		//	Debug.Log("All Haptic Files: Count [" + allHapticFiles.Count + "]" + li);
+		//	_fetchQueue = new Queue<string>(allHapticFiles);
+		//	_fetching = true;
+		//	Debug.Log("Created Fetch Queue: " + _fetchQueue.Count + "\n");
 
-		KeyValuePair<string, string> getJsonFromPath(string path)
-		{
-			//It is likely very difficult to provide an empty path here.
-			if (path == "")
-			{
-				OutputMessage("Invalid path provided to getJsonFromPath.", MessageType.Error);
-				return new KeyValuePair<string, string>("NSVR_EMPTY_PATH", "NSVR_FAILED");
-			}
+		//	var results = getAllJsonFromPaths(allHapticFiles);
+		//	//_lastImport.TotalSucceeded = results.Count;
+		//	//_lastImport.Total = allHapticFiles.Count;
+		//	//Debug.Log("Last Import: " + _lastImport.Total + "   " + _lastImport.Total);
+		//	_workQueue = new Queue<KeyValuePair<string, string>>(results);
+		//}
 
-			bool continueInstead;
-			//Attempt to get json of the haptic definition file from the tool
-			var json = TryGetJsonHapticDefinition(path, out continueInstead);
+		//KeyValuePair<string, string> getJsonFromPath(string path)
+		//{
+		//	//It is likely very difficult to provide an empty path here.
+		//	if (path == "")
+		//	{
+		//		OutputMessage("Invalid path provided to getJsonFromPath.", MessageType.Error);
+		//		return new KeyValuePair<string, string>("NSVR_EMPTY_PATH", "NSVR_FAILED");
+		//	}
 
-			#region Old Block (before making TryGetJSonHapticDefinition)
-			//try
-			//{
-			//	json = _assetTool.GetHapticDefinitionFileJson(path);
-			//}
-			//catch (InvalidOperationException e)
-			//{
-			//	_pathError = true;
-			//	//The filename was not set. This could be if the registry key was not found
-			//	OutputMessage("Invalid Operation Exception - Could not locate the HapticAssetTools.exe program, make sure the NSVR Service was installed. Try reinstalling if the problem persists.", MessageType.Error);
+		//	bool continueInstead;
+		//	//Attempt to get json of the haptic definition file from the tool
+		//	var json = TryGetJsonHapticDefinition(path, out continueInstead);
 
-			//	Debug.LogError("[NSVR] Could not locate the HapticAssetTools.exe program, make sure the NSVR Service was installed. Try reinstalling if the problem persists." + e.Message);
-			//	return new KeyValuePair<string, string>("NSVR_NO_HAT", "NSVR_FAILED");
-			//}
-			//catch (System.ComponentModel.Win32Exception e)
-			//{
-			//	_pathError = true;
-			//	OutputMessage("Win32Exception - Could not open the HapticAssetTools.exe program (was it renamed? Does it exist within the service install directory?)", MessageType.Error);
+		//	#region Old Block (before making TryGetJSonHapticDefinition)
+		//	//try
+		//	//{
+		//	//	json = _assetTool.GetHapticDefinitionFileJson(path);
+		//	//}
+		//	//catch (InvalidOperationException e)
+		//	//{
+		//	//	_pathError = true;
+		//	//	//The filename was not set. This could be if the registry key was not found
+		//	//	OutputMessage("Invalid Operation Exception - Could not locate the HapticAssetTools.exe program, make sure the NSVR Service was installed. Try reinstalling if the problem persists.", MessageType.Error);
 
-			//	Debug.LogError("[NSVR] Could not open the HapticAssetTools.exe program (was it renamed? Does it exist within the service install directory?): " + e.Message);
-			//	return new KeyValuePair<string, string>("NSVR_NO_OPEN", "NSVR_FAILED");
-			//} 
-			#endregion
+		//	//	Debug.LogError("[NSVR] Could not locate the HapticAssetTools.exe program, make sure the NSVR Service was installed. Try reinstalling if the problem persists." + e.Message);
+		//	//	return new KeyValuePair<string, string>("NSVR_NO_HAT", "NSVR_FAILED");
+		//	//}
+		//	//catch (System.ComponentModel.Win32Exception e)
+		//	//{
+		//	//	_pathError = true;
+		//	//	OutputMessage("Win32Exception - Could not open the HapticAssetTools.exe program (was it renamed? Does it exist within the service install directory?)", MessageType.Error);
 
-			//If the asset tool succeeded in running, but returned nothing, it's an error
-			if (json.Length < 1)
-			{
-				_pathError = true;
-				Debug.LogWarning("[NSVR] Unable to load path [" + path + "] it's probably malformed\n");
+		//	//	Debug.LogError("[NSVR] Could not open the HapticAssetTools.exe program (was it renamed? Does it exist within the service install directory?): " + e.Message);
+		//	//	return new KeyValuePair<string, string>("NSVR_NO_OPEN", "NSVR_FAILED");
+		//	//} 
+		//	#endregion
 
-				OutputMessage("Empty json result - likely a failure to load from\n\tpath [" + path + "]", MessageType.Error);
+		//	//If the asset tool succeeded in running, but returned nothing, it's an error
+		//	if (json.Length < 1)
+		//	{
+		//		_pathError = true;
+		//		Debug.LogWarning("[NSVR] Unable to load path [" + path + "] it's probably malformed\n");
 
-				return new KeyValuePair<string, string>("NSVR_EMPTY_RESPONSE", "NSVR_FAILED");
-			}
-			else
-			{
-				_pathError = false;
-			}
+		//		OutputMessage("Empty json result - likely a failure to load from\n\tpath [" + path + "]", MessageType.Error);
 
-			return new KeyValuePair<string, string>(path, json);
-		}
+		//		return new KeyValuePair<string, string>("NSVR_EMPTY_RESPONSE", "NSVR_FAILED");
+		//	}
+		//	else
+		//	{
+		//		_pathError = false;
+		//	}
 
-		private List<KeyValuePair<string, string>> getAllJsonFromPaths(List<string> paths)
-		{
-			var results = new List<KeyValuePair<string, string>>();
-			foreach (var path in paths)
-			{
-				//If they clicked away from the file dialog, we won't have a valid path
-				if (path.Length < 1)
-				{
-					continue;
-				}
+		//	return new KeyValuePair<string, string>(path, json);
+		//}
 
-				//Attempt to get json of the haptic definition file from the tool
-				bool continueInstead;
-				var json = TryGetJsonHapticDefinition(path, out continueInstead);
+		//private List<KeyValuePair<string, string>> getAllJsonFromPaths(List<string> paths)
+		//{
+		//	var results = new List<KeyValuePair<string, string>>();
+		//	foreach (var path in paths)
+		//	{
+		//		//If they clicked away from the file dialog, we won't have a valid path
+		//		if (path.Length < 1)
+		//		{
+		//			continue;
+		//		}
 
-				//If the asset tool succeeded in running, but returned nothing, it's an error
-				if (json.Length < 1)
-				{
-					Debug.LogWarning("[NSVR] Unable to load " + path + " it's probably malformed");
-					OutputMessage("Unable to load path [" + path + "] - it is probably malformed", MessageType.Warning);
-					continue;
-				}
+		//		//Attempt to get json of the haptic definition file from the tool
+		//		bool continueInstead;
+		//		var json = TryGetJsonHapticDefinition(path, out continueInstead);
 
-				results.Add(new KeyValuePair<string, string>(path, json));
-			}
-			OutputMessage("Getting all JSON from paths.\n\tAttempted: [" + paths.Count + "]\n\tSuccesses: [" + results.Count + "]", MessageType.None);
-			//Debug.Log("Get all JSON from paths\n" + paths.Count + "   " + results.Count);
+		//		//If the asset tool succeeded in running, but returned nothing, it's an error
+		//		if (json.Length < 1)
+		//		{
+		//			Debug.LogWarning("[NSVR] Unable to load " + path + " it's probably malformed");
+		//			OutputMessage("Unable to load path [" + path + "] - it is probably malformed", MessageType.Warning);
+		//			continue;
+		//		}
 
-			return results;
-		}
+		//		results.Add(new KeyValuePair<string, string>(path, json));
+		//	}
+		//	OutputMessage("Getting all JSON from paths.\n\tAttempted: [" + paths.Count + "]\n\tSuccesses: [" + results.Count + "]", MessageType.None);
+		//	//Debug.Log("Get all JSON from paths\n" + paths.Count + "   " + results.Count);
 
-		private string TryGetJsonHapticDefinition(string path, out bool continueInstead)
-		{
-			continueInstead = false;
-			string json = "";
-			try
-			{
-				if (HLEditor != null && HLEditor.DebugHardlightEditor)
-				{
-					Debug.Log("\tGet haptic definition file from path\n\t\t[" + path + "]\n");
-				}
-				json = _assetTool.GetHapticDefinitionFileJson(path);
-			}
-			catch (InvalidOperationException e)
-			{
-				//The filename was not set. This could be if the registry key was not found
-				Debug.LogError("[NSVR] Could not locate the HapticAssetTools.exe program, make sure the NSVR Service was installed. Try reinstalling if the problem persists." + e.Message);
-				continueInstead = true;
-			}
-			catch (System.ComponentModel.Win32Exception e)
-			{
-				Debug.LogError("[NSVR] Could not open the HapticAssetTools.exe program (was it renamed? Does it exist within the service install directory?): " + e.Message);
-				continueInstead = true;
-			}
-			catch (HapticsAssetException e)
-			{
-				Debug.LogError("[NSVR] Haptics Asset Exception loading item at path [" + path + "]: " + e.Message);
-				continueInstead = true;
-			}
-			return json;
-		}
+		//	return results;
+		//}
 
-		List<string> getFilesWithExtension(string directory, string extension)
-		{
-			List<string> outPaths = new List<string>();
-			var allFiles = System.IO.Directory.GetFiles(directory);
-			foreach (var potentialFile in allFiles)
-			{
-				if (System.IO.Path.GetExtension(potentialFile) == extension)
-				{
-					outPaths.Add(potentialFile);
-				}
-			}
-			return outPaths;
-		}
+		//private string TryGetJsonHapticDefinition(string path, out bool continueInstead)
+		//{
+		//	continueInstead = false;
+		//	string json = "";
+		//	try
+		//	{
+		//		if (HLEditor != null && HLEditor.DebugHardlightEditor)
+		//		{
+		//			Debug.Log("\tGet haptic definition file from path\n\t\t[" + path + "]\n");
+		//		}
+		//		json = _assetTool.GetHapticDefinitionFileJson(path);
+		//	}
+		//	catch (InvalidOperationException e)
+		//	{
+		//		//The filename was not set. This could be if the registry key was not found
+		//		Debug.LogError("[NSVR] Could not locate the HapticAssetTools.exe program, make sure the NSVR Service was installed. Try reinstalling if the problem persists." + e.Message);
+		//		continueInstead = true;
+		//	}
+		//	catch (System.ComponentModel.Win32Exception e)
+		//	{
+		//		Debug.LogError("[NSVR] Could not open the HapticAssetTools.exe program (was it renamed? Does it exist within the service install directory?): " + e.Message);
+		//		continueInstead = true;
+		//	}
+		//	catch (HapticsAssetException e)
+		//	{
+		//		Debug.LogError("[NSVR] Haptics Asset Exception loading item at path [" + path + "]: " + e.Message);
+		//		continueInstead = true;
+		//	}
+		//	return json;
+		//}
+
+		//List<string> getFilesWithExtension(string directory, string extension)
+		//{
+		//	List<string> outPaths = new List<string>();
+		//	var allFiles = System.IO.Directory.GetFiles(directory);
+		//	foreach (var potentialFile in allFiles)
+		//	{
+		//		if (System.IO.Path.GetExtension(potentialFile) == extension)
+		//		{
+		//			outPaths.Add(potentialFile);
+		//		}
+		//	}
+		//	return outPaths;
+		//}
+		#endregion
 	}
 }

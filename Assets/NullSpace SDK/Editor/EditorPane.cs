@@ -451,10 +451,11 @@ namespace NullSpace.SDK.Editor
 		{
 
 		}
-		protected void Repaint()
+		public void Repaint()
 		{
 			if (HLEditor != null)
 			{
+				//Debug.Log("Repaint\n");
 				HLEditor.Repaint();
 			}
 		}

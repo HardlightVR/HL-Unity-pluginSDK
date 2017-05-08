@@ -130,6 +130,15 @@ namespace NullSpace.SDK.Demos
 				rend.material.color = setColor;
 			}
 		}
+		public Color SuitColliderCurrentColor(GameObject suitCollider)
+		{
+			MeshRenderer rend = suitCollider.GetComponent<MeshRenderer>();
+			if (rend != null)
+			{
+				return rend.material.color;
+			}
+			return Color.white;
+		}
 		public void ColorSuitCollider(SuitBodyCollider suitCollider, Color setColor)
 		{
 			ColorSuitCollider(suitCollider.gameObject, setColor);

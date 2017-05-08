@@ -12,6 +12,8 @@ namespace NullSpace.SDK.Editor
 		//Keeps a main scroll region over them all.
 		//Has a Welcome/tutorial EditorPane
 
+		private string DocumentationLink = "https://github.com/NullSpaceVR/NullSpace-Chimera-SDK/wiki";
+		private string FeedbackLink = "https://docs.google.com/a/nullspacevr.com/forms/d/e/1FAIpQLSe3aVFxPJRbj9XVhiZpYxSq26RN9yWumBUu0rCacjCu-XkFwQ/viewform";
 		public static HardlightEditor myWindow;
 		public bool DebugHardlightEditor = false;
 		bool compactMode = false;
@@ -72,9 +74,47 @@ namespace NullSpace.SDK.Editor
 			}
 		}
 
+		public void ActivateSpecificEditorPane(System.Type typeOfPane)
+		{
+			EditorPane result = FindEditorPane(typeOfPane);
+			if (result != null)
+			{
+				SetActiveTab(result);
+			}
+		}
+		EditorPane FindEditorPane(System.Type typeOfPane)
+		{
+			for (int i = 0; i < HardlightPanes.Count; i++)
+			{
+				if (HardlightPanes[i] != null && HardlightPanes[i].GetType() == typeOfPane)
+					return HardlightPanes[i];
+			}
+			return null;
+		}
+		int CountNullPanes()
+		{
+			int counter = 0;
+			if (HardlightPanes == null || HardlightPanes.Count == 0)
+			{
+				for (int i = 0; i < HardlightPanes.Count; i++)
+				{
+					if (HardlightPanes[i] == null)
+						counter++;
+					else
+						Debug.Log(HardlightPanes[i].ToString());
+				}
+			}
+			//Debug.Log("Found " + counter + " null panes\n");
+			return counter;
+		}
+
 		void CheckIfInvalidSetup()
 		{
-			if (HardlightPanes == null || HardlightPanes.Count == 0)
+			if (myWindow == null)
+			{
+				myWindow = this;
+			}
+			if (HardlightPanes == null || HardlightPanes.Count == 0 || CountNullPanes() > 0)
 			{
 				Init();
 			}
@@ -82,9 +122,21 @@ namespace NullSpace.SDK.Editor
 
 		void Update()
 		{
-			for (int i = 0; i < HardlightPanes.Count; i++)
+			CheckIfInvalidSetup();
+			if (HardlightPanes != null && HardlightPanes.Count > 0)
 			{
-				HardlightPanes[i].Update();
+				for (int i = 0; i < HardlightPanes.Count; i++)
+				{
+					if (HardlightPanes[i] != null)
+					{
+						HardlightPanes[i].Update();
+					}
+					else
+					{
+						Debug.LogError("Hardlight Pane :" + i + " is null\n");
+						Init();
+					}
+				}
 			}
 		}
 
@@ -122,11 +174,20 @@ namespace NullSpace.SDK.Editor
 			EditorGUILayout.BeginVertical();
 			NSEditorStyles.DrawTitle(new GUIContent(" Hardlight Editor"));
 			EditorGUILayout.EndVertical();
-			if (NSEditorStyles.DrawButton(NSEditorStyles.CompactMode ? "+" : "-"))
+
+			if (NSEditorStyles.DrawButton(NSEditorStyles.CompactMode ? "Feedback" : "Send Feedback"))
+			{
+				Application.OpenURL(FeedbackLink);
+			}
+			if (NSEditorStyles.DrawButton(NSEditorStyles.CompactMode ? "Docs" : "Documentation"))
+			{
+				Application.OpenURL(DocumentationLink);
+			}
+			if (NSEditorStyles.DrawButton(NSEditorStyles.CompactMode ? "+" : "Compact Mode"))
 			{
 				NSEditorStyles.CompactMode = !NSEditorStyles.CompactMode;
 			}
-			EditorGUILayout.EndHorizontal();
+			EditorGUILayout.EndHorizontal(); 
 
 			//NSEditorStyles.DrawLabel("Holy Crap Dividers!");
 			//NSEditorStyles.DrawDivider(1);
@@ -139,6 +200,22 @@ namespace NullSpace.SDK.Editor
 			//NSEditorStyles.DrawDivider(NSEditorStyles.ColorBoxType.Tutorial, 8);
 		}
 
+		private void SetActiveTab(EditorPane newPane)
+		{
+			//Don't change to null inputs
+			if (newPane != null)
+			{
+				//Don't do stuff for when we have no active pane.
+				if (ActiveTab != null)
+				{
+					//Can't deactivate self...?
+					if (ActiveTab != newPane)
+						ActiveTab.ShouldDisplay = false;
+				}
+				ActiveTab = newPane;
+				ActiveTab.ShouldDisplay = true;
+			}
+		}
 		void DrawPaneTabs()
 		{
 			if (DebugHardlightEditor)
@@ -159,11 +236,9 @@ namespace NullSpace.SDK.Editor
 						bool Result = HardlightPanes[i].DrawTabButton(HardlightPanes[i].ShouldDisplay);
 
 						//Controls showing only one at a time.
-						if (HardlightPanes[i] != ActiveTab && Result)
+						if (Result)
 						{
-							if (ActiveTab != null)
-								ActiveTab.ShouldDisplay = false;
-							ActiveTab = HardlightPanes[i];
+							SetActiveTab(HardlightPanes[i]);
 						}
 						//}
 					}
@@ -276,7 +351,7 @@ namespace NullSpace.SDK.Editor
 			{
 				//if (message.messageType == MessageType.Error)
 				//{
-					errorScrollPos = new Vector2(float.MaxValue, float.MaxValue);
+				errorScrollPos = new Vector2(float.MaxValue, float.MaxValue);
 				//}
 			}
 		}

@@ -31,12 +31,67 @@ namespace NullSpace.SDK.Demos
 
 		public void Update()
 		{
-			var thing = NSManager.Instance.SamplePlayingStatus();
+			var things = NSManager.Instance.SamplePlayingStatus();
+			//foreach (var thing in things)
+			//{
+			//	Debug.Log(thing.Key + "\n");
+			//}
 			for (int i = 0; i < suitObjects.Count; i++)
 			{
-				float val = (thing[suitObjects[i].regionID]) / 255.0f;
-				ColorSuitCollider(suitObjects[i], Color.Lerp(notPlayingColor, playingColor, val));
+				//Debug.Log(thing.Count);
+				if (things.ContainsKey(suitObjects[i].regionID))
+				{
+					float val = (things[suitObjects[i].regionID].Strength) / 255.0f;
+					Color color = GetColorByFamily(things[suitObjects[i].regionID].Family);
+					Color currentColor = SuitColliderCurrentColor(suitObjects[i].gameObject);
+					ColorSuitCollider(suitObjects[i], Color.Lerp(currentColor, Color.Lerp(color, playingColor, val), .45f));
+				}
+				else
+				{
+					ColorSuitCollider(suitObjects[i], notPlayingColor);
+				}
 			}
+		}
+
+		private Color GetColorByFamily(uint family)
+		{
+			if ((Effect)family == Effect.Click)
+			{
+				return Color.red;
+			}
+			if ((Effect)family == Effect.Double_Click)
+			{
+				return Color.red;
+			}
+			if ((Effect)family == Effect.Triple_Click)
+			{
+				return Color.red;
+			}
+			if ((Effect)family == Effect.Bump)
+			{
+				return Color.green;
+			}
+			if ((Effect)family == Effect.Buzz)
+			{
+				return Color.cyan;
+			}
+			if ((Effect)family == Effect.Tick)
+			{
+				return Color.blue;
+			}
+			if ((Effect)family == Effect.Hum)
+			{
+				return Color.yellow;
+			}
+			if ((Effect)family == Effect.Pulse)
+			{
+				return notPlayingColor;
+			}
+			if ((Effect)family == Effect.Fuzz)
+			{
+				return Color.magenta;
+			}
+			return Color.white;
 		}
 
 		public override void OnSuitClicked(SuitBodyCollider clicked, RaycastHit hit)

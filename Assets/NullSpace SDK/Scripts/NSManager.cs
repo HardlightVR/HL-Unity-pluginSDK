@@ -153,9 +153,10 @@ namespace NullSpace.SDK
 			_plugin.DisableTracking();
 		}
 
-		public Dictionary<AreaFlag, ushort> SamplePlayingStatus()
+		public Dictionary<AreaFlag, EffectSampleInfo> SamplePlayingStatus()
 		{
-			return _plugin.SampleStrengths();
+			return _plugin.SampleCurrentlyPlayingEffects();
+			//return _plugin.SampleStrengths();
 		}
 
 		/// <summary>

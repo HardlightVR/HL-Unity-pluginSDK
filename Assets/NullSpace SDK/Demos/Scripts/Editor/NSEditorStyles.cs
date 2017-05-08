@@ -383,7 +383,7 @@ namespace NullSpace.SDK.Editor
 
 		public static void DrawLabel(string labelText, float minWidth = 105, float spacingAfterward = 0)
 		{
-			GUILayout.Label(labelText, NSEditorStyles.GetSmallLabel(), GUILayout.ExpandWidth(false), GUILayout.MinWidth(105));
+			GUILayout.Label(labelText, NSEditorStyles.GetSmallLabel(), GUILayout.ExpandWidth(true), GUILayout.MinWidth(105));
 			GUILayout.Space(spacingAfterward);
 		}
 
@@ -836,6 +836,7 @@ namespace NullSpace.SDK.Editor
 		{
 			GUIStyle label = new GUIStyle(EditorStyles.label);
 			label.alignment = TextAnchor.LowerLeft;
+			label.wordWrap = true;
 			return label;
 		}
 

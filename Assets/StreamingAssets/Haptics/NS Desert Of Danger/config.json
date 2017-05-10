@@ -1,5 +1,6 @@
 {
 	"version" : "0.1.0",
 	"studio" : "NullSpace VR",
-	"package" : "ns.dod"
+	"package" : "ns.dod",
+	"description" : "Desert of Danger is the western scorpion shootout shortform demo by NullSpace VR.\n"
 }

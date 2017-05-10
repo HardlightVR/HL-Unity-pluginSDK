@@ -38,9 +38,8 @@ namespace NullSpace.SDK.Demos
 
 			PopulateMyDirectory(path);
 		}
-		private List<string> retrieveFilesInFolder(string folderPath)
+		private List<string> RetrieveFilesInFolder(string folderPath)
 		{
-			
 			string[] unfilteredFiles = Directory.GetFiles(folderPath);
 			
 			return unfilteredFiles.Where((string filename) =>
@@ -55,11 +54,11 @@ namespace NullSpace.SDK.Demos
 		//Fill the directory with library elements based on the haptics found
 		void PopulateMyDirectory(string path)
 		{
-			var validSequences = retrieveFilesInFolder(path + "/sequences");
-			var validPatterns = retrieveFilesInFolder(path + "/patterns");
-			var validExperiences = retrieveFilesInFolder(path + "/experiences");
+			var validSequences = RetrieveFilesInFolder(path + "/sequences");
+			var validPatterns = RetrieveFilesInFolder(path + "/patterns");
+			var validExperiences = RetrieveFilesInFolder(path + "/experiences");
 
-			var allFiles = validSequences.Concat(validPatterns).Concat(validExperiences);
+			var allFiles = validExperiences.Concat(validPatterns).Concat(validSequences);
 		
 			//A natural result of the haptics being loaded by order of folder means they'll be pre-sorted.
 			foreach (string element in allFiles)
@@ -79,7 +78,6 @@ namespace NullSpace.SDK.Demos
 			LibraryElement libEle = fileContainer.AddPrefabToContainerReturn().GetComponent<LibraryElement>();
 			libEle.playButton.transform.localScale = Vector3.one;
 			libEle.playButton.name = element;
-
 			//Elements need to be initialized so they get the proper name/icon/color
 			libEle.Init(_assetTool, element, myNameSpace);
 

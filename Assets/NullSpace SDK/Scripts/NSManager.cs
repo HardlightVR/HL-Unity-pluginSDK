@@ -153,6 +153,10 @@ namespace NullSpace.SDK
 			_plugin.DisableTracking();
 		}
 
+		public static VersionInfo GetPluginVersionInfo()
+		{
+			return NSVR.NSVR_Plugin.GetPluginVersion();
+		}
 		public Dictionary<AreaFlag, EffectSampleInfo> SamplePlayingStatus()
 		{
 			return _plugin.SampleCurrentlyPlayingEffects();
@@ -212,11 +216,12 @@ namespace NullSpace.SDK
 
 			_imuCalibrator = new CalibratorWrapper(new MockImuCalibrator());
 
+			InitPlugin();
+		}
+		private void InitPlugin()
+		{
 			//The plugin needs to load resources from your app's Streaming Assets folder
 			_plugin = new NSVR.NSVR_Plugin();
-
-
-
 		}
 		private void DoDelayedAction(float delay, Action action)
 		{

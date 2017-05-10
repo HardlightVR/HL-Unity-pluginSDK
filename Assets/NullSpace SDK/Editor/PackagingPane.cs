@@ -1007,7 +1007,7 @@ namespace NullSpace.SDK.Editor
 					, 105, 14);
 
 				NSEditorStyles.DrawLabel("It's possible the haptic content is missing."
-									, 105, 14);
+									, 105, 0);
 
 				if (NSEditorStyles.DrawButton("Click here to revert to the default haptic directory."))
 				{
@@ -1021,6 +1021,10 @@ namespace NullSpace.SDK.Editor
 					Application.OpenURL(HardlightEditor.myWindow.HapticZipLink);
 				}
 
+				GUILayout.Space(14);
+				NSEditorStyles.DrawLabel("It is also possible you have a malformed config.json file.\nCheck the Console window to see if there is an NSVR error and then follow the path to the malformed file (and fix the json structural problems with it.)", 105, 4);
+
+
 				NSEditorStyles.CloseVertical();
 
 			}
@@ -1030,9 +1034,10 @@ namespace NullSpace.SDK.Editor
 			EditorGUILayout.LabelField(companyName, EditorStyles.boldLabel);
 			float labelOptionWidth = 110;
 			float inputOptionWidth = 230;
+			var selectedPackage = packages[_packageSelectionIndices[companyName]];
 			var packagesByThisCompany = new string[0];
 			packagesByThisCompany = packages.Select(package => package.@namespace).ToArray();
-
+			
 			#region Package Selection
 			TutorialHighlight(2, packageIndex == 0, () =>
 			{
@@ -1052,12 +1057,15 @@ namespace NullSpace.SDK.Editor
 			});
 			#endregion
 
+			#region Package Description
+			NSEditorStyles.DrawLabel("Description: " + selectedPackage.description);
+
+			#endregion
+
 			#region Import All
 			GUILayout.BeginHorizontal();
 
 			EditorGUILayout.LabelField("Import All Packages", EditorStyles.miniBoldLabel, GUILayout.Width(labelOptionWidth));
-
-			var selectedPackage = packages[_packageSelectionIndices[companyName]];
 
 			//Do we have an import currently?
 			bool HaveImport = CurrentImport != null;

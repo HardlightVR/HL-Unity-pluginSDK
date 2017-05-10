@@ -412,8 +412,7 @@ namespace NullSpace.SDK.Editor
 			GUILayout.Label(labelText, NSEditorStyles.GetSmallLabel(), GUILayout.ExpandWidth(true), GUILayout.MinWidth(105));
 			GUILayout.Space(spacingAfterward);
 		}
-
-		/// <summary>
+			/// <summary>
 		/// Label Wrapper - takes a Rect to offset padding of the label by. Left/X, Top/Y, Right/Width, Bottom/Height format for the Rect
 		/// </summary>
 		/// <param name="labelText">Label text.</param>

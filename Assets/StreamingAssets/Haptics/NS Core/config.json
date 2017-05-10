@@ -1,5 +1,6 @@
 {
 	"version" : "0.1.0",
 	"studio" : "NullSpace VR",
-	"package" : "ns"
+	"package" : "ns",
+	"description" : "A basic haptic package with simple sequences."
 }

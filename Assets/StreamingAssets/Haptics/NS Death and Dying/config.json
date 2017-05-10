@@ -1,7 +1,8 @@
 {
 	"version" : "0.1.0",
 	"studio" : "NullSpace VR",
-	"package" : "ns.dying"
+	"package" : "ns.dying",
+	"description" : "Everything brutal that can haptically happen to a player during a VR experience"
 }
 
 

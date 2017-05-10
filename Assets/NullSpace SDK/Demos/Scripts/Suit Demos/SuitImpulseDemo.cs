@@ -58,7 +58,7 @@ namespace NullSpace.SDK.Demos
 		/// sharp_tick, short_double_click, short_double_sharp_tick, 
 		/// transition_click, transition_hum, triple_click
 		/// </summary>
-		[Range(0, 15)]
+		[Range(0, 7)]
 		private int currentEffect = 6;
 
 		private int selectedHapticSequence = -1;
@@ -306,10 +306,13 @@ namespace NullSpace.SDK.Demos
 			//To support HapticSequence Samples
 			if (SelectedHapticSequence < 0)
 			{
+				//Prevent array index out of bounds errors.
+				Effect whichEffect = effectOptions[Mathf.Clamp(currentEffect, 0, effectOptions.Length - 1)];
+
 				//These are broken up by lines for readability
 				imp.WithDuration(ImpulseDuration);
 				imp.WithAttenuation(Attenuation);
-				imp.WithEffect(effectOptions[currentEffect], EffectDuration, EffectStrength);
+				imp.WithEffect(whichEffect, EffectDuration, EffectStrength);
 				imp.Play();
 
 				//You can do something like:

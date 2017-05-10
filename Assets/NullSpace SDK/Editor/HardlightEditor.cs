@@ -143,6 +143,7 @@ namespace NullSpace.SDK.Editor
 
 		void OnGUI()
 		{
+			//NSVR.NSVR_Plugin.GetPluginVersion();
 			//Initialize if we aren't initialized
 			CheckIfInvalidSetup();
 
@@ -175,7 +176,9 @@ namespace NullSpace.SDK.Editor
 			EditorGUILayout.BeginVertical();
 			NSEditorStyles.DrawTitle(new GUIContent(" Hardlight Editor"));
 			EditorGUILayout.EndVertical();
+			//NSEditorStyles.DrawLabel("   v" + NSManager.GetPluginVersionInfo().ToString());
 
+			NSEditorStyles.DrawButton("Plugin v" + NSManager.GetPluginVersionInfo().ToString());
 			if (NSEditorStyles.DrawButton(NSEditorStyles.CompactMode ? "Feedback" : "Send Feedback"))
 			{
 				Application.OpenURL(FeedbackLink);
@@ -188,7 +191,7 @@ namespace NullSpace.SDK.Editor
 			{
 				NSEditorStyles.CompactMode = !NSEditorStyles.CompactMode;
 			}
-			EditorGUILayout.EndHorizontal(); 
+			EditorGUILayout.EndHorizontal();
 
 			//NSEditorStyles.DrawLabel("Holy Crap Dividers!");
 			//NSEditorStyles.DrawDivider(1);

@@ -27,11 +27,15 @@ namespace NullSpace.SDK.Demos
 				}
 				else if (DisplayType == ForceType.Effect)
 				{
-					MyText.text = SuitImpulseDemo.effectOptions[(Mathf.RoundToInt(textValue))].ToString();
+					//Prevent array index out of bounds errors.
+					int index = Mathf.Clamp((Mathf.RoundToInt(textValue)), 0, SuitImpulseDemo.effectOptions.Length - 1);
+					MyText.text = SuitImpulseDemo.effectOptions[index].ToString();
 				}
 				else if (DisplayType == ForceType.String)
 				{
-					MyText.text = SuitImpulseDemo.SampleHapticSequence[(Mathf.RoundToInt(textValue))].ToString();
+					//Prevent array index out of bounds errors.
+					int index = Mathf.Clamp((Mathf.RoundToInt(textValue)), 0, SuitImpulseDemo.SampleHapticSequence.Length - 1);
+					MyText.text = SuitImpulseDemo.SampleHapticSequence[index].ToString();
 				}
 			}
 		}

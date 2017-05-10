@@ -15,15 +15,30 @@ namespace NullSpace.SDK.Editor
 		static bool _created = false;
 		static bool _pathError = false;
 		static string _path;
+		static string SavedPath
+		{
+			set
+			{
+				//Debug.Log("Setting last accessed to : " + value + "\n");
+				PlayerPrefs.SetString("SavedPath", value);
+			}
+			get
+			{
+				if (PlayerPrefs.HasKey("SavedPath"))
+				{
+					//Debug.Log("Last Package Accessed [" + PlayerPrefs.GetString("LastPackageAccessed") + "]\n");
+
+					return PlayerPrefs.GetString("SavedPath");
+				}
+				return "";
+			}
+		}
 		static Vector2 _scrollPos;
 		static AssetTool _assetTool = new AssetTool();
 		List<AssetTool.PackageInfo> _packages = new List<AssetTool.PackageInfo>();
 		Dictionary<string, List<AssetTool.PackageInfo>> _uniqueCompanies = new Dictionary<string, List<AssetTool.PackageInfo>>();
 		Dictionary<string, int> _packageSelectionIndices = new Dictionary<string, int>();
 		public HelpMessage _status = new HelpMessage("", MessageType.None);
-
-		Queue<KeyValuePair<string, string>> _workQueue = new Queue<KeyValuePair<string, string>>();
-		Queue<string> _fetchQueue = new Queue<string>();
 
 		private enum ImportState { Idle, Fetching, Importing }
 		private PackageImport CurrentImport;
@@ -58,7 +73,7 @@ namespace NullSpace.SDK.Editor
 
 			public PackagingPane MyPane;
 			private ImportStatus CurrentStatus;
-			private enum ImportState { Idle, Fetching, Importing, Finished }
+			private enum ImportState { Idle, Fetching, Waiting, Importing, Finished }
 			private ImportState activeState = ImportState.Idle;
 			bool HasSuccessfulImport = false;
 			float timeElapsed = 0;
@@ -78,6 +93,13 @@ namespace NullSpace.SDK.Editor
 				get
 				{
 					return activeState == ImportState.Fetching;
+				}
+			}
+			public bool Waiting
+			{
+				get
+				{
+					return activeState == ImportState.Waiting;
 				}
 			}
 			public bool Importing
@@ -102,12 +124,14 @@ namespace NullSpace.SDK.Editor
 
 			Queue<KeyValuePair<string, string>> _workQueue = new Queue<KeyValuePair<string, string>>();
 			Queue<string> _fetchQueue = new Queue<string>();
+			Queue<object> _packageQueue = new Queue<object>();
 
 			public PackageImport(PackagingPane pane)
 			{
 				MyPane = pane;
 				_workQueue = new Queue<KeyValuePair<string, string>>();
 				_fetchQueue = new Queue<string>();
+				_packageQueue = new Queue<object>();
 			}
 			//TODO: Turn this into one function with parameter intake.
 
@@ -135,12 +159,33 @@ namespace NullSpace.SDK.Editor
 			}
 			public void DrawImportingHaptics()
 			{
-				if (Importing)
+				if (Waiting)
+				{
+					int result = EditorUtility.DisplayDialogComplex("Overwrite Existing Haptics", "There are [N] existing haptics", "Overwrite", "Cancel Import", "Rename Old");
+					Debug.Log(result + " \n");
+					if (result == 0)
+					{
+						ResumeImport();
+						//EditorApplication.delayCall += ResumeImport;
+					}
+					if (result == 1)
+					{
+						QuitImport();
+						//EditorApplication.delayCall += QuitImport;
+					}
+					if (result == 2)
+					{
+						ResumeImport();
+						//EditorApplication.delayCall += ResumeImport;
+					}
+				}
+				else if (Importing)
 				{
 					float prog = currentProgress / (2 * totalProgress);
 					DrawProgressBar(prog, string.Format("Importing haptics.. ({0}/{1})", currentProgress, 2 * totalProgress));
 
 					ShouldRepaint = true;
+					//EditorGUILayout.EndVertical();
 				}
 				//else
 				//{
@@ -161,9 +206,27 @@ namespace NullSpace.SDK.Editor
 				HardlightEditor.myWindow.ActivateSpecificEditorPane(typeof(PackagingPane));
 				HardlightEditor.myWindow.Focus();
 				MyPane._status = new HelpMessage(string.Format("Imported {0}/{1} files successfully", _lastImport.TotalSucceeded, _lastImport.Total), MessageType.Info);
-				ChangeState(ImportState.Finished);
-				
+
+				if (_packageQueue.Count <= 0)
+				{
+					ChangeState(ImportState.Finished);
+				}
+				else
+				{
+					ImportPackage(_packageQueue.Dequeue());
+				}
+
 				MyPane.Repaint();
+			}
+			private void QuitImport()
+			{
+				_fetchQueue.Clear();
+				_workQueue.Clear();
+				ChangeState(ImportState.Idle);
+			}
+			private void ResumeImport()
+			{
+				ChangeState(ImportState.Importing);
 			}
 
 			private void ChangeState(ImportState targetState)
@@ -171,107 +234,31 @@ namespace NullSpace.SDK.Editor
 				#region Idle
 				if (Idle)
 				{
-					if (targetState == ImportState.Fetching)
-					{
-						activeState = ImportState.Fetching;
-					}
-					else if (targetState == ImportState.Importing)
-					{
-						activeState = ImportState.Importing;
-					}
-					else if (targetState == ImportState.Idle)
-					{
-						//This line performs no change
-						activeState = ImportState.Idle;
-					}
-					else if (targetState == ImportState.Finished)
-					{
-						activeState = ImportState.Finished;
-					}
-					else
-					{
-						MyPane.OutputMessage("[PackageImport] Attempted transition to invalid state [" + targetState.ToString() + "] from current state [" + activeState.ToString() + "])");
-					}
-
+					activeState = targetState;
 				}
 				#endregion
 				#region Fetching
 				else if (Fetching)
 				{
-					if (targetState == ImportState.Fetching)
-					{
-						//This line performs no change
-						activeState = ImportState.Fetching;
-					}
-					else if (targetState == ImportState.Importing)
-					{
-						activeState = ImportState.Importing;
-					}
-					else if (targetState == ImportState.Idle)
-					{
-						activeState = ImportState.Idle;
-					}
-					else if (targetState == ImportState.Finished)
-					{
-						activeState = ImportState.Finished;
-					}
-					else
-					{
-						MyPane.OutputMessage("[PackageImport] Attempted transition to invalid state [" + targetState.ToString() + "] from current state [" + activeState.ToString() + "])");
-					}
+					activeState = targetState;
+				}
+				#endregion
+				#region Waiting
+				else if (Waiting)
+				{
+					activeState = targetState;
 				}
 				#endregion
 				#region Importing
 				else if (Importing)
 				{
-					if (targetState == ImportState.Fetching)
-					{
-						activeState = ImportState.Fetching;
-					}
-					else if (targetState == ImportState.Importing)
-					{
-						//This line performs no change
-						activeState = ImportState.Importing;
-					}
-					else if (targetState == ImportState.Idle)
-					{
-						activeState = ImportState.Idle;
-					}
-					else if (targetState == ImportState.Finished)
-					{
-						activeState = ImportState.Finished;
-					}
-					else
-					{
-						MyPane.OutputMessage("[PackageImport] Attempted transition to invalid state [" + targetState.ToString() + "] from current state [" + activeState.ToString() + "])");
-					}
+					activeState = targetState;
 				}
 				#endregion
 				#region Finished
 				else if (Finished)
 				{
-					if (targetState == ImportState.Fetching)
-					{
-						activeState = ImportState.Fetching;
-					}
-					else if (targetState == ImportState.Importing)
-					{
-						//This line performs no change
-						activeState = ImportState.Importing;
-					}
-					else if (targetState == ImportState.Idle)
-					{
-						activeState = ImportState.Idle;
-					}
-					else if (targetState == ImportState.Finished)
-					{
-						//This line performs no change
-						activeState = ImportState.Finished;
-					}
-					else
-					{
-						MyPane.OutputMessage("[PackageImport] Attempted transition to invalid state [" + targetState.ToString() + "] from current state [" + activeState.ToString() + "])");
-					}
+					activeState = targetState;
 				}
 				#endregion
 
@@ -292,7 +279,7 @@ namespace NullSpace.SDK.Editor
 			private void UpdateFetch()
 			{
 				#region Fetch Queue populates work queue
-				if (_fetchQueue.Count > 0)
+				if (_fetchQueue.Count > 0 && Fetching)
 				{
 					//Debug.Log("Wut, moar werk? Fetching " + _fetchQueue.Count + "\n");
 
@@ -337,6 +324,18 @@ namespace NullSpace.SDK.Editor
 						ChangeState(ImportState.Importing);
 						totalProgress = _lastImport.TotalSucceeded;
 
+						bool WillOverwrite = CheckForWorkQueueForOverwrite();
+
+						if (WillOverwrite)
+						{
+							ChangeState(ImportState.Waiting);
+						}
+						else
+						{
+							ChangeState(ImportState.Importing);
+							//Open confirmation dialog
+						}
+
 						ShouldRepaint = true;
 					}
 				}
@@ -345,8 +344,8 @@ namespace NullSpace.SDK.Editor
 			private void UpdateImport()
 			{
 				#region Handle Importing
-				//If we have a work queue and aren't still fetching
-				if (_workQueue.Count > 0 && !Fetching)
+				//If we have a work queue and we're importing
+				if (_workQueue.Count > 0 && Importing)
 				{
 					//Debug.Log("Importing : " + _workQueue.Count + "\n");
 					int importRate = Mathf.Min(maxImportedPerStep, Mathf.Max(1, _workQueue.Count / 5));
@@ -374,7 +373,7 @@ namespace NullSpace.SDK.Editor
 				#endregion
 			}
 
-			public void ImportAll(object state)
+			public void ImportPackage(object state)
 			{
 				AssetTool.PackageInfo package = (AssetTool.PackageInfo)(state);
 
@@ -395,10 +394,19 @@ namespace NullSpace.SDK.Editor
 						li += allHapticFiles[i] + "\n";
 					}
 					Debug.Log("All Haptic Files: Count [" + allHapticFiles.Count + "]\n" + li);
-				} 
+				}
 				#endregion
 
-				_fetchQueue = new Queue<string>(allHapticFiles);
+				if (_fetchQueue == null)
+				{
+					_fetchQueue = new Queue<string>();
+				}
+				//Add all the new haptic files.
+				for (int i = 0; i < allHapticFiles.Count; i++)
+				{
+					_fetchQueue.Enqueue(allHapticFiles[i]);
+				}
+
 				ChangeState(ImportState.Fetching);
 				//Debug.Log("Created Fetch Queue: " + _fetchQueue.Count + "\n");
 
@@ -406,7 +414,23 @@ namespace NullSpace.SDK.Editor
 				_lastImport.TotalSucceeded = results.Count;
 				_lastImport.Total = allHapticFiles.Count;
 				//Debug.Log("Last Import: " + _lastImport.Total + "   " + _lastImport.Total + "\n");
-				_workQueue = new Queue<KeyValuePair<string, string>>();
+
+				if (_workQueue == null)
+				{
+					_workQueue = new Queue<KeyValuePair<string, string>>();
+				}
+			}
+			public void QueueImportPackage(object nextPackage)
+			{
+				Debug.Log(nextPackage.GetType().ToString() + "\n");
+				//Don't enqueue the same object multiple times
+				if (!_packageQueue.Contains(nextPackage))
+				{
+					//Save the JSON for later to fetch then import.
+					_packageQueue.Enqueue(nextPackage);
+				}
+
+				Debug.Log("Package Queue Count: " + _packageQueue.Count + "\n");
 			}
 
 			public KeyValuePair<string, string> GetJsonFromPath(string path)
@@ -520,7 +544,13 @@ namespace NullSpace.SDK.Editor
 				}
 				catch (HapticsAssetException e)
 				{
+					//This would be great if we could hand in a context reference.
+					//var thing = AssetDatabase.LoadAssetAtPath(path, typeof(UnityEngine.Object));
+					//if (thing != null)
+					//{
 					Debug.LogError("[NSVR] Haptics Asset Exception loading item at path [" + path + "]: " + e.Message);
+					//}
+
 					continueInstead = true;
 				}
 				return json;
@@ -539,6 +569,29 @@ namespace NullSpace.SDK.Editor
 				}
 				return outPaths;
 			}
+
+			bool CheckForWorkQueueForOverwrite()
+			{
+				bool willOverwrite = false;
+				var workList = _workQueue.ToList();
+				for (int i = 0; i < workList.Count; i++)
+				{
+					//This does not correctly detect if an asset already exists.
+
+					//string old = workList[i].Key.Replace('\\', '/');
+					//var str = new string[] { "/Assets/" };
+					//old = old.Split(str, StringSplitOptions.None)[1];
+					//Debug.Log(old + "\n");
+					//var asset = AssetDatabase.LoadAllAssetRepresentationsAtPath("Assets/" + old);
+					//if (asset != null && asset.Length > 0)
+					//{
+					//	Debug.Log("ASSET EXISTS\n");
+					//	willOverwrite = true;
+					//}
+					//Debug.Log(workList[i].Key + "  " + workList[i].Value + "\n");
+				}
+				return willOverwrite;
+			}
 		}
 
 		//Keep delegate reference for holding repaint?
@@ -546,12 +599,19 @@ namespace NullSpace.SDK.Editor
 		public override void Setup()
 		{
 			PaneTitle = "Package Importer";
-			ShortPaneTitle = "Packages";
+			ShortPaneTitle = "Package Importer";
 			if (_assetTool == null)
 			{
 				_assetTool = new AssetTool();
 			}
-			_path = Application.streamingAssetsPath + "/Haptics";
+			if (SavedPath.Length <= 0)
+			{
+				_path = Application.streamingAssetsPath + "/Haptics";
+			}
+			else
+			{
+				_path = SavedPath;
+			}
 
 			_pathError = false;
 			RescanPackages();
@@ -640,9 +700,8 @@ namespace NullSpace.SDK.Editor
 
 		}
 
-		protected JsonAsset CreateHapticAsset(string oldPath, string json)
+		protected JsonAsset CreateHapticAsset(string oldPath, string json, int undoGroup = 0)
 		{
-
 			//Create our simple json holder. Later, this could be a complex object
 			var asset = CreateInstance<JsonAsset>();
 			asset.SetJson(json);
@@ -658,8 +717,20 @@ namespace NullSpace.SDK.Editor
 			var newAssetPath = "Assets/Resources/Haptics/" + newAssetName;
 			asset.name = newAssetName;
 
+			var old = AssetDatabase.LoadAssetAtPath(newAssetPath, typeof(JsonAsset));
+			if (old != null)
+			{
+				//Previous file exists
+				//Debug.LogError("Overwriting " + newAssetPath + "\n");
+				Undo.RecordObject(old, "Reimport " + asset.name);
+			}
+
 			AssetDatabase.CreateAsset(asset, newAssetPath);
-			//Undo.RegisterCreatedObjectUndo(asset, "Create " + asset.name);
+			if (old == null)
+			{
+				//Previous file did not exist
+				Undo.RegisterCreatedObjectUndo(asset, "Import " + asset.name);
+			}
 
 			return asset;
 
@@ -805,26 +876,44 @@ namespace NullSpace.SDK.Editor
 			NSEditorStyles.DrawSliderDivider();
 			DrawPackages();
 			#endregion
+
+			#region Draw Status
+			NSEditorStyles.OpenHorizontal(_status.messageType, true);
+			NSEditorStyles.DrawLabel(_status.message);
+			NSEditorStyles.CloseHorizontal();
+			#endregion
+			EditorGUILayout.EndScrollView();
 		}
 
 		private void DrawHapticDirectory()
 		{
-			EditorGUILayout.BeginHorizontal();
-			EditorGUILayout.BeginVertical();
-			GUILayout.Space(8);
-			NSEditorStyles.DrawLabel("Haptic Package Directory");
-			EditorGUILayout.EndVertical();
-			NSEditorStyles.OpenHorizontal(_pathError ? ColorBoxType.Error : ColorBoxType.Normal);
-			NSEditorStyles.DrawLabel(_path);
-			NSEditorStyles.CloseHorizontal();
-			EditorGUILayout.EndHorizontal();
-			GUILayout.Space(2);
-
 			IsTutorialStep(0, () =>
 			{
 				NSEditorStyles.DrawLabel("Welcome to the Haptic Package Tool-torial!\n" +
 					"We will go over how to import JSON Haptic Assets into Unity-specific assets\n" +
 					"As well as the benefits for doing so."
+					, 105, 14);
+			});
+
+			TutorialHighlight(1, () =>
+			{
+				EditorGUILayout.BeginHorizontal();
+				EditorGUILayout.BeginVertical();
+				GUILayout.Space(8);
+				NSEditorStyles.DrawLabel("Haptic Package Directory");
+				EditorGUILayout.EndVertical();
+				NSEditorStyles.OpenHorizontal(_pathError ? ColorBoxType.Error : ColorBoxType.Normal);
+				NSEditorStyles.DrawLabel(_path);
+				NSEditorStyles.CloseHorizontal();
+				EditorGUILayout.EndHorizontal();
+				GUILayout.Space(2);
+			});
+
+
+			IsTutorialStep(1, () =>
+			{
+				NSEditorStyles.DrawLabel("This is the selected haptic directory\n" +
+					"This can be located anywhere on your computer."
 					, 105, 14);
 			});
 		}
@@ -842,6 +931,7 @@ namespace NullSpace.SDK.Editor
 				{
 					//Only assign when greater than 0.
 					_path = _newPath;
+					SavedPath = _path;
 					_pathError = false;
 				}
 				//else
@@ -860,7 +950,7 @@ namespace NullSpace.SDK.Editor
 												  false);
 
 			int packageCounter = 0;
-			//Draw each individual component
+			#region Draw Individual Companies
 			foreach (var pList in _uniqueCompanies)
 			{
 				//We only display the tutorial highlight for the first package (so we don't have 30 tutorials boxes with repeated content)
@@ -878,46 +968,96 @@ namespace NullSpace.SDK.Editor
 					{
 						NSEditorStyles.TextField("Haptic Package Location", pList.Value[0].path);
 					}
+					//Ideally we'd want a button that opens directly to that directory. Unity does not make this easy.
+					//if (NSEditorStyles.OperationToolbarButton(false, new GUIContent("Open Directory")))
+					//{
+					//	string path = pList.Value[0].path;
+					//	Debug.Log(path + "\n");
+
+					//	var dummypath = System.IO.Path.Combine(path, "fake.asset");
+					//	Debug.Log(dummypath + "\n");
+					//	dummypath = dummypath.Replace('\\', '/');
+					//	var assetpath = AssetDatabase.GenerateUniqueAssetPath(dummypath);
+					//	//if (assetpath == "")
+					//	//{
+					//	//	// couldn't generate a path, current asset must be a file
+					//	//	Debug.Log("File: " + item.name);
+					//	//}
+					//	//else
+					//	//{
+					//	//	Debug.Log("Directory: " + item.name);
+					//	//}
+					//	Selection.activeObject = AssetDatabase.LoadAssetAtPath(assetpath, typeof(DefaultAsset));
+
+
+					//}
 				});
 
 				packageCounter++;
 			}
+			#endregion
+			//If we have 0 companies, or 0 packages amongst those companies (unsure how that could happen)
+			if (_uniqueCompanies.Count < 1 || packageCounter < 1)
+			{
+				NSEditorStyles.OpenVertical(MessageType.Error);
 
-			NSEditorStyles.OpenHorizontal(_status.messageType, true);
-			NSEditorStyles.DrawLabel(_status.message);
-			NSEditorStyles.CloseHorizontal();
-			EditorGUILayout.EndScrollView();
+				//Draw the helper content for finding no packages.
+				NSEditorStyles.DrawLabel("Detected 0 haptic packages\n" +
+					"Did you select the wrong directory? The default directory is \"StreamingAssets/Haptics\""
+					, 105, 14);
+
+				NSEditorStyles.DrawLabel("It's possible the haptic content is missing."
+									, 105, 14);
+
+				if (NSEditorStyles.DrawButton("Click here to revert to the default haptic directory."))
+				{
+					_path = Application.streamingAssetsPath + "/Haptics";
+					SavedPath = _path;
+					RescanPackages();
+				}
+
+				if (NSEditorStyles.DrawButton("Click here to download a zipped archive of haptics."))
+				{
+					Application.OpenURL(HardlightEditor.myWindow.HapticZipLink);
+				}
+
+				NSEditorStyles.CloseVertical();
+
+			}
 		}
-		private void DrawPackageInfoElement(string packageKey, List<AssetTool.PackageInfo> info, int packageIndex = 0)
+		private void DrawPackageInfoElement(string companyName, List<AssetTool.PackageInfo> packages, int packageIndex = 0)
 		{
-			EditorGUILayout.LabelField(packageKey, EditorStyles.boldLabel);
+			EditorGUILayout.LabelField(companyName, EditorStyles.boldLabel);
+			float labelOptionWidth = 110;
+			float inputOptionWidth = 230;
+			var packagesByThisCompany = new string[0];
+			packagesByThisCompany = packages.Select(package => package.@namespace).ToArray();
 
 			#region Package Selection
 			TutorialHighlight(2, packageIndex == 0, () =>
 			{
 				GUILayout.BeginHorizontal();
 
-				EditorGUILayout.LabelField("package ", EditorStyles.miniBoldLabel, GUILayout.Width(45));
+				EditorGUILayout.LabelField("Package ", EditorStyles.miniBoldLabel, GUILayout.Width(labelOptionWidth));
 
-				var options = info.Select(package => package.@namespace).ToArray();
-				_packageSelectionIndices[packageKey] =
-				EditorGUILayout.Popup(_packageSelectionIndices[packageKey], options, GUILayout.MaxWidth(110));
+				_packageSelectionIndices[companyName] = EditorGUILayout.Popup(_packageSelectionIndices[companyName], packagesByThisCompany, GUILayout.MaxWidth(inputOptionWidth));
 				GUILayout.EndHorizontal();
 			});
 
 			IsTutorialStep(2, packageIndex == 0, () =>
 			{
-				NSEditorStyles.DrawLabel("This dropdown lets you select which of this company's haptic packages you want to import.\n"
+				NSEditorStyles.DrawLabel("This dropdown lets you select which of this company's haptic packages you want to import.\n" +
+					"NullSpace provides several packages with different objectives"
 						, 105, 14);
 			});
 			#endregion
 
-			#region Importing
+			#region Import All
 			GUILayout.BeginHorizontal();
 
-			EditorGUILayout.LabelField("Import..", EditorStyles.miniBoldLabel, GUILayout.Width(45));
+			EditorGUILayout.LabelField("Import All Packages", EditorStyles.miniBoldLabel, GUILayout.Width(labelOptionWidth));
 
-			var selectedPackage = info[_packageSelectionIndices[packageKey]];
+			var selectedPackage = packages[_packageSelectionIndices[companyName]];
 
 			//Do we have an import currently?
 			bool HaveImport = CurrentImport != null;
@@ -933,68 +1073,120 @@ namespace NullSpace.SDK.Editor
 			//TODO: Tutorial Highlights want a MaxWidth parameter?
 			TutorialHighlight(3, packageIndex == 0, () =>
 			{
+				//Disable if we're importing (which is only if we have a current import in progress)
+				using (new EditorGUI.DisabledGroupScope(importing))
+				{
+					string packageDesc = packagesByThisCompany.Length > 1 ? " packages by " : " package by ";
+					if (GUILayout.Button(packagesByThisCompany.Length + packageDesc + companyName, GUILayout.MaxWidth(inputOptionWidth)))
+					{
+						Debug.LogError("This is not yet complete\n");
+						CurrentImport.ImportPackage(selectedPackage);
+
+						//Loop through all the packages
+						for (int i = 0; i < packages.Count; i++)
+						{
+							if (packages[i].studio == companyName)
+							{
+								var nextPackage = packages[i];
+								CurrentImport.QueueImportPackage(nextPackage);
+							}
+						}
+					}
+				}
+			});
+			GUILayout.EndHorizontal();
+
+			GUILayout.Space(6);
+			#endregion
+
+			#region Import Package
+			GUILayout.BeginHorizontal();
+
+			EditorGUILayout.LabelField("Import Package", EditorStyles.miniBoldLabel, GUILayout.Width(labelOptionWidth));
+
+			selectedPackage = packages[_packageSelectionIndices[companyName]];
+
+			//Do we have an import currently?
+			HaveImport = CurrentImport != null;
+
+			//Are we currently importing (or fetching)
+			importing = HaveImport ? CurrentImport.Importing || CurrentImport.Fetching : false;
+
+			if (!HaveImport)
+			{
+				SetupImport();
+			}
+
+			//TODO: Tutorial Highlights want a MaxWidth parameter?
+			TutorialHighlight(3, packageIndex == 0, () =>
+			{
 
 				//Disable if we're importing (which is only if we have a current import in progress)
 				using (new EditorGUI.DisabledGroupScope(importing))
 				{
-					if (GUILayout.Button("All", GUILayout.MaxWidth(60)))
+					if (GUILayout.Button("Entire [" + packagesByThisCompany[_packageSelectionIndices[companyName]] + "] Package", GUILayout.MaxWidth(inputOptionWidth)))
 					{
-
-						CurrentImport.ImportAll(selectedPackage);
+						CurrentImport.ImportPackage(selectedPackage);
 					}
 				}
 			});
+			GUILayout.EndHorizontal();
+			#endregion
 
 			#region Import Individual
-			EditorGUILayout.LabelField("Individual..", EditorStyles.miniBoldLabel, GUILayout.Width(65));
+			GUILayout.BeginHorizontal();
+			EditorGUILayout.LabelField("Import Individual  ", EditorStyles.miniBoldLabel, GUILayout.Width(labelOptionWidth));
 
 			using (new EditorGUI.DisabledGroupScope(importing))
 			{
 				TutorialHighlight(4, packageIndex == 0, () =>
 				{
-					if (GUILayout.Button("Sequence", GUILayout.MaxWidth(80)))
+					if (GUILayout.Button("Sequence", GUILayout.MaxWidth(inputOptionWidth / 3 - 3)))
 					{
 						OpenFileDialogAndMakeAsset(selectedPackage.path, "sequence");
 					}
 				});
 				TutorialHighlight(5, packageIndex == 0, () =>
 				{
-					if (GUILayout.Button("Pattern", GUILayout.MaxWidth(80)))
+					if (GUILayout.Button("Pattern", GUILayout.MaxWidth(inputOptionWidth / 3 - 3)))
 					{
 						OpenFileDialogAndMakeAsset(selectedPackage.path, "pattern");
 					}
 				});
 				TutorialHighlight(6, packageIndex == 0, () =>
 				{
-					if (GUILayout.Button("Experience", GUILayout.MaxWidth(80)))
+					if (GUILayout.Button("Experience", GUILayout.MaxWidth(inputOptionWidth / 3 - 3)))
 					{
 						OpenFileDialogAndMakeAsset(selectedPackage.path, "experience");
 					}
 				});
 			}
+			GUILayout.EndHorizontal();
 			#endregion
 
-			GUILayout.EndHorizontal();
-
-
+			#region Import Tutorial Content
 			IsTutorialStep(3, packageIndex == 0, () =>
-			{
-				NSEditorStyles.DrawLabel("This button will import all haptics within the package [" + info[_packageSelectionIndices[packageKey]].@namespace + "]."
-						, 105, 14);
-			});
+				{
+					NSEditorStyles.DrawLabel("These buttons will queue up importing multiple haptics at once.\n" +
+						"It is recommended to choose this option when creating a new project or adding a new package to a project."
+							, 105, 14);
+				});
 			IsTutorialStep(4, packageIndex == 0, () =>
 			{
-				NSEditorStyles.DrawLabel("Sequences are the smallest user component.\nThey contain no location information, merely time, effect and strength.\nA sequence can be played if you give it Area information using AreaFlags."
+				NSEditorStyles.DrawLabel("Sequences are the smallest user component.\nThey contain no location information, merely time, effect and strength.\nA sequence can be played if you give it Area information using AreaFlags.\n\n" +
+					"This option is recommended if you have a single new asset or if you want to reimport a damaged haptic file."
 						, 105, 14);
 			});
 			IsTutorialStep(5, packageIndex == 0, () =>
 			{
-				NSEditorStyles.DrawLabel("A pattern is the most usable user component.\nPatterns are made up of sequences with time offset and Area information. This means you can reuse common small components but give them novel location information.\n\nA pattern can represent a small to large haptic animation."
+				NSEditorStyles.DrawLabel("A pattern is the most usable user component.\nPatterns are made up of sequences with time offset and Area information. This means you can reuse common small components but give them novel location information.\n\nA pattern can represent a small to large haptic animation.\n\n" +
+					"This option is recommended if you have a single new asset or if you want to reimport a damaged haptic file."
 						, 105, 14);
 			});
 			IsTutorialStep(6, packageIndex == 0, () =>
 			{
-				NSEditorStyles.DrawLabel("Experiences are a complex haptic construct made up of multiple patterns with additional time offset information.\nExperiences are best described as cutscene haptics. Best used for when you have many patterns you want to execute with timing information."
+				NSEditorStyles.DrawLabel("Experiences are a complex haptic construct made up of multiple patterns with additional time offset information.\nExperiences are best described as cutscene haptics. Best used for when you have many patterns you want to execute with timing information.\n\n" +
+					"This option is recommended if you have a single new asset or if you want to reimport a damaged haptic file."
 						, 105, 14);
 			});
 			#endregion

@@ -97,6 +97,32 @@ namespace NullSpace.SDK.Editor
 			GUILayout.Box("", new GUILayoutOption[] { GUILayout.Height(3), GUILayout.Height(height) });
 		}
 
+		public static void OpenVertical(bool ExpandWidth = true)
+		{
+			GUILayout.BeginVertical("Box", new GUILayoutOption[] { GUILayout.ExpandWidth(true) });
+		}
+		public static void OpenVertical(ColorBoxType boxType, bool ExpandWidth = true)
+		{
+			GUILayout.BeginVertical("", GetColoredHelpBoxStyle(boxType), new GUILayoutOption[] { GUILayout.ExpandWidth(true) });
+		}
+		public static void OpenVertical(MessageType messageType, bool ExpandWidth = true)
+		{
+			ColorBoxType type = ColorBoxType.Normal;
+			if (messageType == MessageType.Error)
+				type = ColorBoxType.Error;
+			if (messageType == MessageType.Warning)
+				type = ColorBoxType.Warning;
+			if (messageType == MessageType.None)
+				type = ColorBoxType.Tutorial;
+
+			OpenVertical(type, ExpandWidth);
+		}
+
+		public static void CloseVertical()
+		{
+			GUILayout.EndVertical();
+		}
+
 		public static void OpenHorizontal(bool ExpandWidth = true)
 		{
 			GUILayout.BeginHorizontal("Box", new GUILayoutOption[] { GUILayout.ExpandWidth(true) });

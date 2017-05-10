@@ -50,8 +50,14 @@ namespace NullSpace.SDK.Editor
 				//Local scrollview
 				//scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
 
+				//Opening Greetings
+				myPane.IsTutorialStep(0, () =>
+				{
+					NSEditorStyles.DrawLabel("Welcome to the Suit Setup Tool-torial!\nThis is a tool for setting up a suit on a collection of existing scene objects.\nIt comes with an existing prefab to give you the general gist.\nYou don't need to use this tool at all, it is intended to be a quick way to configure different objects to the body for area/positional haptics.", 105, 14);
+				});
+
 				//Closing Words Tutorial Content
-				myPane.IsTutorialStep(10, () =>
+				myPane.IsTutorialStep(11, () =>
 				{
 					NSEditorStyles.DrawLabel("Closing Words\n" +
 						"This tool will attempt to auto-find any existing suit definitions. Suit Definitions should be prefab friendly (assuming you aren't referencing outside of the created prefab.\n\n" +
@@ -64,7 +70,7 @@ namespace NullSpace.SDK.Editor
 				GUIStyle style = new GUIStyle(GUI.skin.button);
 				GUILayoutOption[] options = new GUILayoutOption[0];
 				string suitDisplayName = MyDefinition.SuitName.Length > 0 ? MyDefinition.SuitName : MyDefinition.SuitRoot == null ? "Unnamed Suit" : MyDefinition.SuitRoot.name;
-				myPane.TutorialHighlight(!TopFoldout && myPane.IsStepWithinRange(0, 7), () =>
+				myPane.TutorialHighlight(!TopFoldout && myPane.IsStepWithinRange(1, 8), () =>
 				{
 					TopFoldout = NSEditorStyles.DrawGUILayoutToggle(TopFoldout, "Show Suit: " + suitDisplayName);
 				});
@@ -78,7 +84,7 @@ namespace NullSpace.SDK.Editor
 					SuitNaming(options);
 
 					//ObjectFieldFoldout = NSEditorStyles.DrawFoldout(ObjectFieldFoldout, "Show Suit Configuration");
-					myPane.TutorialHighlight(!ObjectFieldFoldout && myPane.IsStepWithinRange(1, 5), () =>
+					myPane.TutorialHighlight(!ObjectFieldFoldout && myPane.IsStepWithinRange(2, 6), () =>
 					{
 						ObjectFieldFoldout = NSEditorStyles.DrawGUILayoutToggle(ObjectFieldFoldout, "Show Suit Configuration");
 					});
@@ -92,7 +98,7 @@ namespace NullSpace.SDK.Editor
 					}
 					else
 					{
-						myPane.IsTutorialStep(myPane.IsStepWithinRange(1, 5), () =>
+						myPane.IsTutorialStep(myPane.IsStepWithinRange(2, 6), () =>
 						{
 							NSEditorStyles.DrawLabel("Expand this foldout to continue!", 105, 14);
 						});
@@ -100,11 +106,11 @@ namespace NullSpace.SDK.Editor
 
 					DrawProcessControls();
 
-					
+
 				}
 				else
 				{
-					myPane.IsTutorialStep(myPane.IsStepWithinRange(0, 7), () =>
+					myPane.IsTutorialStep(myPane.IsStepWithinRange(1, 8), () =>
 					 {
 						 NSEditorStyles.DrawLabel("Expand this foldout to continue!", 105, 14);
 					 });
@@ -132,7 +138,7 @@ namespace NullSpace.SDK.Editor
 				EditorGUILayout.BeginVertical("Box");
 				#region Suit Auto-Configuration
 				//EditorGUILayout.LabelField("Suit Options");
-				myPane.TutorialHighlight(2, () =>
+				myPane.TutorialHighlight(3, () =>
 				{
 					SuitRootObjectField(options);
 
@@ -157,7 +163,7 @@ namespace NullSpace.SDK.Editor
 					}
 				});
 
-				myPane.IsTutorialStep(2, () =>
+				myPane.IsTutorialStep(3, () =>
 				{
 					NSEditorStyles.DrawLabel("Once you have a root object, you can tell it to draw from a predefined SuitDefinition.\n\n" + (hasDefinition ?
 						"\tIt looks like you have an existing definition. This will populate from the SuitDefinition" :
@@ -175,7 +181,7 @@ namespace NullSpace.SDK.Editor
 				EditorGUILayout.BeginHorizontal();
 				content = new GUIContent("Add Child Objects", "Create child objects instead of directly adding to the targeted object.");
 
-				myPane.TutorialHighlight(3, () =>
+				myPane.TutorialHighlight(4, () =>
 				{
 					//The toggle for whether or not to add fresh child objects.
 					MyDefinition.AddChildObjects = NSEditorStyles.DrawGUILayoutToggle(!CanChangeValues, MyDefinition.AddChildObjects, content, twoColumns);
@@ -184,7 +190,7 @@ namespace NullSpace.SDK.Editor
 
 				content = new GUIContent("Add New Colliders", "Adds SuitBodyCollider objects instead of using existing ones or letting you configure it manually.\nWill add the colliders to child objects if that is also selected.");
 
-				myPane.TutorialHighlight(4, () =>
+				myPane.TutorialHighlight(5, () =>
 				{
 					//The toggle for whether or not to add trigger colliders.
 					MyDefinition.AddExclusiveTriggerCollider = NSEditorStyles.DrawGUILayoutToggle(!CanChangeValues, MyDefinition.AddExclusiveTriggerCollider, content, twoColumns);
@@ -193,14 +199,14 @@ namespace NullSpace.SDK.Editor
 				EditorGUILayout.EndHorizontal();
 
 				//This tutorial content is outside of the Horizontal region (for presentation reasons)
-				myPane.IsTutorialStep(3, () =>
+				myPane.IsTutorialStep(4, () =>
 				{
 					NSEditorStyles.DrawLabel("This option controls whether new child objects will be created to store the added components that define which part of the suit this relates too.\n" + ""
 
 						, 105, 14);
 				});
 
-				myPane.IsTutorialStep(4, () =>
+				myPane.IsTutorialStep(5, () =>
 				{
 					NSEditorStyles.DrawLabel("Do you want to add trigger colliders to the different suit objects?\nThe added colliders will be box colliders (which is accurate enough for most action gameplay)\nDisable this if you want to detect collisions elsewhere or use a more specific collider shape.\n" + ""
 
@@ -211,29 +217,28 @@ namespace NullSpace.SDK.Editor
 
 			void SuitNaming(GUILayoutOption[] options)
 			{
-				myPane.TutorialHighlight(0, () =>
+				myPane.TutorialHighlight(1, () =>
 				{
 					MyDefinition.SuitName = NSEditorStyles.TextField("Suit Name", MyDefinition.SuitName, options);
 				});
 
-				myPane.IsTutorialStep(0, () =>
+				myPane.IsTutorialStep(1, () =>
 				{
-					NSEditorStyles.DrawLabel("Welcome to the Suit Setup Tool-torial!\nLet's start by giving a name to your Suit", 105, 14);
+					NSEditorStyles.DrawLabel("Let's start by giving a name to your Suit.", 105, 14);
 				});
 			}
 			void SuitRootObjectField(GUILayoutOption[] options)
 			{
-
 				GUIContent content = new GUIContent("Suit Root (Optional)", "For modifying an existing configuration. In the future this will try to find the related objects based on common naming conventions.");
 
-				myPane.TutorialHighlight(1, () =>
+				myPane.TutorialHighlight(2, () =>
 				{
 					if (MyDefinition.SuitRoot != null)
 						Undo.RecordObject(MyDefinition.SuitRoot, "Suit Root Selected");
 					MyDefinition.SuitRoot = EditorGUILayout.ObjectField(content, MyDefinition.SuitRoot, typeof(GameObject), true, options) as GameObject;
 				});
 
-				myPane.IsTutorialStep(1, () =>
+				myPane.IsTutorialStep(2, () =>
 				{
 					NSEditorStyles.DrawLabel("This field is for an in-scene object.\nYou can create a SuitDefinition with this tool and it will attach a component to that object.", 105, 14);
 				});
@@ -262,7 +267,7 @@ namespace NullSpace.SDK.Editor
 					DisplayAreaFlag(i, threeColumns);
 					EditorGUILayout.EndHorizontal();
 
-					myPane.TutorialHighlight(5, () =>
+					myPane.TutorialHighlight(6, () =>
 					{
 						EditorGUILayout.BeginHorizontal(columnStyle);
 						//The object field for selecting the relevant object
@@ -279,9 +284,9 @@ namespace NullSpace.SDK.Editor
 					EditorGUILayout.EndHorizontal();
 				}
 
-				myPane.IsTutorialStep(5, () =>
+				myPane.IsTutorialStep(6, () =>
 				{
-					NSEditorStyles.DrawLabel("Draw Scene Objects that are part of your suit into each of the corresponding locations."
+					NSEditorStyles.DrawLabel("Drag or select Scene Objects that are part of your suit into each of the corresponding locations."
 						, 105, 14);
 				});
 			}
@@ -397,15 +402,20 @@ namespace NullSpace.SDK.Editor
 				GUILayout.EndHorizontal();
 
 				//Suit Setup Operation Tutorial Content
-				myPane.IsTutorialStep(6, () =>
-				{
-					NSEditorStyles.DrawLabel("IMPORTANT: This box will create SuitBodyCollider components.\nIt will add them to the provided objects (or create children and add the components to the children)\nThis operation will not add excessive components (instead adding flags to the components.\n\nThis operation will also add a SuitDefinition to the provided root object, which is useful for modifying the configuration later." +
-						((MyDefinition.SuitRoot == null) ? "<color=red>You have not set a Suit Root. Last chance...</color>" : "")
-						, 105, 14);
-				}, ColorBoxType.Warning);
-
-				//Suit Removal Operation Tutorial Content
 				myPane.IsTutorialStep(7, () =>
+				{
+					NSEditorStyles.DrawLabel("IMPORTANT: This box will create SuitBodyCollider components.\nIt will add them to the provided objects (or create children and add the components to the children)\nThis operation will not add excessive components (instead adding flags to the components.\n\nThis operation will also add a SuitDefinition to the provided root object, which is useful for modifying the configuration later.", 105, 14);
+				}, ColorBoxType.Warning);
+				if ((MyDefinition.SuitRoot == null))
+				{
+					myPane.IsTutorialStep(7, () =>
+					{
+						NSEditorStyles.DrawLabel("You have not set a Suit Root. Last chance..."
+							, 105, 14);
+					}, ColorBoxType.Error);
+				}
+				//Suit Removal Operation Tutorial Content
+				myPane.IsTutorialStep(8, () =>
 				{
 					NSEditorStyles.DrawLabel("This will remove all of the SuitDefinitions from the root & node objects.\nIt will delete the information defined in this EditorWindow.\nThis means you could change whether " + ""
 
@@ -418,12 +428,12 @@ namespace NullSpace.SDK.Editor
 			string SuitSetupOperation()
 			{
 				string output = string.Empty;
-				string tooltip = "This will create Suit components on " + (MyDefinition.AddChildObjects ? " children of the selected objects" : " the selected objects");
+				string tooltip = "This will create Suit components on" + (MyDefinition.AddChildObjects ? " children of the selected objects" : " the selected objects");
 				GUIContent content = new GUIContent("Create SuitBodyColliders", tooltip);
 				bool OperationForbidden = CountValidSuitHolders() < 1;
 				bool Result = false;
 
-				myPane.TutorialHighlight(6, () =>
+				myPane.TutorialHighlight(7, () =>
 				{
 					Result = NSEditorStyles.OperationButton(OperationForbidden, content);
 
@@ -454,7 +464,7 @@ namespace NullSpace.SDK.Editor
 				using (new EditorGUI.DisabledGroupScope(disabled))
 				{
 					bool beginOperation = false;
-					myPane.TutorialHighlight(7, () =>
+					myPane.TutorialHighlight(8, () =>
 					{
 						beginOperation = GUILayout.Button("Remove SuitBodyColliders");
 					});
@@ -913,20 +923,20 @@ namespace NullSpace.SDK.Editor
 				}
 				string showQuickButtonName = QuickButtonFoldout ? "Hide" : "Show";
 
-				TutorialHighlight(!QuickButtonFoldout && IsStepWithinRange(8,8), () =>
-				{
-					QuickButtonFoldout = NSEditorStyles.DrawGUILayoutToggle(QuickButtonFoldout, showQuickButtonName + " Existing Suit Body Colliders");
-				});
+				TutorialHighlight(!QuickButtonFoldout && IsStepWithinRange(9, 9), () =>
+				 {
+					 QuickButtonFoldout = NSEditorStyles.DrawGUILayoutToggle(QuickButtonFoldout, showQuickButtonName + " Existing Suit Body Colliders");
+				 });
 
 				if (QuickButtonFoldout)
 				{
-					TutorialHighlight(8, () =>
+					TutorialHighlight(9, () =>
 					{
 						bool horizOpen = false;
 						for (int i = 0; i < suitObjects.Count; i++)
 						{
-							//Selectively opening horizontals enforces 3 columns and makes multiple rows.
-							if (i % 3 == 0)
+					//Selectively opening horizontals enforces 3 columns and makes multiple rows.
+					if (i % 3 == 0)
 							{
 								if (horizOpen) EditorGUILayout.EndHorizontal();
 								EditorGUILayout.BeginHorizontal();
@@ -935,17 +945,16 @@ namespace NullSpace.SDK.Editor
 							if (suitObjects[i] != null)
 							{
 								content = new GUIContent(suitObjects[i].name, "Quick Navigate to " + suitObjects[i].name);
-								//Create a select button
-								NSEditorStyles.QuickSelectButton(false, suitObjects[i].gameObject, content, threeColumns);
+						//Create a select button
+						NSEditorStyles.QuickSelectButton(false, suitObjects[i].gameObject, content, threeColumns);
 							}
 						}
 						if (horizOpen) EditorGUILayout.EndHorizontal();
 					});
 
-					IsTutorialStep(8, QuickButtonFoldout, () =>
+					IsTutorialStep(9, QuickButtonFoldout, () =>
 					{
-						NSEditorStyles.DrawLabel(" " + ""
-
+						NSEditorStyles.DrawLabel("Quickly navigates to existing Suit Body Collider objects in the scene.\n"
 							, 105, 14);
 					});
 
@@ -958,7 +967,7 @@ namespace NullSpace.SDK.Editor
 				}
 				else
 				{
-					IsTutorialStep(8, () =>
+					IsTutorialStep(9, () =>
 					{
 						NSEditorStyles.DrawLabel(" Open this to continue! " + ""
 
@@ -1022,17 +1031,17 @@ namespace NullSpace.SDK.Editor
 			DrawQuickButtonsForSuitBodyColliders();
 
 			bool clicked = false;
-			TutorialHighlight(9, () =>
+			TutorialHighlight(10, () =>
 			{
-				 clicked = GUILayout.Button("Add Suit Configuration");
+				clicked = GUILayout.Button("Add Suit Configuration");
 			});
 
 			if (clicked)
 			{
 				AddSuitConfiguration();
 			}
-			
-			IsTutorialStep(9, () =>
+
+			IsTutorialStep(10, () =>
 			{
 				NSEditorStyles.DrawLabel("This button adds additional suit configurations.\nWe don't anticipate anyone will need multiple definitions yet but this is a future oriented feature.", 105, 14);
 			});

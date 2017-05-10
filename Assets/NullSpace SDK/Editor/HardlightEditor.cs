@@ -14,6 +14,7 @@ namespace NullSpace.SDK.Editor
 
 		private string DocumentationLink = "https://github.com/NullSpaceVR/NullSpace-Chimera-SDK/wiki";
 		private string FeedbackLink = "https://docs.google.com/a/nullspacevr.com/forms/d/e/1FAIpQLSe3aVFxPJRbj9XVhiZpYxSq26RN9yWumBUu0rCacjCu-XkFwQ/viewform";
+		public string HapticZipLink = "https://drive.google.com/drive/folders/0BzDLhj68fxxvemJ2RTVWRnRTOU0";
 		public static HardlightEditor myWindow;
 		public bool DebugHardlightEditor = false;
 		bool compactMode = false;
@@ -59,10 +60,10 @@ namespace NullSpace.SDK.Editor
 				emulation.Setup();
 				emulation.ShouldDisplay = false;
 
-				ActiveTab = package;
+				ActiveTab = setup;
 
-				HardlightPanes.Add(setup);
 				HardlightPanes.Add(package);
+				HardlightPanes.Add(setup);
 				HardlightPanes.Add(emulation);
 				//HardlightPanes.Add(new AssetImporterPane());
 				//HardlightPanes.Add(new EmulationPane());

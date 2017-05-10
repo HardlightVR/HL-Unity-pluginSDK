@@ -49,7 +49,7 @@ namespace NullSpace.SDK.Editor
 		public override void DrawPaneContent()
 		{
 			NSEditorStyles.OpenHorizontal(ColorBoxType.Warning);
-			NSEditorStyles.DrawTitle("This section is still under construction");
+			NSEditorStyles.DrawTitle("This tool is coming soon!\nIt will let you watch in real time what is going on in each pad.");
 			NSEditorStyles.CloseHorizontal();
 		}
 

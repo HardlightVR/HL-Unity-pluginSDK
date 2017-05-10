@@ -360,8 +360,8 @@ namespace NullSpace.SDK.Editor
 
 		private void DrawTutorialButtons()
 		{
-			GUILayout.Space(12);
-			NSEditorStyles.DrawTitle("Tutorial");
+			//GUILayout.Space(4);
+			NSEditorStyles.DrawTitle("Tutorial", 0);
 			NSEditorStyles.OpenHorizontal();
 
 			//Draw a back button
@@ -392,7 +392,7 @@ namespace NullSpace.SDK.Editor
 				//Draw a next button
 				if (NSEditorStyles.TutorialToolbarButton(CurrentTutorialIndex > LargestTutorialIndex - 1, "Next"))
 				{
-					OutputMessage("Next button hit", MessageType.Info);
+					//OutputMessage("Next button hit", MessageType.Info);
 					//Increment the current tutorial index
 					CurrentTutorialIndex++;
 				}
@@ -400,7 +400,7 @@ namespace NullSpace.SDK.Editor
 
 			NSEditorStyles.DrawLabel("Current Index: " + CurrentTutorialIndex);
 			NSEditorStyles.CloseHorizontal();
-			GUILayout.Space(12);
+			GUILayout.Space(2);
 		}
 
 		protected HelpMessage OutputMessage(string message, MessageType typeOfMessage = MessageType.None)

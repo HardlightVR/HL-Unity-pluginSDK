@@ -1,0 +1,16 @@
+{
+    "pattern" : [
+
+        {"time" : 0.00, "sequence" : "ns.inventory.touch", "area": "Chest_Both"},
+        {"time" : 0.30, "sequence" : "ns.inventory.touch", "area": "Upper_Ab_Both"},
+        {"time" : 0.60, "sequence" : "ns.inventory.touch", "area": "Mid_Ab_Both"},
+        {"time" : 0.90, "sequence" : "ns.inventory.touch", "area": "Lower_Ab_Both"},
+        {"time" : 1.20, "sequence" : "ns.inventory.touch", "area": "Shoulder_Both"},
+        {"time" : 1.40, "sequence" : "ns.inventory.touch", "area": "Upper_Arm_Both"},
+        {"time" : 1.60, "sequence" : "ns.inventory.touch", "area": "Forearm_Both"},
+        {"time" : 1.80, "sequence" : "ns.inventory.touch", "area": "Shoulder_Both"},
+        {"time" : 2.00, "sequence" : "ns.inventory.touch", "area": "Upper_Arm_Both"},
+        {"time" : 2.20, "sequence" : "ns.inventory.touch", "area": "Forearm_Both"},
+        
+    ]
+}

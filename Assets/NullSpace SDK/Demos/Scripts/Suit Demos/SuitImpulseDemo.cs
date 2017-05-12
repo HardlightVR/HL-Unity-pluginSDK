@@ -284,8 +284,6 @@ namespace NullSpace.SDK.Demos
 				}
 			}
 		}
-
-
 		/// <summary>
 		/// Takes an impulse and plays it with the ImpulseDemo's parameters.
 		/// This takes an impulse so you don't need to instantiate one every time.

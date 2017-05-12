@@ -1725,6 +1725,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayType: 0
+  DisplayStringOnZero: 0
+  ReplaceZeroWith: Natural Duration
 --- !u!1 &117215741
 GameObject:
   m_ObjectHideFlags: 0
@@ -6281,6 +6283,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayType: 1
+  DisplayStringOnZero: 1
+  ReplaceZeroWith: Instantaneous
 --- !u!114 &496088505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7524,6 +7528,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayType: 3
+  DisplayStringOnZero: 0
+  ReplaceZeroWith: Natural Duration
 --- !u!114 &587643438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7895,6 +7901,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayType: 2
+  DisplayStringOnZero: 0
+  ReplaceZeroWith: Natural Duration
 --- !u!114 &662819056
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9154,6 +9162,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayType: 1
+  DisplayStringOnZero: 0
+  ReplaceZeroWith: 
 --- !u!114 &760941765
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9485,6 +9495,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayType: 1
+  DisplayStringOnZero: 1
+  ReplaceZeroWith: Natural Duration
 --- !u!114 &773494275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9945,8 +9957,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TooltipName: Effect Length
-  DetailedTooltip: 'If a value of 0 is provided, it will use the natural duration
-    of the effect. Otherwise it will loop the effect for that duration.
+  DetailedTooltip: 'The duration to play the effect. If it is longer than the natural
+    duration, it will loop for the given duration.
+
+    If a value of 0 is provided, it will use the natural duration of the effect.
 
     CodeSequences do not use this parameter.'
   backgroundColor:
@@ -10463,7 +10477,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 67938673}
+      - m_Target: {fileID: 457872263}
         m_MethodName: SelectAllSuitColliders
         m_Mode: 1
         m_Arguments:
@@ -13071,6 +13085,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayType: 1
+  DisplayStringOnZero: 0
+  ReplaceZeroWith: Natural Duration
 --- !u!114 &1133194757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14672,6 +14688,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayType: 2
+  DisplayStringOnZero: 0
+  ReplaceZeroWith: Natural Duration
 --- !u!114 &1335960011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15064,7 +15082,7 @@ Prefab:
     - target: {fileID: 224000012628470334, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: -573
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224000012628470334, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -15084,22 +15102,22 @@ Prefab:
     - target: {fileID: 224000011595414456, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 266.25
+      value: 272.25
       objectReference: {fileID: 0}
     - target: {fileID: 224000011595414456, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -289
+      value: -279.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000011595414456, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 532.5
+      value: 544.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000011595414456, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 578
+      value: 559
       objectReference: {fileID: 0}
     - target: {fileID: 224000013671232512, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -15129,7 +15147,7 @@ Prefab:
     - target: {fileID: 224000013846922606, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 271.25
+      value: 277.25
       objectReference: {fileID: 0}
     - target: {fileID: 224000013846922606, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -15139,7 +15157,7 @@ Prefab:
     - target: {fileID: 224000013846922606, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 532.5
+      value: 544.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000013846922606, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -15159,22 +15177,22 @@ Prefab:
     - target: {fileID: 224000012050577180, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 271.25
+      value: 277.25
       objectReference: {fileID: 0}
     - target: {fileID: 224000012050577180, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -384
+      value: -374.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000012050577180, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 532.5
+      value: 544.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000012050577180, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 578
+      value: 559
       objectReference: {fileID: 0}
     - target: {fileID: 224000013871009870, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -18026,6 +18044,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayType: 1
+  DisplayStringOnZero: 1
+  ReplaceZeroWith: Natural Duration
 --- !u!114 &1628099878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18672,6 +18692,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayType: 1
+  DisplayStringOnZero: 1
+  ReplaceZeroWith: Instantaneous
 --- !u!114 &1686597902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19317,7 +19339,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2002492580}
-        m_MethodName: set_SelectedCodeSequence
+        m_MethodName: set_SelectedHapticSequence
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -20554,8 +20576,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TooltipName: Effect Length
-  DetailedTooltip: 'If a value of 0 is provided, it will use the natural duration
-    of the effect. Otherwise it will loop the effect for that duration.
+  DetailedTooltip: 'The duration to play the effect. If it is longer than the natural
+    duration, it will loop for the given duration.
+
+    If a value of 0 is provided, it will use the natural duration of the effect.
 
     CodeSequences do not use this parameter.'
   backgroundColor:
@@ -21252,7 +21276,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 84164899}
   m_HandleRect: {fileID: 84164898}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -21500,7 +21524,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -6, y: -4}
-  m_SizeDelta: {x: 150, y: 50}
+  m_SizeDelta: {x: 150, y: 75}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1868340531
 MonoBehaviour:
@@ -21566,7 +21590,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Haptics Explorer v0.2.0
+  m_Text: "Haptics Explorer \nv0.2.0\nPlugin v0.4"
 --- !u!222 &1868340534
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -22426,6 +22450,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayType: 0
+  DisplayStringOnZero: 0
+  ReplaceZeroWith: Natural Duration
 --- !u!114 &1951665317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23567,7 +23593,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 67938673}
+      - m_Target: {fileID: 457872263}
         m_MethodName: DeselectAllSuitColliders
         m_Mode: 1
         m_Arguments:

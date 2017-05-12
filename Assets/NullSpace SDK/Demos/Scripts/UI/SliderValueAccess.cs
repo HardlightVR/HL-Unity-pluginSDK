@@ -10,6 +10,9 @@ namespace NullSpace.SDK.Demos
 
 		public enum ForceType { Integer, TwoDecimals, Effect, String };
 		public ForceType DisplayType = ForceType.Integer;
+		public bool DisplayStringOnZero = false;
+		public string ReplaceZeroWith = "Natural Duration";
+
 		private float textValue;
 		public float TextValue
 		{
@@ -23,7 +26,8 @@ namespace NullSpace.SDK.Demos
 				}
 				else if (DisplayType == ForceType.TwoDecimals)
 				{
-					MyText.text = ((float)((int)(TextValue * 100)) / 100).ToString();
+					float val = ((float)((int)(TextValue * 100)) / 100);
+					MyText.text = val == 0 && DisplayStringOnZero ? ReplaceZeroWith: val.ToString();
 				}
 				else if (DisplayType == ForceType.Effect)
 				{

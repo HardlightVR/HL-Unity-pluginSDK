@@ -311,7 +311,6 @@ namespace NullSpace.SDK.Demos
 
 				Action<HapticHandle> playHandleAndSetLastPlayed = delegate(HapticHandle h)
 				{
-
 					LibraryManager.Inst.LastPlayed = h;
 
 					if (LibraryManager.Inst.LastPlayed != null)
@@ -321,7 +320,6 @@ namespace NullSpace.SDK.Demos
 				};
 
 				//Get the file path
-				//Debug.Log("[" + myNamespace + "] [" + fileName + "]\n" + myNamespace + "" + fileName);
 				if (myType == LibraryElementType.Sequence)
 				{
 					GetHapticDefinitionAsync(fullFilePath, delegate (HapticDefinitionFile hdf) {
@@ -342,6 +340,7 @@ namespace NullSpace.SDK.Demos
 					{
 						
 						var pat = CodeHapticFactory.CreatePattern(hdf.rootEffect.name, hdf);
+						Debug.Log("[" + myNamespace + "] [" + fileName + "]\n" + myNamespace + "" + fileName);
 
 						playHandleAndSetLastPlayed(pat.CreateHandle());
 					});
@@ -352,7 +351,8 @@ namespace NullSpace.SDK.Demos
 					{
 
 						var exp = CodeHapticFactory.CreateExperience(hdf.rootEffect.name, hdf);
-				
+						Debug.Log("[" + myNamespace + "] [" + fileName + "]\n" + myNamespace + "" + fileName);
+
 						playHandleAndSetLastPlayed(exp.CreateHandle());
 
 					});

@@ -34,6 +34,8 @@ namespace NullSpace.SDK.Demos
 		public string fileName;
 		public DateTime lastModified;
 
+		private bool ToMarkAsBroken = false;
+		private bool ToMarkAsChanged= false;
 		private bool initialized = false;
 		private string validationFailureReasons = string.Empty;
 
@@ -99,16 +101,16 @@ namespace NullSpace.SDK.Demos
 					TooltipDescriptor.AddDescriptor(gameObject, fileName + " - Experience", "Plays experience which is composed of multiple Patterns.");
 					TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "<color=#FF4500>Edit File</color>", "View Source of " + fileName + "\nWe recommend a text editor", new Color32(135, 206, 255, 225));
 				}
-				
+
 
 				//Temporary disabling of the copy-me feature.
 				copyButton.transform.parent.parent.gameObject.SetActive(false);
 
 				//casey removed: because the asset tool does it now
-			//	if (!ValidateFile())
+				//	if (!ValidateFile())
 				//{
-			//		MarkElementBroken();
-			//	}
+				//		MarkElementBroken();
+				//	}
 
 				lastModified = FileModifiedHelper.GetLastModified(fullFilePath);
 
@@ -158,6 +160,7 @@ namespace NullSpace.SDK.Demos
 
 		private void MarkElementBroken()
 		{
+			ToMarkAsBroken = false;
 			Debug.LogError("This element [" + fileAndExt + "] is broken\n");
 			//This doesn't prevent the action of the element, but it indicates that the element is broken.
 
@@ -168,7 +171,7 @@ namespace NullSpace.SDK.Demos
 
 		private void MarkElementChanged()
 		{
-			
+			ToMarkAsChanged = false;
 
 			//Debug.Log("This element [" + fileAndExt + "] is changed\n");
 			//This doesn't prevent the action of the element, but it indicates that the element is broken.
@@ -265,30 +268,38 @@ namespace NullSpace.SDK.Demos
 		}
 
 		private delegate void HapticDefinitionCallback(HapticDefinitionFile file);
+		private delegate void ExceptionCallback(Exception exceptionHit);
 		private delegate HapticDefinitionFile AsyncMethodCaller(string path);
 
 		/// <summary>
 		/// Retrieve a haptic definition file from a given path asynchronously
 		/// </summary>
 		/// <param name="path">The path to the raw asset</param>
-		/// <param name="callback">The callback to be executed upon receiving the file</param>
-		private void GetHapticDefinitionAsync(string path, HapticDefinitionCallback callback)
+		/// <param name="successCallback">The callback to be executed upon receiving the file</param>
+		/// <param name="failCallback">The callback to be executed if we encounter an exception along the way - invalid files, junk content, etc</param>
+		private void GetHapticDefinitionAsync(string path, HapticDefinitionCallback successCallback, ExceptionCallback failCallback)
 		{
 			AsyncMethodCaller caller = new AsyncMethodCaller(_assetTool.GetHapticDefinitionFile);
-		
-			IAsyncResult r = caller.BeginInvoke(path,delegate(IAsyncResult iar) {
 
+			IAsyncResult r = caller.BeginInvoke(path, delegate (IAsyncResult iar)
+			{
 				AsyncResult result = (AsyncResult)iar;
 				AsyncMethodCaller caller2 = (AsyncMethodCaller)result.AsyncDelegate;
 				HapticDefinitionCallback hdfCallback = (HapticDefinitionCallback)iar.AsyncState;
-				HapticDefinitionFile hdf = caller2.EndInvoke(iar);
 
+				try
+				{
+					HapticDefinitionFile hdf = caller2.EndInvoke(iar);
+					hdfCallback(hdf);
+				}
+				catch (Exception whatTheHellMicrosoft)
+				{
+					Debug.LogError("Async Delegate Error getting haptic definition\n" + whatTheHellMicrosoft.Message);
 
-				hdfCallback(hdf);
-
-			}, callback);
+					failCallback(whatTheHellMicrosoft);
+				}
+			}, successCallback);
 		}
-
 
 		//Make this return a bool and it'll mark the LibraryElement as broken.
 		public bool ExecuteLibraryElement()
@@ -306,10 +317,10 @@ namespace NullSpace.SDK.Demos
 				{
 					LibraryManager.Inst.LastPlayed.Stop();
 					//Todo: implement dispose again
-				//	LibraryManager.Inst.LastPlayed
+					//	LibraryManager.Inst.LastPlayed
 				}
 
-				Action<HapticHandle> playHandleAndSetLastPlayed = delegate(HapticHandle h)
+				Action<HapticHandle> playHandleAndSetLastPlayed = delegate (HapticHandle h)
 				{
 					LibraryManager.Inst.LastPlayed = h;
 
@@ -322,44 +333,66 @@ namespace NullSpace.SDK.Demos
 				//Get the file path
 				if (myType == LibraryElementType.Sequence)
 				{
-					GetHapticDefinitionAsync(fullFilePath, delegate (HapticDefinitionFile hdf) {
+					GetHapticDefinitionAsync(fullFilePath,
+						//Success Delegate
+						delegate (HapticDefinitionFile hdf)
+						{
+							var seq = CodeHapticFactory.CreateSequence(hdf.rootEffect.name, hdf);
+							//If sequence, use the specific pads selected (unsupported atm)
+							AreaFlag flag = LibraryManager.Inst.GetActiveAreas();
+							LibraryManager.Inst.SetTriggerSequence(seq, hdf.rootEffect.name);
 
-						var seq = CodeHapticFactory.CreateSequence(hdf.rootEffect.name, hdf);
-						//If sequence, use the specific pads selected (unsupported atm)
-						AreaFlag flag = LibraryManager.Inst.GetActiveAreas();
-						LibraryManager.Inst.SetTriggerSequence(seq, hdf.rootEffect.name);
+							playHandleAndSetLastPlayed(seq.CreateHandle(flag));
+						},
+						//Failure delegate
+						delegate (Exception except)
+						{
+							ToMarkAsBroken = true;
+							//Make the file red to show it's broken.
+							//Highlight the edit button.
+							//Some sort of error reporting.
+						});
 
-						playHandleAndSetLastPlayed(seq.CreateHandle(flag));
-					});
-
-				
 				}
 				if (myType == LibraryElementType.Pattern)
 				{
-					GetHapticDefinitionAsync(fullFilePath, delegate (HapticDefinitionFile hdf)
-					{
-						
-						var pat = CodeHapticFactory.CreatePattern(hdf.rootEffect.name, hdf);
-						Debug.Log("[" + myNamespace + "] [" + fileName + "]\n" + myNamespace + "" + fileName);
+					GetHapticDefinitionAsync(fullFilePath,
+						//Success Delegate
+						delegate (HapticDefinitionFile hdf)
+						{
+							var pat = CodeHapticFactory.CreatePattern(hdf.rootEffect.name, hdf);
 
-						playHandleAndSetLastPlayed(pat.CreateHandle());
-					});
+							playHandleAndSetLastPlayed(pat.CreateHandle());
+						},
+						//Failure Delegate
+						delegate (Exception except)
+						{
+							ToMarkAsBroken = true;
+							//Make the file red to show it's broken.
+							//Highlight the edit button.
+							//Some sort of error reporting.
+						});
 				}
 				if (myType == LibraryElementType.Experience)
 				{
-					GetHapticDefinitionAsync(fullFilePath, delegate (HapticDefinitionFile hdf)
-					{
+					GetHapticDefinitionAsync(fullFilePath,
+						//Success Delegate
+						delegate (HapticDefinitionFile hdf)
+						{
+							var exp = CodeHapticFactory.CreateExperience(hdf.rootEffect.name, hdf);
 
-						var exp = CodeHapticFactory.CreateExperience(hdf.rootEffect.name, hdf);
-						Debug.Log("[" + myNamespace + "] [" + fileName + "]\n" + myNamespace + "" + fileName);
+							playHandleAndSetLastPlayed(exp.CreateHandle());
 
-						playHandleAndSetLastPlayed(exp.CreateHandle());
-
-					});
+						},
+						//Failure delegate
+						delegate (Exception except)
+						{
+							ToMarkAsBroken = true;
+							//Make the file red to show it's broken.
+							//Highlight the edit button.
+							//Some sort of error reporting.
+						});
 				}
-
-				
-				
 			}
 			catch (Exception e)
 			{
@@ -411,6 +444,13 @@ namespace NullSpace.SDK.Demos
 		{
 			if (!initialized)
 				Init(_assetTool, "");
+
+			if (ToMarkAsBroken)
+				MarkElementBroken();
+
+			//Ideally changed indication would be shown by an asterisk instead of color information?
+			//if (FileHasBeenModified())
+			//	MarkElementChanged();
 		}
 	}
 }

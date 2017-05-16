@@ -96,12 +96,12 @@ namespace NullSpace.SDK.Demos
 
 		public override void OnSuitClicked(SuitBodyCollider clicked, RaycastHit hit)
 		{
-			Debug.Log("Clicked on " + clicked.name + " with a regionID value of: " + (int)clicked.regionID + "\n");
+			//Debug.Log("Clicked on " + clicked.name + " with a regionID value of: " + (int)clicked.regionID + "\n");
 		}
 
 		public override void OnSuitClicking(SuitBodyCollider clicked, RaycastHit hit)
 		{
-			Debug.Log("Clicked on " + clicked.name + " with a regionID value of: " + (int)clicked.regionID + "\n");
+			//Debug.Log("Clicked on " + clicked.name + " with a regionID value of: " + (int)clicked.regionID + "\n");
 		}
 
 		public override void OnSuitNoInput()

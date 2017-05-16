@@ -11,6 +11,5 @@
         {"time" : 1.80, "sequence" : "ns.inventory.touch", "area": "Shoulder_Both"},
         {"time" : 2.00, "sequence" : "ns.inventory.touch", "area": "Upper_Arm_Both"},
         {"time" : 2.20, "sequence" : "ns.inventory.touch", "area": "Forearm_Both"},
-        
     ]
 }

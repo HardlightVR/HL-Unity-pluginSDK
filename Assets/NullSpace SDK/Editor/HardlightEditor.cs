@@ -56,15 +56,15 @@ namespace NullSpace.SDK.Editor
 				PackagingPane package = CreateInstance<PackagingPane>();
 				package.Setup();
 				package.ShouldDisplay = true;
-				EmulationPane emulation = CreateInstance<EmulationPane>();
-				emulation.Setup();
-				emulation.ShouldDisplay = false;
+				//EmulationPane emulation = CreateInstance<EmulationPane>();
+				//emulation.Setup();
+				//emulation.ShouldDisplay = false;
 
 				ActiveTab = setup;
 
 				HardlightPanes.Add(package);
 				HardlightPanes.Add(setup);
-				HardlightPanes.Add(emulation);
+				//HardlightPanes.Add(emulation);
 				//HardlightPanes.Add(new AssetImporterPane());
 				//HardlightPanes.Add(new EmulationPane());
 
@@ -72,6 +72,7 @@ namespace NullSpace.SDK.Editor
 				mat = Resources.Load<Material>("EditorIcon");
 
 				initialized = true;
+				Repaint();
 			}
 		}
 
@@ -134,8 +135,9 @@ namespace NullSpace.SDK.Editor
 					}
 					else
 					{
-						Debug.LogError("Hardlight Pane :" + i + " is null\n");
+						//Debug.LogError("Hardlight Pane :" + i + " is null\n");
 						Init();
+						initialized = false;
 					}
 				}
 			}

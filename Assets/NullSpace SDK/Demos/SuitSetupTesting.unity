@@ -115,7 +115,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 40332476}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1.67}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -1119,7 +1119,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1101501917}
   m_LocalRotation: {x: -0.0024212082, y: -0.6978608, z: 0.716224, w: 0.0027747066}
-  m_LocalPosition: {x: 0.06, y: 0.78, z: -2.29}
+  m_LocalPosition: {x: 0, y: 0.32, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0.7639614}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -1602,24 +1602,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SuitName: Player Body
   SuitRoot: {fileID: 40332476}
-  DefaultOptions: 01000000020000000400000008000000100000002000000040000000800000000000010000000200000004000000080000001000000020000000400000008000
-  SuitHolders:
-  - {fileID: 183197478}
-  - {fileID: 2085533200}
-  - {fileID: 1483772827}
-  - {fileID: 239886858}
-  - {fileID: 234841482}
-  - {fileID: 2046536737}
-  - {fileID: 918297298}
-  - {fileID: 549744281}
-  - {fileID: 231229452}
-  - {fileID: 1364784845}
-  - {fileID: 1401278252}
-  - {fileID: 873237045}
-  - {fileID: 1057777682}
-  - {fileID: 1123554541}
-  - {fileID: 2068022709}
-  - {fileID: 2122235576}
+  DefinedAreas: 
+  ZoneHolders: []
   SceneReferences:
   - {fileID: 183197482}
   - {fileID: 2085533204}

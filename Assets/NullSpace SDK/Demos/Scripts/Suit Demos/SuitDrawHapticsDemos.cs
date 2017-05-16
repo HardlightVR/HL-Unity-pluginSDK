@@ -16,7 +16,7 @@ namespace NullSpace.SDK.Demos
 	{
 		private Color selectedColor = new Color(100 / 255f, 200 / 255f, 200 / 255f, 1f);
 		private Color unselectedColor = new Color(227 / 255f, 227 / 255f, 227 / 255f, 1f);
-		public Dictionary<SuitBodyCollider, float> PlayingLocations;
+		public Dictionary<HardlightCollider, float> PlayingLocations;
 		public List<float> playingDurations;
 
 		/// <summary>
@@ -41,8 +41,8 @@ namespace NullSpace.SDK.Demos
 
 		public override void Start()
 		{
-			suitObjects = new List<SuitBodyCollider>();
-			suitObjects = FindObjectsOfType<SuitBodyCollider>().ToList();
+			suitObjects = new List<HardlightCollider>();
+			suitObjects = FindObjectsOfType<HardlightCollider>().ToList();
 			for (int i = 0; i < suitObjects.Count; i++)
 			{
 				MeshRenderer rend = suitObjects[i].GetComponent<MeshRenderer>();
@@ -81,12 +81,12 @@ namespace NullSpace.SDK.Demos
 			UncolorAllSuitColliders();
 		}
 
-		public override void OnSuitClicked(SuitBodyCollider clicked, RaycastHit hit)
+		public override void OnSuitClicked(HardlightCollider clicked, RaycastHit hit)
 		{
 			PlayDrawnHaptic(clicked, hit);
 		}
 
-		public override void OnSuitClicking(SuitBodyCollider clicked, RaycastHit hit)
+		public override void OnSuitClicking(HardlightCollider clicked, RaycastHit hit)
 		{
 			PlayDrawnHaptic(clicked, hit);
 		}
@@ -95,7 +95,7 @@ namespace NullSpace.SDK.Demos
 		{
 		}
 
-		public void PlayDrawnHaptic(SuitBodyCollider clicked, RaycastHit hit)
+		public void PlayDrawnHaptic(HardlightCollider clicked, RaycastHit hit)
 		{
 			//This could be done more efficiently. It is kept simple to make the code more readible.
 			int index = suitObjects.IndexOf(clicked);

@@ -173,7 +173,7 @@ namespace NullSpace.SDK.Editor
 				});
 				#endregion
 
-				//content = new GUIContent("Can Change Values", "Can't be adjusted if you have a current layout. Remove SuitBodyColliders to adjust config.");
+				//content = new GUIContent("Can Change Values", "Can't be adjusted if you have a current layout. Remove HardlightCollider to adjust config.");
 				//CanChangeValues = CreateStyledToggle(false, CanChangeValues, content, innerOptions);
 
 				GUILayoutOption[] twoColumns = NSEditorStyles.NColumnsLayoutOptions();
@@ -322,14 +322,14 @@ namespace NullSpace.SDK.Editor
 					//If the value changes
 					if (MyDefinition.ZoneHolders[index] != null && o != MyDefinition.ZoneHolders[index])
 					{
-						SuitBodyCollider suit = LookupSceneReference(index);
+						HardlightCollider suit = LookupSceneReference(index);
 						AssignQuickButton(suit, index);
 					}
 				}
 			}
 
 			//When we change the field. Lookup that object and assign the quickbutton if it can
-			SuitBodyCollider LookupSceneReference(int index)
+			HardlightCollider LookupSceneReference(int index)
 			{
 				GameObject targObj = MyDefinition.ZoneHolders[index];
 				if (MyDefinition.ZoneHolders[index] != null)
@@ -339,12 +339,12 @@ namespace NullSpace.SDK.Editor
 
 					if (objToCheck != null)
 					{
-						return objToCheck.gameObject.GetComponent<SuitBodyCollider>();
+						return objToCheck.gameObject.GetComponent<HardlightCollider>();
 					}
 				}
 				return null;
 			}
-			bool AssignQuickButton(SuitBodyCollider suit, int index)
+			bool AssignQuickButton(HardlightCollider suit, int index)
 			{
 				if (suit != null && MyDefinition.SceneReferences[index] == null)
 				{
@@ -404,7 +404,7 @@ namespace NullSpace.SDK.Editor
 				//Suit Setup Operation Tutorial Content
 				myPane.IsTutorialStep(7, () =>
 				{
-					NSEditorStyles.DrawLabel("IMPORTANT: This box will create SuitBodyCollider components.\nIt will add them to the provided objects (or create children and add the components to the children)\nThis operation will not add excessive components (instead adding flags to the components.\n\nThis operation will also add a SuitDefinition to the provided root object, which is useful for modifying the configuration later.", 105, 14);
+					NSEditorStyles.DrawLabel("IMPORTANT: This box will create HardlightCollider components.\nIt will add them to the provided objects (or create children and add the components to the children)\nThis operation will not add excessive components (instead adding flags to the components.\n\nThis operation will also add a SuitDefinition to the provided root object, which is useful for modifying the configuration later.", 105, 14);
 				}, ColorBoxType.Warning);
 				if ((MyDefinition.SuitRoot == null))
 				{
@@ -429,7 +429,7 @@ namespace NullSpace.SDK.Editor
 			{
 				string output = string.Empty;
 				string tooltip = "This will create Suit components on" + (MyDefinition.AddChildObjects ? " children of the selected objects" : " the selected objects");
-				GUIContent content = new GUIContent("Create SuitBodyColliders", tooltip);
+				GUIContent content = new GUIContent("Create HardlightCollider", tooltip);
 				bool OperationForbidden = CountValidSuitHolders() < 1;
 				bool Result = false;
 
@@ -456,7 +456,7 @@ namespace NullSpace.SDK.Editor
 			{
 				string output = string.Empty;
 				bool disabled = true;
-				if (CountSuitBodyColliders() > 0)
+				if (CountHardlightCollider() > 0)
 				{
 					disabled = false;
 				}
@@ -466,7 +466,7 @@ namespace NullSpace.SDK.Editor
 					bool beginOperation = false;
 					myPane.TutorialHighlight(8, () =>
 					{
-						beginOperation = GUILayout.Button("Remove SuitBodyColliders");
+						beginOperation = GUILayout.Button("Remove HardlightCollider");
 					});
 
 					if (beginOperation)
@@ -508,7 +508,7 @@ namespace NullSpace.SDK.Editor
 
 				return validCount;
 			}
-			int CountSuitBodyColliders()
+			int CountHardlightCollider()
 			{
 				int validCount = 0;
 				if (MyDefinition.SceneReferences != null && MyDefinition.SceneReferences.Count == MyDefinition.DefinedAreas.Count)
@@ -531,7 +531,7 @@ namespace NullSpace.SDK.Editor
 			#region Processing Functions
 			void AutoFindElementsFromRoot(GameObject Root)
 			{
-				List<SuitBodyCollider> suitObjects = Root.GetComponentsInChildren<SuitBodyCollider>().ToList();
+				List<HardlightCollider> suitObjects = Root.GetComponentsInChildren<HardlightCollider>().ToList();
 
 				if (suitObjects.Count > 0)
 				{
@@ -600,7 +600,7 @@ namespace NullSpace.SDK.Editor
 
 			}
 
-			string ClearSuitBodyColliders()
+			string ClearHardlightCollider()
 			{
 				Debug.LogError("This is not used\nYou probably shouldn't use this - it was a temporary call and was refactored into RemoveComponentsForSuit\n");
 				string output = string.Empty;
@@ -689,13 +689,13 @@ namespace NullSpace.SDK.Editor
 
 						Collider col = null;
 						//Check if it has one already
-						SuitBodyCollider suit = targetGO.GetComponent<SuitBodyCollider>();
+						HardlightCollider suit = targetGO.GetComponent<HardlightCollider>();
 						if (suit == null)
 						{
 							//Add one if it doesn't
 							//suit = targetGO.AddComponent<SuitBodyCollider>(); - Not undo-able
 
-							suit = Undo.AddComponent<SuitBodyCollider>(targetGO);
+							suit = Undo.AddComponent<HardlightCollider>(targetGO);
 							Undo.RecordObject(suit.gameObject, "Modifying Suit Object");
 
 							if (MyDefinition.AddExclusiveTriggerCollider)
@@ -733,7 +733,7 @@ namespace NullSpace.SDK.Editor
 				return output;
 			}
 
-			Collider AddColliderForSuit(SuitBodyCollider suit)
+			Collider AddColliderForSuit(HardlightCollider suit)
 			{
 				GameObject go = suit.gameObject;
 
@@ -785,7 +785,7 @@ namespace NullSpace.SDK.Editor
 							{
 								if (MyDefinition.ZoneHolders[i] != null)
 								{
-									SuitBodyCollider suit = MyDefinition.ZoneHolders[i].GetComponent<SuitBodyCollider>();
+									HardlightCollider suit = MyDefinition.ZoneHolders[i].GetComponent<HardlightCollider>();
 
 									if (suit != null)
 									{
@@ -903,7 +903,7 @@ namespace NullSpace.SDK.Editor
 			return suit;
 		}
 
-		void DrawQuickButtonsForSuitBodyColliders()
+		void DrawQuickButtonsForHardlightColliders()
 		{
 			GUIStyle style = new GUIStyle(GUI.skin.button);
 			//GUILayoutOption[] options = new GUILayoutOption[0];
@@ -911,9 +911,9 @@ namespace NullSpace.SDK.Editor
 			GUILayoutOption[] threeColumns = NSEditorStyles.NColumnsLayoutOptions(3);
 			GUIContent content = new GUIContent(string.Empty);
 			//Toggle to show a list of all the suits
-			List<SuitBodyCollider> suitObjects = new List<SuitBodyCollider>();
+			List<HardlightCollider> suitObjects = new List<HardlightCollider>();
 
-			suitObjects = FindObjectsOfType<SuitBodyCollider>().ToList();
+			suitObjects = FindObjectsOfType<HardlightCollider>().ToList();
 
 			if (suitObjects.Count > 0)
 			{
@@ -925,7 +925,7 @@ namespace NullSpace.SDK.Editor
 
 				TutorialHighlight(!QuickButtonFoldout && IsStepWithinRange(9, 9), () =>
 				 {
-					 QuickButtonFoldout = NSEditorStyles.DrawGUILayoutToggle(QuickButtonFoldout, showQuickButtonName + " Existing Suit Body Colliders");
+					 QuickButtonFoldout = NSEditorStyles.DrawGUILayoutToggle(QuickButtonFoldout, showQuickButtonName + " Existing Hardlight Colliders");
 				 });
 
 				if (QuickButtonFoldout)
@@ -1028,7 +1028,7 @@ namespace NullSpace.SDK.Editor
 
 			EditorGUILayout.EndScrollView();
 
-			DrawQuickButtonsForSuitBodyColliders();
+			DrawQuickButtonsForHardlightColliders();
 
 			bool clicked = false;
 			TutorialHighlight(10, () =>

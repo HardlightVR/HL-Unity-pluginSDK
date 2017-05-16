@@ -12,10 +12,7 @@ namespace NullSpace.SDK
 	/// <summary>
 	/// A simple class to link up a collider with a certain area on the suit
 	/// </summary>
-	/// ZoneCollider
-	/// HapticCollider
-	/// HapticZoneCollider
-	public class SuitBodyCollider : MonoBehaviour
+	public class HardlightCollider : MonoBehaviour
 	{
 		[Header("Note: Attach this to your player's body.")]
 		[Header("You can select multiple areas for a single collider.")]
@@ -40,7 +37,7 @@ namespace NullSpace.SDK
 		{
 			if (myCollider == null)
 			{
-				Debug.LogError("SuitBodyCollider does not have a collider set - Name [" + name + "] with regionID [" + regionID + "].\n");
+				Debug.LogError("HardlightCollider does not have a collider set - Name [" + name + "] with regionID [" + regionID + "].\n");
 			}
 			else
 			{

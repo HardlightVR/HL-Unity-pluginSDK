@@ -94,12 +94,12 @@ namespace NullSpace.SDK.Demos
 			return Color.white;
 		}
 
-		public override void OnSuitClicked(SuitBodyCollider clicked, RaycastHit hit)
+		public override void OnSuitClicked(HardlightCollider clicked, RaycastHit hit)
 		{
 			//Debug.Log("Clicked on " + clicked.name + " with a regionID value of: " + (int)clicked.regionID + "\n");
 		}
 
-		public override void OnSuitClicking(SuitBodyCollider clicked, RaycastHit hit)
+		public override void OnSuitClicking(HardlightCollider clicked, RaycastHit hit)
 		{
 			//Debug.Log("Clicked on " + clicked.name + " with a regionID value of: " + (int)clicked.regionID + "\n");
 		}

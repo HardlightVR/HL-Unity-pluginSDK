@@ -37,7 +37,7 @@
 //				}
 //				if (drawnCount < 1)
 //				{
-//					EditorGUILayout.LabelField("Configure the SuitBodyColliders in the Hardlight Quick Setup Tool");
+//					EditorGUILayout.LabelField("Configure the HardlightCollider in the Hardlight Quick Setup Tool");
 
 //				}
 

@@ -21,8 +21,8 @@ namespace NullSpace.SDK.Demos
 
 		public override void Start()
 		{
-			suitObjects = new List<SuitBodyCollider>();
-			suitObjects = FindObjectsOfType<SuitBodyCollider>().ToList();
+			suitObjects = new List<HardlightCollider>();
+			suitObjects = FindObjectsOfType<HardlightCollider>().ToList();
 			for (int i = 0; i < suitObjects.Count; i++)
 			{
 				MeshRenderer rend = suitObjects[i].GetComponent<MeshRenderer>();
@@ -52,7 +52,7 @@ namespace NullSpace.SDK.Demos
 			UncolorAllSuitColliders();
 		}
 
-		public override void OnSuitClicked(SuitBodyCollider clicked, RaycastHit hit)
+		public override void OnSuitClicked(HardlightCollider clicked, RaycastHit hit)
 		{
 			Adding = true;
 
@@ -72,7 +72,7 @@ namespace NullSpace.SDK.Demos
 			}
 		}
 
-		public override void OnSuitClicking(SuitBodyCollider clicked, RaycastHit hit)
+		public override void OnSuitClicking(HardlightCollider clicked, RaycastHit hit)
 		{
 			if (!Adding)
 			{
@@ -103,7 +103,7 @@ namespace NullSpace.SDK.Demos
 		public void SelectAllSuitColliders()
 		{
 			suitObjects.Clear();
-			suitObjects = FindObjectsOfType<SuitBodyCollider>().ToList();
+			suitObjects = FindObjectsOfType<HardlightCollider>().ToList();
 			for (int i = 0; i < suitObjects.Count; i++)
 			{
 				MeshRenderer rend = suitObjects[i].GetComponent<MeshRenderer>();

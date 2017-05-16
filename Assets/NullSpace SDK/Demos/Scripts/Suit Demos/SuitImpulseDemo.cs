@@ -159,19 +159,19 @@ namespace NullSpace.SDK.Demos
 		#region Scene Refs
 		[Header("Public Objects for ease of understanding")]
 		//First Selected - For showing where we clicked/last clicked.
-		public SuitBodyCollider ImpulseOrigin;
+		public HardlightCollider ImpulseOrigin;
 		//Second Selected - for showing the start/end points
-		public SuitBodyCollider ImpulseDestination;
+		public HardlightCollider ImpulseDestination;
 
 		//Each available 'button'. Very useful for creating the color visualization.
 		//Our lookup method could be better, but the scene isn't heavily populated and we don't need VR FPS
-		List<SuitBodyCollider> SuitNodes;
+		List<HardlightCollider> SuitNodes;
 		#endregion
 
 		public override void Start()
 		{
 			base.Start();
-			SuitNodes = FindObjectsOfType<SuitBodyCollider>().ToList();
+			SuitNodes = FindObjectsOfType<HardlightCollider>().ToList();
 		}
 
 		void Update()
@@ -200,7 +200,7 @@ namespace NullSpace.SDK.Demos
 			ColorSuit(ImpulseDestination, unselectedColor);
 		}
 
-		public override void OnSuitClicked(SuitBodyCollider clicked, RaycastHit hit)
+		public override void OnSuitClicked(HardlightCollider clicked, RaycastHit hit)
 		{
 			//Start with which mode this SuitDemo is in
 
@@ -225,12 +225,12 @@ namespace NullSpace.SDK.Demos
 			}
 		}
 
-		public override void OnSuitClicking(SuitBodyCollider suit, RaycastHit hit)
+		public override void OnSuitClicking(HardlightCollider suit, RaycastHit hit)
 		{ }
 		public override void OnSuitNoInput()
 		{ }
 
-		private void ClickedSuitInTraversalMode(SuitBodyCollider clicked, RaycastHit hit)
+		private void ClickedSuitInTraversalMode(HardlightCollider clicked, RaycastHit hit)
 		{
 			//None are currently selected
 			if (ImpulseOrigin == null)
@@ -403,9 +403,9 @@ namespace NullSpace.SDK.Demos
 			}
 		}
 
-		SuitBodyCollider GetSuitForNode(GraphEngine.SuitNode target)
+		HardlightCollider GetSuitForNode(GraphEngine.SuitNode target)
 		{
-			SuitBodyCollider suit = null;
+			HardlightCollider suit = null;
 
 			//Get the SuitBodyCollider node where the region IDs match. If multiple match, take the first
 			suit = SuitNodes.Where(x => x.regionID == target.Location).First();
@@ -421,7 +421,7 @@ namespace NullSpace.SDK.Demos
 		IEnumerator ColorSuitForEmanation()
 		{
 			//Save the beginning in local scope in case it gets changed by additional input 
-			SuitBodyCollider start = ImpulseOrigin;
+			HardlightCollider start = ImpulseOrigin;
 
 			//List of Lists
 			//Stage 1: The pad clicked
@@ -439,7 +439,7 @@ namespace NullSpace.SDK.Demos
 						//For each node in this stage
 						for (int inner = 0; inner < nodes[outter].Count; inner++)
 						{
-							SuitBodyCollider next = GetSuitForNode(nodes[outter][inner]);
+							HardlightCollider next = GetSuitForNode(nodes[outter][inner]);
 							if (next != null)
 							{
 								//Color that pad for the duration of the Effect
@@ -456,8 +456,8 @@ namespace NullSpace.SDK.Demos
 		IEnumerator ColorSuitForTraversal()
 		{
 			//Save the beginning and end in local scope in case they get changed by additional input (Which could cause some null refs/index out of bounds)
-			SuitBodyCollider start = ImpulseOrigin;
-			SuitBodyCollider destination = ImpulseDestination;
+			HardlightCollider start = ImpulseOrigin;
+			HardlightCollider destination = ImpulseDestination;
 			List<GraphEngine.SuitNode> nodes = ImpulseGenerator._grapher.Dijkstras(start.regionID, destination.regionID);
 			if (nodes != null && nodes.Count > 0)
 			{
@@ -467,7 +467,7 @@ namespace NullSpace.SDK.Demos
 					if (nodes[outter] != null)
 					{
 						//Get the corresponding Suit based on the GraphEngine's edge map.
-						SuitBodyCollider next = GetSuitForNode(nodes[outter]);
+						HardlightCollider next = GetSuitForNode(nodes[outter]);
 						if (next != null)
 						{
 							//Color that pad for it's effect duration.
@@ -485,7 +485,7 @@ namespace NullSpace.SDK.Demos
 		/// </summary>
 		/// <param name="suit">The node to color</param>
 		/// <returns></returns>
-		IEnumerator ColorPadForXDuration(SuitBodyCollider suit)
+		IEnumerator ColorPadForXDuration(HardlightCollider suit)
 		{
 			//This function simulates the color of the pad. 
 			//It doesn't actually track the under-the-hood information of what is/isn't playing
@@ -493,7 +493,7 @@ namespace NullSpace.SDK.Demos
 			//Tools for that functionality are currently in the pipeline.
 
 			//I don't think we need to save this local reference. Just in case.
-			SuitBodyCollider current = suit;
+			HardlightCollider current = suit;
 
 			//You could do a fancy color lerp functionality here...
 			ColorSuit(current, selectedColor);

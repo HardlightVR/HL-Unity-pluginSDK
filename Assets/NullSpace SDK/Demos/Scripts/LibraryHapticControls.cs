@@ -157,7 +157,7 @@ namespace NullSpace.SDK.Demos
 				if (Physics.Raycast(ray, out hit, 100))
 				{
 					//Get the clicked SuitBodyCollider
-					SuitBodyCollider clicked = hit.collider.gameObject.GetComponent<SuitBodyCollider>();
+					HardlightCollider clicked = hit.collider.gameObject.GetComponent<HardlightCollider>();
 
 					//Assuming there is one
 					if (clicked != null)
@@ -182,7 +182,7 @@ namespace NullSpace.SDK.Demos
 				if (Physics.Raycast(ray, out hit, 100))
 				{
 					//Get the clicked SuitBodyCollider
-					SuitBodyCollider clicked = hit.collider.gameObject.GetComponent<SuitBodyCollider>();
+					HardlightCollider clicked = hit.collider.gameObject.GetComponent<HardlightCollider>();
 
 					//Assuming there is one
 					if (clicked != null)

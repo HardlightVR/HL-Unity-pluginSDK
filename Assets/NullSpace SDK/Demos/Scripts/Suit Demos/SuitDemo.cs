@@ -23,8 +23,8 @@ namespace NullSpace.SDK.Demos
 		//Turn off my needed things
 		abstract public void DeactivateDemo();
 
-		abstract public void OnSuitClicked(SuitBodyCollider suit, RaycastHit hit);
-		abstract public void OnSuitClicking(SuitBodyCollider suit, RaycastHit hit);
+		abstract public void OnSuitClicked(HardlightCollider suit, RaycastHit hit);
+		abstract public void OnSuitClicking(HardlightCollider suit, RaycastHit hit);
 		abstract public void OnSuitNoInput();
 
 		public Button MyEnableButton;
@@ -35,7 +35,7 @@ namespace NullSpace.SDK.Demos
 
 		public KeyCode ActivateHotkey = KeyCode.None;
 
-		public List<SuitBodyCollider> suitObjects;
+		public List<HardlightCollider> suitObjects;
 
 		public List<GameObject> ActiveObjects;
 		public List<GameObject> ActiveIfDisabledObjects;
@@ -80,8 +80,8 @@ namespace NullSpace.SDK.Demos
 
 		public virtual void Start()
 		{
-			suitObjects = new List<SuitBodyCollider>();
-			suitObjects = FindObjectsOfType<SuitBodyCollider>().ToList();
+			suitObjects = new List<HardlightCollider>();
+			suitObjects = FindObjectsOfType<HardlightCollider>().ToList();
 			SetupButtons();
 			SetEnableButtonBackgroundColor(buttonUnselected);
 			DeactivateDemo();
@@ -139,7 +139,7 @@ namespace NullSpace.SDK.Demos
 			}
 			return Color.white;
 		}
-		public void ColorSuitCollider(SuitBodyCollider suitCollider, Color setColor)
+		public void ColorSuitCollider(HardlightCollider suitCollider, Color setColor)
 		{
 			ColorSuitCollider(suitCollider.gameObject, setColor);
 		}
@@ -150,7 +150,7 @@ namespace NullSpace.SDK.Demos
 		/// </summary>
 		/// <param name="suit"></param>
 		/// <param name="col"></param>
-		protected void ColorSuit(SuitBodyCollider suit, Color col)
+		protected void ColorSuit(HardlightCollider suit, Color col)
 		{
 			//This is just sanitization and to make the code more robust.
 			if (suit != null)
@@ -161,10 +161,10 @@ namespace NullSpace.SDK.Demos
 			}
 		}
 
-		public IEnumerator ColorPadForXDuration(SuitBodyCollider suit, Color targetColor, Color revertColor, float MinDuration = 0.0f)
+		public IEnumerator ColorPadForXDuration(HardlightCollider suit, Color targetColor, Color revertColor, float MinDuration = 0.0f)
 		{
 			//I don't think we need to save this local reference. Just in case.
-			SuitBodyCollider current = suit;
+			HardlightCollider current = suit;
 
 			//You could do a fancy color lerp functionality here...
 			ColorSuit(current, targetColor);
@@ -194,12 +194,12 @@ namespace NullSpace.SDK.Demos
 			//I need nothing
 		}
 
-		public override void OnSuitClicked(SuitBodyCollider clicked, RaycastHit hit)
+		public override void OnSuitClicked(HardlightCollider clicked, RaycastHit hit)
 		{
 			Debug.Log("Clicked on " + clicked.name + " with a regionID value of: " + (int)clicked.regionID + "\n");
 		}
 
-		public override void OnSuitClicking(SuitBodyCollider clicked, RaycastHit hit)
+		public override void OnSuitClicking(HardlightCollider clicked, RaycastHit hit)
 		{
 			Debug.Log("Clicked on " + clicked.name + " with a regionID value of: " + (int)clicked.regionID + "\n");
 		}

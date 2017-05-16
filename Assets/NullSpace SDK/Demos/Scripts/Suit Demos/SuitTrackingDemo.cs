@@ -28,14 +28,14 @@ namespace NullSpace.SDK.Demos
 			HandleRequiredObjects(false);
 		}
 
-		public override void OnSuitClicked(SuitBodyCollider clicked, RaycastHit hit)
+		public override void OnSuitClicked(HardlightCollider clicked, RaycastHit hit)
 		{
 			//Click to recalibrate Suit
 
 			//Click to play that pad?
 		}
 
-		public override void OnSuitClicking(SuitBodyCollider suit, RaycastHit hit)
+		public override void OnSuitClicking(HardlightCollider suit, RaycastHit hit)
 		{ }
 		public override void OnSuitNoInput()
 		{ }

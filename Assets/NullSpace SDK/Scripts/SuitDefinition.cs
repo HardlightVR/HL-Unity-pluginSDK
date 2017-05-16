@@ -12,13 +12,13 @@ namespace NullSpace.SDK.Demos
 		[SerializeField]
 		public List<AreaFlag> DefinedAreas;
 
-		//The Game Objects to fill the fields (which will get suit body references
+		//The Game Objects to fill the fields (which will get hardlight collider references)
 		[SerializeField]
 		public List<GameObject> ZoneHolders;
 
 		//the objects added. Will get a nice button list to quick get to each of them.
 		[SerializeField]
-		public List<SuitBodyCollider> SceneReferences;
+		public List<HardlightCollider> SceneReferences;
 
 		public int HapticsLayer = 31;
 		public bool AddChildObjects = true;
@@ -81,7 +81,7 @@ namespace NullSpace.SDK.Demos
 			if (SceneReferences == null || SceneReferences.Count == 0)
 			{
 				//Debug.Log("Resetting Filled Areas\n");
-				SceneReferences = new List<SuitBodyCollider>();
+				SceneReferences = new List<HardlightCollider>();
 
 				for (int i = 0; i < DefinedAreas.Count; i++)
 				{

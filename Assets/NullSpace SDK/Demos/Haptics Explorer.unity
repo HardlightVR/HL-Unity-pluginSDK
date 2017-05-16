@@ -15716,7 +15716,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1412046728
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15731,10 +15731,10 @@ RectTransform:
   - {fileID: 1389768662}
   m_Father: {fileID: 721754454}
   m_RootOrder: 7
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 96, y: -224}
+  m_SizeDelta: {x: 64, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1412046729
 MonoBehaviour:
@@ -19999,7 +19999,7 @@ MonoBehaviour:
   MyDisableButton: {fileID: 0}
   EnabledSprite: {fileID: 21300000, guid: acb658f5f1eb1854194824e3efa2edfe, type: 3}
   DisabledSprite: {fileID: 0}
-  ActivateHotkey: 56
+  ActivateHotkey: 0
   suitObjects: []
   ActiveObjects:
   - {fileID: 1324319250}
@@ -22047,7 +22047,7 @@ MonoBehaviour:
   MyDisableButton: {fileID: 0}
   EnabledSprite: {fileID: 21300000, guid: dc584a833db32004f9c6eb0aad4a9cb0, type: 3}
   DisabledSprite: {fileID: 0}
-  ActivateHotkey: 54
+  ActivateHotkey: 0
   suitObjects: []
   ActiveObjects:
   - {fileID: 1796158949}
@@ -24555,7 +24555,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2120314427
 RectTransform:
   m_ObjectHideFlags: 0
@@ -24570,10 +24570,10 @@ RectTransform:
   - {fileID: 739773754}
   m_Father: {fileID: 721754454}
   m_RootOrder: 5
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 96, y: -160}
+  m_SizeDelta: {x: 64, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2120314428
 MonoBehaviour:

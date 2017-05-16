@@ -35,7 +35,7 @@ namespace NullSpace.SDK.Demos
 		public DateTime lastModified;
 
 		private bool ToMarkAsBroken = false;
-		private bool ToMarkAsChanged= false;
+		private bool ToMarkAsChanged = false;
 		private bool initialized = false;
 		private string validationFailureReasons = string.Empty;
 
@@ -294,7 +294,7 @@ namespace NullSpace.SDK.Demos
 				}
 				catch (Exception whatTheHellMicrosoft)
 				{
-					Debug.LogError("Async Delegate Error getting haptic definition\n" + whatTheHellMicrosoft.Message);
+					Debug.LogError("Async Delegate Error getting haptic definition at path [" + path + "]\n" + whatTheHellMicrosoft.Message);
 
 					failCallback(whatTheHellMicrosoft);
 				}

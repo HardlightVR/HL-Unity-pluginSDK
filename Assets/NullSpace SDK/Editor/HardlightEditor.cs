@@ -17,7 +17,6 @@ namespace NullSpace.SDK.Editor
 		public string HapticZipLink = "https://drive.google.com/drive/folders/0BzDLhj68fxxvemJ2RTVWRnRTOU0";
 		public static HardlightEditor myWindow;
 		public bool DebugHardlightEditor = false;
-		bool compactMode = false;
 
 		public List<EditorPane> HardlightPanes;
 		public EditorPane ActiveTab;

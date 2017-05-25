@@ -67,7 +67,6 @@ namespace NullSpace.SDK.Editor
 				});
 
 
-				GUIStyle style = new GUIStyle(GUI.skin.button);
 				GUILayoutOption[] options = new GUILayoutOption[0];
 				string suitDisplayName = MyDefinition.SuitName.Length > 0 ? MyDefinition.SuitName : MyDefinition.SuitRoot == null ? "Unnamed Suit" : MyDefinition.SuitRoot.name;
 				myPane.TutorialHighlight(!TopFoldout && myPane.IsStepWithinRange(1, 8), () =>
@@ -905,9 +904,7 @@ namespace NullSpace.SDK.Editor
 
 		void DrawQuickButtonsForHardlightColliders()
 		{
-			GUIStyle style = new GUIStyle(GUI.skin.button);
 			//GUILayoutOption[] options = new GUILayoutOption[0];
-			float width = EditorGUIUtility.currentViewWidth;
 			GUILayoutOption[] threeColumns = NSEditorStyles.NColumnsLayoutOptions(3);
 			GUIContent content = new GUIContent(string.Empty);
 			//Toggle to show a list of all the suits

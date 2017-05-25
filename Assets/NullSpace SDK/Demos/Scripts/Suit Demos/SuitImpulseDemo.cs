@@ -15,6 +15,7 @@ namespace NullSpace.SDK.Demos
 	public class SuitImpulseDemo : SuitDemo
 	{
 		public enum ImpulseType { Emanating, Traversing, /*RepeatedImpulse*/ }
+		private bool UseLastSequence = true;
 		/// <summary>
 		/// Reusability focused. SuitImpulseDemo can come in multiple varieties (with a few unused variables depending on the mode.
 		/// Emanation - Start at a point and affect in waves the neighbor pads.
@@ -353,53 +354,62 @@ namespace NullSpace.SDK.Demos
 
 		HapticSequence GetHapticSequence()
 		{
-			if (SelectedHapticSequence == 0)
+			if (UseLastSequence)
 			{
-				return ImpulseHapticSequenceSamples.ClickHum();
+				return LibraryManager.Inst.LastSequence;
 			}
-			else if (SelectedHapticSequence == 1)
+			else
 			{
-				return ImpulseHapticSequenceSamples.ThockClunk();
-			}
-			else if (SelectedHapticSequence == 2)
-			{
-				return ImpulseHapticSequenceSamples.ClickStorm();
-			}
-			else if (SelectedHapticSequence == 3)
-			{
-				return ImpulseHapticSequenceSamples.DoubleClickImpact();
-			}
-			else if (SelectedHapticSequence == 4)
-			{
-				return ImpulseHapticSequenceSamples.Shimmer();
-			}
-			else if (SelectedHapticSequence == 5)
-			{
-				return ImpulseHapticSequenceSamples.ClickHumDoubleClick();
-			}
-			else if (SelectedHapticSequence == 6)
-			{
-				return ImpulseHapticSequenceSamples.PulseBumpPulse();
-			}
-			else if (SelectedHapticSequence == 7)
-			{
-				return ImpulseHapticSequenceSamples.TripleClickFuzzFalloff();
-			}
-			else if (SelectedHapticSequence == 8)
-			{
-				return ImpulseHapticSequenceSamples.RandomPulses(Random.Range(0, 10000));
-			}
-			else if (SelectedHapticSequence == 9)
-			{
-				return ImpulseHapticSequenceSamples.ThreeRandomEffects(Random.Range(0, 10000));
-			}
-			else if (SelectedHapticSequence == 10)
-			{
-				return ImpulseHapticSequenceSamples.VeryRandomEffect(Random.Range(0, 10000));
-			}
-			else //if (SelectedHapticSequence == 10)
-			{
-				return ImpulseHapticSequenceSamples.VeryRandomEffect(Random.Range(0, 10000));
+				#region HapticSequenceExamples
+				if (SelectedHapticSequence == 0)
+				{
+					return ImpulseHapticSequenceSamples.ClickHum();
+				}
+				else if (SelectedHapticSequence == 1)
+				{
+					return ImpulseHapticSequenceSamples.ThockClunk();
+				}
+				else if (SelectedHapticSequence == 2)
+				{
+					return ImpulseHapticSequenceSamples.ClickStorm();
+				}
+				else if (SelectedHapticSequence == 3)
+				{
+					return ImpulseHapticSequenceSamples.DoubleClickImpact();
+				}
+				else if (SelectedHapticSequence == 4)
+				{
+					return ImpulseHapticSequenceSamples.Shimmer();
+				}
+				else if (SelectedHapticSequence == 5)
+				{
+					return ImpulseHapticSequenceSamples.ClickHumDoubleClick();
+				}
+				else if (SelectedHapticSequence == 6)
+				{
+					return ImpulseHapticSequenceSamples.PulseBumpPulse();
+				}
+				else if (SelectedHapticSequence == 7)
+				{
+					return ImpulseHapticSequenceSamples.TripleClickFuzzFalloff();
+				}
+				else if (SelectedHapticSequence == 8)
+				{
+					return ImpulseHapticSequenceSamples.RandomPulses(Random.Range(0, 10000));
+				}
+				else if (SelectedHapticSequence == 9)
+				{
+					return ImpulseHapticSequenceSamples.ThreeRandomEffects(Random.Range(0, 10000));
+				}
+				else if (SelectedHapticSequence == 10)
+				{
+					return ImpulseHapticSequenceSamples.VeryRandomEffect(Random.Range(0, 10000));
+				}
+				else //if (SelectedHapticSequence == 10)
+				{
+					return ImpulseHapticSequenceSamples.VeryRandomEffect(Random.Range(0, 10000));
+				} 
+				#endregion
 			}
 		}
 

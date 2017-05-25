@@ -201,7 +201,6 @@ namespace NullSpace.SDK.Demos
 				else if (packages.Count > 0)
 				{
 					//Select the first folder
-					string first = packages[0].path;
 					SelectDirectory(packages[i], libEle.playButton);
 				}
 			}

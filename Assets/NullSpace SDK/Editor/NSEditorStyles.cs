@@ -167,31 +167,31 @@ namespace NullSpace.SDK.Editor
 			return EditorGUILayout.Foldout(toggleDropDown, displayText, GetButton());
 			//}
 
-			Rect buttonRect = EditorGUILayout.BeginVertical();
-			Rect extraRect = new Rect(buttonRect.x, buttonRect.y, buttonRect.width, buttonRect.height + 8);
-			if (GUI.Button(extraRect, new GUIContent("", tooltip), GetSmallFoldoutButton()))
-			{
-				toggleDropDown = (toggleDropDown ? false : true);
-			}
+			//Rect buttonRect = EditorGUILayout.BeginVertical();
+			//Rect extraRect = new Rect(buttonRect.x, buttonRect.y, buttonRect.width, buttonRect.height + 8);
+			//if (GUI.Button(extraRect, new GUIContent("", tooltip), GetSmallFoldoutButton()))
+			//{
+			//	toggleDropDown = (toggleDropDown ? false : true);
+			//}
 
-			EditorGUILayout.BeginHorizontal();
-			if (toggleDropDown)
-			{
-				GUILayout.Label(((Texture)ArrowIconDown), GetSmallLabelIcon());
-			}
-			else
-			{
-				GUILayout.Label(((Texture)ArrowIconRight), GetSmallLabelIcon());
-			}
-			GUILayout.Space(-14);
-			GUILayout.Label(displayText, GetSmallLabel());
-			EditorGUILayout.EndHorizontal();
-			EditorGUILayout.EndVertical();
-			if (toggleDropDown)
-			{
-				GUILayout.Space(10f);
-			}
-			return toggleDropDown;
+			//EditorGUILayout.BeginHorizontal();
+			//if (toggleDropDown)
+			//{
+			//	GUILayout.Label(((Texture)ArrowIconDown), GetSmallLabelIcon());
+			//}
+			//else
+			//{
+			//	GUILayout.Label(((Texture)ArrowIconRight), GetSmallLabelIcon());
+			//}
+			//GUILayout.Space(-14);
+			//GUILayout.Label(displayText, GetSmallLabel());
+			//EditorGUILayout.EndHorizontal();
+			//EditorGUILayout.EndVertical();
+			//if (toggleDropDown)
+			//{
+			//	GUILayout.Space(10f);
+			//}
+			//return toggleDropDown;
 		}
 
 		#region GUILayoutToggle
@@ -295,7 +295,6 @@ namespace NullSpace.SDK.Editor
 			if (Logo != null && current != null)
 			{
 				//Debug.Log((Logo == null) + "  " + (transparentBackground == null) + "  " + (current == null) + "\n");
-				Rect rect = new Rect(50, current.position.height - 600, 600, 600);
 				Rect rect2 = new Rect(current.position.width - 164, current.position.height - 164, 128, 128);
 				GUIStyle style = new GUIStyle();
 				float minWidth = 0;
@@ -771,7 +770,6 @@ namespace NullSpace.SDK.Editor
 			buttonStyle.fontSize = CompactMode ? 12 : 14;
 			if (inPressedState)
 			{
-				GUIStyleState storage = buttonStyle.normal;
 				//buttonStyle.onNormal = storage;// buttonStyle.onActive;
 				buttonStyle.normal = buttonStyle.onActive;
 				//buttonStyle.onActive = storage;

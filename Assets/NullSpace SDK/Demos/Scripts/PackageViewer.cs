@@ -84,16 +84,17 @@ namespace NullSpace.SDK.Demos
 			return true;
 		}
 
-		private bool SortByName = true;
-		private bool SortByType = true;
-
 		public bool SortElements()
 		{
+			//Delete all of them
 			fileContainer.Clear();
 
+			//Repopulate them
 			PopulateMyDirectory(path);
-			//Sort the elements in the specified order.
-			//TODO: Add element sorting.
+
+			//This is because sorting using Unity hierarchy is gross.
+			//Ideal solution would be the elements keep track of their intended index and name, which makes sorting/rearranging easier.
+
 			return true;
 		}
 	}

@@ -169,7 +169,7 @@ namespace NullSpace.SDK.Demos
 			//You could do a fancy color lerp functionality here...
 			ColorSuit(current, targetColor);
 
-			var duration = Mathf.Clamp(MinDuration, .1f, 100.0f);
+			//var duration = Mathf.Clamp(MinDuration, .1f, 100.0f);
 			//I clamp this to a min of .1 for user visibility.
 			yield return new WaitForSeconds(MinDuration);
 			ColorSuit(current, revertColor);

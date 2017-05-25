@@ -29,10 +29,13 @@ namespace NullSpace.SDK.Demos
 		public Button playButton;
 		public Button openLocationButton;
 		public Button copyButton;
+		public Button processButton;
+		public Image processIcon;
 		public string myNamespace;
 		public string fileAndExt;
 		public string fileName;
 		public DateTime lastModified;
+		public AssetTool.PackageInfo myPackage;
 
 		private bool ToMarkAsBroken = false;
 		private bool ToMarkAsChanged = false;
@@ -49,13 +52,21 @@ namespace NullSpace.SDK.Demos
 				myType = LibraryElementType.Folder;
 				fileAndExt = Path.GetFileName(package.path);
 				myIcon.sprite = LibraryManager.Inst.folderIcon;
+
+				processIcon.sprite = LibraryManager.Inst.processIcon;
+
 				visual.color = LibraryManager.Inst.folderColor;
 				copyButton.transform.parent.parent.gameObject.SetActive(false);
+				processButton.transform.parent.parent.gameObject.SetActive(true);
 				displayName.text = Path.GetFileName(package.path);
 				myNamespace = package.@namespace;
 				fileName = package.path;
 				TooltipDescriptor.AddDescriptor(gameObject, fileName, "Haptic Package: A collection of sequences, patterns and experiences\nDefined by its config.json");
 				TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "<color=#FF4500>Open Folder</color>", "View directories of " + fileName, new Color32(135, 206, 255, 225));
+
+				TooltipDescriptor.AddDescriptor(processButton.gameObject, "<color=#FF4500>Convert Package to HDF</color>", "Converts all elements within the package " + fileName + " to standalone HDFs", new Color32(135, 206, 255, 225));
+
+				myPackage = package;
 
 				initialized = true;
 			}
@@ -72,10 +83,12 @@ namespace NullSpace.SDK.Demos
 			{
 				_assetTool = tool;
 				fullFilePath = fullPath;
-				fileAndExt = System.IO.Path.GetFileName(fullPath);
-				fileName = System.IO.Path.GetFileNameWithoutExtension(fullPath);
+				fileAndExt = Path.GetFileName(fullPath);
+				fileName = Path.GetFileNameWithoutExtension(fullPath);
 				displayName.text = fileName;
 				myNamespace = packageName;
+
+				processButton.transform.parent.parent.gameObject.SetActive(false);
 
 				if (fullFilePath.Contains(".seq"))
 				{
@@ -101,10 +114,14 @@ namespace NullSpace.SDK.Demos
 					TooltipDescriptor.AddDescriptor(gameObject, fileName + " - Experience", "Plays experience which is composed of multiple Patterns.");
 					TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "<color=#FF4500>Edit File</color>", "View Source of " + fileName + "\nWe recommend a text editor", new Color32(135, 206, 255, 225));
 				}
+				else
+				{
+					processButton.transform.parent.parent.gameObject.SetActive(true);
+				}
 
 
 				//Temporary disabling of the copy-me feature.
-				copyButton.transform.parent.parent.gameObject.SetActive(false);
+				//copyButton.transform.parent.parent.gameObject.SetActive(false);
 
 				//casey removed: because the asset tool does it now
 				//	if (!ValidateFile())
@@ -154,7 +171,17 @@ namespace NullSpace.SDK.Demos
 						MarkElementBroken();
 					}
 				});
-
+			}
+			if (processButton != null)
+			{
+				processButton.onClick.AddListener(() =>
+				{
+					bool playResult = ConvertElement();
+					if (!playResult)
+					{
+						MarkElementBroken();
+					}
+				});
 			}
 		}
 
@@ -401,6 +428,62 @@ namespace NullSpace.SDK.Demos
 				return false;
 			}
 			return true;
+		}
+
+		private void ConvertPackageToHDF(AssetTool.PackageInfo package, HapticDefinitionCallback successCallback, ExceptionCallback failCallback)
+		{
+			AsyncMethodCaller caller = new AsyncMethodCaller(_assetTool.GetHapticDefinitionFile);
+
+			//Using this is easier than splitting on last occurrence of forward slash and going up one directory.
+			string targetDirectory = package.path + " - Converted";
+
+			IAsyncResult r = caller.BeginInvoke(package.path, delegate (IAsyncResult iar)
+			{
+				AsyncResult result = (AsyncResult)iar;
+				AsyncMethodCaller caller2 = (AsyncMethodCaller)result.AsyncDelegate;
+				HapticDefinitionCallback hdfCallback = (HapticDefinitionCallback)iar.AsyncState;
+
+				try
+				{
+					HapticDefinitionFile hdf = caller2.EndInvoke(iar);
+					hdfCallback(hdf);
+				}
+				catch (Exception whatTheHellMicrosoft)
+				{
+					Debug.LogError("Async Delegate Error converting package directory to HDFs - path [" + package.path + "]\n" + whatTheHellMicrosoft.Message);
+
+					failCallback(whatTheHellMicrosoft);
+				}
+			}, successCallback);
+		}
+
+		public bool ConvertElement()
+		{
+			//If we are a folder element
+			//	Run an async element handling.
+			//
+			if (myPackage != null)
+			{
+				ConvertPackageToHDF(myPackage,
+							//Success Delegate
+							delegate (HapticDefinitionFile hdf)
+							{
+							//var pat = CodeHapticFactory.CreatePattern(hdf.rootEffect.name, hdf);
+
+							//playHandleAndSetLastPlayed(pat.CreateHandle());
+						},
+							//Failure Delegate
+							delegate (Exception except)
+							{
+								ToMarkAsBroken = true;
+							//Make the file red to show it's broken.
+							//Highlight the edit button.
+							//Some sort of error reporting.
+						});
+
+				return true;
+			}
+			return false;
 		}
 
 		public bool OpenFile(string requestedFilePath = "")

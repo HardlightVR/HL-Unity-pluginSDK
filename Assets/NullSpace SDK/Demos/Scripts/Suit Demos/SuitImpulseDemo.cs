@@ -360,6 +360,7 @@ namespace NullSpace.SDK.Demos
 		{
 			if (UseLastSequence)
 			{
+				//Debug.Log("Hit\n" + LibraryManager.Inst.LastSequence.ToString());
 				return LibraryManager.Inst.LastSequence;
 			}
 			else

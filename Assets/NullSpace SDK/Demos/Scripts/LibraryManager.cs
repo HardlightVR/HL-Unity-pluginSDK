@@ -33,6 +33,7 @@ namespace NullSpace.SDK.Demos
 		public Color changedColor;
 
 		public Sprite processIcon;
+		public Sprite copyIcon;
 
 		public Dictionary<string, PackageViewer> ContentsDict;
 		public PopulateContainer ContentContainer;

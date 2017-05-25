@@ -352,6 +352,10 @@ namespace NullSpace.SDK.Demos
 		};
 		#endregion
 
+		/// <summary>
+		/// Branches on UseLastSequence (and SelectedHapticSequence - an index)
+		/// </summary>
+		/// <returns></returns>
 		HapticSequence GetHapticSequence()
 		{
 			if (UseLastSequence)

@@ -31,6 +31,7 @@ namespace NullSpace.SDK.Demos
 		public Button copyButton;
 		public Button processButton;
 		public Image processIcon;
+		public Image copyIcon;
 		public string myNamespace;
 		public string fileAndExt;
 		public string fileName;
@@ -64,7 +65,7 @@ namespace NullSpace.SDK.Demos
 				TooltipDescriptor.AddDescriptor(gameObject, fileName, "Haptic Package: A collection of sequences, patterns and experiences\nDefined by its config.json");
 				TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "<color=#FF4500>Open Folder</color>", "View directories of " + fileName, new Color32(135, 206, 255, 225));
 
-				TooltipDescriptor.AddDescriptor(processButton.gameObject, "<color=#FF4500>Convert Package to HDF</color>", "Converts all elements within the package " + fileName + " to standalone HDFs", new Color32(135, 206, 255, 225));
+				TooltipDescriptor.AddDescriptor(processButton.gameObject, "<color=#FF4500>Convert Package to HDF</color>", "Converts all elements within the package [" + package.@namespace + "] to standalone HDFs", new Color32(135, 206, 255, 225));
 
 				myPackage = package;
 
@@ -96,7 +97,9 @@ namespace NullSpace.SDK.Demos
 					myIcon.sprite = LibraryManager.Inst.seqIcon;
 					visual.color = LibraryManager.Inst.seqColor;
 					TooltipDescriptor.AddDescriptor(gameObject, fileName + " - Sequence", "Plays on all selected pads\nOr when the green haptic trigger touches a pad");
-					TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "<color=#FF4500>Edit File</color>", "View Source of " + fileName + "\nWe recommend a text editor", new Color32(135, 206, 255, 225));
+					TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "<color=#FF4500>Edit File</color>", "View Source of [" + fileName + "]\nWe recommend a text editor", new Color32(135, 206, 255, 225));
+
+					TooltipDescriptor.AddDescriptor(copyButton.gameObject, "<color=#FF4500>Copy and Edit File</color>", "Creates a duplicate of - [" + fileName + "]\nThen open and edit the new file.", new Color32(135, 206, 255, 225));
 				}
 				else if (fullFilePath.Contains(".pat"))
 				{
@@ -104,7 +107,9 @@ namespace NullSpace.SDK.Demos
 					myIcon.sprite = LibraryManager.Inst.patIcon;
 					visual.color = LibraryManager.Inst.patColor;
 					TooltipDescriptor.AddDescriptor(gameObject, fileName + " - Pattern", "Plays pattern which is composed of sequences on specified areas");
-					TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "<color=#FF4500>Edit File</color>", "View Source of " + fileName + "\nWe recommend a text editor", new Color32(135, 206, 255, 225));
+					TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "<color=#FF4500>Edit File</color>", "View Source of [" + fileName + "]\nWe recommend a text editor", new Color32(135, 206, 255, 225));
+
+					TooltipDescriptor.AddDescriptor(copyButton.gameObject, "<color=#FF4500>Copy and Edit File</color>", "Creates a duplicate of - [" + fileName + "]\nThen open and edit the new file.", new Color32(135, 206, 255, 225));
 				}
 				else if (fullFilePath.Contains(".exp"))
 				{
@@ -112,12 +117,16 @@ namespace NullSpace.SDK.Demos
 					myIcon.sprite = LibraryManager.Inst.expIcon;
 					visual.color = LibraryManager.Inst.expColor;
 					TooltipDescriptor.AddDescriptor(gameObject, fileName + " - Experience", "Plays experience which is composed of multiple Patterns.");
-					TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "<color=#FF4500>Edit File</color>", "View Source of " + fileName + "\nWe recommend a text editor", new Color32(135, 206, 255, 225));
+					TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "<color=#FF4500>Edit File</color>", "View Source of [" + fileName + "]\nWe recommend a text editor", new Color32(135, 206, 255, 225));
+
+					TooltipDescriptor.AddDescriptor(copyButton.gameObject, "<color=#FF4500>Copy and Edit File</color>", "Creates a duplicate of [" + fileName + "]\nThen open and edit the new file.", new Color32(135, 206, 255, 225));
 				}
 				else
 				{
 					processButton.transform.parent.parent.gameObject.SetActive(true);
 				}
+
+				copyIcon.sprite = LibraryManager.Inst.copyIcon;
 
 
 				//Temporary disabling of the copy-me feature.
@@ -427,7 +436,6 @@ namespace NullSpace.SDK.Demos
 			{
 				AsyncResult result = (AsyncResult)iar;
 				AsyncHDFConversionCaller caller2 = (AsyncHDFConversionCaller)result.AsyncDelegate;
-				HapticDefinitionCallback hdfCallback = (HapticDefinitionCallback)iar.AsyncState;
 
 				try
 				{

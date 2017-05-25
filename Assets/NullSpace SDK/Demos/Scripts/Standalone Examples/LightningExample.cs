@@ -16,7 +16,7 @@ namespace NullSpace.SDK.Demos
 
 		private void Start()
 		{
-			Effect whichEffect = Effect.Pulse;           //What's more electrical than pulses.
+			Effect whichEffect = Effect.Pulse;      //What's more electrical than pulses.
 			float totalImpulseDuration = .35f;      //How long does the shock take to traverse to the heart.
 			float effectDuration = 0.0f;            //0.0 defaults to the natural duration of the pulse effect.
 			float effectStrength = 1;               //How strong is the pulse effect
@@ -40,6 +40,13 @@ namespace NullSpace.SDK.Demos
 				StartCoroutine(ShockPlayer());
 				ShouldShock = false;
 			}
+
+			if (Input.GetKeyDown(KeyCode.G))
+			{
+				HapticSequence seq = new HapticSequence();
+				seq.LoadFromAsset("Haptics/pulse");
+				seq.Play(AreaFlag.Left_All);
+			}
 		}
 
 		//
@@ -49,7 +56,7 @@ namespace NullSpace.SDK.Demos
 			CurrentlyShocking = true;
 
 			//This is a construct for our repetition of the traversal effect.
-			float delay = .4f;                      
+			float delay = .4f;
 
 			//Prevent the loop/effect from running forever.
 			int breakout = 0;

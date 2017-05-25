@@ -283,6 +283,7 @@ namespace NullSpace.SDK.Demos
 		private delegate void HapticDefinitionCallback(HapticDefinitionFile file);
 		private delegate void ExceptionCallback(Exception exceptionHit);
 		private delegate HapticDefinitionFile AsyncMethodCaller(string path);
+		private delegate string AsyncHDFConversionCaller(AssetTool.PackageInfo info, string outDir);
 
 		/// <summary>
 		/// Retrieve a haptic definition file from a given path asynchronously
@@ -415,23 +416,30 @@ namespace NullSpace.SDK.Demos
 			return true;
 		}
 
-		private void ConvertPackageToHDF(AssetTool.PackageInfo package, HapticDefinitionCallback successCallback, ExceptionCallback failCallback)
+		private void ConvertPackageToHDF(AssetTool.PackageInfo package, ExceptionCallback failCallback)
 		{
-			AsyncMethodCaller caller = new AsyncMethodCaller(_assetTool.GetHapticDefinitionFile);
+			AsyncHDFConversionCaller caller = new AsyncHDFConversionCaller(_assetTool.ConvertPackageToHDFs);
 
 			//Using this is easier than splitting on last occurrence of forward slash and going up one directory.
 			string targetDirectory = package.path + " - Converted";
 
-			/*IAsyncResult r = */caller.BeginInvoke(package.path, delegate (IAsyncResult iar)
+			/*IAsyncResult r = */caller.BeginInvoke(package, targetDirectory,  delegate (IAsyncResult iar)
 			{
 				AsyncResult result = (AsyncResult)iar;
-				AsyncMethodCaller caller2 = (AsyncMethodCaller)result.AsyncDelegate;
+				AsyncHDFConversionCaller caller2 = (AsyncHDFConversionCaller)result.AsyncDelegate;
 				HapticDefinitionCallback hdfCallback = (HapticDefinitionCallback)iar.AsyncState;
 
 				try
 				{
-					HapticDefinitionFile hdf = caller2.EndInvoke(iar);
-					hdfCallback(hdf);
+					string errors = caller2.EndInvoke(iar);
+					if (errors.Length > 0)
+					{
+
+
+						//Todo: make better broken case
+						Debug.LogError("Encountered errors when converting package ["+package.@namespace+"]to HDFs:\n\t" + errors);
+					}
+					
 				}
 				catch (Exception whatTheHellMicrosoft)
 				{
@@ -439,7 +447,7 @@ namespace NullSpace.SDK.Demos
 
 					failCallback(whatTheHellMicrosoft);
 				}
-			}, successCallback);
+			}, null);
 		}
 
 		public bool ConvertElement()
@@ -451,12 +459,7 @@ namespace NullSpace.SDK.Demos
 			{
 				ConvertPackageToHDF(myPackage,
 							//Success Delegate
-							delegate (HapticDefinitionFile hdf)
-							{
-							//var pat = CodeHapticFactory.CreatePattern(hdf.rootEffect.name, hdf);
-
-							//playHandleAndSetLastPlayed(pat.CreateHandle());
-						},
+							//	removed
 							//Failure Delegate
 							delegate (Exception except)
 							{

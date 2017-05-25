@@ -28,6 +28,12 @@ namespace NullSpace.SDK
 		/// <returns>The Impulse that you can call .Play() on to play a create a HapticHandle referencing that Haptic</returns>
 		public static Impulse BeginEmanatingEffect(AreaFlag origin, int depth = 2)
 		{
+			if (!origin.IsSingleArea())
+			{
+				Debug.LogError("Invalid AreaFlag Provided: Origin is [" + origin.NumberOfAreas() + "] area(s).\n\tImpulse Generator only supports single area flag values.\n");
+				return null;
+			}
+
 			if (depth < 0)
 			{
 				Debug.LogError("Depth for emanation is negative: " + depth + "\n\tThis will be clamped to 0 under the hood, negative numbers will likely do nothing");
@@ -49,8 +55,9 @@ namespace NullSpace.SDK
 					}
 					if (i > 0)
 					{
-						baseStrength *= (1.0f - attenuation);
+						baseStrength *= (attenuation);
 					}
+					//Debug.Log(timeStep + "\t\t" + time + "   " + baseStrength + "\n");
 
 					emanation.AddSequence(time, area, Mathf.Clamp(baseStrength, 0f, 1f), seq);
 					time += timeStep;
@@ -73,6 +80,11 @@ namespace NullSpace.SDK
 		/// <returns>The Impulse that you can call .Play() on to play a create a HapticHandle referencing that Haptic</returns>
 		public static Impulse BeginTraversingImpulse(AreaFlag origin, AreaFlag destination)
 		{
+			if (!origin.IsSingleArea() || !destination.IsSingleArea())
+			{
+				Debug.LogError("Invalid AreaFlag Provided: Origin is [" + origin.NumberOfAreas() + "] area(s) and Destination is [" + destination.NumberOfAreas() + "] area(s).\n\tImpulse Generator only supports single area flag values.\n");
+				return null;
+			}
 			CreateImpulse creation = delegate (float attenuation, float totalLength, HapticSequence seq)
 			{
 				HapticPattern emanation = new HapticPattern();
@@ -85,9 +97,10 @@ namespace NullSpace.SDK
 				{
 					if (i > 0)
 					{
-						baseStrength *= (1.0f - attenuation);
+						baseStrength *= (attenuation);
 					}
-					emanation.AddSequence(time, stages[i].Location, Mathf.Clamp(baseStrength, 0f, 1f),seq);
+					//Debug.Log(timeStep + "\n" + baseStrength + "\n");
+					emanation.AddSequence(time, stages[i].Location, Mathf.Clamp(baseStrength, 0f, 1f), seq);
 					time += timeStep;
 				}
 
@@ -211,7 +224,7 @@ namespace NullSpace.SDK
 			internal Impulse(CreateImpulse process)
 			{
 				this.process = process;
-				this.attenuation = 0.0f;
+				this.attenuation = 1.0f;
 				this.totalLength = 2.0f;
 				WithEffect(Effect.Hum);
 			}

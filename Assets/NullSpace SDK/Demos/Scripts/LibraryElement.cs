@@ -333,6 +333,7 @@ namespace NullSpace.SDK.Demos
 				//Get the file path
 				if (myType == LibraryElementType.Sequence)
 				{
+					Debug.Log(fileAndExt + "  " + fullFilePath + "\n");
 					GetHapticDefinitionAsync(fullFilePath,
 						//Success Delegate
 						delegate (HapticDefinitionFile hdf)

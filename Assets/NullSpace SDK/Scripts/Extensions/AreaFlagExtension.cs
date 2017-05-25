@@ -14,6 +14,31 @@
 		//		//	}
 		//		//	return false;
 		//		//}
+
+		public static bool IsSingleArea(this AreaFlag baseFlag)
+		{
+			return baseFlag.NumberOfAreas() == 1;
+		}
+		public static int NumberOfAreas(this AreaFlag baseFlag)
+		{
+			//This is credited as the Hamming Weight, Popcount or Sideways Addition.
+			//Source: Stack Overflow
+			//https://stackoverflow.com/questions/109023/how-to-count-the-number-of-set-bits-in-a-32-bit-integer
+
+			//Really cool way to count the number of flags.
+
+			int i = (int)baseFlag;
+			// Java: use >>> instead of >>
+			// C or C++: use uint32_t
+			i = i - ((i >> 1) & 0x55555555);
+			i = (i & 0x33333333) + ((i >> 2) & 0x33333333);
+			return (((i + (i >> 4)) & 0x0F0F0F0F) * 0x01010101) >> 24;
+		}
+		public static AreaFlag AddFlag(this AreaFlag baseFlag, AreaFlag added)
+		{
+			baseFlag = baseFlag | added;
+			return baseFlag;
+		}
 		public static bool HasFlag(this AreaFlag baseFlag, int flag)
 		{
 			if (((int)baseFlag & (flag)) == flag)

@@ -41,7 +41,7 @@ namespace NullSpace.SDK.Demos
 		private List<string> RetrieveFilesInFolder(string folderPath)
 		{
 			string[] unfilteredFiles = Directory.GetFiles(folderPath);
-			
+
 			return unfilteredFiles.Where((string filename) =>
 			{
 				string ext = Path.GetExtension(filename);
@@ -84,8 +84,14 @@ namespace NullSpace.SDK.Demos
 			return true;
 		}
 
+		private bool SortByName = true;
+		private bool SortByType = true;
+
 		public bool SortElements()
 		{
+			fileContainer.Clear();
+
+			PopulateMyDirectory(path);
 			//Sort the elements in the specified order.
 			//TODO: Add element sorting.
 			return true;

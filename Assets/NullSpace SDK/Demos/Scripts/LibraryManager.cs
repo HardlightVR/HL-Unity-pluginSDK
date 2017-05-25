@@ -32,6 +32,8 @@ namespace NullSpace.SDK.Demos
 		public Color folderColor;
 		public Color changedColor;
 
+		public Sprite processIcon;
+
 		public Dictionary<string, PackageViewer> ContentsDict;
 		public PopulateContainer ContentContainer;
 		public PopulateContainer FolderContainer;

@@ -31,6 +31,7 @@ namespace NullSpace.SDK.Demos
 		public Button copyButton;
 		public Button processButton;
 		public Image processIcon;
+		public Image copyIcon;
 		public string myNamespace;
 		public string fileAndExt;
 		public string fileName;
@@ -38,7 +39,7 @@ namespace NullSpace.SDK.Demos
 		public AssetTool.PackageInfo myPackage;
 
 		private bool ToMarkAsBroken = false;
-		private bool ToMarkAsChanged = false;
+		//private bool ToMarkAsChanged = false;
 		private bool initialized = false;
 		private string validationFailureReasons = string.Empty;
 
@@ -64,7 +65,7 @@ namespace NullSpace.SDK.Demos
 				TooltipDescriptor.AddDescriptor(gameObject, fileName, "Haptic Package: A collection of sequences, patterns and experiences\nDefined by its config.json");
 				TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "<color=#FF4500>Open Folder</color>", "View directories of " + fileName, new Color32(135, 206, 255, 225));
 
-				TooltipDescriptor.AddDescriptor(processButton.gameObject, "<color=#FF4500>Convert Package to HDF</color>", "Converts all elements within the package " + fileName + " to standalone HDFs", new Color32(135, 206, 255, 225));
+				TooltipDescriptor.AddDescriptor(processButton.gameObject, "<color=#FF4500>Convert Package to HDF</color>", "Converts all elements within the package [" + package.@namespace + "] to standalone HDFs", new Color32(135, 206, 255, 225));
 
 				myPackage = package;
 
@@ -96,7 +97,9 @@ namespace NullSpace.SDK.Demos
 					myIcon.sprite = LibraryManager.Inst.seqIcon;
 					visual.color = LibraryManager.Inst.seqColor;
 					TooltipDescriptor.AddDescriptor(gameObject, fileName + " - Sequence", "Plays on all selected pads\nOr when the green haptic trigger touches a pad");
-					TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "<color=#FF4500>Edit File</color>", "View Source of " + fileName + "\nWe recommend a text editor", new Color32(135, 206, 255, 225));
+					TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "<color=#FF4500>Edit File</color>", "View Source of [" + fileName + "]\nWe recommend a text editor", new Color32(135, 206, 255, 225));
+
+					TooltipDescriptor.AddDescriptor(copyButton.gameObject, "<color=#FF4500>Copy and Edit File</color>", "Creates a duplicate of - [" + fileName + "]\nThen open and edit the new file.", new Color32(135, 206, 255, 225));
 				}
 				else if (fullFilePath.Contains(".pat"))
 				{
@@ -104,7 +107,9 @@ namespace NullSpace.SDK.Demos
 					myIcon.sprite = LibraryManager.Inst.patIcon;
 					visual.color = LibraryManager.Inst.patColor;
 					TooltipDescriptor.AddDescriptor(gameObject, fileName + " - Pattern", "Plays pattern which is composed of sequences on specified areas");
-					TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "<color=#FF4500>Edit File</color>", "View Source of " + fileName + "\nWe recommend a text editor", new Color32(135, 206, 255, 225));
+					TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "<color=#FF4500>Edit File</color>", "View Source of [" + fileName + "]\nWe recommend a text editor", new Color32(135, 206, 255, 225));
+
+					TooltipDescriptor.AddDescriptor(copyButton.gameObject, "<color=#FF4500>Copy and Edit File</color>", "Creates a duplicate of - [" + fileName + "]\nThen open and edit the new file.", new Color32(135, 206, 255, 225));
 				}
 				else if (fullFilePath.Contains(".exp"))
 				{
@@ -112,12 +117,16 @@ namespace NullSpace.SDK.Demos
 					myIcon.sprite = LibraryManager.Inst.expIcon;
 					visual.color = LibraryManager.Inst.expColor;
 					TooltipDescriptor.AddDescriptor(gameObject, fileName + " - Experience", "Plays experience which is composed of multiple Patterns.");
-					TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "<color=#FF4500>Edit File</color>", "View Source of " + fileName + "\nWe recommend a text editor", new Color32(135, 206, 255, 225));
+					TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "<color=#FF4500>Edit File</color>", "View Source of [" + fileName + "]\nWe recommend a text editor", new Color32(135, 206, 255, 225));
+
+					TooltipDescriptor.AddDescriptor(copyButton.gameObject, "<color=#FF4500>Copy and Edit File</color>", "Creates a duplicate of [" + fileName + "]\nThen open and edit the new file.", new Color32(135, 206, 255, 225));
 				}
 				else
 				{
 					processButton.transform.parent.parent.gameObject.SetActive(true);
 				}
+
+				copyIcon.sprite = LibraryManager.Inst.copyIcon;
 
 
 				//Temporary disabling of the copy-me feature.
@@ -198,7 +207,7 @@ namespace NullSpace.SDK.Demos
 
 		private void MarkElementChanged()
 		{
-			ToMarkAsChanged = false;
+			//ToMarkAsChanged = false;
 
 			//Debug.Log("This element [" + fileAndExt + "] is changed\n");
 			//This doesn't prevent the action of the element, but it indicates that the element is broken.
@@ -214,7 +223,6 @@ namespace NullSpace.SDK.Demos
 
 			//Check each of the validation conditions
 			//Keep track of the returned reasons.
-			validationFailureReasons += ValidateForCommaAfterLastElement();
 			validationFailureReasons += ValidateFileName();
 
 			//Then return true or false.
@@ -239,20 +247,7 @@ namespace NullSpace.SDK.Demos
 
 			return string.Empty;
 
-			return "Failed due to comma after the last element\n";
-		}
-
-		private string ValidateForCommaAfterLastElement()
-		{
-			//Test case to check the broken marking is working.
-			//return UnityEngine.Random.Range(0, 40) > 35 ? "FAILED" : string.Empty;
-
-			//Do some JSON validation here?
-			//Possibly get API calls to validate file format?
-
-			return string.Empty;
-
-			return "Failed due to comma after the last element\n";
+			//return "Failed due to comma after the last element\n";
 		}
 
 		private string EvaluateName(string packageName)
@@ -287,7 +282,7 @@ namespace NullSpace.SDK.Demos
 
 			catch (Exception e)
 			{
-				Debug.LogError("Failure to duplicate file \n\t[" + fullFilePath + "]\n");
+				Debug.LogError("Failure to duplicate file \n\t[" + fullFilePath + "]\n" + e.Message);
 				return false;
 			}
 
@@ -309,7 +304,7 @@ namespace NullSpace.SDK.Demos
 		{
 			AsyncMethodCaller caller = new AsyncMethodCaller(_assetTool.GetHapticDefinitionFile);
 
-			IAsyncResult r = caller.BeginInvoke(path, delegate (IAsyncResult iar)
+			/*IAsyncResult r = */caller.BeginInvoke(path, delegate (IAsyncResult iar)
 			{
 				AsyncResult result = (AsyncResult)iar;
 				AsyncMethodCaller caller2 = (AsyncMethodCaller)result.AsyncDelegate;
@@ -340,7 +335,6 @@ namespace NullSpace.SDK.Demos
 			//Debug.Log("File has been modified since load: [" + FileHasBeenModified() + "]\n");
 			try
 			{
-				HapticHandle newHandle = null;
 				if (LibraryManager.Inst.LastPlayed != null && LibraryManager.Inst.StopLastPlaying)
 				{
 					LibraryManager.Inst.LastPlayed.Stop();
@@ -438,11 +432,10 @@ namespace NullSpace.SDK.Demos
 			//Using this is easier than splitting on last occurrence of forward slash and going up one directory.
 			string targetDirectory = package.path + " - Converted";
 
-			IAsyncResult r = caller.BeginInvoke(package, targetDirectory,  delegate (IAsyncResult iar)
+			/*IAsyncResult r = */caller.BeginInvoke(package, targetDirectory,  delegate (IAsyncResult iar)
 			{
 				AsyncResult result = (AsyncResult)iar;
 				AsyncHDFConversionCaller caller2 = (AsyncHDFConversionCaller)result.AsyncDelegate;
-				HapticDefinitionCallback hdfCallback = (HapticDefinitionCallback)iar.AsyncState;
 
 				try
 				{

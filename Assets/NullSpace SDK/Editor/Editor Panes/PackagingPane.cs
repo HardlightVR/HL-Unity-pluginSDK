@@ -75,7 +75,6 @@ namespace NullSpace.SDK.Editor
 			private ImportStatus CurrentStatus;
 			private enum ImportState { Idle, Fetching, Waiting, Importing, Finished }
 			private ImportState activeState = ImportState.Idle;
-			bool HasSuccessfulImport = false;
 			float timeElapsed = 0;
 			float updateRate = .03f;
 			int maxImportedPerStep = 5;
@@ -380,7 +379,6 @@ namespace NullSpace.SDK.Editor
 				var allHapticFiles = GetFilesWithExtension(package.path + "/sequences/", ".sequence");
 				allHapticFiles.AddRange(GetFilesWithExtension(package.path + "/patterns/", ".pattern"));
 				allHapticFiles.AddRange(GetFilesWithExtension(package.path + "/experiences/", ".experience"));
-				HasSuccessfulImport = false;
 				currentProgress = 0f;
 				totalProgress = allHapticFiles.Count;
 				_lastImport.Total = allHapticFiles.Count;

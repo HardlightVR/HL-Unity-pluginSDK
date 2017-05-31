@@ -6,6 +6,8 @@ Delapouite - http://delapouite.com/
 	open-folder
 	Paint brush icon
 	Keyboard icon
+	Cardboard-box
+	files
 Tracking Icon, Massage Icon, Experience Stars was created by Lorc - http://lorcblog.blogspot.com/ (named Star swirl)
 Amplitude & Power Button was created by Lord Berandas - http://berandas.deviantart.com/
 Halt icon & Click Icon was created by Skoll - http://game-icons.net/skoll/originals/click.html

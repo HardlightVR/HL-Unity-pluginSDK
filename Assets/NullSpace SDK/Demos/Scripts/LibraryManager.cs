@@ -33,6 +33,7 @@ namespace NullSpace.SDK.Demos
 		public Color changedColor;
 
 		public Sprite processIcon;
+		public Sprite copyIcon;
 
 		public Dictionary<string, PackageViewer> ContentsDict;
 		public PopulateContainer ContentContainer;
@@ -201,7 +202,6 @@ namespace NullSpace.SDK.Demos
 				else if (packages.Count > 0)
 				{
 					//Select the first folder
-					string first = packages[0].path;
 					SelectDirectory(packages[i], libEle.playButton);
 				}
 			}

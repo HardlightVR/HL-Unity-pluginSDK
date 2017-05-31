@@ -373,7 +373,10 @@ namespace NullSpace.SDK
 			}
 		}
 
-
+		public void Shutdown()
+		{
+			_plugin.Dispose();
+		}
 
 		void OnApplicationQuit()
 		{

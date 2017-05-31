@@ -15456,6 +15456,16 @@ Prefab:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 224000013871009870, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
+        type: 2}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224000012628470334, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1, type: 2}
   m_IsPrefabParent: 0
@@ -21740,7 +21750,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1868340529}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -21815,7 +21825,11 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Haptics Explorer \nv0.2.0\nPlugin v0.4"
+  m_Text: 'Haptics Explorer
+
+    v0.2.1
+
+    Plugin v0.4.1'
 --- !u!222 &1868340534
 CanvasRenderer:
   m_ObjectHideFlags: 0

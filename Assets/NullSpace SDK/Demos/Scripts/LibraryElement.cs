@@ -190,6 +190,14 @@ namespace NullSpace.SDK.Demos
 					{
 						MarkElementBroken();
 					}
+
+					//string targetDirectory = myPackage.path + " - Converted";
+
+					//playResult = OpenFile(targetDirectory);
+					//if (!playResult)
+					//{
+					//	MarkElementBroken();
+					//}
 				});
 			}
 		}

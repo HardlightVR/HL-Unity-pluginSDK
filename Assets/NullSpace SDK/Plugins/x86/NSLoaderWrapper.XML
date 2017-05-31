@@ -1,0 +1,613 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NSLoaderWrapper</name>
+    </assembly>
+    <members>
+        <member name="T:NullSpace.SDK.FileUtilities.AssetTool">
+            <summary>
+            A wrapper over the Haptic Asset Tool binary. Retrieves json responses from the tool, 
+            allowing the retrieval of a package list or .hdf
+            </summary>
+        </member>
+        <member name="T:NullSpace.SDK.FileUtilities.AssetTool.PackageInfo">
+            <summary>
+            Holds relevant information about a haptic package
+            </summary>
+        </member>
+        <member name="F:NullSpace.SDK.FileUtilities.AssetTool.PackageInfo.version">
+            <summary>
+            Version of the packages
+            </summary>
+        </member>
+        <member name="F:NullSpace.SDK.FileUtilities.AssetTool.PackageInfo.studio">
+            <summary>
+            Studio that created the packages
+            </summary>
+        </member>
+        <member name="F:NullSpace.SDK.FileUtilities.AssetTool.PackageInfo.namespace">
+            <summary>
+            Namespace of the packages
+            </summary>
+        </member>
+        <member name="F:NullSpace.SDK.FileUtilities.AssetTool.PackageInfo.path">
+            <summary>
+            Absolute file path to the package's root directory
+            </summary>
+        </member>
+        <member name="M:NullSpace.SDK.FileUtilities.AssetTool.PackageInfo.#ctor">
+            <summary>
+            Constructs an empty PackageInfo object
+            </summary>
+        </member>
+        <member name="F:NullSpace.SDK.FileUtilities.AssetTool.PackageInfo.description">
+            <summary>
+            Short description of this package
+            </summary>
+        </member>
+        <member name="M:NullSpace.SDK.FileUtilities.AssetTool.PackageInfo.NullSpace#SDK#FileUtilities#ParsingUtils#IJsonDeserializable#Deserialize(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Given a dictionary representing the json object of a package, deserialize into a PackageInfo
+            </summary>
+            <param name="dict">json object</param>
+        </member>
+        <member name="F:NullSpace.SDK.FileUtilities.AssetTool._process">
+            <summary>
+            This will deal with opening and running the asset tool binary
+            </summary>
+        </member>
+        <member name="F:NullSpace.SDK.FileUtilities.AssetTool._rootPath">
+            <summary>
+            The root path of the haptics folder
+            </summary>
+        </member>
+        <member name="M:NullSpace.SDK.FileUtilities.AssetTool.#ctor">
+            <summary>
+            Create a new AssetTool. Note that the asset tool MUST be in the user's registry, which means
+            the service MUST be installed. 
+            </summary>
+        </member>
+        <member name="M:NullSpace.SDK.FileUtilities.AssetTool.SetRootHapticsFolder(System.String)">
+            <summary>
+            Set the user's root haptics directory
+            </summary>
+            <param name="path">Absolute path to the root haptics directory</param>
+        </member>
+        <member name="M:NullSpace.SDK.FileUtilities.AssetTool.TryGetPackageInfo">
+            <summary>
+            Retrieve a list of the packages present in a haptics directory, along with associated info
+            </summary>
+            <exception cref="T:System.InvalidOperationException">If root haptics directory is not set</exception>
+            <returns>List of PackageInfo objects</returns>
+        </member>
+        <member name="M:NullSpace.SDK.FileUtilities.AssetTool.GetHapticDefinitionFile(System.String)">
+            <summary>
+            Given a path to the raw haptic asset, generate a HapticDefinitionFile 
+            </summary>
+            <param name="path">Path to haptic asset. Ex: C:\Haptics\my\patterns\test.pattern</param>
+            <returns></returns>
+        </member>
+        <member name="M:NullSpace.SDK.FileUtilities.AssetTool.GetHapticDefinitionFileJson(System.String)">
+            <summary>
+            Given a path to the raw haptic asset, return the json representation of a HapticDefinitionFile
+            </summary>
+            <param name="path">Path to haptic asset. Ex: C:\Haptics\my\patterns\test.pattern</param>
+            <returns>JSON string representing a HapticDefinitionFile</returns>
+        </member>
+        <member name="M:NullSpace.SDK.FileUtilities.AssetTool.ConvertPackageToHDFs(NullSpace.SDK.FileUtilities.AssetTool.PackageInfo,System.String)">
+            <summary>
+            Converts a haptic package into an HDF package, mirroring the standard haptic directory layout
+            </summary>
+            <param name="package">The package to convert</param>
+            <returns>An error string, if any</returns>
+        </member>
+        <member name="T:NullSpace.SDK.FileUtilities.CodeHapticFactory">
+            <summary>
+            Used to turn HapticDefinitionFiles into dynamic haptic effects
+            Example workflow: 
+            1. create a .hdf using the asset tool binary
+            2. Deserialize the .hdf into a HapticDefinitionFile
+            3. Pass the HapticDefinitionFile to the CodeHapticFactory, along with the key of the root effect
+            4. Get a dynamic effect out of it
+            
+            In practice, this is all done automatically by the plugin. 
+            </summary>
+        </member>
+        <member name="M:NullSpace.SDK.FileUtilities.CodeHapticFactory.CreateSequence(System.String,NullSpace.SDK.FileUtilities.HapticDefinitionFile)">
+            <summary>
+            Create a HapticSequence from a HapticDefinitionFile
+            </summary>
+            <param name="key">Name of the root effect</param>
+            <param name="hdf">A HapticDefinitionFile containing the root effect</param>
+            <returns></returns>
+        </member>
+        <member name="M:NullSpace.SDK.FileUtilities.CodeHapticFactory.CreatePattern(System.String,NullSpace.SDK.FileUtilities.HapticDefinitionFile)">
+            <summary>
+            Create a HapticPattern from a HapticDefinitionFile
+            </summary>
+            <param name="key">Name of the root effect</param>
+            <param name="hdf">A HapticDefinitionFile containing the root effect</param>
+            <returns></returns>
+        </member>
+        <member name="M:NullSpace.SDK.FileUtilities.CodeHapticFactory.CreateExperience(System.String,NullSpace.SDK.FileUtilities.HapticDefinitionFile)">
+            <summary>
+            Create a HapticExperience from a HapticDefinitionFile
+            </summary>
+            <param name="key"></param>
+            <param name="hdf"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NullSpace.SDK.FileUtilities.ParsingUtils.tryParseFloatFromObject(System.Collections.Generic.IDictionary{System.String,System.Object},System.String,System.Single)">
+            <summary>
+            Attempt to parse a float from a json object representing a double
+            </summary>
+            <param name="potentialFloat">The json object represented as a double</param>
+            <param name="defaultValue">A default value if the parse fails</param>
+            <returns></returns>
+        </member>
+        <member name="M:NullSpace.SDK.FileUtilities.ParsingUtils.parseDefinitionsDict``1(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Parse a json object into a list of atoms (smallest unit that describes a sequence, pattern, or experience)
+            </summary>
+            <typeparam name="T">The json atom type</typeparam>
+            <param name="dict">The raw json object</param>
+            <returns>A dictionary representing the list of haptic effect IDs and their associated atoms</returns>
+        </member>
+        <member name="T:NullSpace.SDK.HapticEffect">
+            <summary>
+            HapticEffects are the base building blocks of more complex effects. They can be strung together, repeated over a duration, and given strengths and time offsets.
+            </summary>
+        </member>
+        <member name="P:NullSpace.SDK.HapticEffect.Effect">
+            <summary>
+            Retrieve the associated Effect
+            </summary>
+        </member>
+        <member name="P:NullSpace.SDK.HapticEffect.Duration">
+            <summary>
+            Retrieve the duration
+            </summary>
+        </member>
+        <member name="M:NullSpace.SDK.HapticEffect.#ctor(NullSpace.SDK.Effect)">
+            <summary>
+            Construct a HapticEffect with a given Effect, and default duration of 0.0
+            </summary>
+            <param name="effect"></param>
+        </member>
+        <member name="M:NullSpace.SDK.HapticEffect.#ctor(NullSpace.SDK.Effect,System.Double)">
+            <summary>
+            Construct a HapticEffect with a given Effect and duration
+            </summary>
+            <param name="effect"></param>
+            <param name="duration">Effect duration (fractional seconds)</param>
+        </member>
+        <member name="M:NullSpace.SDK.HapticEffect.Clone">
+            <summary>
+            Create an independent copy of this HapticEffect
+            </summary>
+            <returns>A copy</returns>
+        </member>
+        <member name="M:NullSpace.SDK.HapticEffect.ToString">
+            <summary>
+            Returns a string representation of this HapticEffect, including effect name and duration 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:NullSpace.SDK.HapticSequence">
+            <summary>
+            <para>CodeSequences are haptic effects which play on a given area on the suit. The area is specified with an AreaFlag, which can represent anything from one location to the entire suit.</para>
+            <para>A HapticSequence is composed of one or more HapticEffects with time offsets.</para>
+            </summary>
+        </member>
+        <member name="M:NullSpace.SDK.HapticSequence.#ctor">
+            <summary>
+            Construct an empty HapticSequence
+            </summary>
+        </member>
+        <member name="M:NullSpace.SDK.HapticSequence.doLoadFromHDF(System.String,NullSpace.SDK.FileUtilities.HapticDefinitionFile)">
+            <summary>
+            Internal use: turns an HDF into a sequence
+            </summary>
+            <param name="hdf"></param>
+        </member>
+        <member name="M:NullSpace.SDK.HapticSequence.Clone">
+            <summary>
+            Create an independent copy of this HapticSequence
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NullSpace.SDK.HapticSequence.AddEffect(System.Double,NullSpace.SDK.HapticEffect)">
+            <summary>
+            Add a HapticEffect with a given time offset
+            </summary>
+            <param name="time">Time offset (fractional seconds)</param>
+            <param name="effect">The HapticEffect to add</param>
+        </member>
+        <member name="M:NullSpace.SDK.HapticSequence.AddEffect(System.Double,System.Double,NullSpace.SDK.HapticEffect)">
+            <summary>
+            Add a HapticEffect with a given time offset and strength 
+            </summary>
+            <param name="time">Time offset (fractional seconds)</param>
+            <param name="strength">Strength (0.0-1.0)</param>
+            <param name="effect">The HapticEffect to add</param>
+            <returns></returns>
+        </member>
+        <member name="M:NullSpace.SDK.HapticSequence.CreateHandle(NullSpace.SDK.AreaFlag)">
+            <summary>
+            Create a HapticHandle from this HapticSequence, specifying an AreaFlag to play on.
+            </summary>
+            <param name="area">The AreaFlag where this HapticSequence should play</param>
+            <returns>A new HapticHandle bound to this effect playing on the given area</returns>
+        </member>
+        <member name="M:NullSpace.SDK.HapticSequence.CreateHandle(NullSpace.SDK.AreaFlag,System.Double)">
+            <summary>
+            Create a HapticHandle for this HapticSequence, specifying an AreaFlag and a strength.
+            </summary>
+            <param name="area">The AreaFlag where this HapticSequence should play</param>
+            <param name="strength">The strength of this HapticSequence (0.0-1.0)</param>
+            <returns>A new HapticHandle bound to this effect playing on the given area</returns>
+        </member>
+        <member name="M:NullSpace.SDK.HapticSequence.Play(NullSpace.SDK.AreaFlag)">
+            <summary>
+            <para>If you want to play a sequence but don't care about controlling playback, use this method. It will automatically clean up resources.</para>
+            <para>Synonymous with someSequence.CreateHandle(area).Play().Release() </para>
+            </summary>
+            <param name="area">The area on which to play this sequence</param>
+            <returns>A new HapticHandle bound to this effect playing on the given area</returns>
+        </member>
+        <member name="M:NullSpace.SDK.HapticSequence.Play(NullSpace.SDK.AreaFlag,System.Double)">
+            <summary>
+            <para>A helper which calls Play on a newly created HapticHandle.</para>
+            <para>Synonymous with someSequence.CreateHandle(area, strength).Play()</para>
+            </summary>
+            <param name="area">The area on which to play this sequence</param>
+            <param name="strength">The strength with which to play this sequence</param>
+            <returns>A new HapticHandle bound to this effect playing on the given area</returns>
+        </member>
+        <member name="M:NullSpace.SDK.HapticSequence.ToString">
+            <summary>
+            Returns a string representation of this HapticSequence for debugging purposes, including all child effects
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:NullSpace.SDK.HapticPattern">
+            <summary>
+            HapticPatterns are used to combine one or more HapticSequences into a single, playable effect. Each HapticSequence added to the HapticPattern will have a time offset and optional strength, as well as a specified area.
+            </summary>
+        </member>
+        <member name="M:NullSpace.SDK.HapticPattern.#ctor">
+            <summary>
+            Construct an empty HapticPattern
+            </summary>
+        </member>
+        <member name="M:NullSpace.SDK.HapticPattern.AddSequence(System.Double,NullSpace.SDK.AreaFlag,NullSpace.SDK.HapticSequence)">
+            <summary>
+            Add a HapticSequence to this HapticPattern with a given time offset and AreaFlag, and default strength of 1.0
+            </summary>
+            <param name="time">Time offset (fractional seconds)</param>
+            <param name="area">AreaFlag on which to play the HapticSequence</param>
+            <param name="sequence">The HapticSequence to be added</param>
+        </member>
+        <member name="M:NullSpace.SDK.HapticPattern.AddSequence(System.Double,NullSpace.SDK.AreaFlag,System.Double,NullSpace.SDK.HapticSequence)">
+            <summary>
+            Add a HapticSequence to this HapticPattern with a given time offset, AreaFlag, and strength.
+            </summary>
+            <param name="time">Time offset (fractional seconds)</param>
+            <param name="area">AreaFlag on which to play the HapticSequence</param>
+            <param name="strength">Strength of the HapticSequence (0.0 - 1.0)</param>
+            <param name="sequence">The HapticSequence to be added</param>
+        </member>
+        <member name="M:NullSpace.SDK.HapticPattern.doLoadFromHDF(System.String,NullSpace.SDK.FileUtilities.HapticDefinitionFile)">
+            <summary>
+            Internal use: turns an HDF into a pattern
+            </summary>
+            <param name="hdf"></param>
+        </member>
+        <member name="M:NullSpace.SDK.HapticPattern.CreateHandle">
+            <summary>
+            Create a HapticHandle from this HapticPattern, which can be used to manipulate the effect. 
+            </summary>
+            <returns>A new HapticHandle</returns>
+        </member>
+        <member name="M:NullSpace.SDK.HapticPattern.CreateHandle(System.Double)">
+            <summary>
+            Create a HapticHandle from this HapticPattern, passing in a given strength. 
+            </summary>
+            <param name="strength"></param>
+            <returns>A new HapticHandle</returns>
+        </member>
+        <member name="M:NullSpace.SDK.HapticPattern.Play">
+            <summary>
+            <para>If you want to play a pattern but don't care about controlling playback, use this method. It will automatically clean up resources.</para>
+            <para>Synonymous with somePattern.CreateHandle().Play().Release()</para>
+            </summary>
+            <returns>A new HapticHandle</returns>
+        </member>
+        <member name="M:NullSpace.SDK.HapticPattern.Play(System.Double)">
+            <summary>
+            <para>If you want to play a pattern but don't care about controlling playback, use this method. It will automatically clean up resources.</para>
+            <para>Synonymous with somePattern.CreateHandle(strength).Play().Release()</para>
+            </summary>
+            <returns>A new HapticHandle</returns>
+        </member>
+        <member name="M:NullSpace.SDK.HapticPattern.Clone">
+            <summary>
+            Create an independent copy of this HapticPattern
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NullSpace.SDK.HapticPattern.ToString">
+            <summary>
+            Returns a string representation of this HapticPattern for debugging purposes, including all child sequences
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:NullSpace.SDK.HapticExperience">
+            <summary>
+            HapticExperiences are containers for one or more HapticPatterns.
+            </summary>
+        </member>
+        <member name="M:NullSpace.SDK.HapticExperience.#ctor">
+            <summary>
+            Construct an empty HapticExperience
+            </summary>
+        </member>
+        <member name="M:NullSpace.SDK.HapticExperience.AddPattern(System.Double,NullSpace.SDK.HapticPattern)">
+            <summary>
+            Add a HapticPattern to this HapticExperience with a given time offset and default strength of 1.0
+            </summary>
+            <param name="time">Time offset (fractional seconds)</param>
+            <param name="area">AreaFlag on which to play the HapticSequence</param>
+            <param name="sequence">The HapticSequence to be added</param>
+        </member>
+        <member name="M:NullSpace.SDK.HapticExperience.AddPattern(System.Double,System.Double,NullSpace.SDK.HapticPattern)">
+            <summary>
+            Add a HapticPattern to this HapticExperience with a given time offset and strength.
+            </summary>
+            <param name="time">Time offset (fractional seconds)</param>
+            <param name="area">AreaFlag on which to play the HapticSequence</param>
+            <param name="strength">Strength of the HapticSequence (0.0 - 1.0)</param>
+            <param name="sequence">The HapticSequence to be added</param>
+        </member>
+        <member name="M:NullSpace.SDK.HapticExperience.doLoadFromHDF(System.String,NullSpace.SDK.FileUtilities.HapticDefinitionFile)">
+            <summary>
+            Internal use: turns an HDF into an experience
+            </summary>
+            <param name="hdf"></param>
+        </member>
+        <member name="M:NullSpace.SDK.HapticExperience.CreateHandle">
+            <summary>
+            Create a HapticHandle from this HapticExperience, which can be used to manipulate the effect. 
+            </summary>
+            <returns>A new HapticHandle</returns>
+        </member>
+        <member name="M:NullSpace.SDK.HapticExperience.CreateHandle(System.Double)">
+            <summary>
+            Create a HapticHandle from this HapticExperience, passing in a given strength. 
+            </summary>
+            <param name="strength"></param>
+            <returns>A new HapticHandle</returns>
+        </member>
+        <member name="M:NullSpace.SDK.HapticExperience.Play">
+            <summary>
+            <para>If you want to play an experience but don't care about controlling playback, use this method. It will automatically clean up resources.</para>
+            <para>Synonymous with someExperience.CreateHandle().Play()</para>
+            </summary>
+            <returns>A new HapticHandle</returns>
+        </member>
+        <member name="M:NullSpace.SDK.HapticExperience.Play(System.Double)">
+            <summary>
+            <para>If you want to play an experience but don't care about controlling playback, use this method. It will automatically clean up resources.</para>
+            <para>Synonymous with someExperience.CreateHandle(strength).Play().Release()</para>
+            </summary>
+            <returns>A new HapticHandle</returns>
+        </member>
+        <member name="M:NullSpace.SDK.HapticExperience.Clone">
+            <summary>
+            Create an independent copy of this HapticExperience
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NullSpace.SDK.HapticExperience.ToString">
+            <summary>
+            Returns a representation of this HapticExperience for debugging purposes, including the representation of child patterns
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:NullSpace.SDK.FileEffectToCodeEffect">
+            <summary>
+            Used to map the effect written in a .hdf into the enum based version. 
+            Inside the engine this is translated back into a string, so this pipeline should be
+            fixed up. We need to be backwards compatible. 
+            </summary>
+        </member>
+        <member name="M:NullSpace.SDK.FileEffectToCodeEffect.TryParse(System.String,NullSpace.SDK.Effect)">
+            <summary>
+            Attempt to parse a string into an Effect, returning defaultEffect if fail
+            </summary>
+            <param name="effect">A potential effect</param>
+            <param name="defaultEffect">The default to return if parsing fails</param>
+            <returns></returns>
+        </member>
+        <member name="M:NullSpace.SDK.AreaFlagExtensions.ContainsArea(NullSpace.SDK.AreaFlag,NullSpace.SDK.AreaFlag)">
+            <summary>
+            Checks if an AreaFlag contains another AreaFlag
+            </summary>
+            <param name="lhs"></param>
+            <param name="rhs"></param>
+            <returns>True of the AreaFlag contains the other, else false</returns>
+        </member>
+        <member name="M:NullSpace.SDK.AreaFlagExtensions.AddArea(NullSpace.SDK.AreaFlag,NullSpace.SDK.AreaFlag)">
+            <summary>
+            Adds the given area. Make sure to use the return value! Equivalent to area1 | area2
+            </summary>
+            <param name="lhs"></param>
+            <param name="other"></param>
+            <returns></returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:NullSpace.SDK.AreaFlagExtensions.RemoveArea(NullSpace.SDK.AreaFlag,NullSpace.SDK.AreaFlag)" -->
+        <member name="M:NullSpace.SDK.AreaFlagExtensions.ToStringIncludedAreas(NullSpace.SDK.AreaFlag)">
+            <summary>
+            Return a debug string containing all areas in this AreaFlag
+            </summary>
+            <param name="lhs"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NullSpace.SDK.VersionInfo">
+            <summary>
+            Represents version information, containing a major and minor version
+            </summary>
+        </member>
+        <member name="M:NullSpace.SDK.VersionInfo.ToString">
+            <summary>
+            Returns Major.Minor
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:NullSpace.SDK.EffectSampleInfo">
+            <summary>
+            Internal testing tool; do not depend upon this. May change at any time.
+            </summary>
+        </member>
+        <member name="T:NullSpace.SDK.NSVR">
+            <summary>
+            Wrapper around the main access point of the plugin, NSVR_Plugin
+            </summary>
+        </member>
+        <member name="T:NullSpace.SDK.NSVR.NSVR_Plugin">
+            <summary>
+            Main point of access to the plugin, implements IDisposable
+            </summary>
+        </member>
+        <member name="M:NullSpace.SDK.NSVR.NSVR_Plugin.SampleCurrentlyPlayingEffects">
+            <summary>
+            Internal testing tool; do not depend upon this. May change at any time.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NullSpace.SDK.NSVR.NSVR_Plugin.PauseAll">
+            END INTERNAL *
+            <summary>
+            Pause all currently active effects
+            </summary>
+        </member>
+        <member name="M:NullSpace.SDK.NSVR.NSVR_Plugin.ResumeAll">
+            <summary>
+            Resume all effects that were paused with a call to PauseAll()
+            </summary>
+        </member>
+        <member name="M:NullSpace.SDK.NSVR.NSVR_Plugin.ClearAll">
+            <summary>
+            Destroy all effects (invalidates any HapticHandles)
+            </summary>
+        </member>
+        <member name="M:NullSpace.SDK.NSVR.NSVR_Plugin.GetPluginVersion">
+            <summary>
+            Return the plugin version
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NullSpace.SDK.NSVR.NSVR_Plugin.TestDeviceConnection">
+            <summary>
+            Poll the status of suit connection 
+            </summary>
+            <returns>Connected if the service is running and a suit is plugged in, else Disconnected</returns>
+        </member>
+        <member name="M:NullSpace.SDK.NSVR.NSVR_Plugin.EnableTracking">
+            <summary>
+            Enable tracking on the suit
+            </summary>
+        </member>
+        <member name="M:NullSpace.SDK.NSVR.NSVR_Plugin.DisableTracking">
+            <summary>
+            Disable tracking on the suit 
+            </summary>
+        </member>
+        <member name="M:NullSpace.SDK.NSVR.NSVR_Plugin.SetTrackingEnabled(System.Boolean)">
+            <summary>
+            Enable or disable tracking
+            </summary>
+            <param name="enableTracking">If true, enables tracking. Else disables tracking.</param>
+        </member>
+        <member name="M:NullSpace.SDK.NSVR.NSVR_Plugin.PollTracking">
+            <summary>
+            Poll the suit for the latest tracking data
+            </summary>
+            <returns>A data structure containing all valid quaternion data</returns>
+        </member>
+        <member name="M:NullSpace.SDK.NSVR.NSVR_Plugin.Dispose">
+            <summary>
+            Disposes the plugin. After calling dispose, the plugin cannot be used again.
+            </summary>
+        </member>
+        <member name="T:NullSpace.SDK.TrackingUpdate">
+            <summary>
+            Able to hold tracking data for chest and arm IMUs
+            </summary>
+        </member>
+        <member name="T:NullSpace.SDK.HapticHandle">
+            <summary>
+            Use a HapticHandle to Play, Pause, or Stop an effect. A HapticHandle represents a particular instance of an effect.
+            </summary>
+        </member>
+        <member name="M:NullSpace.SDK.HapticHandle.Play">
+            <summary>
+            Cause the associated effect to play. If paused, play will resume where it left off. If stopped, play will resume from the beginning. 
+            </summary>
+            <returns>Reference to this HapticHandle</returns>
+        </member>
+        <member name="M:NullSpace.SDK.HapticHandle.Replay">
+            <summary>
+            Cause the associated effect to immediately play from the beginning.
+            Identical to Stop().Play()
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NullSpace.SDK.HapticHandle.Pause">
+            <summary>
+            Cause the associated effect to pause. 
+            </summary>
+            <returns>Reference to this HapticHandle</returns>
+        </member>
+        <member name="M:NullSpace.SDK.HapticHandle.Stop">
+            <summary>
+            Cause the associated effect to stop. Will reset the effect to the beginning in a paused state. 
+            </summary>
+            <returns>Reference to this HapticHandle</returns>
+        </member>
+        <member name="M:NullSpace.SDK.HapticHandle.Clone">
+            <summary>
+            Clone this HapticHandle, allowing an identical effect to be controlled independently 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NullSpace.SDK.HapticHandle.Dispose">
+            <summary>
+            Dispose the handle, releasing its resources from the plugin. After disposing a handle, it cannot be used again.
+            </summary>
+        </member>
+        <member name="T:MiniJSON.Json">
+             <summary>
+             This class encodes and decodes JSON strings.
+             Spec. details, see http://www.json.org/
+            
+             JSON uses Arrays and Objects. These correspond here to the datatypes IList and IDictionary.
+             All numbers are parsed to doubles.
+             </summary>
+        </member>
+        <member name="M:MiniJSON.Json.Deserialize(System.String)">
+            <summary>
+            Parses the string json into a value
+            </summary>
+            <param name="json">A JSON string.</param>
+            <returns>An List&lt;object&gt;, a Dictionary&lt;string, object&gt;, a double, an integer,a string, null, true, or false</returns>
+        </member>
+        <member name="M:MiniJSON.Json.Serialize(System.Object)">
+            <summary>
+            Converts a IDictionary / IList object or a simple type (string, int, etc.) into a JSON string
+            </summary>
+            <param name="json">A Dictionary&lt;string, object&gt; / List&lt;object&gt;</param>
+            <returns>A JSON encoded string, or null if object 'json' is not serializable</returns>
+        </member>
+    </members>
+</doc>

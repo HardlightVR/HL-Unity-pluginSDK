@@ -21,23 +21,23 @@ namespace NullSpace.SDK.Demos
 		public GameObject tempRef;
 
 		public Sprite seqIcon;
-		public Color seqColor;
+		public Color seqColor = new Color32(103, 255, 148, 255);
 		public Sprite patIcon;
-		public Color patColor;
+		public Color patColor = new Color32(82, 162, 255, 255);
 		public Sprite expIcon;
-		public Color expColor;
+		public Color expColor = new Color32(255, 239, 28, 255);
 		public Sprite errorIcon;
-		public Color errorColor;
+		public Color errorColor = new Color32(176, 14, 14, 255);
 		public Sprite folderIcon;
-		public Color folderColor;
-		public Color changedColor;
-
+		public Color folderColor = new Color32(174, 174, 174, 255);
+		public Color changedColor = new Color32(107, 171, 163, 255);
 		public Sprite processIcon;
 		public Sprite copyIcon;
 
 		public Dictionary<string, PackageViewer> ContentsDict;
 		public PopulateContainer ContentContainer;
 		public PopulateContainer FolderContainer;
+		public PackagingResults ResultDisplay;
 
 		public HapticTrigger greenBox;
 		public Text greenBoxText;
@@ -111,6 +111,25 @@ namespace NullSpace.SDK.Demos
 			}
 		}
 
+		void FindRequiredElements()
+		{
+			seqIcon = Resources.Load<Sprite>("Button Icons/SequenceSprite");
+			patIcon = Resources.Load<Sprite>("Button Icons/PatternSprite");
+			expIcon = Resources.Load<Sprite>("Button Icons/ExperienceSprite");
+			errorIcon = Resources.Load<Sprite>("Button Icons/cancel");
+			folderIcon = Resources.Load<Sprite>("Button Icons/Open Folder");
+			processIcon = Resources.Load<Sprite>("Button Icons/cardboard-box");
+			copyIcon = Resources.Load<Sprite>("Button Icons/files");
+
+			ContentContainer = GameObject.Find("Package Viewer Parent").GetComponent<PopulateContainer>();
+			FolderContainer = GameObject.Find("Folder Elements").GetComponent<PopulateContainer>();
+			selector = GameObject.Find("Suit Region Demo").GetComponent<SuitRegionSelectorDemo>();
+			greenBox = GameObject.Find("Haptic Trigger - Green Box").GetComponent<HapticTrigger>();
+			greenBoxText = greenBox.transform.GetChild(0).GetChild(1).GetComponent<Text>();
+			ResultDisplay = GameObject.FindObjectOfType<PackagingResults>();
+			ResultDisplay.SetVisibility(false);
+		}
+
 		void Awake()
 		{
 			//For easier referencing in this small scale tool.
@@ -123,6 +142,8 @@ namespace NullSpace.SDK.Demos
 				Debug.LogError("Multiple Library Managers.\nDuplicate will now self destructing.\n");
 				Destroy(gameObject);
 			}
+
+			FindRequiredElements();
 
 			//This is where we will keep reference to previously opened files/directories.
 			ContentsDict = new Dictionary<string, PackageViewer>();
@@ -143,6 +164,10 @@ namespace NullSpace.SDK.Demos
 
 		void Update()
 		{
+			if (Input.GetKeyDown(KeyCode.G))
+			{
+				ResultDisplay.Display("Hello World", "");
+			}
 			SetGUI();
 
 			GetInput();

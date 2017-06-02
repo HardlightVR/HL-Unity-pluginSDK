@@ -312,7 +312,6 @@ MonoBehaviour:
   path: 
   myName: 
   myNameSpace: 
-  testHaptics: {fileID: 0}
 --- !u!114 &114000010861962522
 MonoBehaviour:
   m_ObjectHideFlags: 1

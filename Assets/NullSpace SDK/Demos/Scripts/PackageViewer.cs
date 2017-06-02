@@ -23,12 +23,33 @@ namespace NullSpace.SDK.Demos
 		public string path;
 		public string myName = "";
 		public string myNameSpace = "";
-		public TestHaptics testHaptics;
-
+		private bool initialized = false;
 		private AssetTool _assetTool;
+
+		private void FindRequiredElements()
+		{
+			try
+			{
+				Folder = transform.GetChild(0).GetChild(1).GetComponent<Text>();
+				fileContainer = GetComponent<PopulateContainer>();
+				fileContainer.container = transform.GetChild(1).GetChild(0).GetChild(0).GetChild(0).GetComponent<RectTransform>();
+				fileContainer.prefab = Resources.Load<GameObject>("UI/Library Element");
+			}
+			catch (System.Exception e)
+			{
+				Debug.LogError("PackageViewer's FindRequiredElements has thrown an exception.\nThis was likely caused by some of its required elements being modified in the prefab or a missing component\n" + e.Message + "\n");
+			}
+		}
+
+
 		//When a directory is 'opened'
 		public void Init(AssetTool tool, AssetTool.PackageInfo package)
 		{
+			if (!initialized)
+			{
+				FindRequiredElements();
+				initialized = true;
+			}
 			_assetTool = tool;
 			myName = Path.GetFileName(package.path);
 			myNameSpace = package.@namespace;
@@ -59,7 +80,7 @@ namespace NullSpace.SDK.Demos
 			var validExperiences = RetrieveFilesInFolder(path + "/experiences");
 
 			var allFiles = validExperiences.Concat(validPatterns).Concat(validSequences);
-		
+
 			//A natural result of the haptics being loaded by order of folder means they'll be pre-sorted.
 			foreach (string element in allFiles)
 			{
@@ -76,8 +97,6 @@ namespace NullSpace.SDK.Demos
 		{
 			//Debug.Log(s + "\n");
 			LibraryElement libEle = fileContainer.AddPrefabToContainerReturn().GetComponent<LibraryElement>();
-			libEle.playButton.transform.localScale = Vector3.one;
-			libEle.playButton.name = element;
 			//Elements need to be initialized so they get the proper name/icon/color
 			libEle.Init(_assetTool, element, myNameSpace);
 

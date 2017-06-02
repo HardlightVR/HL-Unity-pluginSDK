@@ -510,7 +510,7 @@ PlayerSettings:
   XboxOne::VR::enabledDevices: []
   iOS::VR::enabledDevices: []
   tvOS::VR::enabledDevices: []
-  cloudProjectId: 
-  projectName: 
-  organizationId: 
+  cloudProjectId: b4db753d-d530-47e0-895a-42b0b9a9bf22
+  projectName: Unity-SDK
+  organizationId: jon-palmer
   cloudEnabled: 0

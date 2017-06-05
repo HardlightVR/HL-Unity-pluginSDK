@@ -182,31 +182,7 @@ namespace NullSpace.SDK
 			_plugin.ControlDirectly(singleAreas, strengths);
 
 		}
-		static float strength = 0.0f;
-
-		public void OnGUI()
-		{
-			if (Input.GetKeyDown(KeyCode.Y))
-			{
-				Debug.Log("ControlDirect");
-				ControlDirectly(AreaFlag.Chest_Left, strength);
-			}
-			if (Input.GetKey(KeyCode.U))
-			{
-				Debug.Log("ControlDirect " + strength);
-
-				strength += 0.01f;
-				ControlDirectly(AreaFlag.Chest_Left, strength);
-
-			}
-			if (Input.GetKey(KeyCode.T))
-			{
-				strength -= 0.01f;
-				ControlDirectly(AreaFlag.Chest_Left, strength);
-
-			}
-		}
-
+	
 		/// <summary>
 		/// Tell the manager to use a different IMU calibrator
 		/// </summary>

@@ -604,6 +604,12 @@
             </summary>
             <returns>Reference to this HapticHandle</returns>
         </member>
+        <member name="M:NullSpace.SDK.HapticHandle.IsFinishedPlaying">
+            <summary>
+            Returns true if the effect has completed playback
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:NullSpace.SDK.HapticHandle.Clone">
             <summary>
             Clone this HapticHandle, allowing an identical effect to be controlled independently 

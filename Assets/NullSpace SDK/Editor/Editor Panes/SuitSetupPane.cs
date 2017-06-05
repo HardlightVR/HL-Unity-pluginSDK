@@ -110,9 +110,9 @@ namespace NullSpace.SDK.Editor
 				else
 				{
 					myPane.IsTutorialStep(myPane.IsStepWithinRange(1, 8), () =>
-					 {
-						 NSEditorStyles.DrawLabel("Expand this foldout to continue!", 105, 14);
-					 });
+					{
+						NSEditorStyles.DrawLabel("Expand this foldout to continue!", 105, 14);
+					});
 				}
 				#endregion
 
@@ -701,6 +701,10 @@ namespace NullSpace.SDK.Editor
 							{
 								col = AddColliderForSuit(suit);
 							}
+							else
+							{
+								col = FindColliderOnSuit(suit);
+							}
 
 							if (hardlightSuit != null)
 							{
@@ -730,6 +734,14 @@ namespace NullSpace.SDK.Editor
 
 				output = "Creating SuitBodyCollider - Operation Finished\n\n" + output + "\n";
 				return output;
+			}
+
+			Collider FindColliderOnSuit(HardlightCollider suit)
+			{
+				GameObject go = suit.gameObject;
+
+				Collider col = go.GetComponent<Collider>();
+				return col;
 			}
 
 			Collider AddColliderForSuit(HardlightCollider suit)
@@ -921,9 +933,9 @@ namespace NullSpace.SDK.Editor
 				string showQuickButtonName = QuickButtonFoldout ? "Hide" : "Show";
 
 				TutorialHighlight(!QuickButtonFoldout && IsStepWithinRange(9, 9), () =>
-				 {
-					 QuickButtonFoldout = NSEditorStyles.DrawGUILayoutToggle(QuickButtonFoldout, showQuickButtonName + " Existing Hardlight Colliders");
-				 });
+				{
+					QuickButtonFoldout = NSEditorStyles.DrawGUILayoutToggle(QuickButtonFoldout, showQuickButtonName + " Existing Hardlight Colliders");
+				});
 
 				if (QuickButtonFoldout)
 				{
@@ -932,8 +944,8 @@ namespace NullSpace.SDK.Editor
 						bool horizOpen = false;
 						for (int i = 0; i < suitObjects.Count; i++)
 						{
-					//Selectively opening horizontals enforces 3 columns and makes multiple rows.
-					if (i % 3 == 0)
+							//Selectively opening horizontals enforces 3 columns and makes multiple rows.
+							if (i % 3 == 0)
 							{
 								if (horizOpen) EditorGUILayout.EndHorizontal();
 								EditorGUILayout.BeginHorizontal();
@@ -942,8 +954,8 @@ namespace NullSpace.SDK.Editor
 							if (suitObjects[i] != null)
 							{
 								content = new GUIContent(suitObjects[i].name, "Quick Navigate to " + suitObjects[i].name);
-						//Create a select button
-						NSEditorStyles.QuickSelectButton(false, suitObjects[i].gameObject, content, threeColumns);
+								//Create a select button
+								NSEditorStyles.QuickSelectButton(false, suitObjects[i].gameObject, content, threeColumns);
 							}
 						}
 						if (horizOpen) EditorGUILayout.EndHorizontal();

@@ -96,7 +96,7 @@ namespace NullSpace.SDK.Demos
 				TooltipDescriptor.AddDescriptor(gameObject, package.@namespace, "Haptic Package: A collection of sequences, patterns and experiences\nDefined by its config.json");
 				TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "<color=#FF4500>Open Folder</color>", "View directories of " + fileName, new Color32(135, 206, 255, 225));
 
-				TooltipDescriptor.AddDescriptor(processButton.gameObject, "<color=#FF4500>Convert Package to HDF</color>", "Converts all elements within the package [" + package.@namespace + "] to standalone HDFs", new Color32(135, 206, 255, 225));
+				TooltipDescriptor.AddDescriptor(processButton.gameObject, "<color=#FF4500>Convert Package to HDF</color>", "<b>Used for Unreal Engine Assets</b>\nConverts all elements within the package [" + package.@namespace + "] to standalone HDFs", new Color32(135, 206, 255, 225));
 
 				myPackage = package;
 

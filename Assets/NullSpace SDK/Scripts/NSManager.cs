@@ -24,6 +24,8 @@ namespace NullSpace.SDK
 	/// </summary>
 	public sealed class NSManager : MonoBehaviour
 	{
+		public const int HAPTIC_LAYER = 31;
+
 		#region Public Events 
 		/// <summary>
 		/// Raised when a suit disconnects
@@ -166,10 +168,10 @@ namespace NullSpace.SDK
 		/// Control the volume of an area directly. 
 		/// </summary>
 		/// <param name="singleArea">An AreaFlag representing a single area</param>
-		/// <param name="strength">Strength to play, from 0-255</param>
+		/// <param name="strength">Strength to play, from 0.0-1.0</param>
 		public void ControlDirectly(AreaFlag singleArea, double strength)
 		{
-			_plugin.ControlDirectly(singleArea, strength);
+			_plugin.ControlDirectly(singleArea, strength * .66f);
 		}
 
 		/// <summary>
@@ -182,7 +184,7 @@ namespace NullSpace.SDK
 			_plugin.ControlDirectly(singleAreas, strengths);
 
 		}
-	
+
 		/// <summary>
 		/// Tell the manager to use a different IMU calibrator
 		/// </summary>
@@ -331,7 +333,6 @@ namespace NullSpace.SDK
 		{
 			this.EnableTracking();
 		}
-
 
 
 		private IEnumerator UpdateTracking()

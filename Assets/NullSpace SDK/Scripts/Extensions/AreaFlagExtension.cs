@@ -1,4 +1,7 @@
-﻿namespace NullSpace.SDK
+﻿using System.Linq;
+using System.Collections.Generic;
+
+namespace NullSpace.SDK
 {
 	public static class AreaFlagExtensions
 	{
@@ -14,6 +17,26 @@
 		//		//	}
 		//		//	return false;
 		//		//}
+
+		public static AreaFlag[] StaticAreaFlag =
+		{
+			AreaFlag.Forearm_Left,
+			AreaFlag.Upper_Arm_Left,
+			AreaFlag.Shoulder_Left,
+			AreaFlag.Back_Left,
+			AreaFlag.Chest_Left,
+			AreaFlag.Upper_Ab_Left,
+			AreaFlag.Mid_Ab_Left,
+			AreaFlag.Lower_Ab_Left,
+			AreaFlag.Forearm_Right,
+			AreaFlag.Upper_Arm_Right,
+			AreaFlag.Shoulder_Right,
+			AreaFlag.Back_Right,
+			AreaFlag.Chest_Right,
+			AreaFlag.Upper_Ab_Right,
+			AreaFlag.Mid_Ab_Right,
+			AreaFlag.Lower_Ab_Right
+		};
 
 		public static bool IsSingleArea(this AreaFlag baseFlag)
 		{
@@ -50,6 +73,25 @@
 		public static bool HasFlag(this AreaFlag baseFlag, AreaFlag checkFlag)
 		{
 			return HasFlag(baseFlag, (int)checkFlag);
+		}
+		public static AreaFlag[] AllAreas(this AreaFlag baseFlag)
+		{
+			return StaticAreaFlag;
+		}
+		public static AreaFlag[] ToArray(this AreaFlag baseFlag)
+		{
+			AreaFlag[] values = baseFlag.AllAreas();
+
+			List<AreaFlag> has = new List<AreaFlag>();
+			for (int i = 0; i < values.Length; i++)
+			{
+				if (baseFlag.HasFlag(values[i]))
+				{
+					has.Add(values[i]);
+				}
+			}
+
+			return has.ToArray();
 		}
 		//public static bool HasFlag(this AreaFlag baseFlag, AreaFlag flag)
 		//{

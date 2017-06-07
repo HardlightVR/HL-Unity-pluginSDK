@@ -28,6 +28,7 @@ public class RegionFlagsAttributeDrawer : PropertyDrawer
 	//Further modified by NullSpace VR's Jonathan Palmer
 	public override void OnGUI(Rect _position, SerializedProperty _property, GUIContent _label)
 	{
+		//EditorGUILayout.LabelField("Area Flag");
 		int buttonsIntValue = _property.intValue;
 		int enumLength = _property.enumNames.Length;
 		int buttonCount = CountValidEntries(_property) + 4;

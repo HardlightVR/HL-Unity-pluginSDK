@@ -165,7 +165,7 @@ namespace NullSpace.SDK
 			//return _plugin.SampleStrengths();
 		}
 		/// <summary>
-		/// Control the volume of an area directly. 
+		/// Control the haptic volume of an area directly. 
 		/// </summary>
 		/// <param name="singleArea">An AreaFlag representing a single area</param>
 		/// <param name="strength">Strength to play, from 0.0-1.0</param>
@@ -175,7 +175,7 @@ namespace NullSpace.SDK
 		}
 
 		/// <summary>
-		/// Control the volume of multiple areas directly. 
+		/// Control the haptic volume of multiple areas directly. 
 		/// </summary>
 		/// <param name="singleAreas">List of AreaFlags, each representing a single area</param>
 		/// <param name="strengths">Strength to play, from 0-255</param>

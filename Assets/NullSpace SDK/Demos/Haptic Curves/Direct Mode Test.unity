@@ -100,12 +100,12 @@ GameObject:
   - 4: {fileID: 115106262}
   - 114: {fileID: 115106261}
   m_Layer: 0
-  m_Name: Bump
+  m_Name: Ab Bump
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &115106261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,6 +117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 778f3a8e9b54dd64c860ac684e91651f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeDelay: 0
   MyCurve:
     serializedVersion: 2
     m_Curve:
@@ -138,11 +139,14 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  Duration: 0.2
+  Duration: 0.35
+  endingSustain: 0
   minVolume: 0
   maxVolume: 1
-  TriggerKey: 32
-  Where: 16711680
+  TriggerKey: 44
+  Where: 14680288
+  InMainCoroutineWhile: 0
+  PlaySustainAtEnd: 1
 --- !u!4 &115106262
 Transform:
   m_ObjectHideFlags: 0
@@ -243,6 +247,256 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!1 &1234786058
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1234786060}
+  - 114: {fileID: 1234786059}
+  - 114: {fileID: 1234786065}
+  - 114: {fileID: 1234786064}
+  - 114: {fileID: 1234786063}
+  - 114: {fileID: 1234786062}
+  - 114: {fileID: 1234786061}
+  m_Layer: 0
+  m_Name: Moving Up [Bugged]
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1234786059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1234786058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 778f3a8e9b54dd64c860ac684e91651f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeDelay: 0
+  MyCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  Duration: 1
+  endingSustain: 0.5
+  minVolume: 0
+  maxVolume: 0.5
+  TriggerKey: 32
+  Where: 8388736
+  InMainCoroutineWhile: 0
+  PlaySustainAtEnd: 1
+--- !u!4 &1234786060
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1234786058}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 302, y: 508, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+--- !u!114 &1234786061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1234786058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 778f3a8e9b54dd64c860ac684e91651f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeDelay: 0.5
+  MyCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  Duration: 0.5
+  endingSustain: 0.5
+  minVolume: 0
+  maxVolume: 0.5
+  TriggerKey: 32
+  Where: 1048592
+  InMainCoroutineWhile: 0
+  PlaySustainAtEnd: 1
+--- !u!114 &1234786062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1234786058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 778f3a8e9b54dd64c860ac684e91651f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeDelay: 0.4
+  MyCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  Duration: 0.6
+  endingSustain: 0.5
+  minVolume: 0
+  maxVolume: 0.5
+  TriggerKey: 32
+  Where: 524296
+  InMainCoroutineWhile: 0
+  PlaySustainAtEnd: 1
+--- !u!114 &1234786063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1234786058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 778f3a8e9b54dd64c860ac684e91651f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeDelay: 0.3
+  MyCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  Duration: 0.7
+  endingSustain: 0.5
+  minVolume: 0
+  maxVolume: 0.5
+  TriggerKey: 32
+  Where: 262148
+  InMainCoroutineWhile: 0
+  PlaySustainAtEnd: 1
+--- !u!114 &1234786064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1234786058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 778f3a8e9b54dd64c860ac684e91651f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeDelay: 0.2
+  MyCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  Duration: 0.8
+  endingSustain: 0.5
+  minVolume: 0
+  maxVolume: 0.5
+  TriggerKey: 32
+  Where: 2228258
+  InMainCoroutineWhile: 0
+  PlaySustainAtEnd: 1
+--- !u!114 &1234786065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1234786058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 778f3a8e9b54dd64c860ac684e91651f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeDelay: 0.1
+  MyCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  Duration: 0.9
+  endingSustain: 0.5
+  minVolume: 0
+  maxVolume: 0.5
+  TriggerKey: 32
+  Where: 4194368
+  InMainCoroutineWhile: 0
+  PlaySustainAtEnd: 1
 --- !u!1 &1360390757
 GameObject:
   m_ObjectHideFlags: 0
@@ -258,7 +512,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1360390758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -270,6 +524,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 778f3a8e9b54dd64c860ac684e91651f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeDelay: 0
   MyCurve:
     serializedVersion: 2
     m_Curve:
@@ -317,10 +572,13 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 0
   Duration: 4
+  endingSustain: 0
   minVolume: 0.25
   maxVolume: 0.7
   TriggerKey: 307
-  Where: 16711935
+  Where: 2293795
+  InMainCoroutineWhile: 0
+  PlaySustainAtEnd: 1
 --- !u!4 &1360390759
 Transform:
   m_ObjectHideFlags: 0
@@ -344,12 +602,12 @@ GameObject:
   - 4: {fileID: 1542596275}
   - 114: {fileID: 1542596274}
   m_Layer: 0
-  m_Name: Ramp Up
+  m_Name: Fast Upper Ramp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1542596274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -361,6 +619,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 778f3a8e9b54dd64c860ac684e91651f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeDelay: 0
   MyCurve:
     serializedVersion: 2
     m_Curve:
@@ -378,10 +637,13 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 0
   Duration: 0.5
+  endingSustain: 0
   minVolume: 0
   maxVolume: 1
   TriggerKey: 13
-  Where: 16
+  Where: 1835036
+  InMainCoroutineWhile: 0
+  PlaySustainAtEnd: 1
 --- !u!4 &1542596275
 Transform:
   m_ObjectHideFlags: 0
@@ -405,12 +667,12 @@ GameObject:
   - 4: {fileID: 1650664257}
   - 114: {fileID: 1650664256}
   m_Layer: 0
-  m_Name: LONG RAMP
+  m_Name: Full body 4s Ramp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1650664256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -422,6 +684,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 778f3a8e9b54dd64c860ac684e91651f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeDelay: 0
   MyCurve:
     serializedVersion: 2
     m_Curve:
@@ -438,11 +701,14 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  Duration: 5
+  Duration: 4
+  endingSustain: 0
   minVolume: 0
   maxVolume: 1
-  TriggerKey: 307
+  TriggerKey: 305
   Where: 16711935
+  InMainCoroutineWhile: 0
+  PlaySustainAtEnd: 1
 --- !u!4 &1650664257
 Transform:
   m_ObjectHideFlags: 0

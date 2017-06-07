@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using NullSpace.SDK.Demos;
+using UnityEngine.SceneManagement;
 
 namespace NullSpace.SDK.Editor
 {
@@ -183,7 +184,7 @@ namespace NullSpace.SDK.Editor
 				myPane.TutorialHighlight(4, () =>
 				{
 					//The toggle for whether or not to add fresh child objects.
-					MyDefinition.AddChildObjects = NSEditorStyles.DrawGUILayoutToggle(!CanChangeValues, MyDefinition.AddChildObjects, content, twoColumns);
+					MyDefinition.AddChildObjects = NSEditorStyles.DrawGUILayoutToggle(false, MyDefinition.AddChildObjects, content, twoColumns);
 				});
 				//MyDefinition.AddChildObjects = CreateStyledToggle(!CanChangeValues, MyDefinition.AddChildObjects, content, twoColumns);
 
@@ -192,7 +193,7 @@ namespace NullSpace.SDK.Editor
 				myPane.TutorialHighlight(5, () =>
 				{
 					//The toggle for whether or not to add trigger colliders.
-					MyDefinition.AddExclusiveTriggerCollider = NSEditorStyles.DrawGUILayoutToggle(!CanChangeValues, MyDefinition.AddExclusiveTriggerCollider, content, twoColumns);
+					MyDefinition.AddExclusiveTriggerCollider = NSEditorStyles.DrawGUILayoutToggle(false, MyDefinition.AddExclusiveTriggerCollider, content, twoColumns);
 				});
 
 				EditorGUILayout.EndHorizontal();
@@ -1050,6 +1051,17 @@ namespace NullSpace.SDK.Editor
 		void OnInspectorUpdate()
 		{
 			Repaint();
+		}
+		public override void Update()
+		{
+			if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.RightShift) && Input.GetKey(KeyCode.RightControl))
+			{
+				for (int i = 0; i < Suits.Count; i++)
+				{
+					Suits[i].CanChangeValues = true;
+				}
+			}
+			base.Update();
 		}
 
 		public override void DrawTitleContent()

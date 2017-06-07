@@ -979,8 +979,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regionID: 8388608
   myCollider: {fileID: 51099315}
+  TryFindCollider: 0
 --- !u!1 &66341550
 GameObject:
   m_ObjectHideFlags: 0
@@ -1118,8 +1118,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regionID: 4
   myCollider: {fileID: 66341553}
+  TryFindCollider: 0
 --- !u!1 &67938672
 GameObject:
   m_ObjectHideFlags: 0
@@ -2620,8 +2620,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regionID: 1048576
   myCollider: {fileID: 231638045}
+  TryFindCollider: 0
 --- !u!1 &234886204
 GameObject:
   m_ObjectHideFlags: 0
@@ -2793,8 +2793,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regionID: 2
   myCollider: {fileID: 235601803}
+  TryFindCollider: 0
 --- !u!1 &242824670
 GameObject:
   m_ObjectHideFlags: 0
@@ -4106,8 +4106,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regionID: 64
   myCollider: {fileID: 339531494}
+  TryFindCollider: 0
 --- !u!1 &357825158
 GameObject:
   m_ObjectHideFlags: 0
@@ -4533,8 +4533,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regionID: 65536
   myCollider: {fileID: 370827611}
+  TryFindCollider: 0
 --- !u!1 &373204396
 GameObject:
   m_ObjectHideFlags: 0
@@ -5014,8 +5014,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regionID: 32
   myCollider: {fileID: 391798259}
+  TryFindCollider: 0
 --- !u!1 &417599837
 GameObject:
   m_ObjectHideFlags: 0
@@ -7311,8 +7311,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regionID: 4194304
   myCollider: {fileID: 581987838}
+  TryFindCollider: 0
 --- !u!1 &584042806
 GameObject:
   m_ObjectHideFlags: 0
@@ -8850,8 +8850,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regionID: 2097152
   myCollider: {fileID: 724691968}
+  TryFindCollider: 0
 --- !u!1 &737607663
 GameObject:
   m_ObjectHideFlags: 0
@@ -9634,8 +9634,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regionID: 16
   myCollider: {fileID: 779213935}
+  TryFindCollider: 0
 --- !u!1 &787332531
 GameObject:
   m_ObjectHideFlags: 0
@@ -10121,8 +10121,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regionID: 128
   myCollider: {fileID: 834042538}
+  TryFindCollider: 0
 --- !u!1 &849871112
 GameObject:
   m_ObjectHideFlags: 0
@@ -10260,8 +10260,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regionID: 262144
   myCollider: {fileID: 849871115}
+  TryFindCollider: 0
 --- !u!1 &862420302
 GameObject:
   m_ObjectHideFlags: 0
@@ -11735,8 +11735,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regionID: 524288
   myCollider: {fileID: 975393516}
+  TryFindCollider: 0
 --- !u!1 &982669449
 GameObject:
   m_ObjectHideFlags: 0
@@ -16392,7 +16392,7 @@ Prefab:
     - target: {fileID: 224000012628470334, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: -528
       objectReference: {fileID: 0}
     - target: {fileID: 224000013871009870, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -19525,8 +19525,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regionID: 8
   myCollider: {fileID: 1655463003}
+  TryFindCollider: 0
 --- !u!1 &1663599734
 GameObject:
   m_ObjectHideFlags: 0
@@ -26063,8 +26063,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regionID: 131072
   myCollider: {fileID: 2093660021}
+  TryFindCollider: 0
 --- !u!1 &2097443928
 GameObject:
   m_ObjectHideFlags: 0
@@ -26603,8 +26603,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regionID: 1
   myCollider: {fileID: 2134527031}
+  TryFindCollider: 0
 --- !u!1 &2138854114
 GameObject:
   m_ObjectHideFlags: 0

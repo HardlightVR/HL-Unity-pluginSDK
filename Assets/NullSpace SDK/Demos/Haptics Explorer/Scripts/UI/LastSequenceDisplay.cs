@@ -8,10 +8,9 @@ namespace NullSpace.SDK.Demos
 	{
 		private Text MyText;
 
-		private float textValue;
-		public float TextValue
+		public string TextValue
 		{
-			get { return textValue; }
+			get { return LibraryManager.Inst.LastSequenceName; }
 			set
 			{
 				MyText.text = LibraryManager.Inst.LastSequenceName;

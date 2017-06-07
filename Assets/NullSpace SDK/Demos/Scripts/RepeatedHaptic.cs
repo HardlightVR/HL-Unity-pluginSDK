@@ -36,7 +36,7 @@ namespace NullSpace.SDK.Demos
 
 				ResetTimer = Mathf.Clamp(ResetTimer, 0, float.MaxValue);
 			}
-
+			
 		}
 
 		public static RepeatedHaptic AddRepeatedHaptic(GameObject target, HapticHandle handle)
@@ -46,7 +46,7 @@ namespace NullSpace.SDK.Demos
 			return repeatHaptic;
 		}
 
-		public static void RemoveAllRepeatedHaptics(GameObject target, HapticHandle handle)
+		public static void RemoveAllRepeatedHaptic(GameObject target, HapticHandle handle)
 		{
 			RepeatedHaptic repeatHaptic = target.GetComponent<RepeatedHaptic>();
 			if (repeatHaptic != null)

@@ -3,6 +3,11 @@ using System.Collections;
 
 namespace NullSpace.SDK.Demos
 {
+	/// <summary>
+	/// [Incomplete] This is an incomplete class for handling haptic curves.
+	/// It still has some minor bugs. In other words...
+	/// DO NOT USE.
+	/// </summary>
 	public class HapticCurve : MonoBehaviour
 	{
 		[Range(0.0f, 5, order = 1)]
@@ -51,9 +56,10 @@ namespace NullSpace.SDK.Demos
 			//MyCurve.preWrapMode = WrapMode.PingPong;
 			//MyCurve.postWrapMode = WrapMode.PingPong;
 		}
-
+		
 		void Update()
 		{
+
 			if (Input.GetKeyDown(TriggerKey))
 			{
 				StartPlaying = true;

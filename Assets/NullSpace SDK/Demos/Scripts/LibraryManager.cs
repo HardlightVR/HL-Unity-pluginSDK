@@ -122,7 +122,10 @@ namespace NullSpace.SDK.Demos
 			copyIcon = Resources.Load<Sprite>("Button Icons/files");
 
 			ContentContainer = GameObject.Find("Package Viewer Parent").GetComponent<PopulateContainer>();
+			ContentContainer.prefab = Resources.Load<GameObject>("UI/Package Viewer");
 			FolderContainer = GameObject.Find("Folder Elements").GetComponent<PopulateContainer>();
+			FolderContainer.prefab = Resources.Load<GameObject>("UI/Library Element");
+
 			selector = GameObject.Find("Suit Region Demo").GetComponent<SuitRegionSelectorDemo>();
 			greenBox = GameObject.Find("Haptic Trigger - Green Box").GetComponent<HapticTrigger>();
 			greenBoxText = greenBox.transform.GetChild(0).GetChild(1).GetComponent<Text>();
@@ -251,7 +254,8 @@ namespace NullSpace.SDK.Demos
 			}
 			else
 			{
-				Debug.LogError("Selector is null. Check Library Manager in the inspector\n");
+				return AreaFlag.All_Areas;
+				//Debug.LogError("Selector is null. Check Library Manager in the inspector\n");
 			}
 
 			return flag;

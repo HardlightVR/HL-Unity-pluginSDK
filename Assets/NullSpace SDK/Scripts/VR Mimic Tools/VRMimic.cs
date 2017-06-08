@@ -5,6 +5,16 @@ namespace NullSpace.SDK
 {
 	public class VRMimic : MonoBehaviour
 	{
+		[Header("VR Mimic creates children that copy", order = 0)]
+		[Space(-10, order = 1)]
+		[Header("  the movement of VR Objects", order = 2)]
+		[Space(-5, order = 3)]
+		[Header("It also creates a smart player body", order = 4)]
+		[Space(-10, order = 5)]
+		[Header("  for quality positional haptics", order = 6)]
+
+		public bool SkipDebugLogErrors = false;
+
 		private static VRMimic instance;
 		public static VRMimic Instance
 		{
@@ -16,8 +26,11 @@ namespace NullSpace.SDK
 
 					if (FindObjectsOfType<VRMimic>().Length > 1)
 					{
-						Debug.LogError("[VRMimic] There is more than one VRMimic Singleton\n" +
-							"There shouldn't be multiple VRMimic objects");
+						if (!instance.SkipDebugLogErrors)
+						{
+							Debug.LogError("[VRMimic] There is more than one VRMimic Singleton\n" +
+								"There shouldn't be multiple VRMimic objects");
+						}
 						return instance;
 					}
 
@@ -43,7 +56,10 @@ namespace NullSpace.SDK
 			{
 				if (!initialized)
 				{
-					Debug.LogError("VRMimic not yet initialized before attempting to get the VRCamera. Will attempt setup assuming Camera.main is the VR Camera.");
+					if (!SkipDebugLogErrors)
+					{
+						Debug.LogError("VRMimic not yet initialized before attempting to get the VRCamera. Will attempt setup assuming Camera.main is the VR Camera.");
+					}
 				}
 				return VRObjectMimic.Get().VRCamera;
 			}

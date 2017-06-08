@@ -857,6 +857,7 @@ GameObject:
   - 114: {fileID: 51099318}
   - 114: {fileID: 51099320}
   - 65: {fileID: 51099315}
+  - 114: {fileID: 51099321}
   m_Layer: 31
   m_Name: Lower Ab Right
   m_TagString: Haptic Region
@@ -981,6 +982,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCollider: {fileID: 51099315}
   TryFindCollider: 0
+--- !u!114 &51099321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 51099312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17f3d2fca4bdd4e4c993d90bf75ae19f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Where: 8388608
 --- !u!1 &66341550
 GameObject:
   m_ObjectHideFlags: 0
@@ -996,6 +1009,7 @@ GameObject:
   - 114: {fileID: 66341556}
   - 114: {fileID: 66341558}
   - 65: {fileID: 66341553}
+  - 114: {fileID: 66341559}
   m_Layer: 31
   m_Name: Shoulder Left
   m_TagString: Haptic Region
@@ -1120,6 +1134,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCollider: {fileID: 66341553}
   TryFindCollider: 0
+--- !u!114 &66341559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 66341550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17f3d2fca4bdd4e4c993d90bf75ae19f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Where: 4
 --- !u!1 &67938672
 GameObject:
   m_ObjectHideFlags: 0
@@ -2323,6 +2349,7 @@ MonoBehaviour:
   impulseDuration: 0.75
   Attenuation: 1
   EffectStrength: 1
+  UseEffectSelectorSlider: 1
   selectedColor: {r: 1, g: 0.93103456, b: 0, a: 1}
   unselectedColor: {r: 0.8901961, g: 0.8901961, b: 0.8901961, a: 1}
   OriginColor: {r: 0.86764705, g: 0.62829614, b: 0, a: 1}
@@ -2498,6 +2525,7 @@ GameObject:
   - 114: {fileID: 231638048}
   - 114: {fileID: 231638050}
   - 65: {fileID: 231638045}
+  - 114: {fileID: 231638051}
   m_Layer: 31
   m_Name: Chest Right
   m_TagString: Haptic Region
@@ -2622,6 +2650,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCollider: {fileID: 231638045}
   TryFindCollider: 0
+--- !u!114 &231638051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 231638042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17f3d2fca4bdd4e4c993d90bf75ae19f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Where: 1048576
 --- !u!1 &234886204
 GameObject:
   m_ObjectHideFlags: 0
@@ -2671,6 +2711,7 @@ GameObject:
   - 114: {fileID: 235601806}
   - 114: {fileID: 235601808}
   - 65: {fileID: 235601803}
+  - 114: {fileID: 235601809}
   m_Layer: 31
   m_Name: Upper Arm Left
   m_TagString: Haptic Region
@@ -2795,6 +2836,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCollider: {fileID: 235601803}
   TryFindCollider: 0
+--- !u!114 &235601809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 235601800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17f3d2fca4bdd4e4c993d90bf75ae19f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Where: 2
 --- !u!1 &242824670
 GameObject:
   m_ObjectHideFlags: 0
@@ -3156,7 +3209,7 @@ MonoBehaviour:
   m_FillRect: {fileID: 1034824189}
   m_HandleRect: {fileID: 2120654875}
   m_Direction: 0
-  m_MinValue: 0.1
+  m_MinValue: 0
   m_MaxValue: 5
   m_WholeNumbers: 0
   m_Value: 0.5
@@ -3984,6 +4037,7 @@ GameObject:
   - 114: {fileID: 339531497}
   - 114: {fileID: 339531499}
   - 65: {fileID: 339531494}
+  - 114: {fileID: 339531500}
   m_Layer: 31
   m_Name: Mid Ab Left
   m_TagString: Haptic Region
@@ -4108,6 +4162,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCollider: {fileID: 339531494}
   TryFindCollider: 0
+--- !u!114 &339531500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 339531491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17f3d2fca4bdd4e4c993d90bf75ae19f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Where: 64
 --- !u!1 &357825158
 GameObject:
   m_ObjectHideFlags: 0
@@ -4411,6 +4477,7 @@ GameObject:
   - 114: {fileID: 370827614}
   - 114: {fileID: 370827616}
   - 65: {fileID: 370827611}
+  - 114: {fileID: 370827617}
   m_Layer: 31
   m_Name: Forearm Right
   m_TagString: Haptic Region
@@ -4535,6 +4602,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCollider: {fileID: 370827611}
   TryFindCollider: 0
+--- !u!114 &370827617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 370827608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17f3d2fca4bdd4e4c993d90bf75ae19f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Where: 65536
 --- !u!1 &373204396
 GameObject:
   m_ObjectHideFlags: 0
@@ -4892,6 +4971,7 @@ GameObject:
   - 114: {fileID: 391798262}
   - 114: {fileID: 391798264}
   - 65: {fileID: 391798259}
+  - 114: {fileID: 391798265}
   m_Layer: 31
   m_Name: Upper Ab Left
   m_TagString: Haptic Region
@@ -5016,6 +5096,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCollider: {fileID: 391798259}
   TryFindCollider: 0
+--- !u!114 &391798265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 391798256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17f3d2fca4bdd4e4c993d90bf75ae19f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Where: 32
 --- !u!1 &417599837
 GameObject:
   m_ObjectHideFlags: 0
@@ -5874,7 +5966,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3f2765e954faa94daa496643ac8af3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1, type: 2}
+  prefab: {fileID: 0}
   container: {fileID: 489009625}
   count: 0
 --- !u!1 &494232438
@@ -7189,6 +7281,7 @@ GameObject:
   - 114: {fileID: 581987841}
   - 114: {fileID: 581987843}
   - 65: {fileID: 581987838}
+  - 114: {fileID: 581987844}
   m_Layer: 31
   m_Name: Mid Ab Right
   m_TagString: Haptic Region
@@ -7313,6 +7406,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCollider: {fileID: 581987838}
   TryFindCollider: 0
+--- !u!114 &581987844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 581987835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17f3d2fca4bdd4e4c993d90bf75ae19f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Where: 4194304
 --- !u!1 &584042806
 GameObject:
   m_ObjectHideFlags: 0
@@ -8728,6 +8833,7 @@ GameObject:
   - 114: {fileID: 724691971}
   - 114: {fileID: 724691973}
   - 65: {fileID: 724691968}
+  - 114: {fileID: 724691974}
   m_Layer: 31
   m_Name: Upper Ab Right
   m_TagString: Haptic Region
@@ -8852,6 +8958,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCollider: {fileID: 724691968}
   TryFindCollider: 0
+--- !u!114 &724691974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 724691965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17f3d2fca4bdd4e4c993d90bf75ae19f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Where: 2097152
 --- !u!1 &737607663
 GameObject:
   m_ObjectHideFlags: 0
@@ -9512,6 +9630,7 @@ GameObject:
   - 114: {fileID: 779213939}
   - 114: {fileID: 779213941}
   - 65: {fileID: 779213935}
+  - 114: {fileID: 779213942}
   m_Layer: 31
   m_Name: Chest Left
   m_TagString: Haptic Region
@@ -9636,6 +9755,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCollider: {fileID: 779213935}
   TryFindCollider: 0
+--- !u!114 &779213942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 779213933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17f3d2fca4bdd4e4c993d90bf75ae19f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Where: 16
 --- !u!1 &787332531
 GameObject:
   m_ObjectHideFlags: 0
@@ -9999,6 +10130,7 @@ GameObject:
   - 114: {fileID: 834042541}
   - 114: {fileID: 834042543}
   - 65: {fileID: 834042538}
+  - 114: {fileID: 834042544}
   m_Layer: 31
   m_Name: Lower Ab Left
   m_TagString: Haptic Region
@@ -10123,6 +10255,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCollider: {fileID: 834042538}
   TryFindCollider: 0
+--- !u!114 &834042544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 834042535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17f3d2fca4bdd4e4c993d90bf75ae19f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Where: 128
 --- !u!1 &849871112
 GameObject:
   m_ObjectHideFlags: 0
@@ -10138,6 +10282,7 @@ GameObject:
   - 114: {fileID: 849871118}
   - 114: {fileID: 849871120}
   - 65: {fileID: 849871115}
+  - 114: {fileID: 849871121}
   m_Layer: 31
   m_Name: Shoulder Right
   m_TagString: Haptic Region
@@ -10262,6 +10407,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCollider: {fileID: 849871115}
   TryFindCollider: 0
+--- !u!114 &849871121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 849871112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17f3d2fca4bdd4e4c993d90bf75ae19f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Where: 262144
 --- !u!1 &862420302
 GameObject:
   m_ObjectHideFlags: 0
@@ -10773,6 +10930,7 @@ MonoBehaviour:
   impulseDuration: 0.75
   Attenuation: 1
   EffectStrength: 1
+  UseEffectSelectorSlider: 1
   selectedColor: {r: 1, g: 0.14117648, b: 0, a: 1}
   unselectedColor: {r: 0.8901961, g: 0.8901961, b: 0.8901961, a: 1}
   OriginColor: {r: 0.85490197, g: 0.64705884, b: 0.1254902, a: 1}
@@ -11613,6 +11771,7 @@ GameObject:
   - 114: {fileID: 975393519}
   - 114: {fileID: 975393521}
   - 65: {fileID: 975393516}
+  - 114: {fileID: 975393522}
   m_Layer: 31
   m_Name: Back Right
   m_TagString: Haptic Region
@@ -11737,6 +11896,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCollider: {fileID: 975393516}
   TryFindCollider: 0
+--- !u!114 &975393522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 975393513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17f3d2fca4bdd4e4c993d90bf75ae19f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Where: 524288
 --- !u!1 &982669449
 GameObject:
   m_ObjectHideFlags: 0
@@ -16312,22 +16483,22 @@ Prefab:
     - target: {fileID: 224000011595414456, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 269.75
+      value: 280.25
       objectReference: {fileID: 0}
     - target: {fileID: 224000011595414456, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -269
+      value: -275
       objectReference: {fileID: 0}
     - target: {fileID: 224000011595414456, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 539.5
+      value: 560.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000011595414456, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 538
+      value: 550
       objectReference: {fileID: 0}
     - target: {fileID: 224000013846922606, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -16342,7 +16513,7 @@ Prefab:
     - target: {fileID: 224000013846922606, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 274.75
+      value: 285.25
       objectReference: {fileID: 0}
     - target: {fileID: 224000013846922606, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -16352,7 +16523,7 @@ Prefab:
     - target: {fileID: 224000013846922606, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 539.5
+      value: 560.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000013846922606, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -16372,27 +16543,27 @@ Prefab:
     - target: {fileID: 224000012050577180, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 274.75
+      value: 285.25
       objectReference: {fileID: 0}
     - target: {fileID: 224000012050577180, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -364
+      value: -370
       objectReference: {fileID: 0}
     - target: {fileID: 224000012050577180, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 539.5
+      value: 560.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000012050577180, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 538
+      value: 550
       objectReference: {fileID: 0}
     - target: {fileID: 224000012628470334, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: -528
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224000013871009870, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -18165,7 +18336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3f2765e954faa94daa496643ac8af3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0, guid: fda388f219754884ba8781131933ed46, type: 2}
+  prefab: {fileID: 0}
   container: {fileID: 1548396268}
   count: 0
 --- !u!114 &1548396271
@@ -19401,6 +19572,7 @@ GameObject:
   - 114: {fileID: 1655463006}
   - 114: {fileID: 1655463008}
   - 65: {fileID: 1655463003}
+  - 114: {fileID: 1655463009}
   m_Layer: 31
   m_Name: Back Left
   m_TagString: Haptic Region
@@ -19527,6 +19699,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCollider: {fileID: 1655463003}
   TryFindCollider: 0
+--- !u!114 &1655463009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1655463000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17f3d2fca4bdd4e4c993d90bf75ae19f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Where: 8
 --- !u!1 &1663599734
 GameObject:
   m_ObjectHideFlags: 0
@@ -22454,7 +22638,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 84164899}
   m_HandleRect: {fileID: 84164898}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -24341,6 +24525,7 @@ MonoBehaviour:
   impulseDuration: 0.5
   Attenuation: 1
   EffectStrength: 1
+  UseEffectSelectorSlider: 0
   selectedColor: {r: 0.87836176, g: 0.43225563, b: 0.9044118, a: 1}
   unselectedColor: {r: 0.8901961, g: 0.8901961, b: 0.8901961, a: 1}
   OriginColor: {r: 0.531702, g: 0.16971238, b: 0.53676474, a: 1}
@@ -24633,7 +24818,7 @@ Prefab:
     - target: {fileID: 224000013709841350, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 253.75
+      value: 264.25
       objectReference: {fileID: 0}
     - target: {fileID: 224000013709841350, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -24643,7 +24828,7 @@ Prefab:
     - target: {fileID: 224000013709841350, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 503.5
+      value: 524.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000013709841350, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -24693,7 +24878,7 @@ Prefab:
     - target: {fileID: 224000012528230784, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 143.25
+      value: 153.75
       objectReference: {fileID: 0}
     - target: {fileID: 224000012528230784, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -24703,7 +24888,7 @@ Prefab:
     - target: {fileID: 224000012528230784, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 286.5
+      value: 307.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000012528230784, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -24753,7 +24938,7 @@ Prefab:
     - target: {fileID: 224000010744236894, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 217.25
+      value: 227.75
       objectReference: {fileID: 0}
     - target: {fileID: 224000010744236894, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -24763,7 +24948,7 @@ Prefab:
     - target: {fileID: 224000010744236894, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 286.5
+      value: 307.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000010744236894, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -24783,7 +24968,7 @@ Prefab:
     - target: {fileID: 224000013214566312, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 397.5
+      value: 418.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000013214566312, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -24813,7 +24998,7 @@ Prefab:
     - target: {fileID: 224000013187125872, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 466.5
+      value: 487.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000013187125872, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -25941,6 +26126,7 @@ GameObject:
   - 114: {fileID: 2093660024}
   - 114: {fileID: 2093660026}
   - 65: {fileID: 2093660021}
+  - 114: {fileID: 2093660027}
   m_Layer: 31
   m_Name: Upper Arm Right
   m_TagString: Haptic Region
@@ -26065,6 +26251,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCollider: {fileID: 2093660021}
   TryFindCollider: 0
+--- !u!114 &2093660027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2093660018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17f3d2fca4bdd4e4c993d90bf75ae19f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Where: 131072
 --- !u!1 &2097443928
 GameObject:
   m_ObjectHideFlags: 0
@@ -26481,6 +26679,7 @@ GameObject:
   - 114: {fileID: 2134527034}
   - 114: {fileID: 2134527036}
   - 65: {fileID: 2134527031}
+  - 114: {fileID: 2134527037}
   m_Layer: 31
   m_Name: Forearm Left
   m_TagString: Haptic Region
@@ -26605,6 +26804,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCollider: {fileID: 2134527031}
   TryFindCollider: 0
+--- !u!114 &2134527037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2134527028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17f3d2fca4bdd4e4c993d90bf75ae19f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Where: 1
 --- !u!1 &2138854114
 GameObject:
   m_ObjectHideFlags: 0

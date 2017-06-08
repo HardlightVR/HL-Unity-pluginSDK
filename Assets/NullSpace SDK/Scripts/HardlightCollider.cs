@@ -29,11 +29,6 @@ namespace NullSpace.SDK
 		[Header("If collider is null, performs a GetComponent", order = 5)]
 		public bool TryFindCollider = false;
 
-		//[Header("", order = 6)]
-		//public GameObject correspondingObject;
-		[Space(50, order = 7)]
-		[RegionFlag]
-		private AreaFlag _regionID;
 		public AreaFlag regionID
 		{
 			get { return MyLocation.Where; }
@@ -45,17 +40,7 @@ namespace NullSpace.SDK
 		{
 			get
 			{
-				if (_myLocation == null)
-				{
-					HapticLocation loc = GetComponent<HapticLocation>();
-
-					if (loc == null)
-					{
-						Debug.LogError("Haptic Location of " + name + " is null despite being a required component.\n\tYou should NEVER hit this. There is only one case I know of which involves recompiling after adding the RequiresComponent attribute.");
-					}
-					Debug.Assert(loc != null);
-					_myLocation = loc;
-				}
+				CheckMyLocation();
 				return _myLocation;
 			}
 		}
@@ -84,6 +69,7 @@ namespace NullSpace.SDK
 
 		void Start()
 		{
+			CheckMyLocation();
 			//If we tried to find the collider AND it was null.
 			if (TryFindCollider && myCollider == null)
 			{
@@ -103,6 +89,21 @@ namespace NullSpace.SDK
 			if (gameObject.layer != NSManager.HAPTIC_LAYER)
 			{
 				Debug.LogWarning("You should aim to keep haptic content to Layer [" + NSManager.HAPTIC_LAYER + "].\n");
+			}
+		}
+
+		void CheckMyLocation()
+		{
+			if (_myLocation == null)
+			{
+				HapticLocation loc = GetComponent<HapticLocation>();
+
+				if (loc == null)
+				{
+					Debug.LogError("Haptic Location of " + name + " is null despite being a required component.\n\tYou should NEVER hit this. There is only one case I know of which involves recompiling after adding the RequiresComponent attribute.");
+				}
+				Debug.Assert(loc != null);
+				_myLocation = loc;
 			}
 		}
 	}

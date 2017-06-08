@@ -1,10 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
-using NullSpace.SDK.Demos;
-using UnityEngine.SceneManagement;
 
 namespace NullSpace.SDK.Editor
 {

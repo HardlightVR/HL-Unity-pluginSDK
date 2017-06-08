@@ -62,7 +62,7 @@ namespace NullSpace.SDK.Demos
 
 			if (Input.GetKeyDown(TriggerKey))
 			{
-				StartPlaying = true;
+				Play();
 			}
 
 			if (Input.GetKeyDown(KeyCode.Home))
@@ -72,7 +72,7 @@ namespace NullSpace.SDK.Demos
 
 			if (StartPlaying && !Playing)
 			{
-				PlayRoutine = StartCoroutine(Play(timeDelay));
+				PlayRoutine = StartCoroutine(ExecuteCurvePlaying(timeDelay));
 			}
 		}
 
@@ -119,7 +119,12 @@ namespace NullSpace.SDK.Demos
 			Debug.Log(hit);
 		}
 
-		IEnumerator Play(float delayBeforeStart = 0.0f)
+		public void Play()
+		{
+			StartPlaying = true;
+		}
+
+		IEnumerator ExecuteCurvePlaying(float delayBeforeStart = 0.0f)
 		{
 			InMainCoroutineWhile = false;
 			PlaySustainAtEnd = true;

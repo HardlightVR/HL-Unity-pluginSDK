@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using NullSpace.SDK.Demos;
 
 namespace NullSpace.SDK.Demos
 {

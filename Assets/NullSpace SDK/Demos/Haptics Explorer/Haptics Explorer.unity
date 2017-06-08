@@ -669,7 +669,7 @@ MonoBehaviour:
   m_FillRect: {fileID: 1336226040}
   m_HandleRect: {fileID: 2032007174}
   m_Direction: 0
-  m_MinValue: 0.1
+  m_MinValue: 0
   m_MaxValue: 5
   m_WholeNumbers: 0
   m_Value: 0.75
@@ -5373,7 +5373,7 @@ MonoBehaviour:
   m_FillRect: {fileID: 1529581337}
   m_HandleRect: {fileID: 1241845011}
   m_Direction: 0
-  m_MinValue: 0.1
+  m_MinValue: 0
   m_MaxValue: 5
   m_WholeNumbers: 0
   m_Value: 0.75
@@ -13797,8 +13797,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayType: 1
-  DisplayStringOnZero: 0
-  ReplaceZeroWith: Natural Duration
+  DisplayStringOnZero: 1
+  ReplaceZeroWith: Instantaneous
 --- !u!114 &1133194757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16483,7 +16483,7 @@ Prefab:
     - target: {fileID: 224000011595414456, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 280.25
+      value: 270.25
       objectReference: {fileID: 0}
     - target: {fileID: 224000011595414456, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -16493,7 +16493,7 @@ Prefab:
     - target: {fileID: 224000011595414456, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 560.5
+      value: 540.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000011595414456, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -16513,7 +16513,7 @@ Prefab:
     - target: {fileID: 224000013846922606, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 285.25
+      value: 275.25
       objectReference: {fileID: 0}
     - target: {fileID: 224000013846922606, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -16523,7 +16523,7 @@ Prefab:
     - target: {fileID: 224000013846922606, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 560.5
+      value: 540.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000013846922606, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -16543,7 +16543,7 @@ Prefab:
     - target: {fileID: 224000012050577180, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 285.25
+      value: 275.25
       objectReference: {fileID: 0}
     - target: {fileID: 224000012050577180, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -16553,7 +16553,7 @@ Prefab:
     - target: {fileID: 224000012050577180, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 560.5
+      value: 540.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000012050577180, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -22234,11 +22234,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TooltipName: Code Sequence Examples
-  DetailedTooltip: 'Click to create emanating effects that are made from CodeSequences.
-
-    Check out ImpulseCodeSequenceSamples.cs
-
-    <color=red>Hotkey: [3]</color>'
+  DetailedTooltip: "Click to create an emanating effect from the Last Sequence played.\r\n<color=red>Hotkey:
+    [3]</color>"
   backgroundColor:
     serializedVersion: 2
     rgba: 3367671231
@@ -22954,9 +22951,9 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Haptics Explorer
 
-    v0.2.1
+    v0.2.2
 
-    Plugin v0.4.1'
+    Plugin v0.4.2'
 --- !u!222 &1868340534
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -24818,7 +24815,7 @@ Prefab:
     - target: {fileID: 224000013709841350, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 264.25
+      value: 254.25
       objectReference: {fileID: 0}
     - target: {fileID: 224000013709841350, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -24828,7 +24825,7 @@ Prefab:
     - target: {fileID: 224000013709841350, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 524.5
+      value: 504.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000013709841350, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -24878,7 +24875,7 @@ Prefab:
     - target: {fileID: 224000012528230784, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 153.75
+      value: 143.75
       objectReference: {fileID: 0}
     - target: {fileID: 224000012528230784, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -24888,7 +24885,7 @@ Prefab:
     - target: {fileID: 224000012528230784, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 307.5
+      value: 287.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000012528230784, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -24938,7 +24935,7 @@ Prefab:
     - target: {fileID: 224000010744236894, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 227.75
+      value: 217.75
       objectReference: {fileID: 0}
     - target: {fileID: 224000010744236894, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -24948,7 +24945,7 @@ Prefab:
     - target: {fileID: 224000010744236894, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 307.5
+      value: 287.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000010744236894, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -24968,7 +24965,7 @@ Prefab:
     - target: {fileID: 224000013214566312, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 418.5
+      value: 398.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000013214566312, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -24998,7 +24995,7 @@ Prefab:
     - target: {fileID: 224000013187125872, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 487.5
+      value: 467.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000013187125872, guid: fda388f219754884ba8781131933ed46,
         type: 2}

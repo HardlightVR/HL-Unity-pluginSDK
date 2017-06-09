@@ -166,7 +166,7 @@ namespace NullSpace.SDK
 		/// Control the volume of an area directly. 
 		/// </summary>
 		/// <param name="singleArea">An AreaFlag representing a single area</param>
-		/// <param name="strength">Strength to play, from 0-255</param>
+		/// <param name="strength">Strength to play, from 0.0-1.0</param>
 		public void ControlDirectly(AreaFlag singleArea, double strength)
 		{
 			_plugin.ControlDirectly(singleArea, strength);

@@ -171,7 +171,7 @@ namespace NullSpace.SDK
 		/// <param name="strength">Strength to play, from 0.0-1.0</param>
 		public void ControlDirectly(AreaFlag singleArea, double strength)
 		{
-			_plugin.ControlDirectly(singleArea, strength * .66f);
+			//_plugin.ControlDirectly(singleArea, strength * .66f);
 		}
 
 		/// <summary>
@@ -181,7 +181,7 @@ namespace NullSpace.SDK
 		/// <param name="strengths">Strength to play, from 0-255</param>
 		public void ControlDirectly(AreaFlag[] singleAreas, ushort[] strengths)
 		{
-			_plugin.ControlDirectly(singleAreas, strengths);
+			//_plugin.ControlDirectly(singleAreas, strengths);
 
 		}
 

@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
-using NullSpace.SDK.Demos;
 
 namespace NullSpace.SDK.Editor
 {
@@ -183,7 +181,7 @@ namespace NullSpace.SDK.Editor
 				myPane.TutorialHighlight(4, () =>
 				{
 					//The toggle for whether or not to add fresh child objects.
-					MyDefinition.AddChildObjects = NSEditorStyles.DrawGUILayoutToggle(!CanChangeValues, MyDefinition.AddChildObjects, content, twoColumns);
+					MyDefinition.AddChildObjects = NSEditorStyles.DrawGUILayoutToggle(false, MyDefinition.AddChildObjects, content, twoColumns);
 				});
 				//MyDefinition.AddChildObjects = CreateStyledToggle(!CanChangeValues, MyDefinition.AddChildObjects, content, twoColumns);
 
@@ -192,7 +190,7 @@ namespace NullSpace.SDK.Editor
 				myPane.TutorialHighlight(5, () =>
 				{
 					//The toggle for whether or not to add trigger colliders.
-					MyDefinition.AddExclusiveTriggerCollider = NSEditorStyles.DrawGUILayoutToggle(!CanChangeValues, MyDefinition.AddExclusiveTriggerCollider, content, twoColumns);
+					MyDefinition.AddExclusiveTriggerCollider = NSEditorStyles.DrawGUILayoutToggle(false, MyDefinition.AddExclusiveTriggerCollider, content, twoColumns);
 				});
 
 				EditorGUILayout.EndHorizontal();
@@ -228,7 +226,7 @@ namespace NullSpace.SDK.Editor
 			}
 			void SuitRootObjectField(GUILayoutOption[] options)
 			{
-				GUIContent content = new GUIContent("Suit Root (Optional)", "For modifying an existing configuration. In the future this will try to find the related objects based on common naming conventions.");
+				GUIContent content = new GUIContent("Suit Root", "For modifying an existing configuration. In the future this will try to find the related objects based on common naming conventions.");
 
 				myPane.TutorialHighlight(2, () =>
 				{
@@ -429,7 +427,7 @@ namespace NullSpace.SDK.Editor
 				string output = string.Empty;
 				string tooltip = "This will create Suit components on" + (MyDefinition.AddChildObjects ? " children of the selected objects" : " the selected objects");
 				GUIContent content = new GUIContent("Create HardlightCollider", tooltip);
-				bool OperationForbidden = CountValidSuitHolders() < 1;
+				bool OperationForbidden = CountValidSuitHolders() < 1 && MyDefinition.HasRoot;
 				bool Result = false;
 
 				myPane.TutorialHighlight(7, () =>
@@ -580,15 +578,33 @@ namespace NullSpace.SDK.Editor
 			{
 				if (hardlightSuit != null)
 				{
+					//Assign the visible suit root.
 					MyDefinition.SuitRoot = hardlightSuit.gameObject;
-					MyDefinition.DefinedAreas = hardlightSuit.Definition.DefinedAreas.ToList();
-					MyDefinition.ZoneHolders = hardlightSuit.Definition.ZoneHolders.ToList();
-					MyDefinition.SceneReferences = hardlightSuit.Definition.SceneReferences.ToList();
-					MyDefinition.HapticsLayer = hardlightSuit.Definition.HapticsLayer;
-					//We can't change stuff, we imported it
-					CanChangeValues = false;
-					MyDefinition.AddChildObjects = hardlightSuit.Definition.AddChildObjects;
-					MyDefinition.AddExclusiveTriggerCollider = hardlightSuit.Definition.AddExclusiveTriggerCollider;
+
+					//ERROR: This isn't an actual valid check yet.
+					if (hardlightSuit.Definition.CountValidZoneHolders() <= 0)
+					{
+						hardlightSuit.CheckListValidity();
+
+						MyDefinition.ZoneHolders = hardlightSuit.ZoneHolders.ToList();
+						MyDefinition.SceneReferences = hardlightSuit.SceneReferences.ToList();
+						MyDefinition.HapticsLayer = hardlightSuit.HapticsLayer;
+						MyDefinition.AddChildObjects = hardlightSuit.AddChildObjects;
+						MyDefinition.AddExclusiveTriggerCollider = hardlightSuit.AddExclusiveTriggerCollider;
+					}
+					else
+					{
+						//This field is populated when the Definition is created.
+						//MyDefinition.DefinedAreas = hardlightSuit.Definition.DefinedAreas.ToList();
+						MyDefinition.ZoneHolders = hardlightSuit.Definition.ZoneHolders.ToList();
+						MyDefinition.SceneReferences = hardlightSuit.Definition.SceneReferences.ToList();
+						MyDefinition.HapticsLayer = hardlightSuit.Definition.HapticsLayer;
+						//We can't change stuff, we imported it
+						CanChangeValues = false;
+						Debug.Log("Disallow modification\n");
+						MyDefinition.AddChildObjects = hardlightSuit.Definition.AddChildObjects;
+						MyDefinition.AddExclusiveTriggerCollider = hardlightSuit.Definition.AddExclusiveTriggerCollider;
+					}
 				}
 			}
 
@@ -659,8 +675,6 @@ namespace NullSpace.SDK.Editor
 					hardlightSuit = MyDefinition.SuitRoot.GetComponent<HardlightSuit>();
 					if (hardlightSuit == null)
 					{
-						Debug.Log("Adding Defined Suit Component\n");
-
 						hardlightSuit = Undo.AddComponent<HardlightSuit>(MyDefinition.SuitRoot);
 						//SuitRoot.AddComponent<DefinedSuit>();
 					}
@@ -668,15 +682,21 @@ namespace NullSpace.SDK.Editor
 
 				if (hardlightSuit != null)
 				{
-					Debug.Log("Recording DefinedSuit\n");
 					Undo.RecordObject(hardlightSuit, "Filling out Defined Suit fields");
 					hardlightSuit.Definition.AddChildObjects = MyDefinition.AddChildObjects;
 					hardlightSuit.Definition.AddExclusiveTriggerCollider = MyDefinition.AddExclusiveTriggerCollider;
 					hardlightSuit.Definition.ZoneHolders = MyDefinition.ZoneHolders.ToList();
 					hardlightSuit.Definition.DefinedAreas = MyDefinition.DefinedAreas.ToList();
 					hardlightSuit.Definition.SuitRoot = MyDefinition.SuitRoot;
+
+					hardlightSuit.AddChildObjects = MyDefinition.AddChildObjects;
+					hardlightSuit.AddExclusiveTriggerCollider = MyDefinition.AddExclusiveTriggerCollider;
+					hardlightSuit.ZoneHolders = MyDefinition.ZoneHolders.ToList();
+					hardlightSuit.DefinedAreas = MyDefinition.DefinedAreas.ToList();
+					hardlightSuit.SuitRoot = MyDefinition.SuitRoot;
 				}
 
+				#region Handle the zone holders
 				for (int i = 0; i < MyDefinition.ZoneHolders.Count; i++)
 				{
 					if (MyDefinition.ZoneHolders[i] != null)
@@ -689,6 +709,8 @@ namespace NullSpace.SDK.Editor
 						Collider col = null;
 						//Check if it has one already
 						HardlightCollider suit = targetGO.GetComponent<HardlightCollider>();
+						//Debug.Log("Checking: " + targetGO + "\n" + "  " + (suit == null), targetGO);
+						#region If there exists a Hardlight Collider component.
 						if (suit == null)
 						{
 							//Add one if it doesn't
@@ -706,13 +728,26 @@ namespace NullSpace.SDK.Editor
 								col = FindColliderOnSuit(suit);
 							}
 
-							if (hardlightSuit != null)
-							{
-								Undo.RecordObject(hardlightSuit, "Filling out Defined Suit fields");
-								hardlightSuit.Definition.SceneReferences[i] = suit;
-							}
+							//Debug.Log((hardlightSuit == null) + "\n");
+							//if (hardlightSuit != null)
+							//{
+							//	Undo.RecordObject(hardlightSuit, "Filling out Defined Suit fields");
+							//	Debug.Log("Checking: " + suit.name + "\n");
+
+							//	if (suit != null)
+							//	{
+							//		hardlightSuit.Definition.SceneReferences[i] = suit;
+							//	}
+							//	//hardlightSuit.SceneReferences[i] = suit;
+							//	//Transplant actions.
+							//}
 
 							output += "\t  Adding Suit Body Collider to " + MyDefinition.ZoneHolders[i].name + "";
+						}
+						#endregion
+						else
+						{
+							Debug.LogError("Unimplemented\n");
 						}
 
 						output += "\t  Adding " + MyDefinition.DefinedAreas[i].ToString() + " " + MyDefinition.ZoneHolders[i].name + "\n";
@@ -728,12 +763,33 @@ namespace NullSpace.SDK.Editor
 
 						//Don't let the user change anything until they've deleted these?
 						//These functions aren't robust enough yet.
+						Debug.Log("Disallow modification\n");
 						CanChangeValues = false;
 					}
 				}
+				#endregion
+
+				CopyToHardlightSuit(hardlightSuit);
 
 				output = "Creating SuitBodyCollider - Operation Finished\n\n" + output + "\n";
 				return output;
+			}
+
+			void CopyToHardlightSuit(HardlightSuit hardlightSuit)
+			{
+				if (hardlightSuit == null)
+				{
+					Debug.Log("HardlightSuit is null\n");
+				}
+				if (hardlightSuit != null)
+				{
+					hardlightSuit.AddChildObjects = MyDefinition.AddChildObjects;
+					hardlightSuit.AddExclusiveTriggerCollider = MyDefinition.AddExclusiveTriggerCollider;
+					hardlightSuit.ZoneHolders = MyDefinition.ZoneHolders.ToList();
+					hardlightSuit.DefinedAreas = MyDefinition.DefinedAreas.ToList();
+					hardlightSuit.SceneReferences = MyDefinition.SceneReferences.ToList();
+					hardlightSuit.SuitRoot = MyDefinition.SuitRoot;
+				}
 			}
 
 			Collider FindColliderOnSuit(HardlightCollider suit)
@@ -838,8 +894,8 @@ namespace NullSpace.SDK.Editor
 				HardlightSuit suit = GetRootHardlightSuitComponent();
 				if (suit)
 				{
-					bool userResult = EditorUtility.DisplayDialog("Remove HardlightSuit Component", "Delete Hardlight Suit Definition\n(Stores a SuitDefinition for fast reimplementation)", "Remove", "Cancel");
-					if (userResult)
+					bool userResult = EditorUtility.DisplayDialog("Remove HardlightSuit Component", "Delete Hardlight Suit Definition\n(Stores a SuitDefinition for fast reimplementation)", "Don't Remove", "Remove");
+					if (!userResult)
 					{
 						DeleteHardlightSuitComponent(suit);
 					}
@@ -888,6 +944,8 @@ namespace NullSpace.SDK.Editor
 			mat = Resources.Load<Material>("EditorIcon");
 
 			List<HardlightSuit> existingDefinitions = FindObjectsOfType<HardlightSuit>().ToList();
+
+			//Debug.Log("Found: " + existingDefinitions.Count + "\n");
 
 			EditorSuitConfig suit = null;
 
@@ -990,6 +1048,17 @@ namespace NullSpace.SDK.Editor
 		void OnInspectorUpdate()
 		{
 			Repaint();
+		}
+		public override void Update()
+		{
+			if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.RightShift) && Input.GetKey(KeyCode.RightControl))
+			{
+				for (int i = 0; i < Suits.Count; i++)
+				{
+					Suits[i].CanChangeValues = true;
+				}
+			}
+			base.Update();
 		}
 
 		public override void DrawTitleContent()

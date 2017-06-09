@@ -1,4 +1,7 @@
-﻿namespace NullSpace.SDK
+﻿using System.Linq;
+using System.Collections.Generic;
+
+namespace NullSpace.SDK
 {
 	public static class AreaFlagExtensions
 	{
@@ -14,6 +17,26 @@
 		//		//	}
 		//		//	return false;
 		//		//}
+
+		public static AreaFlag[] StaticAreaFlag =
+		{
+			AreaFlag.Forearm_Left,
+			AreaFlag.Upper_Arm_Left,
+			AreaFlag.Shoulder_Left,
+			AreaFlag.Back_Left,
+			AreaFlag.Chest_Left,
+			AreaFlag.Upper_Ab_Left,
+			AreaFlag.Mid_Ab_Left,
+			AreaFlag.Lower_Ab_Left,
+			AreaFlag.Forearm_Right,
+			AreaFlag.Upper_Arm_Right,
+			AreaFlag.Shoulder_Right,
+			AreaFlag.Back_Right,
+			AreaFlag.Chest_Right,
+			AreaFlag.Upper_Ab_Right,
+			AreaFlag.Mid_Ab_Right,
+			AreaFlag.Lower_Ab_Right
+		};
 
 		public static bool IsSingleArea(this AreaFlag baseFlag)
 		{
@@ -51,23 +74,44 @@
 		{
 			return HasFlag(baseFlag, (int)checkFlag);
 		}
-		//public static bool HasFlag(this AreaFlag baseFlag, AreaFlag flag)
-		//{
-		//	if ((int)baseFlag & (int)flag) > 0)
-		//		return true;
-		//	if (((int)baseFlag & (int)flag)) == 1)
-		//	{
-		//		return true;
-		//	}
-		//	return HasFlag(baseFlag, flag);
-		//}
+		/// <summary>
+		/// This function does NOT break apart the AreaFlag it is called on. For that, call ToArray()
+		/// Returns an array of ALL single AreaFlags in the enum.
+		/// Does not include Boths, Alls or None
+		/// </summary>
+		/// <param name="baseFlag">This value does not matter at all. You cannot append extension methods to Enums.</param>
+		/// <returns>Returns an array of each single area in the enum. (No Boths, Alls or None AreaFlags)</returns>
+		public static AreaFlag[] AllSingleAreasInEnum(this AreaFlag baseFlag)
+		{
+			return StaticAreaFlag;
+		}
+		/// <summary>
+		/// Breaks a multiple AreaFlag into a list of Single AreaFlags
+		/// Ex: Multi Area Flag = AreaFlag.Forearm_Left|AreaFlag.Forearm_Right
+		/// Return: {AreaFlag.Forearm_Left, AreaFlag.Forearm_Right
+		/// </summary>
+		/// <param name="baseFlag">The flag to be evaluated.</param>
+		/// <returns>Retusn an array of single AreaFlags. Will not include None, Boths or All AreaFlag values.</returns>
+		public static AreaFlag[] ToArray(this AreaFlag baseFlag)
+		{
+			AreaFlag[] values = baseFlag.AllSingleAreasInEnum();
 
-		//		public static string CleanString(this AreaFlag baseFlag)
-		//		{
-		//			//			Remove tiny faces from the enum, they have no place here.
-		//			string cleanedString = baseFlag.ToString().Replace('_', ' ');
+			List<AreaFlag> has = new List<AreaFlag>();
+			for (int i = 0; i < values.Length; i++)
+			{
+				if (baseFlag.HasFlag(values[i]))
+				{
+					has.Add(values[i]);
+				}
+			}
 
-		//			return cleanedString;
-		//		}
+			//
+			//if (has.Count < 1)
+			//{
+			//	has.Add(AreaFlag.None);
+			//}
+
+			return has.ToArray();
+		}
 	}
 }

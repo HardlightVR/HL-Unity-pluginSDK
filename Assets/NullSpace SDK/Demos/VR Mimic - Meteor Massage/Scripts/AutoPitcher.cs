@@ -82,6 +82,10 @@ namespace NullSpace.SDK.Demos
 			{
 				Pitch(3);
 			}
+			if (Input.GetKeyDown(KeyCode.Backspace))
+			{
+				Escalate();
+			}
 		}
 		/// <summary>
 		/// Random range 0-15. Condenses it into an index (0-3) on a weighted hand-set scale.

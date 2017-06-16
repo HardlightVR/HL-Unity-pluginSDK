@@ -16,6 +16,10 @@ namespace NullSpace.SDK
 		}
 
 		public GameObject ObjectToMimic;
+		/// <summary>
+		/// Future feature - track if the headset is idle/active. Same with the controllers.
+		/// This allows for default behavior.
+		/// </summary>
 		public enum DetectionState { Active, Idle }
 		public enum MimickedObject { Camera, ControllerA, ControllerB }
 		public MimickedObject MimickedObjectType;
@@ -24,6 +28,7 @@ namespace NullSpace.SDK
 		public Vector3 PositionOffset;
 
 		private bool initialized = false;
+
 
 		void Init(GameObject NewMimicTarget)
 		{
@@ -54,17 +59,9 @@ namespace NullSpace.SDK
 		{
 			if (CameraToMimic == null)
 			{
-				//Find the headset and each of the controllers
-				//		This solution is the most efficient, but couples us to steam vr.
-				//		CameraToMimic = FindObjectOfType<SteamVR_Camera>().gameObject;
-
-				//		Controller stub code
-				//		var controllers = FindObjectsOfType<SteamVR_Controller>();
-
 				//We assume the main camera is the VR Camera.
-				CameraToMimic = Camera.main.gameObject;
+				CameraToMimic = FindCameraObject();
 			}
-
 
 			MimickedObjects mimickingObjects = new MimickedObjects();
 
@@ -85,6 +82,17 @@ namespace NullSpace.SDK
 			_holder = mimickingObjects;
 
 			return Get(CameraToMimic);
+		}
+
+		public static GameObject FindCameraObject()
+		{
+			GameObject cameraObject = Camera.main.gameObject;
+
+			//Find the headset and each of the controllers
+			//		This solution is the most efficient, but couples us to steam vr.
+			//		cameraObject = FindObjectOfType<SteamVR_Camera>().gameObject;
+
+			return cameraObject;
 		}
 	}
 

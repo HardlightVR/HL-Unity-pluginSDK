@@ -36,7 +36,8 @@ namespace NullSpace.SDK
 
 					if (instance == null)
 					{
-						Initialize();
+						Debug.LogError("Attemping to reference the Instance of VRMimic tools but Initialize() has not occurred.\n\tCall VRMimic.Initialize() in a Start or Awake function before trying to reference the static Instance.\n");
+						//Initialize();
 					}
 					else
 					{
@@ -65,30 +66,60 @@ namespace NullSpace.SDK
 			}
 		}
 
-		private void Init(bool UseBodyMimic = true, Camera vrCamera = null, int hapticLayer = NSManager.HAPTIC_LAYER)
+		/// <summary>
+		/// A reference to the body mimic for if you need to change runtime parameters.
+		/// </summary>
+		public BodyMimic body;
+
+		private void Init(GameObject vrCamera = null, int hapticLayer = NSManager.HAPTIC_LAYER)
 		{
 			if (!initialized)
 			{
-				if (UseBodyMimic)
-				{
-					BodyMimic.Initialize(vrCamera, hapticLayer);
-					HardlightSuit.Find().SetColliderState();
-				}
+				VRObjectMimic.Initialize(vrCamera);
+				InitBodyMimic(hapticLayer);
 				initialized = true;
 			}
+		}
+
+		private void InitBodyMimic(int hapticLayer = NSManager.HAPTIC_LAYER)
+		{
+			Camera playerCameraToHideBodyFrom = VRObjectMimic.Get().VRCamera.ObjectToMimic.GetComponent<Camera>();
+			body = BodyMimic.Initialize(playerCameraToHideBodyFrom, hapticLayer);
+			HardlightSuit.Find().SetColliderState();
+
 		}
 
 		void Start()
 		{
 			Init();
 		}
-
-		public static void Initialize(Camera vrCamera = null, int hapticLayer = NSManager.HAPTIC_LAYER)
+		public static bool ValidInstance()
 		{
-			GameObject singleton = new GameObject();
-			instance = singleton.AddComponent<VRMimic>();
-			instance.Init();
-			singleton.name = "VRMimic [Runtime Singleton]";
+			if (instance == null)
+			{
+				return false;
+			}
+			return true;
+		}
+
+		/// <summary>
+		/// Initializes and sets up 
+		/// </summary>
+		/// <param name="vrCamera"></param>
+		/// <param name="hapticLayer"></param>
+		public static void Initialize(GameObject vrCamera = null, int hapticLayer = NSManager.HAPTIC_LAYER)
+		{
+			if (ValidInstance())
+			{
+				Debug.LogError("VRMimic is already initialized\nDoes not yet support multiple initializations");
+			}
+			else
+			{
+				GameObject singleton = new GameObject();
+				instance = singleton.AddComponent<VRMimic>();
+				instance.Init(vrCamera, hapticLayer);
+				singleton.name = "VRMimic [Runtime Singleton]";
+			}
 		}
 	}
 }

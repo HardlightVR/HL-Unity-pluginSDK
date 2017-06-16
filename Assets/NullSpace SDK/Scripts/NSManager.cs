@@ -402,7 +402,11 @@ namespace NullSpace.SDK
 
 		void OnApplicationQuit()
 		{
-			_plugin.DisableTracking();
+			if (_plugin != null)
+			{
+				_plugin.DisableTracking();
+			}
+
 			ClearAllEffects();
 			System.Threading.Thread.Sleep(100);
 		}

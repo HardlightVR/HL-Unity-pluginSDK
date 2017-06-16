@@ -9,8 +9,16 @@ namespace NullSpace.SDK
 		{
 			if (layerToHide <= 31 && layerToHide >= 0)
 			{
-				//Define the layermask without the given layer. (usually the Haptics layer)
-				camera.cullingMask = camera.cullingMask - (1 << layerToHide);
+				if (camera.cullingMask == 0)
+				{
+					Debug.LogError("Camera [" + camera.name + "] has nothing in it's culling mask. CameraExtension.HideLayer will do nothing here.\n\tReporting as an error because you likely want something on that culling mask?\n");
+				}
+				else
+				{
+					//Define the layermask without the given layer. (usually the Haptics layer)
+					//This will not work if our base flag set is Nothing (but that shouldn't happen)
+					camera.cullingMask = camera.cullingMask - (1 << layerToHide);
+				}
 			}
 			else
 			{

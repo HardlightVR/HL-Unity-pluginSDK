@@ -35,7 +35,7 @@ namespace NullSpace.SDK
 		/// This variable is used to store the original box color so we can correctly revert.
 		/// </summary>
 		private Color defaultBoxColor = default(Color);
-#endif 
+#endif
 		#endregion
 
 		private Collider _singleVolumeCollider;
@@ -209,20 +209,26 @@ namespace NullSpace.SDK
 		/// <returns></returns>
 		public static HardlightSuit Find()
 		{
-			HardlightSuit body = FindObjectOfType<HardlightSuit>();
-			if (body != null)
+			HardlightSuit suit = FindObjectOfType<HardlightSuit>();
+			if (suit != null)
 			{
-				body.Init();
-				return body;
+				suit.Init();
+				return suit;
 			}
-			VRMimic.Initialize();
+			if (VRMimic.ValidInstance())
+			{
+				suit = FindObjectOfType<HardlightSuit>();
+				if (suit != null)
+				{
+					suit.Init();
+					return suit;
+				}
+			}
+			else
+			{
+				Debug.Log("Attempted to run HardlightSuit.Find() before calling VRMimic.Initialize()\nMust run VRMimic Initialize first - so you can configure hiding settings.");
+			}
 
-			body = FindObjectOfType<HardlightSuit>();
-			if (body != null)
-			{
-				body.Init();
-				return body;
-			}
 			return null;
 		}
 
@@ -239,27 +245,54 @@ namespace NullSpace.SDK
 			return seq;
 		}
 
+		#region Simple Hit (Nearest and Nearby)
 		/// <summary>
-		/// Plays the file on the nearest SINGLE HapticLocation
+		/// Plays the file on the single nearest HapticLocation
 		/// Note: A HapticLocation can have an AreaFlag with multiple pads selected.
 		/// </summary>
 		/// <param name="point">A point in world space to compare</param>
 		/// <param name="file">Looks for a haptic file - "Resources/Haptics/" + file</param>
 		/// <param name="maxDistance">The max distance the point can be from any HapticLocations</param>
-		public void Hit(Vector3 point, string file, float maxDistance = 5.0f)
+		public AreaFlag HitNearest(Vector3 point, string file, float maxDistance = 5.0f)
 		{
-			AreaFlag loc = FindNearestFlag(point, maxDistance);
-			if (loc != AreaFlag.None)
+			AreaFlag Where = FindNearestFlag(point, maxDistance);
+			if (Where != AreaFlag.None)
 			{
 				HapticSequence seq = GetSequence(file);
-				seq.CreateHandle(loc).Play();
+				seq.CreateHandle(Where).Play();
 			}
 			else
 			{
-				Debug.Log("None\n");
+				Debug.Log("Projectile hit the HardlightSuit but found no objects hit. Perhaps the maxDistance (" + maxDistance + ") is too small?\n\tOr the suit/prefab wasn't configured correctly.\n");
 			}
+			return Where;
 		}
 
+		/// <summary>
+		/// Plays the file on all HapticLocations within a certain radius of the provided point.
+		/// </summary>
+		/// <param name="point">A point in world space to compare</param>
+		/// <param name="file">Looks for a haptic file - "Resources/Haptics/" + file</param>
+		/// <param name="impactRadius">The body is about .6 wide, .72 tall and .25 deep</param>
+		public AreaFlag HitNearby(Vector3 point, string file, float impactRadius = .35f)
+		{
+			AreaFlag Where = FindAllFlagsWithinRange(point, impactRadius, true);
+
+			if (Where != AreaFlag.None)
+			{
+				HapticSequence seq = GetSequence(file);
+				seq.CreateHandle(Where).Play();
+			}
+			else
+			{
+				Debug.Log("Projectile hit the HardlightSuit but found no objects hit. Perhaps the impactRadius (" + impactRadius + ") is too small?\n\tOr the suit/prefab wasn't configured correctly.\n");
+			}
+
+			return Where;
+		}
+		#endregion
+
+		#region Impulses
 		/// <summary>
 		/// Calls ImpulseGenerator.BeginEmanatingEffect with the given sequence and depth.
 		/// </summary>
@@ -339,7 +372,9 @@ namespace NullSpace.SDK
 				Debug.LogWarning("Invalid Hit at " + point + "\n");
 			}
 		}
+		#endregion
 
+		#region Finding HapticLocation and Flags
 		/// <summary>
 		/// Finds the nearest HapticLocation.MyLocation on the PlayerTorso to the provided point
 		/// </summary>
@@ -452,18 +487,18 @@ namespace NullSpace.SDK
 			}
 			return null;
 		}
+
 		/// <summary>
 		/// Gets a random HapticLocation on the configured PlayerTorso.
 		/// </summary>
 		/// <returns>A valid HapticLocation on the body (defaults to null if none are configured or if it is configured incorrectly.</returns>
-		public HapticLocation FindRandomLocation(bool DisplayInEditor = false)
+		public HapticLocation FindRandomLocation(AreaFlag OnlyAreasWithin = AreaFlag.All_Areas, bool DisplayInEditor = false)
 		{
-			HapticLocation loc = Definition.GetRandomLocationObject().GetComponent<HapticLocation>();
+			HapticLocation loc = Definition.GetRandomLocationWithinSet(OnlyAreasWithin).GetComponent<HapticLocation>();
 			if (loc != null)
 			{
 				if (DisplayInEditor)
 				{
-					Debug.Log("HIT\n");
 					ColorHapticLocationInEditor(loc, Color.blue);
 				}
 
@@ -474,6 +509,9 @@ namespace NullSpace.SDK
 			return null;
 		}
 
+		#endregion
+
+		#region Debug Coloring
 		/// <summary>
 		/// This function is a no-op outside of the editor.
 		/// Preprocessor defines keep it from impacting your game's performance.
@@ -493,25 +531,6 @@ namespace NullSpace.SDK
 				StartCoroutine(ColorHapticLocationCoroutine(rend, color));
 			}
 #endif
-		}
-
-		/// <summary>
-		/// [Unused] intended as an Editor window function.
-		/// </summary>
-		/// <param name="index"></param>
-		/// <param name="suit"></param>
-		public void AddSceneReference(int index, HardlightCollider suit)
-		{
-			if (SceneReferences == null)
-			{
-				SceneReferences = new List<HardlightCollider>();
-			}
-
-			//if (SceneReferences.Count < index)
-			//{
-			SceneReferences.Add(suit);
-			//}
-
 		}
 
 #if UNITY_EDITOR
@@ -534,7 +553,9 @@ namespace NullSpace.SDK
 			rend.material.color = defaultBoxColor;
 		}
 #endif
+		#endregion
 
+		#region Repeating and Delayed Impulses
 		/// <summary>
 		/// A coroutine for repeating an emanation on a delay X times.
 		/// </summary>
@@ -562,6 +583,7 @@ namespace NullSpace.SDK
 		{
 			yield return new WaitForSeconds(delay);
 			impulse.Play();
-		}
+		} 
+		#endregion
 	}
 }

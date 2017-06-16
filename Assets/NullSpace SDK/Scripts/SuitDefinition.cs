@@ -230,46 +230,42 @@ namespace NullSpace.SDK
 			//Debug.Log(hit.Count + "\n");
 			return hit.ToArray();
 		}
-
+		
 		/// <summary>
-		/// Picks a random body gameobject. This means you can use the position or get the HapticLocation.
+		/// Gets a random GameObject from the suit (which has a HapticLocation) that is within the set of potential areas.
+		/// You can request 'AreaFlag.Right_All' to get any random right area.
 		/// </summary>
-		/// <returns></returns>
-		public GameObject GetRandomBodyPosition()
+		/// <param name="setOfPotentialAreas">Please </param>
+		/// <returns>A game object within the random set. Can be null if you ask for AreaFlag.None or for spots that aren't on your configured body.</returns>
+		public GameObject GetRandomLocationWithinSet(AreaFlag setOfPotentialAreas)
 		{
-			GameObject randomBodyPart = SceneReferences[Random.Range(0, SceneReferences.Count)].Representation;
-			//Debug.Log("Random Body Part Selected: " + randomBodyPart.name + " \n");
-			return randomBodyPart;
-		}
+			var limitedAreas = DefinedAreas.Where(x => setOfPotentialAreas.HasFlag(x));
+			int index = Random.Range(0, limitedAreas.Count());
 
-		/// <summary>
-		/// Get the position of a random body.
-		/// </summary>
-		/// <returns></returns>
-		public Vector3 GetRandomLocation()
-		{
-			return GetRandomBodyPosition().transform.position;
-		}
-		public GameObject GetRandomLocationObject()
-		{
-			int index = Random.Range(0, SceneReferences.Count);
+			if (limitedAreas.Count() > 0)
+			{
+				int sceneReferenceIndex = DefinedAreas.IndexOf(limitedAreas.ElementAt(index));
 
-			//This is not possible.
-			//if (index > regions.Count)
-			//{
-			//}
-			//else
-			if (SceneReferences[index] == null)
-			{
-				Debug.LogError("Attempted to get Random Location inside PlayerBody's PlayerTorso.\n\tNo locations should be null. Check to make sure the fields in the Body Mimic prefab were assigned.");
-			}
-			else
-			{
-				return SceneReferences[index].Representation;
+				//Debug.Log("Rand Loc: " + index + " of " + limitedAreas.Count() + "  " + limitedAreas.ElementAt(index).ToString() + "  " + DefinedAreas.IndexOf(limitedAreas.ElementAt(index)) + "\n" + SceneReferences[sceneReferenceIndex].name);
+				//This is not possible.
+				//if (index > regions.Count)
+				//{
+				//}
+				//else
+				if (SceneReferences[sceneReferenceIndex] == null)
+				{
+					Debug.LogError("Attempted to get Random Location inside HardlightSuit's SuitDefinition.\n\tNo locations should be null. Check to make sure the fields in the Body Mimic prefab were assigned.");
+				}
+				else
+				{
+					return SceneReferences[sceneReferenceIndex].Representation;
+				}
 			}
 			return null;
 		}
+		#endregion
 
+		#region Visibility control (if you aren't using CameraExtension.HideLayer)
 		public void SetAllVisibility(bool revealed)
 		{
 			if (SceneReferences != null)
@@ -292,7 +288,7 @@ namespace NullSpace.SDK
 					rend.enabled = revealed;
 				}
 			}
-		}
+		} 
 		#endregion
 	}
 }

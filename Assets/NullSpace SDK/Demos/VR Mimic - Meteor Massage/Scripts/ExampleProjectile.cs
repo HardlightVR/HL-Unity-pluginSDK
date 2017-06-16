@@ -14,6 +14,11 @@ namespace NullSpace.SDK.Demos
 	[RequireComponent(typeof(Collider))]
 	public class ExampleProjectile : MonoBehaviour
 	{
+		/// <summary>
+		/// Where the projectile was last frame.
+		/// </summary>
+		private Vector3 lastPosition;
+
 		public enum CollisionType { Hit, HitImpulse, BigImpact, RepeatedImpulse }
 		/// <summary>
 		/// This example projectile supports 4 types of haptics
@@ -62,13 +67,21 @@ namespace NullSpace.SDK.Demos
 		{
 			if (CheckIfTrigger)
 			{
-				//If we don't
+				//If the projectile ISN'T a trigger
 				if (!GetComponent<Collider>().isTrigger)
 				{
 					//This error serves to catch if you hit the easily achieved mistake of forgetting to check the 'IsTrigger' checkbox.
 					Debug.LogError("Example Projectile [] has a collider that is not a trigger. If you aren't experiencing haptics, this might be why.\n\tYou can expose then disable CheckIfTrigger if this error is superfluous (meaning you have multiple colliders and one is a trigger.");
 				}
 			}
+		}
+
+		private void LateUpdate()
+		{
+			//This line is commented so we can see the movement progress.
+			//Debug.DrawLine(lastPosition, transform.position, Color.green);
+			//We hold onto our last position to use when we collide. This lets us avoid tunneling.
+			lastPosition = transform.position;
 		}
 
 		public void OnTriggerEnter(Collider col)
@@ -86,11 +99,18 @@ namespace NullSpace.SDK.Demos
 			//This lets us check if what we hit is a 'haptic object' since thats all the Example Projectile wants to hit.
 			if (col.gameObject.layer == NSManager.HAPTIC_LAYER)
 			{
+				//Debug.DrawLine(transform.position, transform.position + Vector3.up * 100, Color.cyan, 15);
+
 				//Is what we hit a Hardlight Suit?
 				HardlightSuit body = col.gameObject.GetComponent<HardlightSuit>();
 
 				//Default sequence, gets reassigned
 				HapticSequence seq = body.GetSequence("pulse");
+
+				//We make some assumptions about the impact point.
+				//Our projectiles are moving fast, so we keep track of our position last frame (lastPosition) and use that instead of our current one.
+				//I won't pretend to know what is best for your game (Desert of Danger uses a highly sophisticated predictive system because the projectiles are nearly hitscan)
+				//This demo uses last frame to avoid tunneling and accidentally hitting the back pads.
 
 				//If we hit a suit
 				if (body != null)
@@ -99,20 +119,22 @@ namespace NullSpace.SDK.Demos
 					switch (typeOfCollision)
 					{
 						case CollisionType.Hit:
+
 							//Hit the body with a simple effect name - which should be in "Resources/Haptics/<Name>"
-							body.Hit(transform.position, "double_click");
+							body.HitNearest(lastPosition, "double_click");
+
 							break;
 						case CollisionType.HitImpulse:
-							//Plays a simple impulse
-							body.HitImpulse(transform.position, Effect.Pulse, .2f, .35f, 1, 2);
+
+							//Plays a simple impulse on the assumed impact point.
+							body.HitImpulse(lastPosition, Effect.Pulse, .2f, .35f, 1, 2);
+
 							break;
 						case CollisionType.BigImpact:
-							//This plays an effect across all found pads within a range.
-							//This behaves as an impulse with 0 impulse duration (but it is more efficient)
-							AreaFlag Where = body.FindAllFlagsWithinRange(transform.position, BigImpactArea, true);
 
-							//We just use the HardLightSuit's helper function to play this.
-							body.GetSequence("buzz").Play(Where);
+							//This plays an effect across all found pads within a range.
+							body.HitNearby(lastPosition, "buzz", BigImpactArea);
+
 							break;
 						case CollisionType.RepeatedImpulse:
 
@@ -120,7 +142,8 @@ namespace NullSpace.SDK.Demos
 							seq = body.GetSequence("pain_short");
 
 							//This makes use of the other HitImpulse which allows for repeated effects.
-							body.HitImpulse(transform.position, seq, .2f, 2, 3, .15f, 1.0f);
+							body.HitImpulse(lastPosition, seq, .2f, 2, 3, .15f, 1.0f);
+
 							break;
 					}
 

@@ -148,7 +148,7 @@ namespace NullSpace.SDK
 		/// <summary>
 		/// Force an update of the BodyMimic (in case of teleports, fast movement)
 		/// </summary>
-		void ImmediateUpdate()
+		public void ImmediateUpdate()
 		{
 			transform.position = hmd.transform.position + LastRelativePosition;
 		}
@@ -187,10 +187,10 @@ namespace NullSpace.SDK
 		/// <summary>
 		/// This function creates and initializes the Body Mimic
 		/// </summary>
-		/// <param name="camera">The camera to hide the body from. Calls camera.HideLayer(int)</param>
+		/// <param name="vrCamera">The camera to hide the body from. Calls camera.HideLayer(int)</param>
 		/// <param name="hapticObjectLayer">The layer that is removed from the provided camera's culling mask.</param>
 		/// <returns>The created body mimic</returns>
-		public static BodyMimic Initialize(Camera camera = null, int hapticObjectLayer = NSManager.HAPTIC_LAYER)
+		public static BodyMimic Initialize(Camera vrCamera = null, int hapticObjectLayer = NSManager.HAPTIC_LAYER)
 		{
 			GameObject go = Resources.Load<GameObject>("Body Mimic");
 
@@ -202,18 +202,18 @@ namespace NullSpace.SDK
 
 			if (newMimic != null)
 			{
-				GameObject cameraObject = camera == null ? Camera.main.gameObject : camera.gameObject;
+				GameObject cameraObject = vrCamera == null ? Camera.main.gameObject : vrCamera.gameObject;
 				MimickedObjects objs = VRObjectMimic.Get(cameraObject);
+				vrCamera = cameraObject.GetComponent<Camera>();
 
 				//Set the BodyMimic's target to the VRObjectMimic
 				mimic = newMimic.GetComponent<BodyMimic>();
 				mimic.hmd = objs.VRCamera.gameObject;
 				mimic.transform.SetParent(VRObjectMimic.Get(cameraObject).Root.transform);
 			}
-
-			if (camera != null)
+			if (vrCamera != null)
 			{
-				camera.HideLayer(hapticObjectLayer);
+				vrCamera.HideLayer(hapticObjectLayer);
 			}
 
 			return mimic;

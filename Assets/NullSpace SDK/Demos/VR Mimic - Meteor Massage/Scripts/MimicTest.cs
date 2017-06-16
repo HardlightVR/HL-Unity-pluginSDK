@@ -6,12 +6,15 @@ namespace NullSpace.SDK
 	public class MimicTest : MonoBehaviour
 	{
 		public LayerMask ValidLayers;
-		//HapticSequence seq;
-		void Start()
+		public Camera targetCamera;
+		HardlightSuit suit;
+		void Awake()
 		{
-			StartCoroutine(Begin());
-			//seq = new HapticSequence();
-			//seq.LoadFromAsset("Haptics/pulse");
+			//This sets up a base body. It hands in the camera so the body follows/mimics the likely movements of the user. It also hides the body from the camera (since the body is by default on layer 31)
+			VRMimic.Initialize(targetCamera.gameObject);
+
+			//Hold onto a reference to the suit. Gives us access to a variety of helper functions.
+			suit = HardlightSuit.Find();
 		}
 
 		void Update()
@@ -19,94 +22,103 @@ namespace NullSpace.SDK
 			#region Test Sphere Flag Checking
 			if (Input.GetKeyDown(KeyCode.F5))
 			{
-				HardlightSuit body = HardlightSuit.Find();
-				if (body != null)
-				{
-					Vector3 randPos = body.transform.position + Random.onUnitSphere / 2;
-					float dist = Random.Range(0, 0.5f);
-					float dur = 7.0f;
-					Debug.DrawLine(randPos, randPos + Vector3.up * dist, Color.red, dur);
-					Debug.DrawLine(randPos, randPos - Vector3.up * dist, Color.red, dur);
-					Debug.DrawLine(randPos, randPos + Vector3.right * dist, Color.red, dur);
-					Debug.DrawLine(randPos, randPos - Vector3.right * dist, Color.red, dur);
-					Debug.DrawLine(randPos, randPos + Vector3.forward * dist, Color.red, dur);
-					Debug.DrawLine(randPos, randPos - Vector3.forward * dist, Color.red, dur);
-					body.FindAllFlagsWithinRange(randPos, dist);
-				}
+				float dist = Random.Range(0, 0.5f);
+
+				TestFindAllFlags(dist);
 			}
 			#endregion
 			#region Do single point-to-nearest haptic
 			if (Input.GetKeyDown(KeyCode.F7))
 			{
-				HardlightSuit body = HardlightSuit.Find();
-				if (body != null)
-				{
-					Vector3 randPos = body.transform.position + Random.onUnitSphere / 2;
-					body.Hit(randPos, "pulse");
-				}
-			}
-			#endregion
-			#region Do 500 point-to-nearest haptic. For testing to see pad hit rates
-			if (Input.GetKeyDown(KeyCode.F8))
-			{
-				HardlightSuit body = HardlightSuit.Find();
-				if (body != null)
-				{
-					for (int i = 0; i < 500; i++)
-					{
-						Vector3 randPos = body.transform.position + Random.onUnitSphere / 2;
-						body.Hit(randPos, "pulse");
-					}
-				}
+				Vector3 randPos = suit.transform.position + Random.onUnitSphere / 2;
+				suit.HitNearest(randPos, "pulse");
 			}
 			#endregion
 			#region Line of Sight Find Nearest
 			if (Input.GetKeyDown(KeyCode.F9))
 			{
-				HardlightSuit body = HardlightSuit.Find();
-				if (body != null)
-				{
-					Vector3 randPos = body.transform.position + Random.onUnitSphere / 2;
-					body.FindNearbyLocation(randPos, true, ValidLayers);
-				}
+				Vector3 randomDir = Random.onUnitSphere * 3;
+				randomDir.y = 0;
+				suit.FindNearbyLocation(suit.transform.position + randomDir, true, ValidLayers, 15);
 			}
 			#endregion
-			#region Request Random Location
+			#region Example Request Random Location
 			if (Input.GetKeyDown(KeyCode.F10))
 			{
-				Vector3 pos = HardlightSuit.Find().FindRandomLocation().transform.position;
-				HardlightSuit body = HardlightSuit.Find();
-				if (body != null)
-				{
-					Vector3 randPos = body.transform.position + Random.onUnitSphere / 2;
-					Debug.DrawLine(randPos, pos, Color.cyan, 6.0f);
-				}
+				ExampleRequestRandomLocation();
 			}
 			#endregion
 			#region Test NumberOfArea flag counting and IsSingleArea
 			if (Input.GetKeyDown(KeyCode.F11))
 			{
-				AreaFlag flag = (AreaFlag.All_Areas).RemoveArea(AreaFlag.Back_Both);
-				Debug.Log(flag.NumberOfAreas() + "\n" + flag.IsSingleArea());
-
-				flag = AreaFlag.Back_Both;
-				Debug.Log(flag.NumberOfAreas() + "\n" + flag.IsSingleArea());
-
-				flag = AreaFlag.Right_All;
-				Debug.Log(flag.NumberOfAreas() + "\n" + flag.IsSingleArea());
-
-				flag = AreaFlag.Mid_Ab_Left;
-				Debug.Log(flag.NumberOfAreas() + "\n" + flag.IsSingleArea());
+				TestAreaFlagExtensions();
 			}
 			#endregion
 		}
 
-		IEnumerator Begin()
+		private void TestFindAllFlags(float sphereRadius)
 		{
-			yield return new WaitForSeconds(.5f);
+			Vector3 randPos = suit.transform.position + Random.onUnitSphere / 2;
+			float indicatorDuration = 7.0f;
 
-			//This sets up a base body. It hands in the camera and the layer to hide.
-			VRMimic.Initialize();
+			#region Displays the 'sphere' that we're finding all flags around
+			Debug.DrawLine(randPos, randPos + Vector3.up * sphereRadius, Color.red, indicatorDuration);
+			Debug.DrawLine(randPos, randPos - Vector3.up * sphereRadius, Color.red, indicatorDuration);
+			Debug.DrawLine(randPos, randPos + Vector3.right * sphereRadius, Color.red, indicatorDuration);
+			Debug.DrawLine(randPos, randPos - Vector3.right * sphereRadius, Color.red, indicatorDuration);
+			Debug.DrawLine(randPos, randPos + Vector3.forward * sphereRadius, Color.red, indicatorDuration);
+			Debug.DrawLine(randPos, randPos - Vector3.forward * sphereRadius, Color.red, indicatorDuration);
+			#endregion
+
+			//Useful for explosive projectiles
+			suit.FindAllFlagsWithinRange(randPos, sphereRadius);
+		}
+		private void ExampleRequestRandomLocation()
+		{
+			//We use the suit's find random location option - this gives us a random pad.
+			//Great for if your bad guys 
+			HapticLocation randomLocation = suit.FindRandomLocation(AreaFlag.All_Areas);
+
+			//Directly away from the randomly requested pad.
+			Vector3 away = (randomLocation.transform.position - suit.transform.position);
+
+			//The random pads location.
+			Vector3 randLocationPosition = randomLocation.transform.position;
+
+			//A bit of fuzzing so the lines stand apart
+			Vector3 fuzzyOffset = Random.insideUnitSphere * .1f;
+
+			//Debug.Log("Requested Random Location : " + randomLocation.Where.ToString() + "\n" + randomLocation.name.ToString() + "\t\t" + away.ToString());
+
+			//Draw a line to show the result
+			Debug.DrawLine(randLocationPosition + fuzzyOffset,
+						   randLocationPosition + fuzzyOffset + away.normalized * 5,
+								Color.cyan, 8.0f);
+		}
+		private void TestAreaFlagExtensions()
+		{
+			//This section digs into some of the AreaFlagExtension methods.
+
+			string Report = "[AreaFlag Tests]\n" + "\t[Number of Areas/Single Area Tests]\n\n";
+			AreaFlag flag = AreaFlag.Mid_Ab_Left;
+
+			Report += "How many flags in Mid Ab Left [1]:" + flag.NumberOfAreas() + " - is single area? [T] " + flag.IsSingleArea() + "\n";
+
+			flag = AreaFlag.Back_Both;
+			Report += "How many flags in Mid Ab Left [2]: " + flag.NumberOfAreas() + " - is single area? [T] " + flag.IsSingleArea() + "\n";
+
+			flag = (AreaFlag.All_Areas).RemoveArea(AreaFlag.Back_Both);
+			Report += "How many flags in All but Back Both [14]: " + flag.NumberOfAreas() + " - is single area? [T] " + flag.IsSingleArea() + "\n";
+
+			flag = AreaFlag.Right_All;
+			Report += "How many flags in Right All [8]: " + flag.NumberOfAreas() + " - is single area? [T] " + flag.IsSingleArea() + "\n\n";
+
+			flag = AreaFlag.All_Areas;
+			Report += "AreaFlag HasFlag Tests:\nDoes All_Areas contain Lower Left Ab? (T): " + flag.HasFlag(AreaFlag.Lower_Ab_Left) +
+				"\nDoes All_Areas contain Right_All? (T):  " + flag.HasFlag(AreaFlag.Right_All) +
+				"\nDoes Right_All contain Back_Both? (F): " + AreaFlag.Right_All.HasFlag(AreaFlag.Back_Both) + "\n";
+
+			Debug.Log(Report);
 		}
 	}
 }

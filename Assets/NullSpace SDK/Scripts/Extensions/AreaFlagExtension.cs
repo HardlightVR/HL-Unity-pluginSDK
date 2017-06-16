@@ -5,19 +5,6 @@ namespace NullSpace.SDK
 {
 	public static class AreaFlagExtensions
 	{
-		//		//public static AreaFlag ConvertFlag(string flagName)
-		//		//{
-		//		//	return (AreaFlag)System.Enum.Parse(typeof(AreaFlag), flagName, true); ;
-		//		//}
-		//		//public static bool HasFlag(int baseFlag, int flag)
-		//		//{
-		//		//	if ((baseFlag & flag) == flag)
-		//		//	{
-		//		//		return true;
-		//		//	}
-		//		//	return false;
-		//		//}
-
 		public static AreaFlag[] StaticAreaFlag =
 		{
 			AreaFlag.Forearm_Left,
@@ -42,6 +29,11 @@ namespace NullSpace.SDK
 		{
 			return baseFlag.NumberOfAreas() == 1;
 		}
+		/// <summary>
+		/// For getting the number of set AreaFlags contained in the flag it is called on.
+		/// </summary>
+		/// <param name="baseFlag">I wonder how many flags are in this. Let's find out!</param>
+		/// <returns>0 to 16 pads (depending on how many are in baseFlag)</returns>
 		public static int NumberOfAreas(this AreaFlag baseFlag)
 		{
 			//This is credited as the Hamming Weight, Popcount or Sideways Addition.
@@ -57,11 +49,36 @@ namespace NullSpace.SDK
 			i = (i & 0x33333333) + ((i >> 2) & 0x33333333);
 			return (((i + (i >> 4)) & 0x0F0F0F0F) * 0x01010101) >> 24;
 		}
+		/// <summary>
+		/// A chainable function for adding flags together.
+		/// Functionally identical to (baseFlag = baseFlag | added)
+		/// </summary>
+		/// <param name="baseFlag">The flag we want to add more flags to</param>
+		/// <param name="added">The flags to add to the baseFlag</param>
+		/// <returns>The resulted added flag.</returns>
 		public static AreaFlag AddFlag(this AreaFlag baseFlag, AreaFlag added)
 		{
 			baseFlag = baseFlag | added;
 			return baseFlag;
 		}
+
+		/// <summary>
+		/// Check if the checked flag is set inside of baseFlag.
+		/// </summary>
+		/// <param name="baseFlag">The flag that might contain checkFlag</param>
+		/// <param name="checkFlag">The flag(s) that we want to look for, can accept complex flags</param>
+		/// <returns>Whether or not the base flag has ALL of the flags in checkFlag</returns>
+		public static bool HasFlag(this AreaFlag baseFlag, AreaFlag checkFlag)
+		{
+			return HasFlag(baseFlag, (int)checkFlag);
+		}
+
+		/// <summary>
+		/// An overload to use numerical values to see if we have the the requested flag(s)
+		/// </summary>
+		/// <param name="baseFlag">The flag that might contain the int equivalent (flag)</param>
+		/// <param name="flag">A value between 0 and 16711936</param>
+		/// <returns>Whether or not the base flag has ALL of the flags in flag (converted to an AreaFlag)</returns>
 		public static bool HasFlag(this AreaFlag baseFlag, int flag)
 		{
 			if (((int)baseFlag & (flag)) == flag)
@@ -70,10 +87,7 @@ namespace NullSpace.SDK
 			}
 			return false;
 		}
-		public static bool HasFlag(this AreaFlag baseFlag, AreaFlag checkFlag)
-		{
-			return HasFlag(baseFlag, (int)checkFlag);
-		}
+
 		/// <summary>
 		/// This function does NOT break apart the AreaFlag it is called on. For that, call ToArray()
 		/// Returns an array of ALL single AreaFlags in the enum.

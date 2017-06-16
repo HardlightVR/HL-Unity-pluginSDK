@@ -17,7 +17,8 @@ namespace NullSpace.SDK.Demos
 		/// The range of pitch speeds.
 		/// Note: Projectiles of higher indices get a bit of speed upping
 		/// </summary>
-		Vector2 pitchSpeedRange = new Vector2(35f, 60f);
+		Vector2 pitchSpeedRange = new Vector2(10f, 15f);
+		float maxSpeed = 45;
 
 		/// <summary>
 		/// Set to false to cancel pitching.
@@ -30,8 +31,9 @@ namespace NullSpace.SDK.Demos
 		public bool CanMiss = false;
 
 		private int counter = 0;
-		private int levelUpCounter = 20;
+		private int levelUpCounter = 10;
 		private int level = 0;
+		private System.DateTime start;
 
 		/// <summary>
 		/// Our level-up indicator.
@@ -45,6 +47,7 @@ namespace NullSpace.SDK.Demos
 
 		void Start()
 		{
+			start = System.DateTime.Now;
 			StartCoroutine(AutoPitch());
 		}
 
@@ -149,8 +152,15 @@ namespace NullSpace.SDK.Demos
 			if (rb != null)
 			{
 				//Add some force to send the projectile on it's way.
-				float speed = Random.Range(pitchSpeedRange.x, pitchSpeedRange.y) * ((1 + index) / 4.0f);
+				float speed = Random.Range(pitchSpeedRange.x, pitchSpeedRange.y) + Mathf.Clamp(2 * ((index)), 0, 15);
+
+				//Clamp the speed to prevent tunneling.
+				speed = Mathf.Clamp(speed, 5, maxSpeed);
+
 				rb.AddForce((target - go.transform.position) * speed);
+
+				//So we can see the speed
+				go.name += "  V = " + speed;
 			}
 
 			//Track the amount of pitches we've made
@@ -162,6 +172,9 @@ namespace NullSpace.SDK.Demos
 				//Up the experience intensity
 				Escalate();
 			}
+
+			//Ensure the projectiles that miss are cleaned up.
+			Destroy(go, 30);
 		}
 
 		/// <summary>
@@ -173,15 +186,18 @@ namespace NullSpace.SDK.Demos
 		{
 			//Level controls
 			level++;
-			levelUpCounter += 5;
+			levelUpCounter += 2 + level;
+			counter = 0;
 
 			//Firing frequency
 			pitchFrequencyRange.x = Mathf.Clamp(pitchFrequencyRange.x - .03f, .2f, 5);
 			pitchFrequencyRange.y = Mathf.Clamp(pitchFrequencyRange.y - .06f, .5f, 5);
 
 			//Firing speeds (slowly creeps into bigger ranges)
-			pitchSpeedRange.x += 2;
-			pitchSpeedRange.y += 3;
+			pitchSpeedRange.x = Mathf.Clamp(pitchSpeedRange.x + 3, 5, maxSpeed);
+			pitchSpeedRange.y = Mathf.Clamp(pitchSpeedRange.y + 4, 5, maxSpeed);
+
+			//Debug.Log("Escalate: " + (System.DateTime.Now - start).TotalSeconds + " New Pitch Speed Range: " + pitchSpeedRange.ToString() + "\n");
 
 			//Display the level up effect.
 			EscalateEffect.Play();

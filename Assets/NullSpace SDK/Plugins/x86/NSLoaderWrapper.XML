@@ -446,13 +446,6 @@
             <returns></returns>
         </member>
         <!-- Badly formed XML comment ignored for member "M:NullSpace.SDK.AreaFlagExtensions.RemoveArea(NullSpace.SDK.AreaFlag,NullSpace.SDK.AreaFlag)" -->
-        <member name="M:NullSpace.SDK.AreaFlagExtensions.ToStringIncludedAreas(NullSpace.SDK.AreaFlag)">
-            <summary>
-            Return a debug string containing all areas in this AreaFlag
-            </summary>
-            <param name="lhs"></param>
-            <returns></returns>
-        </member>
         <member name="T:NullSpace.SDK.VersionInfo">
             <summary>
             Represents version information, containing a major and minor version
@@ -484,6 +477,20 @@
             Internal testing tool; do not depend upon this. May change at any time.
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:NullSpace.SDK.NSVR.NSVR_Plugin.ControlDirectly(NullSpace.SDK.AreaFlag,System.Double)">
+            <summary>
+            Control the volume of an area directly. 
+            </summary>
+            <param name="singleArea">An AreaFlag representing a single area</param>
+            <param name="strength">Strength to play, from 0.0 - 1.0</param>
+        </member>
+        <member name="M:NullSpace.SDK.NSVR.NSVR_Plugin.ControlDirectly(NullSpace.SDK.AreaFlag[],System.UInt16[])">
+            <summary>
+            Control the volume of multiple areas directly. 
+            </summary>
+            <param name="singleAreas">List of AreaFlags, each representing a single area</param>
+            <param name="strengths">Strength to play, from 0-255</param>
         </member>
         <member name="M:NullSpace.SDK.NSVR.NSVR_Plugin.PauseAll">
             END INTERNAL *
@@ -550,6 +557,21 @@
             Use a HapticHandle to Play, Pause, or Stop an effect. A HapticHandle represents a particular instance of an effect.
             </summary>
         </member>
+        <member name="M:NullSpace.SDK.HapticHandle.#ctor(NullSpace.SDK.HapticHandle.CommandWithHandle)">
+             <summary>
+             If we want to construct the handle for the very first time, we have no duration info present.
+             So we end up calculating it in the constructor, then caching it. Subsequent Clones() will copy the duration
+            
+             </summary>
+             <param name="creator"></param>
+        </member>
+        <member name="M:NullSpace.SDK.HapticHandle.#ctor(NullSpace.SDK.HapticHandle.CommandWithHandle,System.Single)">
+            <summary>
+            Clones will call this constructor, grabbing the duration
+            </summary>
+            <param name="creator"></param>
+            <param name="duration"></param>
+        </member>
         <member name="M:NullSpace.SDK.HapticHandle.Play">
             <summary>
             Cause the associated effect to play. If paused, play will resume where it left off. If stopped, play will resume from the beginning. 
@@ -575,9 +597,22 @@
             </summary>
             <returns>Reference to this HapticHandle</returns>
         </member>
+        <member name="M:NullSpace.SDK.HapticHandle.IsFinishedPlaying">
+            <summary>
+            Returns true if the effect has completed playback
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:NullSpace.SDK.HapticHandle.Clone">
             <summary>
             Clone this HapticHandle, allowing an identical effect to be controlled independently 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NullSpace.SDK.HapticHandle.GetElapsedTime">
+            <summary>
+            Returns how far this effect has advanced in fractional seconds. 
+            Returns a value less than 0 on failure.
             </summary>
             <returns></returns>
         </member>

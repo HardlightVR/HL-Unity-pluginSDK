@@ -17,6 +17,7 @@ namespace NullSpace.SDK.Demos
 {
 	abstract public class SuitDemo : MonoBehaviour
 	{
+		public LibraryHapticControls controller;
 		//Turn on my needed things
 		abstract public void ActivateDemo();
 
@@ -27,6 +28,7 @@ namespace NullSpace.SDK.Demos
 		abstract public void OnSuitClicking(HardlightCollider suit, RaycastHit hit);
 		abstract public void OnSuitNoInput();
 
+		public bool AutoDeactivate = true;
 		public Button MyEnableButton;
 		public Button MyDisableButton;
 
@@ -40,9 +42,10 @@ namespace NullSpace.SDK.Demos
 		public List<GameObject> ActiveObjects;
 		public List<GameObject> ActiveIfDisabledObjects;
 
+
 		protected Color buttonSelected = new Color(150 / 255f, 150 / 255f, 150 / 255f, 1f);
-		//protected Color buttonSelected = new Color(30 / 255f, 167 / 255f, 210 / 255f, 1f);
 		protected Color buttonUnselected = new Color(255 / 255f, 255 / 255f, 255 / 255f, 1f);
+		public Color unselectedColor = new Color(227 / 255f, 227 / 255f, 227 / 255f, 1f);
 
 		/// <summary>
 		/// An overhead method that calls ActivateDemo.
@@ -84,8 +87,20 @@ namespace NullSpace.SDK.Demos
 			suitObjects = FindObjectsOfType<HardlightCollider>().ToList();
 			SetupButtons();
 			SetEnableButtonBackgroundColor(buttonUnselected);
-			DeactivateDemo();
-			enabled = false;
+			if (AutoDeactivate)
+			{
+				DeactivateDemo();
+				enabled = false;
+			}
+		}
+
+		public virtual bool CheckForActivation()
+		{
+			return Input.GetKeyDown(ActivateHotkey);
+		}
+		public virtual void CheckHotkeys()
+		{
+			
 		}
 
 		public void HandleRequiredObjects(bool Activating)
@@ -122,9 +137,17 @@ namespace NullSpace.SDK.Demos
 			ColorSuitCollider(targetObject, setColor);
 		}
 
+		private MeshRenderer GetSuitColliderRenderer(GameObject suitCollider)
+		{
+			if (controller)
+			{
+				return controller.GetRenderer(suitCollider);
+			}
+			return suitCollider.GetComponent<MeshRenderer>();
+		}
 		public void ColorSuitCollider(GameObject suitCollider, Color setColor)
 		{
-			MeshRenderer rend = suitCollider.GetComponent<MeshRenderer>();
+			MeshRenderer rend = GetSuitColliderRenderer(suitCollider);
 			if (rend != null)
 			{
 				rend.material.color = setColor;
@@ -132,7 +155,7 @@ namespace NullSpace.SDK.Demos
 		}
 		public Color SuitColliderCurrentColor(GameObject suitCollider)
 		{
-			MeshRenderer rend = suitCollider.GetComponent<MeshRenderer>();
+			MeshRenderer rend = GetSuitColliderRenderer(suitCollider);
 			if (rend != null)
 			{
 				return rend.material.color;
@@ -142,6 +165,10 @@ namespace NullSpace.SDK.Demos
 		public void ColorSuitCollider(HardlightCollider suitCollider, Color setColor)
 		{
 			ColorSuitCollider(suitCollider.gameObject, setColor);
+		}
+		public void ColorSuitCollider(int index, Color setColor)
+		{
+			ColorSuitCollider(suitObjects[index].gameObject, setColor);
 		}
 
 		/// <summary>
@@ -155,10 +182,31 @@ namespace NullSpace.SDK.Demos
 			//This is just sanitization and to make the code more robust.
 			if (suit != null)
 			{
-				//We could easily be more efficient than getting the MeshRenderer each time (like having SuitBodyCollider hold onto a ref to it's MeshRenderer)
-				//However this isn't a VR application, so ease of programming/readability is the priority here.
-				suit.GetComponent<MeshRenderer>().material.color = col;
+				MeshRenderer rend = GetSuitColliderRenderer(suit.gameObject);
+				if (rend != null)
+				{
+					//We could easily be more efficient than getting the MeshRenderer each time (like having SuitBodyCollider hold onto a ref to it's MeshRenderer)
+					//However this isn't a VR application, so ease of programming/readability is the priority here.
+					rend.material.color = col;
+				}
 			}
+		}
+
+		public IEnumerator ColorPadForXDuration(HardlightCollider suit, Color targetColor, Color revertColor, float MinDuration = 0.0f, int steps = 10)
+		{
+			//I don't think we need to save this local reference. Just in case.
+			HardlightCollider current = suit;
+
+			for (int i = 0; i < steps; i++)
+			{
+				//You could do a fancy color lerp functionality here...
+				ColorSuit(current, Color.Lerp(targetColor, revertColor, MinDuration / steps));
+				yield return new WaitForSeconds(MinDuration / steps);
+			}
+
+			//I clamp this to a min of .1 for user visibility.
+			//yield return new WaitForSeconds(MinDuration);
+			ColorSuit(current, revertColor);
 		}
 
 		public IEnumerator ColorPadForXDuration(HardlightCollider suit, Color targetColor, Color revertColor, float MinDuration = 0.0f)
@@ -169,10 +217,27 @@ namespace NullSpace.SDK.Demos
 			//You could do a fancy color lerp functionality here...
 			ColorSuit(current, targetColor);
 
-			//var duration = Mathf.Clamp(MinDuration, .1f, 100.0f);
 			//I clamp this to a min of .1 for user visibility.
 			yield return new WaitForSeconds(MinDuration);
 			ColorSuit(current, revertColor);
+		}
+
+		public virtual void DeselectAllSuitColliders()
+		{
+			UncolorAllSuitColliders();
+			suitObjects.Clear();
+		}
+
+		public void UncolorAllSuitColliders()
+		{
+			for (int i = 0; i < suitObjects.Count; i++)
+			{
+				MeshRenderer rend = GetSuitColliderRenderer(suitObjects[i].gameObject);
+				if (rend != null)
+				{
+					rend.material.color = unselectedColor;
+				}
+			}
 		}
 	}
 

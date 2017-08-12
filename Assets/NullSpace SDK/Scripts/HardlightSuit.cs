@@ -77,6 +77,8 @@ namespace NullSpace.SDK
 			}
 		}
 
+		private static HardlightSuit stored;
+
 		#region Transplanted Lists & Fields (from SuitDefinition)
 		//This is a bunch of transplanted SuitDefinition class content to leverage prefab serialization.
 		//See the summary comment on SuitDefinition in HardlightSuit.cs to understand why
@@ -209,10 +211,15 @@ namespace NullSpace.SDK
 		/// <returns></returns>
 		public static HardlightSuit Find()
 		{
+			if (stored != null)
+			{
+				return stored;
+			}
 			HardlightSuit suit = FindObjectOfType<HardlightSuit>();
 			if (suit != null)
 			{
 				suit.Init();
+				stored = suit;
 				return suit;
 			}
 			if (VRMimic.ValidInstance())
@@ -221,6 +228,7 @@ namespace NullSpace.SDK
 				if (suit != null)
 				{
 					suit.Init();
+					stored = suit;
 					return suit;
 				}
 			}
@@ -603,7 +611,7 @@ namespace NullSpace.SDK
 		{
 			yield return new WaitForSeconds(delay);
 			impulse.Play();
-		} 
+		}
 		#endregion
 	}
 }

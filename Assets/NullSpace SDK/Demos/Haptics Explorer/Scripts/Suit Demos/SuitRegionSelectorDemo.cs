@@ -16,7 +16,6 @@ namespace NullSpace.SDK.Demos
 	public class SuitRegionSelectorDemo : SuitDemo
 	{
 		private Color selectedColor = new Color(127 / 255f, 227 / 255f, 127 / 255f, 1f);
-		private Color unselectedColor = new Color(227 / 255f, 227 / 255f, 227 / 255f, 1f);
 		bool Adding = false;
 
 		public override void Start()
@@ -114,22 +113,6 @@ namespace NullSpace.SDK.Demos
 			}
 		}
 
-		public void DeselectAllSuitColliders()
-		{
-			UncolorAllSuitColliders();
-			suitObjects.Clear();
-		}
-
-		public void UncolorAllSuitColliders()
-		{
-			for (int i = 0; i < suitObjects.Count; i++)
-			{
-				MeshRenderer rend = suitObjects[i].GetComponent<MeshRenderer>();
-				if (rend != null)
-				{
-					suitObjects[i].GetComponent<MeshRenderer>().material.color = unselectedColor;
-				}
-			}
-		}
+		
 	}
 }

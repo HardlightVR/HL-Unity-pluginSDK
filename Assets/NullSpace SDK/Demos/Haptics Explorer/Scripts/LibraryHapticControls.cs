@@ -18,9 +18,9 @@ namespace NullSpace.SDK.Demos
 {
 	public class LibraryHapticControls : MonoBehaviour
 	{
-		Rigidbody myRB;
 		public Camera cam;
 
+		public Dictionary<GameObject, MeshRenderer> suitRenderers = new Dictionary<GameObject, MeshRenderer>();
 		public SuitDemo[] AllDemos;
 		/// <summary>
 		/// The demo currently used.
@@ -32,23 +32,17 @@ namespace NullSpace.SDK.Demos
 		/// This is controlled based on the suit and contents within NSEnums.
 		/// This number exists for easier testing of experimental hardware.
 		/// </summary>
-		private bool massage = false;
-
-		/// <summary>
-		/// Boundary confines for the green box.
-		/// </summary>
-		public float Extent = 5f;
 
 		void Start()
 		{
 			AllDemos = FindObjectsOfType<SuitDemo>();
 
-			//So we can move the green box around
-			myRB = LibraryManager.Inst.greenBox.GetComponent<Rigidbody>();
-
 			for (int i = 0; i < AllDemos.Length; i++)
 			{
-				AllDemos[i].DeactivateDemoOverhead();
+				if (AllDemos[i].AutoDeactivate)
+				{
+					AllDemos[i].DeactivateDemoOverhead();
+				}
 			}
 
 			//If we have a demo
@@ -60,87 +54,56 @@ namespace NullSpace.SDK.Demos
 
 		}
 
-		//Move the massaging green box up and down.
-		IEnumerator MoveFromTo(Vector3 pointA, Vector3 pointB, float time)
-		{
-			while (massage)
-			{
-				float t = 0f;
-				while (t < 1f)
-				{
-					t += Time.deltaTime / time; // sweeps from 0 to 1 in time seconds
-					myRB.transform.position = Vector3.Lerp(pointA, pointB, t); // set position proportional to t
-					yield return 0; // leave the routine and return here in the next frame
-				}
-				t = 0f;
-
-				while (t < 1f)
-				{
-					t += Time.deltaTime / time; // sweeps from 0 to 1 in time seconds
-					myRB.transform.position = Vector3.Lerp(pointB, pointA, t); // set position proportional to t
-					yield return 0; // leave the routine and return here in the next frame
-				}
-			}
-		}
-
 		void Update()
 		{
 			GetInput();
 		}
 
+		public MeshRenderer GetRenderer(GameObject suitObject)
+		{
+			if (!suitRenderers.ContainsKey(suitObject))
+			{
+				MeshRenderer rend = suitObject.GetComponent<MeshRenderer>();
+				if (rend != null)
+				{
+					suitRenderers.Add(suitObject, rend);
+				}
+			}
+			if (suitRenderers.ContainsKey(suitObject))
+			{
+				return suitRenderers[suitObject];
+			}
+			return null;
+		}
+
 		public void GetInput()
 		{
+			#region Hotkeys for current demo
+			if (CurrentDemo != null)
+			{
+				CurrentDemo.CheckHotkeys();
+			}
+			#endregion
+
 			#region [1-9] SuitDemos
 			for (int i = 0; i < AllDemos.Length; i++)
 			{
 				if (AllDemos[i] != null)
 				{
-					if (Input.GetKeyDown(AllDemos[i].ActivateHotkey))
-					{
+					if (AllDemos[i].CheckForActivation())
 						SelectSuitDemo(AllDemos[i]);
-					}
 				}
 			}
 			#endregion
 
 			#region [7] Massage Toggle
-			if (Input.GetKeyDown(KeyCode.Alpha7))
-			{
-				ToggleMassage();
-			}
+			
 			#endregion
 
 			#region [Space] Clear all effects
 			if (Input.GetKeyDown(KeyCode.Space))
 			{
 				ClearAllEffects();
-			}
-			#endregion
-
-			#region [Arrows] Direction Controls
-			bool moving = false;
-			float velVal = 350;
-
-			if ((Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) && myRB.transform.position.x > -Extent)
-			{
-				myRB.AddForce(Vector3.left * velVal);
-			}
-			if ((Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) && myRB.transform.position.x < Extent)
-			{
-				myRB.AddForce(Vector3.right * velVal);
-			}
-			if ((Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W)) && myRB.transform.position.y < Extent)
-			{
-				myRB.AddForce(Vector3.up * velVal);
-			}
-			if ((Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S)) && myRB.transform.position.y > -Extent)
-			{
-				myRB.AddForce(Vector3.down * velVal);
-			}
-
-			if (!moving)
-			{
-				myRB.velocity = Vector3.zero;
 			}
 			#endregion
 
@@ -231,13 +194,6 @@ namespace NullSpace.SDK.Demos
 			}
 		}
 
-		public void ToggleMassage()
-		{
-			//For moving the green box to auto-play the last played sequence.
-			//You can probably do something more inspired for an 'actual massage'
-			massage = !massage;
-			StartCoroutine(MoveFromTo(new Vector3(0, -3.5f, 0), new Vector3(0, 5.8f, 0), .8f));
-		}
 		//Hotkey: Spacebar
 		public void ClearAllEffects()
 		{

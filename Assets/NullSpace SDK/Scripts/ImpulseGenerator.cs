@@ -63,7 +63,7 @@ namespace NullSpace.SDK
 					time += timeStep;
 				}
 
-				return emanation.CreateHandle().Play();
+				return emanation;
 			};
 
 			return new Impulse(creation);
@@ -104,13 +104,14 @@ namespace NullSpace.SDK
 					time += timeStep;
 				}
 
-				return emanation.CreateHandle().Play();
+				return emanation;
 			};
 
 			return new Impulse(creation);
 		}
 
-		internal delegate HapticHandle CreateImpulse(float attenuation, float totalLength, HapticSequence seq);
+		internal delegate HapticPattern CreateImpulse(float attenuation, float totalLength, HapticSequence seq);
+		[Serializable]
 		public class Impulse
 		{
 			private float totalLength;
@@ -191,6 +192,11 @@ namespace NullSpace.SDK
 				return this;
 			}
 
+			public HapticPattern GetImpulsePattern()
+			{
+				return process(attenuation, totalLength, seq);
+			}
+
 			/// <summary>
 			/// Begins the Impulse. 
 			/// Can be called multiple times for multiple HapticHandle instances of the effect.
@@ -205,7 +211,7 @@ namespace NullSpace.SDK
 				}
 				else
 				{
-					return process(attenuation, totalLength, seq);
+					return process(attenuation, totalLength, seq).CreateHandle().Play();
 				}
 			}
 

@@ -85,8 +85,16 @@ namespace NullSpace.SDK
 		{
 			Camera playerCameraToHideBodyFrom = VRObjectMimic.Get().VRCamera.ObjectToMimic.GetComponent<Camera>();
 			body = BodyMimic.Initialize(playerCameraToHideBodyFrom, hapticLayer);
-			HardlightSuit.Find().SetColliderState();
+			HardlightSuit suit = HardlightSuit.Find();
 
+			if (suit != null)
+			{
+				suit.SetColliderState();
+			}
+			else
+			{
+				Debug.LogError("Was unable to find the HardlightSuit when initializing body mimic.\n\tPlease check to make sure the Body Mimic prefab has a HardlightSuit");
+			}
 		}
 
 		void Start()

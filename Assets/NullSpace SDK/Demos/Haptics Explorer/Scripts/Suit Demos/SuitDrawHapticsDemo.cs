@@ -12,11 +12,9 @@ using System.Linq;
 
 namespace NullSpace.SDK.Demos
 {
-	public class SuitDrawHapticsDemos : SuitDemo
+	public class SuitDrawHapticsDemo : SuitDemo
 	{
 		private Color selectedColor = new Color(100 / 255f, 200 / 255f, 200 / 255f, 1f);
-		private Color unselectedColor = new Color(227 / 255f, 227 / 255f, 227 / 255f, 1f);
-		public Dictionary<HardlightCollider, float> PlayingLocations;
 		public List<float> playingDurations;
 
 		/// <summary>
@@ -48,7 +46,7 @@ namespace NullSpace.SDK.Demos
 				MeshRenderer rend = suitObjects[i].GetComponent<MeshRenderer>();
 				if (rend != null)
 				{
-					rend.material.color = selectedColor;
+					rend.material.color = unselectedColor;
 				}
 
 				playingDurations.Add(0);
@@ -124,33 +122,6 @@ namespace NullSpace.SDK.Demos
 			else
 			{
 				//Don't do anything
-			}
-		}
-
-		//public void SelectAllSuitColliders()
-		//{
-		//	suitObjects.Clear();
-		//	suitObjects = FindObjectsOfType<SuitBodyCollider>().ToList();
-		//	for (int i = 0; i < suitObjects.Count; i++)
-		//	{
-		//		ColorSuitCollider(suitObjects[i], selectedColor);
-		//	}
-		//}
-
-		//public void DeselectAllSuitColliders()
-		//{
-		//	UncolorAllSuitColliders();
-		//}
-
-		public void UncolorAllSuitColliders()
-		{
-			for (int i = 0; i < suitObjects.Count; i++)
-			{
-				MeshRenderer rend = suitObjects[i].GetComponent<MeshRenderer>();
-				if (rend != null)
-				{
-					suitObjects[i].GetComponent<MeshRenderer>().material.color = unselectedColor;
-				}
 			}
 		}
 	}

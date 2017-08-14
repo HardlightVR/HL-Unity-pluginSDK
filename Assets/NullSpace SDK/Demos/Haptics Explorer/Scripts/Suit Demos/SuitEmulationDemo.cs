@@ -5,7 +5,6 @@ namespace NullSpace.SDK.Demos
 {
 	public class SuitEmulationDemo : SuitDemo
 	{
-		public Color unselectedColor = new Color(227 / 255f, 227 / 255f, 227 / 255f, 1f);
 		public Color notPlayingColor = new Color(227 / 255f, 227 / 255f, 227 / 255f, 1f);
 		public Color playingColor = new Color(227 / 255f, 227 / 255f, 227 / 255f, 1f);
 

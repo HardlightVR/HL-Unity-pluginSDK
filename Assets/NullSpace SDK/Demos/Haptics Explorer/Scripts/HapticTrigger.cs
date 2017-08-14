@@ -15,6 +15,7 @@ namespace NullSpace.SDK.Demos
 	public class HapticTrigger : MonoBehaviour
 	{
 		public HapticSequence sequence;
+		public SuitMassageDemo suitDemo;
 
 		public void SetSequence(HapticSequence seq)
 		{
@@ -27,7 +28,12 @@ namespace NullSpace.SDK.Demos
 			HardlightCollider hit = collider.GetComponent<HardlightCollider>();
 			if (hit != null)
 			{
-				LibraryManager.Inst.LastSequence.CreateHandle(hit.regionID).Play();
+				var handle = LibraryManager.Inst.LastSequence.CreateHandle(hit.regionID);
+				handle.Play();
+				if (suitDemo)
+				{
+					suitDemo.DisplayMassageHaptics(hit, handle);
+				}
 			}
 		}
 	}

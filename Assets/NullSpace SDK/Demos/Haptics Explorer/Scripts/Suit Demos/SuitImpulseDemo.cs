@@ -24,6 +24,9 @@ namespace NullSpace.SDK.Demos
 		/// </summary>
 		public ImpulseType CurrentMode = ImpulseType.Emanating;
 
+		public int count;
+		[SerializeField]
+		public List<ImpulseGenerator.Impulse> recentImpulses = new List<ImpulseGenerator.Impulse>();
 		#region Impulse Defining Attributes
 		//For some reason Unity back-recognizes Header tags. I put them in reverse order to fix that
 		//Weird.
@@ -154,7 +157,6 @@ namespace NullSpace.SDK.Demos
 		//Impulse Visual Color - feel free to change these if you have preferences.
 		//Region Selector Suit Demo uses a light green.
 		public Color selectedColor = new Color(227 / 255f, 127 / 255f, 127 / 255f, 1f);
-		public Color unselectedColor = new Color(227 / 255f, 227 / 255f, 227 / 255f, 1f);
 		public Color OriginColor = new Color(218 / 255f, 165 / 255f, 32 / 255f, 1f);
 		#endregion
 
@@ -232,6 +234,15 @@ namespace NullSpace.SDK.Demos
 		public override void OnSuitNoInput()
 		{ }
 
+		public override void CheckHotkeys()
+		{
+			if (Input.GetKeyDown(KeyCode.C))
+			{
+				DeselectAllSuitColliders();
+			}
+			base.CheckHotkeys();
+		}
+
 		private void ClickedSuitInTraversalMode(HardlightCollider clicked, RaycastHit hit)
 		{
 			//None are currently selected
@@ -294,6 +305,8 @@ namespace NullSpace.SDK.Demos
 		/// <param name="imp">A constructed impulse of the emanation or traversal</param>
 		private void ConfigureAndPlayImpulse(ImpulseGenerator.Impulse imp)
 		{
+			StoreImpulse(imp);
+
 			if (CurrentMode == ImpulseType.Emanating)
 			{
 				StartCoroutine(ColorSuitForEmanation());
@@ -329,6 +342,22 @@ namespace NullSpace.SDK.Demos
 			}
 		}
 
+		private void StoreImpulse(ImpulseGenerator.Impulse imp)
+		{
+			if (imp != null)
+			{
+				recentImpulses.Add(imp);
+				count++;
+				Debug.Log("Stored Impulse for saving\n");
+			}
+		}
+
+		public override void DeselectAllSuitColliders()
+		{
+			ImpulseOrigin = null;
+			ImpulseDestination = null;
+			base.DeselectAllSuitColliders();
+		}
 		#region Code Sequence Names
 		//Note: This is a junky way to do Code Sequences but I wanted to include them as samples
 		public static string[] SampleHapticSequence =
@@ -517,8 +546,18 @@ namespace NullSpace.SDK.Demos
 			//I clamp this to a min of .1 for user visibility.
 			yield return new WaitForSeconds(duration);
 
-			//Revert our color
 			Color targetColor = (current == ImpulseOrigin || current == ImpulseDestination) ? OriginColor : unselectedColor;
+			for (int i = 0; i < 10; i++)
+			{
+				var lerpColor = Color.Lerp(selectedColor, targetColor, i / 10.0f);
+				ColorSuit(current, lerpColor);
+				yield return new WaitForSeconds(duration / 10.0f);
+			}
+
+			bool shouldOrigin = (current == ImpulseOrigin || current == ImpulseDestination) && enabled;
+			targetColor = shouldOrigin ? OriginColor : unselectedColor;
+
+			//Revert our color
 			ColorSuit(current, targetColor);
 		}
 	}

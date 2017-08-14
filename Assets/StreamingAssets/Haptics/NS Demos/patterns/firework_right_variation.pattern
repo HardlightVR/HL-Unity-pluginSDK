@@ -1,0 +1,20 @@
+{
+	"pattern" : [
+
+		{"time" : 0.00, "sequence" : "ns.demos.fuzz_into_hum", "area": "Lower_Ab_Right"},
+		{"time" : 0.15, "sequence" : "ns.demos.fuzz_into_hum", "area": "Mid_Ab_Right"},
+		{"time" : 0.3, "sequence"  : "ns.demos.fuzz_into_hum", "area": "Upper_Ab_Right"},
+		{"time" : 0.45, "sequence" : "ns.demos.fuzz_into_hum", "area": "Chest_Right"},
+
+		{"time" : 0.75, "sequence" : "ns.dying.pain_short", "area": "Shoulder_Right"},
+
+		{"time" : 0.75, "sequence" : "ns.demos.double_click", "area": "Chest_Right"},
+		{"time" : 0.77, "sequence" : "ns.click", "area": "Upper_Arm_Right"},
+		{"time" : 0.82, "sequence" : "ns.demos.triple_click", "area": "Chest_Left"},
+		{"time" : 0.85, "sequence" : "ns.demos.double_click", "area": "Chest_Right"},
+		{"time" : 0.87, "sequence" : "ns.demos.triple_click", "area": "Upper_Ab_Right"},
+		{"time" : 0.90, "sequence" : "ns.click", "area": "Shoulder_Right"},
+		{"time" : 0.91, "sequence" : "ns.demos.double_click", "area": "Back_Right"},
+		{"time" : 0.93, "sequence" : "ns.click", "area": "Upper_Ab_Right"}
+	]
+}

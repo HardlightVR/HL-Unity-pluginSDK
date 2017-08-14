@@ -1,0 +1,10 @@
+{
+	"experience" : [
+		{"time" : 0.0, "pattern" : "ns.demos.firework_left"},
+		{"time" : 1.1, "pattern" : "ns.demos.firework_right_variation"},
+		{"time" : 2.3, "pattern" : "ns.demos.fireworks_settle"},
+		{"time" : 4.7, "pattern" : "ns.demos.firework_left_variation"},
+		{"time" : 5.8, "pattern" : "ns.demos.firework_right"},
+		{"time" : 7.1, "pattern" : "ns.demos.fireworks_settle"}
+	]
+}

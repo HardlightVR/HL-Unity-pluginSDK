@@ -126,10 +126,10 @@ namespace NullSpace.SDK.Demos
 			FolderContainer = GameObject.Find("Folder Elements").GetComponent<PopulateContainer>();
 			FolderContainer.prefab = Resources.Load<GameObject>("UI/Library Element");
 
-			selector = GameObject.Find("Suit Region Demo").GetComponent<SuitRegionSelectorDemo>();
+			selector = FindObjectOfType<SuitRegionSelectorDemo>();
 			greenBox = GameObject.Find("Haptic Trigger - Green Box").GetComponent<HapticTrigger>();
 			greenBoxText = greenBox.transform.GetChild(0).GetChild(1).GetComponent<Text>();
-			ResultDisplay = GameObject.FindObjectOfType<PackagingResults>();
+			ResultDisplay = FindObjectOfType<PackagingResults>();
 			ResultDisplay.SetVisibility(false);
 		}
 
@@ -242,13 +242,13 @@ namespace NullSpace.SDK.Demos
 			//Safely proceed to avoid broken refs.
 			if (selector != null)
 			{
-				for (int i = 0; i < selector.suitObjects.Count; i++)
+				for (int i = 0; i < selector.SuitObjects.Count; i++)
 				{
 					//If this selected element isn't null
-					if (selector.suitObjects[i] != null)
+					if (selector.SuitObjects[i] != null)
 					{
 						//Add that flag
-						flag = flag | selector.suitObjects[i].regionID;
+						flag = flag | selector.SuitObjects[i].regionID;
 					}
 				}
 			}

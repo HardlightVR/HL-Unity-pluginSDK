@@ -19,5 +19,7 @@ namespace NullSpace.SDK
 		/// </summary>
 		[RegionFlag]
 		public AreaFlag Where;
+
+		public Region DisplayWhere;
 	}
 }

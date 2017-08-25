@@ -159,9 +159,9 @@ namespace NullSpace.SDK
 		{
 			return NSVR.NSVR_Plugin.GetPluginVersion();
 		}
-		public Dictionary<AreaFlag, EffectSampleInfo> SamplePlayingStatus()
+		public Dictionary<Region, EffectSampleInfo> SamplePlayingStatus()
 		{
-			return _plugin.SampleCurrentlyPlayingEffects();
+			return _plugin.PollBodyView();
 			//return _plugin.SampleStrengths();
 		}
 		/// <summary>

@@ -29,21 +29,26 @@ namespace NullSpace.SDK.Demos
 
 		public void Update()
 		{
-			var samples = NSManager.Instance.SamplePlayingStatus();
-			//foreach (var thing in things)
-			//{
-			//	Debug.Log(thing.Key + "\n");
-			//}
+			var things = NSManager.Instance.SamplePlayingStatus();
+
+
+			
 			for (int i = 0; i < SuitObjects.Count; i++)
 			{
-				//Debug.Log(thing.Count);
-				if (samples.ContainsKey(SuitObjects[i].regionID))
+				if (things.ContainsKey(SuitObjects[i].displayID))
 				{
-					float val = (samples[SuitObjects[i].regionID].Strength) / 1000.0f;
-					Color color = GetColorByFamily(samples[SuitObjects[i].regionID].Family);
+
+					var theThing = things[SuitObjects[i].displayID];
+
+					if (theThing.Strength == 0)
+					{
+						ColorSuitObject(SuitObjects[i], notPlayingColor);
+						continue;
+					}
+					float val = (theThing.Strength) / 255.0f;
+					Color color = GetColorByFamily(theThing.Family);
 					Color currentColor = GetObjectCurrentColor(SuitObjects[i].gameObject);
-					//Debug.Log(samples[SuitObjects[i].regionID].Strength + "\n" + Color.Lerp(color, playingColor, val) + "   " + val, this);
-					ColorSuitObject(SuitObjects[i], Color.Lerp(currentColor, Color.Lerp(color, playingColor, val), .85f), .15f);
+					ColorSuitObject(SuitObjects[i], Color.Lerp(currentColor, Color.Lerp(color, playingColor, val), .45f));
 				}
 				else
 				{

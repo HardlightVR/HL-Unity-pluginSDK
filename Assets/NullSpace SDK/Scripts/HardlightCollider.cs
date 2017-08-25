@@ -35,6 +35,12 @@ namespace NullSpace.SDK
 			set { MyLocation.Where = value; }
 		}
 
+		public Region displayID
+		{
+			get { return MyLocation.DisplayWhere; }
+			set { MyLocation.DisplayWhere = value; }
+		}
+
 		private HapticLocation _myLocation;
 		public HapticLocation MyLocation
 		{

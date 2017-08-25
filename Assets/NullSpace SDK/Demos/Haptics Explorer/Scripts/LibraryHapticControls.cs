@@ -16,11 +16,17 @@ using System;
 
 namespace NullSpace.SDK.Demos
 {
+	[RequireComponent(typeof(SuitRenderers))]
+	[RequireComponent(typeof(SuitColorController))]
+	[RequireComponent(typeof(HardlightColliderCollection))]
 	public class LibraryHapticControls : MonoBehaviour
 	{
 		public Camera cam;
 
-		public Dictionary<GameObject, MeshRenderer> suitRenderers = new Dictionary<GameObject, MeshRenderer>();
+		private SuitRenderers suitRenderers;
+		private SuitColorController colorController;
+		private HardlightColliderCollection collection;
+
 		public SuitDemo[] AllDemos;
 		/// <summary>
 		/// The demo currently used.
@@ -32,11 +38,23 @@ namespace NullSpace.SDK.Demos
 		/// This is controlled based on the suit and contents within NSEnums.
 		/// This number exists for easier testing of experimental hardware.
 		/// </summary>
+		void Awake()
+		{
+			suitRenderers = GetComponent<SuitRenderers>();
+			colorController = GetComponent<SuitColorController>();
+			collection = GetComponent<HardlightColliderCollection>();
+			collection.Init();
+			AllDemos = FindObjectsOfType<SuitDemo>();
+			colorController.suitRenderers = suitRenderers;
+			for (int i = 0; i < AllDemos.Length; i++)
+			{
+				AllDemos[i].AssignColliderCollection(collection);
+				AllDemos[i].AssignColorController(colorController);
+			}
+		}
 
 		void Start()
 		{
-			AllDemos = FindObjectsOfType<SuitDemo>();
-
 			for (int i = 0; i < AllDemos.Length; i++)
 			{
 				if (AllDemos[i].AutoDeactivate)
@@ -48,10 +66,11 @@ namespace NullSpace.SDK.Demos
 			//If we have a demo
 			if (CurrentDemo != null)
 			{
+				var temp = CurrentDemo;
+				CurrentDemo = null;
 				//Turn it on. (To ensure it's needed elements are on)
-				SelectSuitDemo(CurrentDemo);
+				SelectSuitDemo(temp);
 			}
-
 		}
 
 		void Update()
@@ -61,19 +80,7 @@ namespace NullSpace.SDK.Demos
 
 		public MeshRenderer GetRenderer(GameObject suitObject)
 		{
-			if (!suitRenderers.ContainsKey(suitObject))
-			{
-				MeshRenderer rend = suitObject.GetComponent<MeshRenderer>();
-				if (rend != null)
-				{
-					suitRenderers.Add(suitObject, rend);
-				}
-			}
-			if (suitRenderers.ContainsKey(suitObject))
-			{
-				return suitRenderers[suitObject];
-			}
-			return null;
+			return suitRenderers.GetRenderer(suitObject);
 		}
 
 		public void GetInput()
@@ -180,17 +187,22 @@ namespace NullSpace.SDK.Demos
 		/// <param name="demo"></param>
 		public void SelectSuitDemo(SuitDemo demo)
 		{
-			if (CurrentDemo != null)
+			//We don't cause transitions if we're already that demo.
+			if (demo != CurrentDemo)
 			{
-				//Debug.Log("Enabling: " + CurrentDemo.GetType().ToString() + "\t\t" + demo.GetType().ToString() + "\n");
-				CurrentDemo.DeactivateDemoOverhead();
-				CurrentDemo.enabled = false;
-			}
-			if (demo != null)
-			{
-				CurrentDemo = demo;
-				CurrentDemo.enabled = true;
-				CurrentDemo.ActivateDemoOverhead();
+				if (CurrentDemo != null)
+				{
+					//Debug.Log("Enabling: " + CurrentDemo.GetType().ToString() + "\t\t" + demo.GetType().ToString() + "\n");
+					CurrentDemo.DeactivateDemoOverhead();
+					CurrentDemo.enabled = false;
+					CurrentDemo.DeselectAllSuitColliders();
+				}
+				if (demo != null)
+				{
+					CurrentDemo = demo;
+					CurrentDemo.enabled = true;
+					CurrentDemo.ActivateDemoOverhead();
+				}
 			}
 		}
 
@@ -205,6 +217,7 @@ namespace NullSpace.SDK.Demos
 			//The goal of this function is to reload the plugin so we can support mid-exploring editing of haptics files
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
+
 		//Hotkey: Escape
 		public void QuitScene()
 		{

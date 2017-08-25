@@ -42,18 +42,12 @@ namespace NullSpace.SDK.Demos
 
 		public override void Start()
 		{
-			suitObjects = FindObjectsOfType<HardlightCollider>().ToList();
-
 			//So we can move the green box around
 			myRB = LibraryManager.Inst.greenBox.GetComponent<Rigidbody>();
 
-			for (int i = 0; i < suitObjects.Count; i++)
+			for (int i = 0; i < SuitObjects.Count; i++)
 			{
-				MeshRenderer rend = suitObjects[i].GetComponent<MeshRenderer>();
-				if (rend != null)
-				{
-					rend.material.color = selectedColor;
-				}
+				ColorSuitObject(SuitObjects[i], selectedColor);
 
 				playingDurations.Add(0);
 				isPlaying.Add(false);
@@ -70,13 +64,13 @@ namespace NullSpace.SDK.Demos
 					playingDurations[i] = Mathf.Clamp(playingDurations[i] - Time.deltaTime, 0, 1000);
 					if (playingDurations[i] <= 0)
 					{
-						ColorSuitCollider(suitObjects[i], unselectedColor);
+						ColorSuitObject(SuitObjects[i], unselectedColor);
 						isPlaying[i] = false;
 					}
 					else if (playingDurations[i] <= lerpColorOut)
 					{
 						//This handles decoloring locations that have finished their duration (and can be reset)
-						ColorSuitCollider(suitObjects[i], Color.Lerp(unselectedColor, selectedColor, playingDurations[i] / lerpColorOut));
+						ColorSuitObject(SuitObjects[i], Color.Lerp(unselectedColor, selectedColor, playingDurations[i] / lerpColorOut));
 					}
 				}
 			}
@@ -145,15 +139,10 @@ namespace NullSpace.SDK.Demos
 		{
 		}
 
-		public void SaveHapticPattern(HapticPattern pattern)
-		{
-
-		}
-
 		public void DisplayMassageHaptics(HardlightCollider hit, HapticHandle handle)
 		{
 			//This could be done more efficiently. It is kept simple to make the code more readible.
-			int index = suitObjects.IndexOf(hit);
+			int index = SuitObjects.IndexOf(hit);
 
 			//If the current duration is over.
 			if (playingDurations[index] <= 0)
@@ -165,7 +154,7 @@ namespace NullSpace.SDK.Demos
 				playingDurations[index] = Mathf.Clamp(Duration, minDuration, float.MaxValue);
 
 				//Color the suit (drawn haptic expiration handles decoloring.
-				ColorSuitCollider(hit, selectedColor);
+				ColorSuitObject(hit, selectedColor);
 			}
 			else
 			{
@@ -182,10 +171,16 @@ namespace NullSpace.SDK.Demos
 		}
 		private void ClearIndex(int index)
 		{
-			isPlaying[index] = false;
-			playingDurations[index] = 0.0f;
-			ColorSuitCollider(index, unselectedColor);
-			
+			if (isPlaying.Count > index)
+			{
+				isPlaying[index] = false;
+			}
+			if (playingDurations.Count > index)
+			{
+				playingDurations[index] = 0.0f;
+			}
+
+			ColorSuitObject(index, unselectedColor);
 		}
 
 		public void ToggleMassage()

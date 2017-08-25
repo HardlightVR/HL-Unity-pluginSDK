@@ -189,7 +189,8 @@ namespace NullSpace.SDK.Demos
 		//Turn on my needed things
 		public override void ActivateDemo()
 		{
-			ColorSuit(ImpulseOrigin, OriginColor);
+			if(ImpulseOrigin)
+				ColorSuitObject(ImpulseOrigin, OriginColor);
 
 			HandleRequiredObjects(true);
 
@@ -200,8 +201,10 @@ namespace NullSpace.SDK.Demos
 		public override void DeactivateDemo()
 		{
 			HandleRequiredObjects(false);
-			ColorSuit(ImpulseOrigin, unselectedColor);
-			ColorSuit(ImpulseDestination, unselectedColor);
+			if(ImpulseOrigin)
+					ColorSuitObject(ImpulseOrigin, unselectedColor);
+			if (ImpulseDestination)
+				ColorSuitObject(ImpulseDestination, unselectedColor);
 		}
 
 		public override void OnSuitClicked(HardlightCollider clicked, RaycastHit hit)
@@ -215,7 +218,10 @@ namespace NullSpace.SDK.Demos
 				ImpulseGenerator.Impulse imp = ImpulseGenerator.BeginEmanatingEffect(clicked.regionID, (int)Depth);
 				if (imp != null)
 				{
-					ColorSuit(ImpulseOrigin, unselectedColor);
+					if (ImpulseOrigin != null)
+					{
+						ColorSuitObject(ImpulseOrigin, unselectedColor);
+					}
 					//Select first
 					ImpulseOrigin = clicked;
 
@@ -252,7 +258,7 @@ namespace NullSpace.SDK.Demos
 				ImpulseOrigin = clicked;
 
 				//Mark it as selected
-				ColorSuit(clicked, OriginColor);
+				ColorSuitObject(clicked, OriginColor);
 			}
 			//First one is already selected
 			else
@@ -261,14 +267,14 @@ namespace NullSpace.SDK.Demos
 				if (ImpulseOrigin == clicked)
 				{
 					//Unselect First
-					ColorSuit(clicked, unselectedColor);
+					ColorSuitObject(clicked, unselectedColor);
 					ImpulseOrigin = null;
 
 					//If we had a destination
 					if (ImpulseDestination != null)
 					{
 						//Clear it.
-						ColorSuit(ImpulseDestination, unselectedColor);
+					ColorSuitObject(ImpulseDestination, unselectedColor);
 						ImpulseDestination = null;
 					}
 				}
@@ -278,13 +284,13 @@ namespace NullSpace.SDK.Demos
 					if (ImpulseDestination != null)
 					{
 						//Clear it to avoid leaving unnecessary colored nodes
-						ColorSuit(ImpulseDestination, unselectedColor);
+					ColorSuitObject(ImpulseDestination, unselectedColor);
 						ImpulseDestination = null;
 					}
 
 					//Set our destination
 					ImpulseDestination = clicked;
-					ColorSuit(clicked, OriginColor);
+					ColorSuitObject(clicked, OriginColor);
 
 					//Leftover log to see that we're playing from the start to end.
 					//Debug.Log((int)TraversalOrigin.regionID + "\t " + (int)suit.regionID);
@@ -348,7 +354,8 @@ namespace NullSpace.SDK.Demos
 			{
 				recentImpulses.Add(imp);
 				count++;
-				Debug.Log("Stored Impulse for saving\n");
+
+				//Debug.Log("Stored Impulse for saving\n");
 			}
 		}
 
@@ -539,8 +546,9 @@ namespace NullSpace.SDK.Demos
 			//I don't think we need to save this local reference. Just in case.
 			HardlightCollider current = suit;
 
+
 			//You could do a fancy color lerp functionality here...
-			ColorSuit(current, selectedColor);
+			colorController.ColorSuitObject(current, selectedColor);
 
 			var duration = Mathf.Clamp(EffectDuration, .1f, 100.0f);
 			//I clamp this to a min of .1 for user visibility.
@@ -550,7 +558,7 @@ namespace NullSpace.SDK.Demos
 			for (int i = 0; i < 10; i++)
 			{
 				var lerpColor = Color.Lerp(selectedColor, targetColor, i / 10.0f);
-				ColorSuit(current, lerpColor);
+				colorController.ColorSuitObject(current, lerpColor);
 				yield return new WaitForSeconds(duration / 10.0f);
 			}
 
@@ -558,7 +566,7 @@ namespace NullSpace.SDK.Demos
 			targetColor = shouldOrigin ? OriginColor : unselectedColor;
 
 			//Revert our color
-			ColorSuit(current, targetColor);
+			colorController.ColorSuitObject(current, targetColor);
 		}
 	}
 }

@@ -18,35 +18,29 @@ namespace NullSpace.SDK.Demos
 		private Color selectedColor = new Color(127 / 255f, 227 / 255f, 127 / 255f, 1f);
 		bool Adding = false;
 
+		public List<HardlightCollider> SelectedSuitObjects = new List<HardlightCollider>();
+
 		public override void Start()
 		{
-			suitObjects = new List<HardlightCollider>();
-			suitObjects = FindObjectsOfType<HardlightCollider>().ToList();
-			for (int i = 0; i < suitObjects.Count; i++)
-			{
-				MeshRenderer rend = suitObjects[i].GetComponent<MeshRenderer>();
-				if (rend != null)
-				{
-					rend.material.color = selectedColor;
-				}
-			}
-			base.Start();
+			SelectedSuitObjects = SuitObjects.ToList();
 
+			base.Start();
 		}
 
 		//Turn on my needed things
 		public override void ActivateDemo()
 		{
+			SelectedSuitObjects = SuitObjects.ToList();
+
 			//Set the colors of the suit
-			SelectAllSuitColliders();
+			ColorAllSelectedSuitColliders(selectedColor);
 		}
 
 		//Turn off my needed things
 		public override void DeactivateDemo()
 		{
-			//Default behavior of inactive selector demo is all the colliders selected
-			SelectAllSuitColliders();
-
+			ColorAllSelectedSuitColliders(unselectedColor);
+			SelectedSuitObjects.Clear();
 			//But defaulting them to normal colors.
 			UncolorAllSuitColliders();
 		}
@@ -55,19 +49,16 @@ namespace NullSpace.SDK.Demos
 		{
 			Adding = true;
 
-			if (suitObjects.Contains(clicked))
+			if (SelectedSuitObjects.Contains(clicked))
 			{
 				Adding = false;
-				suitObjects.Remove(clicked);
-				StartCoroutine(ChangeColorDelayed(
-				hit.collider.gameObject,
-				unselectedColor,
-				0.0f));
+				SelectedSuitObjects.Remove(clicked);
+				ColorSuitObject(clicked, unselectedColor);
 			}
 			else
 			{
-				hit.collider.gameObject.GetComponent<MeshRenderer>().material.color = selectedColor;
-				suitObjects.Add(clicked);
+				ColorSuitObject(hit.collider.gameObject, selectedColor);
+				SelectedSuitObjects.Add(clicked);
 			}
 		}
 
@@ -75,21 +66,18 @@ namespace NullSpace.SDK.Demos
 		{
 			if (!Adding)
 			{
-				if (suitObjects.Contains(clicked))
+				if (SelectedSuitObjects.Contains(clicked))
 				{
-					suitObjects.Remove(clicked);
-					StartCoroutine(ChangeColorDelayed(
-					hit.collider.gameObject,
-					unselectedColor,
-					0.0f));
+					ColorSuitObject(clicked, unselectedColor);
+					SelectedSuitObjects.Remove(clicked);
 				}
 			}
 			else
 			{
-				if (!suitObjects.Contains(clicked))
+				if (!SelectedSuitObjects.Contains(clicked))
 				{
-					hit.collider.gameObject.GetComponent<MeshRenderer>().material.color = selectedColor;
-					suitObjects.Add(clicked);
+					ColorSuitObject(hit.collider.gameObject, selectedColor);
+					SelectedSuitObjects.Add(clicked);
 				}
 			}
 		}
@@ -99,20 +87,17 @@ namespace NullSpace.SDK.Demos
 			Adding = false;
 		}
 
-		public void SelectAllSuitColliders()
+		public override void DeselectAllSuitColliders()
 		{
-			suitObjects.Clear();
-			suitObjects = FindObjectsOfType<HardlightCollider>().ToList();
-			for (int i = 0; i < suitObjects.Count; i++)
-			{
-				MeshRenderer rend = suitObjects[i].GetComponent<MeshRenderer>();
-				if (rend != null)
-				{
-					suitObjects[i].GetComponent<MeshRenderer>().material.color = selectedColor;
-				}
-			}
+			base.DeselectAllSuitColliders();
 		}
 
-		
+		public void ColorAllSelectedSuitColliders(Color targetColor)
+		{
+			for (int i = 0; i < SelectedSuitObjects.Count; i++)
+			{
+				ColorSuitObject(SelectedSuitObjects[i].gameObject, targetColor);
+			}
+		}
 	}
 }

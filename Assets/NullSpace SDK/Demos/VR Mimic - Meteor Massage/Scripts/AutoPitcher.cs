@@ -137,7 +137,8 @@ namespace NullSpace.SDK.Demos
 			Rigidbody rb = go.GetComponent<Rigidbody>();
 
 			//Find the world position of the target (a random node)
-			Vector3 target = HardlightSuit.Find().FindRandomLocation().transform.position;
+			//Vector3 target = HardlightSuit.Find().FindRandomLocation().transform.position;
+			Vector3 target = SuitReference.Suit.FindRandomLocation().transform.position;
 
 			if (CanMiss)
 			{

@@ -21,33 +21,33 @@ namespace NullSpace.SDK.Demos
 		{
 			HandleRequiredObjects(false);
 
-			for (int i = 0; i < suitObjects.Count; i++)
+			for (int i = 0; i < SuitObjects.Count; i++)
 			{
-				ColorSuit(suitObjects[i], unselectedColor);
-				ColorSuitCollider(suitObjects[i], unselectedColor);
+				ColorSuitObject(SuitObjects[i], unselectedColor);
 			}
 		}
 
 		public void Update()
 		{
-			var things = NSManager.Instance.SamplePlayingStatus();
+			var samples = NSManager.Instance.SamplePlayingStatus();
 			//foreach (var thing in things)
 			//{
 			//	Debug.Log(thing.Key + "\n");
 			//}
-			for (int i = 0; i < suitObjects.Count; i++)
+			for (int i = 0; i < SuitObjects.Count; i++)
 			{
 				//Debug.Log(thing.Count);
-				if (things.ContainsKey(suitObjects[i].regionID))
+				if (samples.ContainsKey(SuitObjects[i].regionID))
 				{
-					float val = (things[suitObjects[i].regionID].Strength) / 255.0f;
-					Color color = GetColorByFamily(things[suitObjects[i].regionID].Family);
-					Color currentColor = SuitColliderCurrentColor(suitObjects[i].gameObject);
-					ColorSuitCollider(suitObjects[i], Color.Lerp(currentColor, Color.Lerp(color, playingColor, val), .45f));
+					float val = (samples[SuitObjects[i].regionID].Strength) / 1000.0f;
+					Color color = GetColorByFamily(samples[SuitObjects[i].regionID].Family);
+					Color currentColor = GetObjectCurrentColor(SuitObjects[i].gameObject);
+					//Debug.Log(samples[SuitObjects[i].regionID].Strength + "\n" + Color.Lerp(color, playingColor, val) + "   " + val, this);
+					ColorSuitObject(SuitObjects[i], Color.Lerp(currentColor, Color.Lerp(color, playingColor, val), .85f), .15f);
 				}
 				else
 				{
-					ColorSuitCollider(suitObjects[i], notPlayingColor);
+					ColorSuitObject(SuitObjects[i], notPlayingColor);
 				}
 			}
 		}
@@ -84,7 +84,7 @@ namespace NullSpace.SDK.Demos
 			}
 			if ((Effect)family == Effect.Pulse)
 			{
-				return notPlayingColor;
+				return new Color32(255, 69, 0, 255);
 			}
 			if ((Effect)family == Effect.Fuzz)
 			{

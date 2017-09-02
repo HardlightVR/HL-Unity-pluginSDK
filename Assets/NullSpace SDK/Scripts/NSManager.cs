@@ -348,31 +348,32 @@ namespace NullSpace.SDK
 		{
 			while (true)
 			{
-				ServiceConnectionStatus status = _plugin.TestServiceConnection();
-				if (status != _ServiceConnectionStatus)
-				{
-					_ServiceConnectionStatus = ChangeServiceConnectionStatus(status);
-				}
+				//todo: fix this
+				//ServiceConnectionStatus status = _plugin.TestServiceConnection();
+				//if (status != _ServiceConnectionStatus)
+				//{
+				//	_ServiceConnectionStatus = ChangeServiceConnectionStatus(status);
+				//}
 
-				if (status == ServiceConnectionStatus.Connected)
-				{
+				//if (status == ServiceConnectionStatus.Connected)
+				//{
 
-					var suitConnection = _plugin.TestDeviceConnection();
-					if (suitConnection != _DeviceConnectionStatus)
-					{
+				//	var suitConnection = _plugin.TestDeviceConnection();
+				//	if (suitConnection != _DeviceConnectionStatus)
+				//	{
 
-						_DeviceConnectionStatus = ChangeDeviceConnectionStatus(suitConnection);
-					}
-				}
-				else
-				{
+				//		_DeviceConnectionStatus = ChangeDeviceConnectionStatus(suitConnection);
+				//	}
+				//}
+				//else
+				//{
 
-					if (_DeviceConnectionStatus != DeviceConnectionStatus.Disconnected)
-					{
-						_DeviceConnectionStatus = ChangeDeviceConnectionStatus(DeviceConnectionStatus.Disconnected);
-					}
+				//	if (_DeviceConnectionStatus != DeviceConnectionStatus.Disconnected)
+				//	{
+				//		_DeviceConnectionStatus = ChangeDeviceConnectionStatus(DeviceConnectionStatus.Disconnected);
+				//	}
 
-				}
+				//}
 				yield return new WaitForSeconds(0.5f);
 			}
 		}

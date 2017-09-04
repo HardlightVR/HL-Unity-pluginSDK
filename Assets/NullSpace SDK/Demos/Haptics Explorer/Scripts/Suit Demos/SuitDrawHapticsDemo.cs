@@ -108,8 +108,10 @@ namespace NullSpace.SDK.Demos
 				AreaFlag flag = clicked.regionID;
 
 				//Play the last played sequence there.
-				LibraryManager.Inst.LastSequence.CreateHandle(flag).Play();
 
+			
+				LibraryManager.Inst.LastSequence.CreateHandle(flag).Play();
+			
 				//When the effects expire, the decoloring is handled there.
 				//StartCoroutine(ChangeColorDelayed(
 				//	hit.collider.gameObject,

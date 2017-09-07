@@ -105,7 +105,7 @@ namespace NullSpace.SDK
 		/// Return: {AreaFlag.Forearm_Left, AreaFlag.Forearm_Right
 		/// </summary>
 		/// <param name="baseFlag">The flag to be evaluated.</param>
-		/// <returns>Retusn an array of single AreaFlags. Will not include None, Boths or All AreaFlag values.</returns>
+		/// <returns>Returns an array of single AreaFlags. Will not include None, Boths or All AreaFlag values.</returns>
 		public static AreaFlag[] ToArray(this AreaFlag baseFlag)
 		{
 			AreaFlag[] values = baseFlag.AllSingleAreasInEnum();
@@ -127,5 +127,23 @@ namespace NullSpace.SDK
 
 			return has.ToArray();
 		}
+
+		//public static AreaFlag RandomSubset(this AreaFlag complexFlag, uint count = 1)
+		//{
+		//	if (count == 0)
+		//		return AreaFlag.None;
+
+		//	if (complexFlag.NumberOfAreas() <= count)
+		//		return complexFlag;
+		//	System.Random
+		//	AreaFlag temp = complexFlag;
+
+		//	for (int i = 0; i < count; i++)
+		//	{
+		//		complexFlag.
+		//	}
+
+		//	return AreaFlag.None;
+		//}
 	}
 }

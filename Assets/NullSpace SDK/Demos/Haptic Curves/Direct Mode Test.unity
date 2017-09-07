@@ -512,7 +512,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1360390758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -592,6 +592,101 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
+--- !u!1 &1462318337
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1462318339}
+  - 114: {fileID: 1462318338}
+  m_Layer: 0
+  m_Name: Spikey (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &1462318338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1462318337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 778f3a8e9b54dd64c860ac684e91651f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeDelay: 0
+  MyCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: -0.006250024
+      inSlope: 11.579077
+      outSlope: 11.579077
+      tangentMode: 10
+    - time: 0.06282054
+      value: 0.7211538
+      inSlope: 2.925004
+      outSlope: 2.925004
+      tangentMode: 10
+    - time: 0.18894209
+      value: -0.0014052391
+      inSlope: -0.93134665
+      outSlope: -0.93134665
+      tangentMode: 10
+    - time: 0.34948236
+      value: 0.6193037
+      inSlope: -0.08123803
+      outSlope: -0.08123803
+      tangentMode: 10
+    - time: 0.5001116
+      value: 0.01244092
+      inSlope: 0.102828264
+      outSlope: 0.102828264
+      tangentMode: 10
+    - time: 0.6160789
+      value: 0.5035055
+      inSlope: 0.985477
+      outSlope: 0.985477
+      tangentMode: 10
+    - time: 0.74064016
+      value: 0.22155441
+      inSlope: -1.5903597
+      outSlope: -1.5903597
+      tangentMode: 10
+    - time: 0.99583334
+      value: -0.0124999285
+      inSlope: -0.9171654
+      outSlope: -0.9171654
+      tangentMode: 10
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  Duration: 2
+  endingSustain: 0
+  minVolume: 0.25
+  maxVolume: 0.7
+  TriggerKey: 307
+  Where: 2293795
+  InMainCoroutineWhile: 0
+  PlaySustainAtEnd: 1
+--- !u!4 &1462318339
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1462318337}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 302, y: 508, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
 --- !u!1 &1542596273
 GameObject:
   m_ObjectHideFlags: 0

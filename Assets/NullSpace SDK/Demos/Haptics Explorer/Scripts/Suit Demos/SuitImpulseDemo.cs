@@ -14,7 +14,7 @@ namespace NullSpace.SDK.Demos
 {
 	public class SuitImpulseDemo : SuitDemo
 	{
-		public enum ImpulseType { Emanating, Traversing, /*RepeatedImpulse*/ }
+		public enum ImpulseType { Emanating, Traversing, Gathering/*, RepeatedImpulse*/ }
 		/// <summary>
 		/// Reusability focused. SuitImpulseDemo can come in multiple varieties (with a few unused variables depending on the mode.
 		/// Emanation - Start at a point and affect in waves the neighbor pads.
@@ -189,7 +189,7 @@ namespace NullSpace.SDK.Demos
 		//Turn on my needed things
 		public override void ActivateDemo()
 		{
-			if(ImpulseOrigin)
+			if (ImpulseOrigin)
 				ColorSuitObject(ImpulseOrigin, OriginColor);
 
 			HandleRequiredObjects(true);
@@ -201,8 +201,8 @@ namespace NullSpace.SDK.Demos
 		public override void DeactivateDemo()
 		{
 			HandleRequiredObjects(false);
-			if(ImpulseOrigin)
-					ColorSuitObject(ImpulseOrigin, unselectedColor);
+			if (ImpulseOrigin)
+				ColorSuitObject(ImpulseOrigin, unselectedColor);
 			if (ImpulseDestination)
 				ColorSuitObject(ImpulseDestination, unselectedColor);
 		}
@@ -232,6 +232,23 @@ namespace NullSpace.SDK.Demos
 			else if (CurrentMode == ImpulseType.Traversing)
 			{
 				ClickedSuitInTraversalMode(clicked, hit);
+			}
+			// Traversing - Start at a point and move in stages to the destination through neighbor pads
+			else if (CurrentMode == ImpulseType.Gathering)
+			{
+				//Debug.Log((int)suit.regionID + "\n");
+				ImpulseGenerator.Impulse imp = ImpulseGenerator.BeginGatheringEffect(clicked.regionID, (int)Depth);
+				if (imp != null)
+				{
+					if (ImpulseOrigin != null)
+					{
+						ColorSuitObject(ImpulseOrigin, unselectedColor);
+					}
+					//Select first
+					ImpulseOrigin = clicked;
+
+					ConfigureAndPlayImpulse(imp);
+				}
 			}
 		}
 
@@ -274,7 +291,7 @@ namespace NullSpace.SDK.Demos
 					if (ImpulseDestination != null)
 					{
 						//Clear it.
-					ColorSuitObject(ImpulseDestination, unselectedColor);
+						ColorSuitObject(ImpulseDestination, unselectedColor);
 						ImpulseDestination = null;
 					}
 				}
@@ -284,7 +301,7 @@ namespace NullSpace.SDK.Demos
 					if (ImpulseDestination != null)
 					{
 						//Clear it to avoid leaving unnecessary colored nodes
-					ColorSuitObject(ImpulseDestination, unselectedColor);
+						ColorSuitObject(ImpulseDestination, unselectedColor);
 						ImpulseDestination = null;
 					}
 
@@ -317,11 +334,19 @@ namespace NullSpace.SDK.Demos
 			{
 				StartCoroutine(ColorSuitForEmanation());
 			}
-			else
+			else if (CurrentMode == ImpulseType.Traversing)
 			{
 				StartCoroutine(ColorSuitForTraversal());
 			}
-
+			else if (CurrentMode == ImpulseType.Gathering)
+			{
+				StartCoroutine(ColorSuitForGathering());
+			}
+			else
+			{
+				Debug.LogError("Impulse type [" + CurrentMode.ToString() + "] not recognized. Returning\n");
+				return;
+			}
 			//To support HapticSequence Samples
 			if (UseEffectSelectorSlider)
 			{
@@ -503,7 +528,42 @@ namespace NullSpace.SDK.Demos
 				}
 			}
 		}
+		IEnumerator ColorSuitForGathering()
+		{
+			//Save the beginning in local scope in case it gets changed by additional input 
+			HardlightCollider end = ImpulseOrigin;
 
+			//List of Lists
+			//Stage 1: A few pads adjacent to last stage
+			//Stage 3: Four pads adjacent to the previous pad
+			//Stage 2: One adjacent pad
+			//Stage 1: The pad clicked
+			List<List<GraphEngine.SuitNode>> nodes = ImpulseGenerator._grapher.BFS(end.regionID, (int)Depth);
+			Debug.Log(nodes.Count + "\n");
+			if (nodes != null && nodes.Count > 0)
+			{
+				//For each possible stage
+				for (int outter = nodes.Count - 1; outter >= 0; outter--)
+				{
+					if (nodes[outter] != null && nodes[outter].Count > 0)
+					{
+						//For each node in this stage
+						for (int inner = nodes[outter].Count - 1; inner >= 0; inner--)
+						{
+							HardlightCollider next = GetSuitForNode(nodes[outter][inner]);
+							//Debug.Log("Painting: " + next.name + "  " + outter + "   " + inner + "  " + next.regionID.ToString() + "\n");
+							if (next != null)
+							{
+								//Color that pad for the duration of the Effect
+								StartCoroutine(ColorPadForXDuration(next));
+							}
+						}
+					}
+					//Wait for next stage of the impulse
+					yield return new WaitForSeconds(ImpulseDuration / nodes.Count);
+				}
+			}
+		}
 		IEnumerator ColorSuitForTraversal()
 		{
 			//Save the beginning and end in local scope in case they get changed by additional input (Which could cause some null refs/index out of bounds)

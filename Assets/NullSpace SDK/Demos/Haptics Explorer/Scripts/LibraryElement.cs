@@ -21,7 +21,7 @@ namespace NullSpace.SDK.Demos
 		private AssetTool _assetTool;
 		string fullFilePath = "";
 		//For the visual representation of the haptic effect.
-		public enum LibraryElementType { Sequence, Pattern, Experience, Folder }
+		public enum LibraryElementType { Sequence, Pattern, Experience, Impulse, Folder }
 		public LibraryElementType myType = LibraryElementType.Sequence;
 
 		[Header("These are found by index search", order = 0)]
@@ -155,6 +155,16 @@ namespace NullSpace.SDK.Demos
 
 					TooltipDescriptor.AddDescriptor(copyButton.gameObject, "<color=#FF4500>Copy and Edit File</color>", "Creates a duplicate of [" + fileName + "]\nThen open and edit the new file.", new Color32(135, 206, 255, 225));
 				}
+				//else if (fullFilePath.Contains(".impulse"))
+				//{
+				//	myType = LibraryElementType.Impulse;
+				//	myIcon.sprite = LibraryManager.Inst.impIcon;
+				//	visual.color = LibraryManager.Inst.impColor;
+				//	TooltipDescriptor.AddDescriptor(gameObject, fileName + " - Impulse", "Plays impulse which creates runtime effects across multiple pads.");
+				//	TooltipDescriptor.AddDescriptor(openLocationButton.gameObject, "<color=#FF4500>Edit File</color>", "View Source of [" + fileName + "]\nWe recommend a text editor", new Color32(135, 206, 255, 225));
+
+				//	TooltipDescriptor.AddDescriptor(copyButton.gameObject, "<color=#FF4500>Copy and Edit File</color>", "Creates a duplicate of [" + fileName + "]\nThen open and edit the new file.", new Color32(135, 206, 255, 225));
+				//}
 				else
 				{
 					processButton.transform.parent.parent.gameObject.SetActive(true);
@@ -457,6 +467,27 @@ namespace NullSpace.SDK.Demos
 							//Some sort of error reporting.
 						});
 				}
+				//if (myType == LibraryElementType.Impulse)
+				//{
+				//	throw new NotImplementedException("Impulse HDF runtime creation not yet complete\n");
+				//	GetHapticDefinitionAsync(fullFilePath,
+				//		//Success Delegate
+				//		delegate (HapticDefinitionFile hdf)
+				//		{
+				//			var exp = CodeHapticFactory.CreateExperience(hdf.rootEffect.name, hdf);
+
+				//			playHandleAndSetLastPlayed(exp.CreateHandle());
+
+				//		},
+				//		//Failure delegate
+				//		delegate (Exception except)
+				//		{
+				//			ToMarkAsBroken = true;
+				//			//Make the file red to show it's broken.
+				//			//Highlight the edit button.
+				//			//Some sort of error reporting.
+				//		});
+				//}
 			}
 			catch (Exception e)
 			{

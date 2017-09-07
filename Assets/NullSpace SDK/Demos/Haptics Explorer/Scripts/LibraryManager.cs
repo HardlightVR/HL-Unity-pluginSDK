@@ -26,6 +26,8 @@ namespace NullSpace.SDK.Demos
 		public Color patColor = new Color32(82, 162, 255, 255);
 		public Sprite expIcon;
 		public Color expColor = new Color32(255, 239, 28, 255);
+		public Sprite impIcon;
+		public Color impColor = new Color32(147, 112, 219, 255);
 		public Sprite errorIcon;
 		public Color errorColor = new Color32(176, 14, 14, 255);
 		public Sprite folderIcon;

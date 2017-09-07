@@ -6,6 +6,8 @@ namespace NullSpace.SDK.Demos
 {
 	public class ContainerItem : MonoBehaviour
 	{
+		[Header("Container Item Attributes")]
+		public PopulateContainer container;
 		public int index = -1;
 		public void Index(int ind)
 		{
@@ -14,8 +16,8 @@ namespace NullSpace.SDK.Demos
 
 		public void RemoveFromContainer()
 		{
-			var container = transform.GetComponentInParent<PopulateContainer>();
-			if (container) container.RemoveFromContainer(transform);
+			if (container)
+			{ container.RemoveFromContainer(transform); }
 		}
 	}
 }

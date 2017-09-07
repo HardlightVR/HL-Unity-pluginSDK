@@ -358,7 +358,7 @@ namespace NullSpace.SDK
 				{
 
 					var devices = _plugin.GetKnownDevices();
-					bool isAnyDeviceConnected = devices.Exists((Device d) => { return d.Connected; });
+					bool isAnyDeviceConnected = devices.Exists((Device d) => { return d.Connected && d.Name.Contains("Hardlight"); });
 				
 					var suitConnection = isAnyDeviceConnected ? DeviceConnectionStatus.Connected : DeviceConnectionStatus.Disconnected;
 					if (suitConnection != _DeviceConnectionStatus)

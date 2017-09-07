@@ -162,7 +162,6 @@ namespace NullSpace.SDK
 		public Dictionary<Region, EffectSampleInfo> SamplePlayingStatus()
 		{
 			return _plugin.PollBodyView();
-			//return _plugin.SampleStrengths();
 		}
 		/// <summary>
 		/// Control the haptic volume of an area directly. 
@@ -349,31 +348,34 @@ namespace NullSpace.SDK
 			while (true)
 			{
 				//todo: fix this
-				//ServiceConnectionStatus status = _plugin.TestServiceConnection();
-				//if (status != _ServiceConnectionStatus)
-				//{
-				//	_ServiceConnectionStatus = ChangeServiceConnectionStatus(status);
-				//}
+				ServiceConnectionStatus status = _plugin.IsConnectedToService();
+				if (status != _ServiceConnectionStatus)
+				{
+					_ServiceConnectionStatus = ChangeServiceConnectionStatus(status);
+				}
 
-				//if (status == ServiceConnectionStatus.Connected)
-				//{
+				if (status == ServiceConnectionStatus.Connected)
+				{
 
-				//	var suitConnection = _plugin.TestDeviceConnection();
-				//	if (suitConnection != _DeviceConnectionStatus)
-				//	{
+					var devices = _plugin.GetKnownDevices();
+					bool isAnyDeviceConnected = devices.Exists((Device d) => { return d.Connected; });
+				
+					var suitConnection = isAnyDeviceConnected ? DeviceConnectionStatus.Connected : DeviceConnectionStatus.Disconnected;
+					if (suitConnection != _DeviceConnectionStatus)
+					{
 
-				//		_DeviceConnectionStatus = ChangeDeviceConnectionStatus(suitConnection);
-				//	}
-				//}
-				//else
-				//{
+						_DeviceConnectionStatus = ChangeDeviceConnectionStatus(suitConnection);
+					}
+				}
+				else
+				{
 
-				//	if (_DeviceConnectionStatus != DeviceConnectionStatus.Disconnected)
-				//	{
-				//		_DeviceConnectionStatus = ChangeDeviceConnectionStatus(DeviceConnectionStatus.Disconnected);
-				//	}
+					if (_DeviceConnectionStatus != DeviceConnectionStatus.Disconnected)
+					{
+						_DeviceConnectionStatus = ChangeDeviceConnectionStatus(DeviceConnectionStatus.Disconnected);
+					}
 
-				//}
+				}
 				yield return new WaitForSeconds(0.5f);
 			}
 		}

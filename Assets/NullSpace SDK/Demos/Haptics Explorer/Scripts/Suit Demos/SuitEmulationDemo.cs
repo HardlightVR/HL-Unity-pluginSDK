@@ -48,7 +48,8 @@ namespace NullSpace.SDK.Demos
 					float val = (theThing.Strength) / 255.0f;
 					Color color = GetColorByFamily(theThing.Family);
 					Color currentColor = GetObjectCurrentColor(SuitObjects[i].gameObject);
-					ColorSuitObject(SuitObjects[i], Color.Lerp(currentColor, Color.Lerp(color, playingColor, val), .45f));
+					ColorSuitObject(SuitObjects[i], new Color(1, 1, 1, val));
+					//ColorSuitObject(SuitObjects[i], Color.Lerp(currentColor, Color.Lerp(color, playingColor, val), .45f));
 				}
 				else
 				{

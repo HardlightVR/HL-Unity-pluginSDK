@@ -36,6 +36,23 @@ namespace NullSpace.SDK
 		[SerializeField]
 		public bool AddExclusiveTriggerCollider = true;
 
+		[SerializeField]
+		[Header("Disabled Regions")]
+		public FilterFlag _disabledRegions;
+		public FilterFlag DisabledRegions
+		{
+			get
+			{
+				if (_disabledRegions == null)
+				{
+					//Make a new one.
+					_disabledRegions = new FilterFlag();
+				}
+				return _disabledRegions;
+			}
+			set { _disabledRegions = value; }
+		}
+
 		public void Init()
 		{
 			SetDefaultAreas();
@@ -150,22 +167,133 @@ namespace NullSpace.SDK
 		}
 
 		#region Location Functions
+		public HardlightCollider[] FindObjectsWithinRangeOfLine(Vector3 start, Vector3 direction, float range, float distance = 100)
+		{
+			List<HardlightCollider> inRangeOfLine = new List<HardlightCollider>();
+
+			Vector3 A, B;
+			A = start;
+			B = start + direction.normalized * distance;
+
+			for (int i = 0; i < SceneReferences.Count; i++)
+			{
+				bool hit = IsHardlightColliderIsInRangeOfLine(SceneReferences[i], range, A, B);
+				if (hit)
+				{
+					inRangeOfLine.Add(SceneReferences[i]);
+				}
+			}
+			return inRangeOfLine.ToArray();
+		}
+
+		private bool IsHardlightColliderIsInRangeOfLine(HardlightCollider hardlightCollider, float range, Vector3 A, Vector3 B)
+		{
+			Vector3 checkedObjectPosition;
+			Vector3 ClosestPoint = Vector3.one * 10000;
+			checkedObjectPosition = hardlightCollider.transform.position;
+			Vector3 AB = B - A;
+			float t = Vector3.Dot(checkedObjectPosition - A, AB) / Vector3.Dot(AB, AB);
+			ClosestPoint = A + t * AB;
+			//Vector3 directLineToPoint;
+
+			float SpherecastSizeAndLocationSize = hardlightCollider.LocationSize + range;
+			bool hit = CheckPointDistance(SpherecastSizeAndLocationSize, checkedObjectPosition, ClosestPoint, t);
+
+			for (int i = 0; i < hardlightCollider.AdditionalLocalPoints.Count; i++)
+			{
+				if (!hit)
+				{
+					checkedObjectPosition = hardlightCollider.transform.position + hardlightCollider.transform.rotation * hardlightCollider.AdditionalLocalPoints[i];
+					hit = CheckPointDistance(SpherecastSizeAndLocationSize, checkedObjectPosition, ClosestPoint, t);
+					//if (hit)
+					//{
+					//	Debug.DrawLine(checkedObjectPosition, ClosestPoint, Color.green);
+					//}
+					//else
+					//{
+					//	Debug.DrawLine(ClosestPoint, ClosestPoint - (ClosestPoint - checkedObjectPosition).normalized * range, Color.red);
+					//	Debug.DrawLine(checkedObjectPosition, checkedObjectPosition + (ClosestPoint - checkedObjectPosition).normalized * hardlightCollider.LocationSize, Color.blue);
+					//}
+				}
+			}
+			if (hit)
+			{
+				Debug.DrawLine(checkedObjectPosition, ClosestPoint, Color.green);
+			}
+
+
+			return hit;
+		}
+
+		private static bool CheckPointDistance(float squaredSize, Vector3 checkedObjectPosition, Vector3 ClosestPoint, float t)
+		{
+			bool betweenPoints = false;
+			Vector3 directLineToPoint = ClosestPoint - checkedObjectPosition;
+			if (directLineToPoint.sqrMagnitude < squaredSize * squaredSize)
+			{
+				betweenPoints = false;
+				if (t > 0 && t < 1f)
+				{
+					betweenPoints = true;
+				}
+
+				if (betweenPoints)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
 		public GameObject GetNearestLocation(Vector3 point, float maxDistance = 5.0f)
 		{
 			GameObject closest = null;
 			float closestDist = 1000;
-			//Vector3 objPos = Vector3.one * float.MaxValue;
 
 			//Look through all the objects. Check which is closest.
 			for (int i = 0; i < SceneReferences.Count; i++)
 			{
-				//objPos = SceneReferences[i] != null ? SceneReferences[i].ObjectPosition : Vector3.one * float.MaxValue;
-				float newDist = Vector3.Distance(point, SceneReferences[i].ObjectPosition);
-
-				if (newDist < closestDist && newDist < maxDistance)
+				//Disallow locations we have marked as inactive.
+				if (SceneReferences[i].LocationActive)
 				{
-					closest = SceneReferences[i].Representation;
-					closestDist = newDist;
+					//objPos = SceneReferences[i] != null ? SceneReferences[i].ObjectPosition : Vector3.one * float.MaxValue;
+					float newDist = Vector3.Distance(point, SceneReferences[i].ObjectPosition);
+
+					if (newDist < closestDist && newDist < maxDistance)
+					{
+						closest = SceneReferences[i].Representation;
+						closestDist = newDist;
+					}
+				}
+			}
+			//Debug.Log("Closest: " + closest.name + "\n");
+
+			return closest;
+		}
+
+		public GameObject GetNearestLocationAdvanced(Vector3 point, float maxDistance = 5.0f)
+		{
+			GameObject closest = null;
+			float closestDist = 1000;
+			Vector3 diff = Vector3.zero;
+
+			//Look through all the objects. Check which is closest.
+			for (int i = 0; i < SceneReferences.Count; i++)
+			{
+				//Disallow locations we have marked as inactive.
+				if (SceneReferences[i].LocationActive)
+				{
+					for (int k = 0; k < SceneReferences[i].AdditionalLocalPoints.Count; k++)
+					{
+						diff = point - SceneReferences[i].ObjectPosition;
+						float newDist2 = diff.sqrMagnitude;
+						if (newDist2 < closestDist && newDist2 < maxDistance * maxDistance)
+						{
+							closest = SceneReferences[i].Representation;
+							closestDist = newDist2;
+
+						}
+					}
 				}
 			}
 			//Debug.Log("Closest: " + closest.name + "\n");
@@ -221,7 +349,9 @@ namespace NullSpace.SDK
 			{
 				float newDist = Vector3.Distance(point, SceneReferences[i].ObjectPosition);
 
-				if (newDist < closestDist)
+				bool isCloser = newDist < closestDist;
+				bool islocationActive = SceneReferences[i].LocationActive;
+				if (isCloser && islocationActive)
 				{
 					closestObjects.Add(SceneReferences[i].Representation);
 				}
@@ -230,7 +360,7 @@ namespace NullSpace.SDK
 			//Debug.Log(hit.Count + "\n");
 			return hit.ToArray();
 		}
-		
+
 		/// <summary>
 		/// Gets a random GameObject from the suit (which has a HapticLocation) that is within the set of potential areas.
 		/// You can request 'AreaFlag.Right_All' to get any random right area.
@@ -239,6 +369,12 @@ namespace NullSpace.SDK
 		/// <returns>A game object within the random set. Can be null if you ask for AreaFlag.None or for spots that aren't on your configured body.</returns>
 		public GameObject GetRandomLocationWithinSet(AreaFlag setOfPotentialAreas)
 		{
+			//TODO: Refactor this
+			//Give me a random area flag within the set of area flag.
+			//Apply filter to that set.
+			//Then get the index of that area.
+
+
 			var limitedAreas = DefinedAreas.Where(x => setOfPotentialAreas.HasFlag(x));
 			int index = Random.Range(0, limitedAreas.Count());
 
@@ -263,6 +399,7 @@ namespace NullSpace.SDK
 			}
 			return null;
 		}
+
 		#endregion
 
 		#region Visibility control (if you aren't using CameraExtension.HideLayer)
@@ -288,7 +425,7 @@ namespace NullSpace.SDK
 					rend.enabled = revealed;
 				}
 			}
-		} 
+		}
 		#endregion
 	}
 }

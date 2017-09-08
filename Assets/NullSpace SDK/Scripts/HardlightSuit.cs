@@ -79,6 +79,13 @@ namespace NullSpace.SDK
 
 		private static HardlightSuit stored;
 
+		[SerializeField]
+		public FilterFlag DisabledRegions
+		{
+			get { return Definition.DisabledRegions; }
+			set { Definition.DisabledRegions = value; }
+		}
+
 		#region Transplanted Lists & Fields (from SuitDefinition)
 		//This is a bunch of transplanted SuitDefinition class content to leverage prefab serialization.
 		//See the summary comment on SuitDefinition in HardlightSuit.cs to understand why
@@ -106,7 +113,8 @@ namespace NullSpace.SDK
 		public bool AddExclusiveTriggerCollider = true;
 		private bool initialized = false;
 
-		public void CheckListValidity()
+#if UNITY_EDITOR
+		public void _EditorOnlyCheckListValidity()
 		{
 			//Ensure the lists are all valid
 			if (DefinedAreas == null || DefinedAreas.Count == 0)
@@ -122,31 +130,13 @@ namespace NullSpace.SDK
 				SceneReferences = Definition.SceneReferences.ToList();
 			}
 		}
+#endif
 		#endregion
 
-		/// <summary>
-		/// This is a function that collapses the valid areas for runtime.
-		/// Prevents hitting a null reference when we try to find a specific area.
-		/// </summary>
-		public void CollapseValidAreasForRuntime()
+		#region Start, Init and other Setup	
+		private void Start()
 		{
-			for (int i = SceneReferences.Count - 1; i > -1; i--)
-			{
-				bool validDefined = (DefinedAreas == null);
-				bool zonesDefined = (ZoneHolders == null);
-				bool refsDefined = (SceneReferences == null);
-				if (validDefined || zonesDefined || refsDefined)
-				{
-					Debug.LogError("Pruning malfunction\n");
-				}
-
-				if (SceneReferences[i] == null)
-				{
-					SceneReferences.RemoveAt(i);
-					ZoneHolders.RemoveAt(i);
-					DefinedAreas.RemoveAt(i);
-				}
-			}
+			Init();
 		}
 
 		public void Init()
@@ -154,6 +144,11 @@ namespace NullSpace.SDK
 			//If we AREN'T initialized
 			if (!initialized)
 			{
+				if (!AreListsValid())
+				{
+					Debug.LogError("Attempting to initialize HardlightSuit [" + name + "] but one or more of my lists are null.\n\tThis is likely a problem with the asset or prefab itself.\n");
+				}
+
 				//Get rid of empty fields
 				CollapseValidAreasForRuntime();
 
@@ -161,18 +156,82 @@ namespace NullSpace.SDK
 				Definition.DefinedAreas = DefinedAreas.ToList();
 				Definition.ZoneHolders = ZoneHolders.ToList();
 				Definition.SceneReferences = SceneReferences.ToList();
+
 				Definition.AddChildObjects = AddChildObjects;
 				Definition.HapticsLayer = HapticsLayer;
 				Definition.AddExclusiveTriggerCollider = AddExclusiveTriggerCollider;
+
 				Definition.SetupDictionary();
 				initialized = true;
 			}
 		}
 
-		private void Start()
+		private bool AreListsValid()
 		{
-			Init();
+			bool validDefined = (DefinedAreas == null);
+			bool zonesDefined = (ZoneHolders == null);
+			bool refsDefined = (SceneReferences == null);
+			if (validDefined || zonesDefined || refsDefined)
+			{
+				//Debug.LogError("Pruning malfunction\n");
+				return false;
+			}
+			return true;
 		}
+
+		private void CollapseValidAreasForRuntime()
+		{
+			List<int> indicesOfInvalidReferences = FindIndicesOfInvalidReferences();
+
+			AddInvalidRegionsToFilter(indicesOfInvalidReferences);
+			RemoveInvalidReferences(indicesOfInvalidReferences);
+		}
+
+		private List<int> FindIndicesOfInvalidReferences()
+		{
+			List<int> indicesOfInvalidReferences = new List<int>();
+
+			for (int i = 0; i < SceneReferences.Count; i++)
+			{
+				if (SceneReferences[i] == null)
+				{
+					indicesOfInvalidReferences.Add(i);
+				}
+			}
+			return indicesOfInvalidReferences;
+		}
+
+		private void AddInvalidRegionsToFilter(List<int> indicesOfInvalidReferences)
+		{
+			//Step through the list normally.
+			for (int i = 0; i < indicesOfInvalidReferences.Count; i++)
+			{
+				if (DefinedAreas.Count > i)
+				{
+					DisabledRegions.DisableArea(DefinedAreas[i]);
+				}
+			}
+		}
+
+		/// <summary>
+		/// This is a function that collapses the valid areas for runtime.
+		/// Prevents hitting a null reference when we try to find a specific area.
+		/// </summary>
+		private void RemoveInvalidReferences(List<int> indicesOfInvalidReferences)
+		{
+			//WARNING:
+			//Don't traverse list in front->back order, deletion will change the indices
+
+			//Start at the back of the invalid list (last indices) -> delete those first
+			for (int i = indicesOfInvalidReferences.Count - 1; i > -1; i--)
+			{
+				int indexOfInvalidElement = indicesOfInvalidReferences[i];
+				SceneReferences.RemoveAt(indexOfInvalidElement);
+				ZoneHolders.RemoveAt(indexOfInvalidElement);
+				DefinedAreas.RemoveAt(indexOfInvalidElement);
+			}
+		}
+		#endregion
 
 		/// <summary>
 		/// The HardlightSuit supports two forms of collisions:
@@ -205,39 +264,112 @@ namespace NullSpace.SDK
 		}
 
 		/// <summary>
-		/// An easy way to find the current HardlightSuit in the scene (this becomes trickier if you have multiple suits in play at once IE a networking situation)
-		/// It will initialized the VRMimic if it is not yet initialized.
+		/// This function replaces existing elements so we can change the suit definition more easily at runtime (say the player's arm is added or destroyed)
+		/// </summary>
+		/// <param name="SingleFlagToModify"></param>
+		/// <param name="SingleHolder"></param>
+		/// <param name="newCollider"></param>
+		/// <returns></returns>
+		public bool ModifyValidRegions(AreaFlag SingleFlagToModify, GameObject SingleHolder, HardlightCollider newCollider)
+		{
+			bool Succeeded = false;
+
+			if (!SingleFlagToModify.IsSingleArea())
+			{
+				Debug.LogError("Attempted to modify the valid regions of the Hardlight Suit by providing a complex AreaFlag.\n\tThis function does not yet support complex area flags. Call it individually for each flag if you need to do this.");
+
+				return false;
+			}
+
+			if (SingleHolder == null || newCollider == null || SingleFlagToModify == AreaFlag.None)
+			{
+				Debug.LogError("Attempted to modify the valid regions of the Hardlight Suit to provide invalid elements (either the collider or the holder) or to provide an AreaFlag of None (" + SingleFlagToModify.ToString() + ")");
+				return false;
+			}
+
+			bool ReplacedExistingElement = false;
+
+			var indexOfFlag = -1;
+			GameObject oldHolder = null;
+			HardlightCollider oldCollider = null;
+			//If we have the area flag already
+			if (Definition.DefinedAreas.Contains(SingleFlagToModify))
+			{
+				ReplacedExistingElement = true;
+
+				//Find which index it is (index is the access key to all three lists)
+				indexOfFlag = Definition.DefinedAreas.IndexOf(SingleFlagToModify);
+
+				//Store the old holder and old collider
+				oldHolder = Definition.ZoneHolders[indexOfFlag];
+				oldCollider = Definition.SceneReferences[indexOfFlag];
+
+				oldHolder.SetActive(false);
+
+				//No longer have this location as disabled
+				DisabledRegions.EnableArea(SingleFlagToModify);
+
+				//Replace the old elements
+				Definition.ZoneHolders[indexOfFlag] = SingleHolder;
+				Definition.SceneReferences[indexOfFlag] = newCollider;
+				Succeeded = true;
+			}
+			//Flag does not yet exist in the dictionary (it was empty so it was deleted)
+			else
+			{
+				//Store the index of the new element we're adding.
+				indexOfFlag = DefinedAreas.Count;
+				Definition.DefinedAreas.Add(SingleFlagToModify);
+
+				//Add the new elements
+				Definition.ZoneHolders.Add(SingleHolder);
+				Definition.SceneReferences.Add(newCollider);
+
+				//This location is now enabled.
+				DisabledRegions.EnableArea(SingleFlagToModify);
+
+				Succeeded = true;
+			}
+
+			if (ReplacedExistingElement)
+			{
+				//Do something about the old elements?
+				//What if we want to revert?
+			}
+
+			return Succeeded;
+		}
+
+		private static HardlightSuit _suit;
+		public static HardlightSuit Suit
+		{
+			get
+			{
+				if (_suit == null)
+				{
+					_suit = FindObjectOfType<HardlightSuit>();
+					if (_suit != null)
+					{
+						_suit.Init();
+						return _suit;
+					}
+				}
+
+				if (VRMimic.ValidInstance() && _suit == null)
+				{
+					Debug.LogError("Attempted to get a reference to HardlightSuit.Suit before calling VRMimic.Initialize()\nMust run VRMimic Initialize first - so you can configure hiding settings.");
+				}
+				return _suit;
+			}
+		}
+
+		/// <summary>
+		/// An easy way to find the current HardlightSuit in the scene. Will be used once multiple suits are in the scene at once (networked play)
 		/// </summary>
 		/// <returns></returns>
 		public static HardlightSuit Find()
 		{
-			if (stored != null)
-			{
-				return stored;
-			}
-			HardlightSuit suit = FindObjectOfType<HardlightSuit>();
-			if (suit != null)
-			{
-				suit.Init();
-				stored = suit;
-				return suit;
-			}
-			if (VRMimic.ValidInstance())
-			{
-				suit = FindObjectOfType<HardlightSuit>();
-				if (suit != null)
-				{
-					suit.Init();
-					stored = suit;
-					return suit;
-				}
-			}
-			else
-			{
-				Debug.Log("Attempted to run HardlightSuit.Find() before calling VRMimic.Initialize()\nMust run VRMimic Initialize first - so you can configure hiding settings.");
-			}
-
-			return null;
+			return Suit;
 		}
 
 		/// <summary>
@@ -251,6 +383,38 @@ namespace NullSpace.SDK
 			HapticSequence seq = new HapticSequence();
 			seq.LoadFromAsset("Haptics/" + sequenceFile);
 			return seq;
+		}
+
+		/// <summary>
+		/// This function is for 
+		/// This function has unintended consequences if you use multiple areaflags on the same area (such as Chest_Both)
+		/// 
+		/// </summary>
+		/// <param name="enabled"></param>
+		/// <param name="flag"></param>
+		public void SetHapticLocationActivity(bool enabled, AreaFlag flag)
+		{
+			throw new System.Exception("Incomplete\n");
+
+			if (DefinedAreas.Contains(flag))
+			{
+				var indexOfArea = DefinedAreas.IndexOf(flag);
+				if (indexOfArea < 0)
+				{
+					Debug.LogError("Deactivate Haptic Location failed. It did not contain the requested flag " + flag.ToString() + "\n");
+					return;
+				}
+				SceneReferences[indexOfArea].LocationActive = enabled;
+				AreaFlag locationsArea = SceneReferences[indexOfArea].MyLocation.Where;
+				if (enabled)
+				{
+					DisabledRegions.DisableArea(locationsArea);
+				}
+				else
+				{
+					DisabledRegions.DisableArea(locationsArea);
+				}
+			}
 		}
 
 		#region Simple Hit (Nearest and Nearby)
@@ -403,6 +567,32 @@ namespace NullSpace.SDK
 		}
 		#endregion
 
+		#region Haptic Spherecasting
+		public AreaFlag HapticSphereCastForAreas(Vector3 source, Vector3 direction, float range = .25f, float length = 100)
+		{
+			var hit = Definition.FindObjectsWithinRangeOfLine(source, direction, range, length);
+			return FindAreaFlagFromHardlightColliders(hit);
+		}
+
+		public HardlightCollider[] HapticSphereCast(Vector3 source, Vector3 direction, float range = .25f, float length = 100)
+		{
+			return Definition.FindObjectsWithinRangeOfLine(source, direction, range, length);
+		}
+
+		private AreaFlag FindAreaFlagFromHardlightColliders(HardlightCollider[] hit)
+		{
+			AreaFlag hitAreas = AreaFlag.None;
+
+			for (int i = 0; i < hit.Length; i++)
+			{
+				hitAreas = hitAreas.AddArea(hit[i].regionID);
+				ColorHapticLocationInEditor(hit[i].MyLocation, Color.yellow, 0.1f);
+			}
+
+			return hitAreas;
+		} 
+		#endregion
+
 		#region Finding HapticLocation and Flags
 		/// <summary>
 		/// Finds the nearest HapticLocation.Where on the HardlightSuit to the provided point
@@ -410,10 +600,11 @@ namespace NullSpace.SDK
 		/// <param name="point">The world space to compare to the PlayerTorso body.</param>
 		/// <param name="maxDistance">Disregard body parts less than the given distance</param>
 		/// <returns>Defaults to AreaFlag.None if no areas are within range.</returns>
-		public AreaFlag FindNearestFlag(Vector3 point, float maxDistance = 5.0f)
+		public AreaFlag FindNearestFlag(Vector3 point, float maxDistance = 5.0f, bool UseExpensiveNearLocation = false)
 		{
 			//Maybe get a list of nearby regions?
-			GameObject closest = Definition.GetNearestLocation(point, maxDistance);
+			//GameObject closest = Definition.GetNearestLocation(point, maxDistance);
+			GameObject closest = UseExpensiveNearLocation ? Definition.GetNearestLocationAdvanced(point, maxDistance) : Definition.GetNearestLocation(point, maxDistance);
 
 			//Debug.Log("closest: " + closest.name + "\n");
 			if (closest != null && closest.GetComponent<HapticLocation>() != null)
@@ -469,7 +660,7 @@ namespace NullSpace.SDK
 			{
 				HapticLocation loc = closest[i].GetComponent<HapticLocation>();
 				//Debug.DrawLine(source, loc.transform.position, Color.green, 15.0f);
-				if (closest[i] != null && loc != null)
+				if (closest[i] != null && loc != null && loc.LocationActive)
 				{
 					Debug.DrawLine(point, loc.transform.position, Color.red, 15.0f);
 
@@ -496,7 +687,7 @@ namespace NullSpace.SDK
 			{
 				HapticLocation loc = closest[i].GetComponent<HapticLocation>();
 				Debug.DrawLine(point, loc.transform.position, Color.green, 15.0f);
-				if (closest[i] != null && loc != null)
+				if (closest[i] != null && loc != null && loc.LocationActive)
 				{
 					RaycastHit hit;
 					float dist = Vector3.Distance(point, loc.transform.position);
@@ -519,13 +710,25 @@ namespace NullSpace.SDK
 
 		/// <summary>
 		/// Gets a random HapticLocation on the configured HardlightSuit.
+		/// NOTE: Will remove DisabledRegions
 		/// </summary>
+		/// <param name="OnlyAreasWithinSet">The AreaFlags you want to randomly select from.</param>
+		/// <param name="DisplayInEditor"></param>
 		/// <returns>A valid HapticLocation on the body (defaults to null if none are configured or if it is configured incorrectly.</returns>
-		public HapticLocation FindRandomLocation(AreaFlag OnlyAreasWithinSet = AreaFlag.All_Areas, bool DisplayInEditor = false)
+		public HapticLocation FindRandomLocation(AreaFlag OnlyAreasWithinSet = AreaFlag.All_Areas, bool RemoveDisabledRegions = false, bool DisplayInEditor = false)
 		{
+			if (RemoveDisabledRegions)
+			{
+				OnlyAreasWithinSet = OnlyAreasWithinSet.RemoveArea(DisabledRegions.InactiveRegions);
+			}
+
 			HapticLocation loc = Definition.GetRandomLocationWithinSet(OnlyAreasWithinSet).GetComponent<HapticLocation>();
 			if (loc != null)
 			{
+				if (!loc.LocationActive)
+				{
+					Debug.LogError("FindRandomLocation and GetRandomLocationWithinSet have returned a HapticLocation that is marked as inactive.\n\tThis is an expected bug but should be fixed in the future - try using DeactiveHapticLocation to turn regions off.\n");
+				}
 				if (DisplayInEditor)
 				{
 					ColorHapticLocationInEditor(loc, Color.blue);
@@ -546,7 +749,7 @@ namespace NullSpace.SDK
 		/// </summary>
 		/// <param name="location">The HapticLocation to color (gets the MeshRenderer)</param>
 		/// <param name="color">Defaults to red - the color to use. Will return to the default color of all haptic locations afterward.</param>
-		public void ColorHapticLocationInEditor(HapticLocation location, Color color = default(Color))
+		public void ColorHapticLocationInEditor(HapticLocation location, Color color = default(Color), float duration = .5f)
 		{
 #if UNITY_EDITOR
 			if (color == default(Color))
@@ -556,7 +759,7 @@ namespace NullSpace.SDK
 			MeshRenderer rend = location.gameObject.GetComponent<MeshRenderer>();
 			if (rend != null)
 			{
-				StartCoroutine(ColorHapticLocationCoroutine(rend, color));
+				StartCoroutine(ColorHapticLocationCoroutine(rend, color, duration));
 			}
 #endif
 		}
@@ -576,8 +779,12 @@ namespace NullSpace.SDK
 			{
 				defaultBoxColor = rend.material.color;
 			}
-			rend.material.color = Color.red;
-			yield return new WaitForSeconds(duration);
+			rend.material.color = col;
+			if (duration > 0)
+			{
+				yield return new WaitForSeconds(duration);
+			}
+			yield return null;
 			rend.material.color = defaultBoxColor;
 		}
 #endif

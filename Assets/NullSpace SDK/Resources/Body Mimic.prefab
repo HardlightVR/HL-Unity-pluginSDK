@@ -333,8 +333,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012958108138}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.23, y: 0.316, z: 0.448}
-  m_LocalScale: {x: 0.4, y: 0.25, z: 0.448}
+  m_LocalPosition: {x: -0.23, y: 0.4, z: 0.448}
+  m_LocalScale: {x: 0.4, y: 0.25, z: 0.07}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000011518655876}
@@ -346,8 +346,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013103411470}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.2, y: 0.106, z: -0.56000006}
-  m_LocalScale: {x: 0.32309124, y: 0.6, z: 0.112}
+  m_LocalPosition: {x: 0.22, y: 0.14, z: -0.56000006}
+  m_LocalScale: {x: 0.35, y: 0.8, z: 0.07}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000011518655876}
@@ -359,8 +359,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010785360728}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.2, y: -0.069999985, z: 0.476}
-  m_LocalScale: {x: 0.32309124, y: 0.100000024, z: 0.33600003}
+  m_LocalPosition: {x: -0.2, y: -0.05, z: 0.476}
+  m_LocalScale: {x: 0.32309124, y: 0.15, z: 0.07}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000011518655876}
@@ -372,8 +372,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010093429708}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.2, y: 0.106, z: -0.56000006}
-  m_LocalScale: {x: 0.32309124, y: 0.6, z: 0.112}
+  m_LocalPosition: {x: -0.22, y: 0.14, z: -0.56000006}
+  m_LocalScale: {x: 0.35, y: 0.8, z: 0.07}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000011518655876}
@@ -385,8 +385,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013711883176}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.2, y: 0.07599999, z: 0.476}
-  m_LocalScale: {x: 0.32309124, y: 0.100000024, z: 0.33600003}
+  m_LocalPosition: {x: 0.2, y: 0.15, z: 0.476}
+  m_LocalScale: {x: 0.32309124, y: 0.15, z: 0.07}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000011518655876}
@@ -398,8 +398,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013025516442}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.45, y: 0.272, z: 0.067199945}
-  m_LocalScale: {x: 0.2, y: 0.4, z: 0.392}
+  m_LocalPosition: {x: 0.5, y: 0.35, z: 0.067199945}
+  m_LocalScale: {x: 0.05, y: 0.4, z: 0.392}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000011518655876}
@@ -452,8 +452,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012791934842}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.367, y: 0.583, z: 0.011759996}
-  m_LocalScale: {x: 0.3, y: 0.16, z: 0.7818493}
+  m_LocalPosition: {x: 0.3, y: 0.55, z: -0.1}
+  m_LocalScale: {x: 0.25, y: 0.054, z: 0.6}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000011518655876}
@@ -465,8 +465,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011977407354}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.2, y: -0.069999985, z: 0.476}
-  m_LocalScale: {x: 0.32309124, y: 0.100000024, z: 0.33600003}
+  m_LocalPosition: {x: 0.2, y: -0.05, z: 0.476}
+  m_LocalScale: {x: 0.32309124, y: 0.15, z: 0.07}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000011518655876}
@@ -478,8 +478,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010683170790}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.45, y: 0.2578, z: 0.067199945}
-  m_LocalScale: {x: 0.2, y: 0.4, z: 0.392}
+  m_LocalPosition: {x: -0.5, y: 0.35, z: 0.067199945}
+  m_LocalScale: {x: 0.05, y: 0.4, z: 0.392}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000011518655876}
@@ -491,8 +491,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010492535620}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.367, y: 0.583, z: 0.011759996}
-  m_LocalScale: {x: 0.3, y: 0.16, z: 0.7818493}
+  m_LocalPosition: {x: -0.25, y: 0.55, z: -0.1}
+  m_LocalScale: {x: 0.25, y: 0.054, z: 0.6}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000011518655876}
@@ -504,8 +504,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011924213594}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.2, y: 0.07599999, z: 0.476}
-  m_LocalScale: {x: 0.32309124, y: 0.100000024, z: 0.33600003}
+  m_LocalPosition: {x: -0.2, y: 0.15, z: 0.476}
+  m_LocalScale: {x: 0.32309124, y: 0.15, z: 0.07}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000011518655876}
@@ -517,8 +517,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010815553394}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.23, y: 0.316, z: 0.448}
-  m_LocalScale: {x: 0.4, y: 0.25, z: 0.448}
+  m_LocalPosition: {x: 0.23, y: 0.4, z: 0.448}
+  m_LocalScale: {x: 0.4, y: 0.25, z: 0.07}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000011518655876}
@@ -531,7 +531,7 @@ Transform:
   m_GameObject: {fileID: 1000011171279724}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.2, y: -0.24999999, z: 0.476}
-  m_LocalScale: {x: 0.32309124, y: 0.100000024, z: 0.33600003}
+  m_LocalScale: {x: 0.32309124, y: 0.15, z: 0.07}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000011518655876}
@@ -544,7 +544,7 @@ Transform:
   m_GameObject: {fileID: 1000012250468610}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.2, y: -0.24999999, z: 0.476}
-  m_LocalScale: {x: 0.32309124, y: 0.10000001, z: 0.33600003}
+  m_LocalScale: {x: 0.32309124, y: 0.15, z: 0.07}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000011518655876}
@@ -562,7 +562,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 83efb8a35b646c249a833f63094dbd66, type: 2}
+  - {fileID: 2100000, guid: ccf467329bf4a4541baca3aa021e3d6f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -591,7 +591,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 83efb8a35b646c249a833f63094dbd66, type: 2}
+  - {fileID: 2100000, guid: ccf467329bf4a4541baca3aa021e3d6f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -620,7 +620,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 83efb8a35b646c249a833f63094dbd66, type: 2}
+  - {fileID: 2100000, guid: ccf467329bf4a4541baca3aa021e3d6f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -649,7 +649,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 83efb8a35b646c249a833f63094dbd66, type: 2}
+  - {fileID: 2100000, guid: ccf467329bf4a4541baca3aa021e3d6f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -678,7 +678,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 83efb8a35b646c249a833f63094dbd66, type: 2}
+  - {fileID: 2100000, guid: ccf467329bf4a4541baca3aa021e3d6f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -707,7 +707,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 83efb8a35b646c249a833f63094dbd66, type: 2}
+  - {fileID: 2100000, guid: ccf467329bf4a4541baca3aa021e3d6f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -736,7 +736,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 83efb8a35b646c249a833f63094dbd66, type: 2}
+  - {fileID: 2100000, guid: ccf467329bf4a4541baca3aa021e3d6f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -765,7 +765,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: a10f4138d84cf464bba35a11b5a9090f, type: 2}
+  - {fileID: 2100000, guid: 295ef2a1d1c6ca440a02ebd6511b4c2f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -794,7 +794,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 83efb8a35b646c249a833f63094dbd66, type: 2}
+  - {fileID: 2100000, guid: ccf467329bf4a4541baca3aa021e3d6f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -823,7 +823,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 83efb8a35b646c249a833f63094dbd66, type: 2}
+  - {fileID: 2100000, guid: ccf467329bf4a4541baca3aa021e3d6f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -852,7 +852,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 83efb8a35b646c249a833f63094dbd66, type: 2}
+  - {fileID: 2100000, guid: ccf467329bf4a4541baca3aa021e3d6f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -881,7 +881,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 83efb8a35b646c249a833f63094dbd66, type: 2}
+  - {fileID: 2100000, guid: ccf467329bf4a4541baca3aa021e3d6f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -910,7 +910,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 83efb8a35b646c249a833f63094dbd66, type: 2}
+  - {fileID: 2100000, guid: ccf467329bf4a4541baca3aa021e3d6f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -939,7 +939,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 83efb8a35b646c249a833f63094dbd66, type: 2}
+  - {fileID: 2100000, guid: ccf467329bf4a4541baca3aa021e3d6f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -968,7 +968,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 83efb8a35b646c249a833f63094dbd66, type: 2}
+  - {fileID: 2100000, guid: ccf467329bf4a4541baca3aa021e3d6f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -1280,6 +1280,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17f3d2fca4bdd4e4c993d90bf75ae19f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LocationActive: 1
   Where: 8
 --- !u!114 &114000010051252004
 MonoBehaviour:
@@ -1294,6 +1295,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCollider: {fileID: 65000011726319580}
   TryFindCollider: 0
+  LocationSize: 0.025
+  AutoCreateAdditionalPointsFromBounds: 0
+  AdditionalLocalPoints: []
 --- !u!114 &114000010458243168
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1305,6 +1309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17f3d2fca4bdd4e4c993d90bf75ae19f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LocationActive: 1
   Where: 262144
 --- !u!114 &114000010458463496
 MonoBehaviour:
@@ -1317,6 +1322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17f3d2fca4bdd4e4c993d90bf75ae19f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LocationActive: 1
   Where: 2097152
 --- !u!114 &114000010482781132
 MonoBehaviour:
@@ -1331,6 +1337,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCollider: {fileID: 65000012190279538}
   TryFindCollider: 0
+  LocationSize: 0.025
+  AutoCreateAdditionalPointsFromBounds: 0
+  AdditionalLocalPoints: []
 --- !u!114 &114000010946431188
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1344,6 +1353,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCollider: {fileID: 65000014192149300}
   TryFindCollider: 0
+  LocationSize: 0.025
+  AutoCreateAdditionalPointsFromBounds: 0
+  AdditionalLocalPoints: []
 --- !u!114 &114000011056291698
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1357,6 +1369,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCollider: {fileID: 65000011901937004}
   TryFindCollider: 0
+  LocationSize: 0.025
+  AutoCreateAdditionalPointsFromBounds: 0
+  AdditionalLocalPoints: []
 --- !u!114 &114000011707654590
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1370,6 +1385,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCollider: {fileID: 65000011156995998}
   TryFindCollider: 0
+  LocationSize: 0.025
+  AutoCreateAdditionalPointsFromBounds: 0
+  AdditionalLocalPoints: []
 --- !u!114 &114000011973381724
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1381,6 +1399,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17f3d2fca4bdd4e4c993d90bf75ae19f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LocationActive: 1
   Where: 16
 --- !u!114 &114000012280541194
 MonoBehaviour:
@@ -1395,6 +1414,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCollider: {fileID: 65000011308574990}
   TryFindCollider: 0
+  LocationSize: 0.025
+  AutoCreateAdditionalPointsFromBounds: 0
+  AdditionalLocalPoints:
+  - {x: 0, y: 0.1, z: 0}
+  - {x: 0, y: -0.1, z: 0}
+  - {x: 0, y: -0.2, z: 0}
+  - {x: 0, y: 0.2, z: 0}
 --- !u!114 &114000012367322312
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1408,6 +1434,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCollider: {fileID: 65000011424177552}
   TryFindCollider: 0
+  LocationSize: 0.025
+  AutoCreateAdditionalPointsFromBounds: 0
+  AdditionalLocalPoints:
+  - {x: 0, y: 0.1, z: 0}
+  - {x: 0, y: -0.1, z: 0}
+  - {x: 0, y: -0.2, z: 0}
+  - {x: 0, y: 0.2, z: 0}
 --- !u!114 &114000012409527616
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1419,6 +1452,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17f3d2fca4bdd4e4c993d90bf75ae19f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LocationActive: 1
   Where: 128
 --- !u!114 &114000012566058804
 MonoBehaviour:
@@ -1433,6 +1467,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCollider: {fileID: 65000012433861112}
   TryFindCollider: 0
+  LocationSize: 0.025
+  AutoCreateAdditionalPointsFromBounds: 0
+  AdditionalLocalPoints: []
 --- !u!114 &114000012566330074
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1445,12 +1482,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hmd: {fileID: 0}
-  NeckVerticalAnchor: 0.25
+  NeckVerticalAnchor: 0.15
   NeckFwdAnchor: 0
+  HideBodyMimicFromView: 1
   UseDevHeight: 0
   devHeightPercentage: -0.15
   assumedForward: {x: 0, y: 0, z: 0}
   LastUpdatedPosition: {x: 0, y: 0, z: 0}
+  LeftShoulder: {fileID: 1000010492535620}
+  RightShoulder: {fileID: 1000012791934842}
   SnapUpdateDist: 1
 --- !u!114 &114000012574369290
 MonoBehaviour:
@@ -1465,6 +1505,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCollider: {fileID: 65000013458134750}
   TryFindCollider: 0
+  LocationSize: 0.025
+  AutoCreateAdditionalPointsFromBounds: 0
+  AdditionalLocalPoints: []
 --- !u!114 &114000012600824988
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1478,6 +1521,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCollider: {fileID: 65000012432982690}
   TryFindCollider: 0
+  LocationSize: 0.025
+  AutoCreateAdditionalPointsFromBounds: 0
+  AdditionalLocalPoints:
+  - {x: 0, y: 0.075, z: 0}
+  - {x: 0, y: -0.075, z: 0}
 --- !u!114 &114000012640522040
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1489,6 +1537,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17f3d2fca4bdd4e4c993d90bf75ae19f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LocationActive: 1
   Where: 4194304
 --- !u!114 &114000012756103558
 MonoBehaviour:
@@ -1503,6 +1552,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCollider: {fileID: 65000013188035982}
   TryFindCollider: 0
+  LocationSize: 0.025
+  AutoCreateAdditionalPointsFromBounds: 0
+  AdditionalLocalPoints:
+  - {x: 0, y: 0.075, z: 0}
+  - {x: 0, y: -0.075, z: 0}
 --- !u!114 &114000012883662350
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1514,6 +1568,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17f3d2fca4bdd4e4c993d90bf75ae19f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LocationActive: 1
   Where: 2
 --- !u!114 &114000012952939874
 MonoBehaviour:
@@ -1526,6 +1581,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17f3d2fca4bdd4e4c993d90bf75ae19f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LocationActive: 1
   Where: 8388608
 --- !u!114 &114000013051268824
 MonoBehaviour:
@@ -1538,6 +1594,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17f3d2fca4bdd4e4c993d90bf75ae19f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LocationActive: 1
   Where: 4
 --- !u!114 &114000013128215356
 MonoBehaviour:
@@ -1550,6 +1607,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17f3d2fca4bdd4e4c993d90bf75ae19f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LocationActive: 1
   Where: 32
 --- !u!114 &114000013192299666
 MonoBehaviour:
@@ -1564,6 +1622,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCollider: {fileID: 65000011126178552}
   TryFindCollider: 0
+  LocationSize: 0.025
+  AutoCreateAdditionalPointsFromBounds: 0
+  AdditionalLocalPoints: []
 --- !u!114 &114000013226664776
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1575,6 +1636,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17f3d2fca4bdd4e4c993d90bf75ae19f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LocationActive: 1
   Where: 131072
 --- !u!114 &114000013370920088
 MonoBehaviour:
@@ -1587,6 +1649,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17f3d2fca4bdd4e4c993d90bf75ae19f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LocationActive: 1
   Where: 524288
 --- !u!114 &114000013660479616
 MonoBehaviour:
@@ -1601,6 +1664,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCollider: {fileID: 65000010775305668}
   TryFindCollider: 0
+  LocationSize: 0.025
+  AutoCreateAdditionalPointsFromBounds: 0
+  AdditionalLocalPoints: []
 --- !u!114 &114000013713127850
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1612,6 +1678,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17f3d2fca4bdd4e4c993d90bf75ae19f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LocationActive: 1
   Where: 64
 --- !u!114 &114000013725895184
 MonoBehaviour:
@@ -1624,6 +1691,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17f3d2fca4bdd4e4c993d90bf75ae19f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LocationActive: 1
   Where: 1048576
 --- !u!114 &114000013873056094
 MonoBehaviour:
@@ -1638,6 +1706,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCollider: {fileID: 65000011392477618}
   TryFindCollider: 0
+  LocationSize: 0.025
+  AutoCreateAdditionalPointsFromBounds: 0
+  AdditionalLocalPoints: []
 --- !u!114 &114000014110266032
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1655,9 +1726,8 @@ MonoBehaviour:
   _definition: {fileID: 0}
   SuitName: Player Body
   SuitRoot: {fileID: 1000013503752582}
-  DefinedAreas: 01000000020000000400000008000000100000002000000040000000800000000000010000000200000004000000080000001000000020000000400000008000
+  DefinedAreas: 0200000004000000080000001000000020000000400000008000000000000200000004000000080000001000000020000000400000008000
   ZoneHolders:
-  - {fileID: 0}
   - {fileID: 1000010683170790}
   - {fileID: 1000010492535620}
   - {fileID: 1000010093429708}
@@ -1665,7 +1735,6 @@ MonoBehaviour:
   - {fileID: 1000011924213594}
   - {fileID: 1000010785360728}
   - {fileID: 1000011171279724}
-  - {fileID: 0}
   - {fileID: 1000013025516442}
   - {fileID: 1000012791934842}
   - {fileID: 1000013103411470}
@@ -1674,7 +1743,6 @@ MonoBehaviour:
   - {fileID: 1000011977407354}
   - {fileID: 1000012250468610}
   SceneReferences:
-  - {fileID: 0}
   - {fileID: 114000012756103558}
   - {fileID: 114000011707654590}
   - {fileID: 114000012280541194}
@@ -1682,7 +1750,6 @@ MonoBehaviour:
   - {fileID: 114000010946431188}
   - {fileID: 114000010482781132}
   - {fileID: 114000013660479616}
-  - {fileID: 0}
   - {fileID: 114000012600824988}
   - {fileID: 114000011056291698}
   - {fileID: 114000012367322312}

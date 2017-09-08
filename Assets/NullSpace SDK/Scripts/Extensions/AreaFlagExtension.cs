@@ -5,6 +5,21 @@ namespace NullSpace.SDK
 {
 	public static class AreaFlagExtensions
 	{
+		public static AreaFlag Mirror(this AreaFlag lhs)
+		{
+			return (AreaFlag)RotateLeft((uint)lhs, 16);
+		}
+		/// <summary>
+		/// Circular Bitshift Left
+		/// </summary>
+		/// <param name="x">The uint to be bitshifted</param>
+		/// <param name="n">The number of bits to shift over</param>
+		/// <returns></returns>
+		private static uint RotateLeft(uint x, byte n)
+		{
+			return ((x << n) | (x >> (32 - n)));
+		}
+
 		public static AreaFlag[] StaticAreaFlag =
 		{
 			AreaFlag.Forearm_Left,

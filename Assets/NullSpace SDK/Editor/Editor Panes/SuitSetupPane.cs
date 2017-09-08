@@ -584,7 +584,7 @@ namespace NullSpace.SDK.Editor
 					//ERROR: This isn't an actual valid check yet.
 					if (hardlightSuit.Definition.CountValidZoneHolders() <= 0)
 					{
-						hardlightSuit.CheckListValidity();
+						hardlightSuit._EditorOnlyCheckListValidity();
 
 						MyDefinition.ZoneHolders = hardlightSuit.ZoneHolders.ToList();
 						MyDefinition.SceneReferences = hardlightSuit.SceneReferences.ToList();

@@ -6,5 +6,9 @@ using UnityEngine;
 
 public class RegionFlagAttribute : PropertyAttribute
 {
-	public RegionFlagAttribute() { }
+	public string label;
+	public RegionFlagAttribute(string variableName)
+	{
+		label = variableName;
+	}
 }

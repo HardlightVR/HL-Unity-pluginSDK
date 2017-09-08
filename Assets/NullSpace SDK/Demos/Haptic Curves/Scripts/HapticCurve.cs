@@ -30,7 +30,7 @@ namespace NullSpace.SDK.Demos
 		public KeyCode TriggerKey = KeyCode.None;
 
 		[Space(10)]
-		[RegionFlag]
+		[RegionFlag("Where")]
 		public AreaFlag Where = AreaFlag.None;
 
 		public bool InMainCoroutineWhile = false;

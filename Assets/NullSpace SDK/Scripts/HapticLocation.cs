@@ -10,6 +10,7 @@ namespace NullSpace.SDK
 	/// </summary>
 	public class HapticLocation : MonoBehaviour
 	{
+		public bool LocationActive = true;
 		/// <summary>
 		/// An empty, single or complex AreaFlag.
 		/// Empty Ex - AreaFlag.None
@@ -17,7 +18,9 @@ namespace NullSpace.SDK
 		/// Complex Ex1 - AreaFlag.Chest_Right|AreaFlag.Shoulder_Left
 		/// Complex Ex2 - AreaFlag.Left_All
 		/// </summary>
-		[RegionFlag]
+		[RegionFlag("Where")]
 		public AreaFlag Where;
+		//[SerializeField]
+		//public FilterFlag RemovedRegion;
 	}
 }

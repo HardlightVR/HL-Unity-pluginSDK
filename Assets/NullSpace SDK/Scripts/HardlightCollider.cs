@@ -6,6 +6,7 @@
 */
 
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace NullSpace.SDK
 {
@@ -29,11 +30,24 @@ namespace NullSpace.SDK
 		[Header("If collider is null, performs a GetComponent", order = 5)]
 		public bool TryFindCollider = false;
 
+		[Header("Size of this location (for searching)", order = 5)]
+		public float LocationSize = .025f;
+
+		public bool LocationActive
+		{
+			get { return MyLocation.LocationActive; }
+			set { MyLocation.LocationActive = value; }
+		}
+
+		public bool AutoCreateAdditionalPointsFromBounds = false;
+
 		public AreaFlag regionID
 		{
 			get { return MyLocation.Where; }
 			set { MyLocation.Where = value; }
 		}
+
+		public List<Vector3> AdditionalLocalPoints = new List<Vector3>();
 
 		private HapticLocation _myLocation;
 		public HapticLocation MyLocation
@@ -56,7 +70,6 @@ namespace NullSpace.SDK
 				return MyLocation.gameObject;
 			}
 		}
-
 		void Awake()
 		{
 			//In case it isn't assigned or created by the BodySetup tool.
@@ -77,6 +90,11 @@ namespace NullSpace.SDK
 			}
 			else
 			{
+				if (AutoCreateAdditionalPointsFromBounds)
+				{
+					ProcessBounds();
+				}
+
 				//If we have a collider AND it isn't a trigger
 				if (myCollider != null && !myCollider.isTrigger)
 				{
@@ -89,6 +107,15 @@ namespace NullSpace.SDK
 			if (gameObject.layer != NSManager.HAPTIC_LAYER)
 			{
 				Debug.LogWarning("You should aim to keep haptic content to Layer [" + NSManager.HAPTIC_LAYER + "].\n");
+			}
+
+		}
+
+		void Update()
+		{
+			if (Input.GetKeyDown(KeyCode.End))
+			{
+				ProcessBounds();
 			}
 		}
 
@@ -104,6 +131,56 @@ namespace NullSpace.SDK
 				}
 				Debug.Assert(loc != null);
 				_myLocation = loc;
+			}
+		}
+
+		private void ProcessBounds()
+		{
+			//Collider must be enabled for bound extents to be non-zero.
+			bool colliderWasEnabled = myCollider.enabled;
+			myCollider.enabled = true;
+			var src = myCollider.bounds.extents;
+			var v3 = src;
+
+			//We divide by 2 to put the extents between the center and the corner.
+			AdditionalLocalPoints.Add(v3 / 2);
+			AdditionalLocalPoints.Add(-v3 / 2);
+
+			v3 = new Vector3(-src.x, src.y, src.z);
+			AdditionalLocalPoints.Add(v3 / 2);
+			AdditionalLocalPoints.Add(-v3 / 2);
+
+			v3 = new Vector3(src.x, -src.y, src.z);
+			AdditionalLocalPoints.Add(v3 / 2);
+			AdditionalLocalPoints.Add(-v3 / 2);
+
+			v3 = new Vector3(src.x, src.y, -src.z);
+			AdditionalLocalPoints.Add(v3 / 2);
+			AdditionalLocalPoints.Add(-v3 / 2);
+
+			//Restore the collider's enabled state.
+			myCollider.enabled = colliderWasEnabled;
+		}
+
+		void OnDrawGizmos()
+		{
+			Gizmos.color = Color.black - new Color(0, 0, 0, .2f);
+			Gizmos.DrawSphere(transform.position, .01f);
+			Gizmos.color = Color.cyan - new Color(0, 0, 0, .5f);
+			//Gizmos.DrawSphere(transform.position, LocationSize);
+
+			for (int i = 0; i < AdditionalLocalPoints.Count; i++)
+			{
+				//for (int k = 0; k < AdditionalLocalPoints.Count; k++)
+				//{
+				//	if (i != k)
+				//	{
+				//		Gizmos.DrawLine(transform.position + transform.rotation * AdditionalLocalPoints[i], transform.position + transform.rotation * AdditionalLocalPoints[k]);
+				//	}
+				//}
+				//Gizmos.DrawSphere(transform.position + transform.rotation * AdditionalLocalPoints[i], .005f);
+				//The Location Size for additional local points is cut in half.
+				Gizmos.DrawSphere(transform.position + transform.rotation * AdditionalLocalPoints[i], LocationSize);
 			}
 		}
 	}

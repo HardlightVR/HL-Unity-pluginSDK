@@ -582,7 +582,7 @@ namespace NullSpace.SDK.Editor
 					MyDefinition.SuitRoot = hardlightSuit.gameObject;
 
 					//ERROR: This isn't an actual valid check yet.
-					if (hardlightSuit.Definition.CountValidZoneHolders() <= 0)
+					if (hardlightSuit.Definition._CountValidZoneHoldersInEditor() <= 0)
 					{
 						hardlightSuit._EditorOnlyCheckListValidity();
 

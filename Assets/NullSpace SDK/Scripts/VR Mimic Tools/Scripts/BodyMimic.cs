@@ -94,9 +94,12 @@ namespace NullSpace.SDK
 		private void Awake()
 		{
 			updateRate = TargetUpdateRate;
-			if (hmd == null)
+			if (enabled)
 			{
-				Debug.LogError("Body Mimic [" + name + "] has an unassigned hmd (head mounted display).\nAre you creating it yourself, perhaps leaving it in the scene? It should be set up during VRMimic initialization (see: VRMimic.Initialize)\n", this);
+				if (hmd == null)
+				{
+					Debug.LogError("Body Mimic [" + name + "] has an unassigned hmd (head mounted display).\nAre you creating it yourself, perhaps leaving it in the scene? It should be set up during VRMimic initialization (see: VRMimic.Initialize)\n", this);
+				}
 			}
 		}
 

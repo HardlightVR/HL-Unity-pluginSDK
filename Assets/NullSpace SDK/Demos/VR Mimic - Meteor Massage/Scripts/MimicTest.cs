@@ -71,7 +71,7 @@ namespace NullSpace.SDK
 			#endregion
 
 			//Useful for explosive projectiles
-			suit.FindAllFlagsWithinRange(randPos, sphereRadius);
+			suit.GetAreasWithinRange(randPos, sphereRadius);
 		}
 		private void ExampleRequestRandomLocation()
 		{

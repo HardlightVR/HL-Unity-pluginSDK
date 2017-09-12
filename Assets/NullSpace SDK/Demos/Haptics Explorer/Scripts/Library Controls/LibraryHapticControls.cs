@@ -28,6 +28,7 @@ namespace NullSpace.SDK.Demos
 		private HardlightColliderCollection collection;
 
 		public SuitDemo[] AllDemos;
+
 		/// <summary>
 		/// The demo currently used.
 		/// We deactivate the old demo and activate the new one if you call SelectSuitDemo
@@ -78,6 +79,18 @@ namespace NullSpace.SDK.Demos
 			GetInput();
 		}
 
+		internal void ChangeViewportMode(bool enabling)
+		{
+			if (enabling)
+			{
+				CurrentDemo.ActivateDemo();
+			}
+			else
+			{
+				CurrentDemo.DeactivateDemo();
+			}
+		}
+
 		public MeshRenderer GetRenderer(GameObject suitObject)
 		{
 			return suitRenderers.GetRenderer(suitObject);
@@ -104,7 +117,7 @@ namespace NullSpace.SDK.Demos
 			#endregion
 
 			#region [7] Massage Toggle
-			
+
 			#endregion
 
 			#region [Space] Clear all effects
@@ -115,12 +128,13 @@ namespace NullSpace.SDK.Demos
 			#endregion
 
 			#region Clicking on SuitBodyCollider
-			if (Input.GetMouseButtonDown(0))
+			if (Input.GetMouseButtonDown(0) && cam != null)
 			{
 				//Where the mouse is 
 				Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 				RaycastHit hit;
 
+				//Debug.Log("Camera: " + cam.name + "\n", cam.gameObject);
 				//Debug.DrawRay(ray.origin, ray.direction * 100, Color.blue, 3.5f);
 
 				//Raycast to see if we hit
@@ -132,6 +146,7 @@ namespace NullSpace.SDK.Demos
 					//Assuming there is one
 					if (clicked != null)
 					{
+						//Debug.Log("Clicked: " + clicked.name + "\n", clicked.gameObject);
 						//Do whatever our current demo wants to do with that click info.
 						CurrentDemo.OnSuitClicked(clicked, hit);
 					}

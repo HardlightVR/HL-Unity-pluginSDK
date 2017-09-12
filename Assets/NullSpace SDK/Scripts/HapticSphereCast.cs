@@ -67,7 +67,7 @@ namespace NullSpace.SDK.Demos
 
 				if (Application.isPlaying && SphereCastActive)
 				{
-					var Where = suit.HapticSphereCastForAreas(startLocation, worldDirection, sphereCastRadius, scaledRange);
+					var Where = suit.GetAreasFromSphereCast(startLocation, worldDirection, sphereCastRadius, scaledRange);
 
 					var singles = Where.ToArray();
 

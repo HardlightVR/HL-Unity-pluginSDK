@@ -23,6 +23,7 @@ namespace NullSpace.SDK.Demos
 			initialized = true;
 			SuitObjects = new List<HardlightCollider>();
 			SuitObjects = FindObjectsOfType<HardlightCollider>().ToList();
+			Debug.Log("Detected " + SuitObjects.Count + " suit objects\n", this);
 		}
 	}
 }

@@ -1,0 +1,8 @@
+{
+	"sequence" : [
+
+		{"time" : 0.0, "effect" : "triple_click", "strength" : 0.5, "duration" : 0.0},
+
+	]
+}
+

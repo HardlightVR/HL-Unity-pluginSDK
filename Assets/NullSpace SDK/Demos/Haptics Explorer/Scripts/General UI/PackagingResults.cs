@@ -12,6 +12,7 @@ namespace NullSpace.SDK.Demos
 	/// </summary>
 	public class PackagingResults : MonoBehaviour
 	{
+		public CanvasGroup ResultDisplayAlpha;
 		private RectTransform rect;
 		private GameObject primaryChild;
 		public Button OpenConverted;
@@ -22,6 +23,9 @@ namespace NullSpace.SDK.Demos
 		{
 			if (rect == null)
 				rect = GetComponent<RectTransform>();
+			if (ResultDisplayAlpha == null)
+				ResultDisplayAlpha = GetComponent<CanvasGroup>();
+			
 			primaryChild = transform.GetChild(0).gameObject;
 		}
 
@@ -30,11 +34,13 @@ namespace NullSpace.SDK.Demos
 			if (toEnable)
 			{
 				primaryChild.SetActive(true);
+				ResultDisplayAlpha.alpha = 1.0f;
 				toEnable = false;
 			}
 			if (toDisable)
 			{
 				primaryChild.SetActive(false);
+				ResultDisplayAlpha.alpha = 0.0f;
 				toDisable = false;
 			}
 		}
@@ -69,5 +75,6 @@ namespace NullSpace.SDK.Demos
 				toDisable = true;
 			}
 		}
+
 	}
 }

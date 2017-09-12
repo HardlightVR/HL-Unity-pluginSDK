@@ -539,7 +539,6 @@ namespace NullSpace.SDK.Demos
 			//Stage 2: One adjacent pad
 			//Stage 1: The pad clicked
 			List<List<GraphEngine.SuitNode>> nodes = ImpulseGenerator._grapher.BFS(end.regionID, (int)Depth);
-			Debug.Log(nodes.Count + "\n");
 			if (nodes != null && nodes.Count > 0)
 			{
 				//For each possible stage

@@ -7,8 +7,13 @@ namespace NullSpace.SDK.Demos
 {
 	public class SuitColorController : MonoBehaviour
 	{
-		public List<HardlightCollider> suitObjects;
+		public List<HardlightCollider> suitObjects = new List<HardlightCollider>();
 		public SuitRenderers suitRenderers;
+
+		void Start()
+		{
+			suitObjects = FindObjectsOfType<HardlightCollider>().ToList();
+		}
 
 		public Color unselectedColor = new Color(227 / 255f, 227 / 255f, 227 / 255f, 1f);
 
@@ -25,7 +30,6 @@ namespace NullSpace.SDK.Demos
 			RequestColoring(suitObjects[index].gameObject, setColor);
 		}
 
-
 		public void ColorSuitObject(GameObject suitCollider, Color setColor, float duration)
 		{
 			RequestColoringOverTime(suitCollider, setColor, duration);
@@ -38,7 +42,6 @@ namespace NullSpace.SDK.Demos
 		{
 			RequestColoringOverTime(suitObjects[index].gameObject, setColor, duration);
 		}
-
 
 		public void UncolorAllSuitColliders()
 		{

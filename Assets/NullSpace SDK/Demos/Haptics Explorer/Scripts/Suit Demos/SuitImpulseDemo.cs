@@ -479,12 +479,18 @@ namespace NullSpace.SDK.Demos
 			//}
 		}
 
+		/// <summary>
+		/// Get the HardlightCollider node where the region IDs match.
+		/// Only returns active HardlightColliders.
+		/// If multiple matches exist, it returns the first
+		/// </summary>
+		/// <param name="target"></param>
 		HardlightCollider GetSuitForNode(GraphEngine.SuitNode target)
 		{
 			HardlightCollider suit = null;
 
 			//Get the SuitBodyCollider node where the region IDs match. If multiple match, take the first
-			suit = SuitNodes.Where(x => x.regionID == target.Location).First();
+			suit = SuitNodes.Where(x => x.regionID == target.Location && x.isActiveAndEnabled).First();
 			//Yay functional programming
 
 			//This is potentially problematic if you are using a suit model with MULTIPLE flags set for individual locations.

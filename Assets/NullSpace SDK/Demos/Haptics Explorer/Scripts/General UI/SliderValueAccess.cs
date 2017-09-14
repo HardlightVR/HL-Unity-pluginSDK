@@ -20,26 +20,29 @@ namespace NullSpace.SDK.Demos
 			set
 			{
 				textValue = value;
-				if (DisplayType == ForceType.Integer)
+				if (MyText)
 				{
-					MyText.text = TextValue.ToString();
-				}
-				else if (DisplayType == ForceType.TwoDecimals)
-				{
-					float val = ((float)((int)(TextValue * 100)) / 100);
-					MyText.text = val == 0 && DisplayStringOnZero ? ReplaceZeroWith: val.ToString();
-				}
-				else if (DisplayType == ForceType.Effect)
-				{
-					//Prevent array index out of bounds errors.
-					int index = Mathf.Clamp((Mathf.RoundToInt(textValue)), 0, SuitImpulseDemo.effectOptions.Length - 1);
-					MyText.text = SuitImpulseDemo.effectOptions[index].ToString();
-				}
-				else if (DisplayType == ForceType.String)
-				{
-					//Prevent array index out of bounds errors.
-					int index = Mathf.Clamp((Mathf.RoundToInt(textValue)), 0, SuitImpulseDemo.SampleHapticSequence.Length - 1);
-					MyText.text = SuitImpulseDemo.SampleHapticSequence[index].ToString();
+					if (DisplayType == ForceType.Integer)
+					{
+						MyText.text = TextValue.ToString();
+					}
+					else if (DisplayType == ForceType.TwoDecimals)
+					{
+						float val = ((float)((int)(TextValue * 100)) / 100);
+						MyText.text = val == 0 && DisplayStringOnZero ? ReplaceZeroWith : val.ToString();
+					}
+					else if (DisplayType == ForceType.Effect)
+					{
+						//Prevent array index out of bounds errors.
+						int index = Mathf.Clamp((Mathf.RoundToInt(textValue)), 0, SuitImpulseDemo.effectOptions.Length - 1);
+						MyText.text = SuitImpulseDemo.effectOptions[index].ToString();
+					}
+					else if (DisplayType == ForceType.String)
+					{
+						//Prevent array index out of bounds errors.
+						int index = Mathf.Clamp((Mathf.RoundToInt(textValue)), 0, SuitImpulseDemo.SampleHapticSequence.Length - 1);
+						MyText.text = SuitImpulseDemo.SampleHapticSequence[index].ToString();
+					}
 				}
 			}
 		}

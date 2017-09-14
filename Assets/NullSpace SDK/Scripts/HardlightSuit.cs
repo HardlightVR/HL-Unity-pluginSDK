@@ -25,17 +25,15 @@ namespace NullSpace.SDK
 		/// </summary>
 		public bool AllowRegionalCollisions = false;
 
-		#region In-Editor Collider Coloring Variables
-#if UNITY_EDITOR
+		#region Collider Coloring Variables
 		/// <summary>
 		/// Colors the pads in the editor for easier debugging to see when areas are hit.
 		/// </summary>
-		public bool ColorRendererInEditor = true;
+		public bool ColorRenderersOutsideEditor = false;
 		/// <summary>
 		/// This variable is used to store the original box color so we can correctly revert.
 		/// </summary>
 		private Color defaultBoxColor = default(Color);
-#endif
 		#endregion
 
 		private Collider _singleVolumeCollider;
@@ -635,7 +633,7 @@ namespace NullSpace.SDK
 			for (int i = 0; i < hit.Length; i++)
 			{
 				hitAreas = hitAreas.AddArea(hit[i].regionID);
-				ColorHapticLocationInEditor(hit[i].MyLocation, Color.yellow, 0.1f);
+				ColorHapticLocationInEditor(hit[i].MyLocation, new Color(0.0f, .7f, 0.0f, 1), 0.1f);
 			}
 
 			return hitAreas;
@@ -800,15 +798,22 @@ namespace NullSpace.SDK
 		/// <param name="duration">How long to color the colliders (repeated calls will work but wont look good)</param>
 		private void ColorColliders(HardlightCollider[] colliders, Color color = default(Color), float duration = .5f)
 		{
+			bool inEditor = false;
+
 #if UNITY_EDITOR
-			for (int i = 0; i < colliders.Length; i++)
+			inEditor = true;
+#endif
+
+			if (ColorRenderersOutsideEditor || inEditor)
 			{
-				if (colliders[i].MyLocation != null)
+				for (int i = 0; i < colliders.Length; i++)
 				{
-					ColorHapticLocationInEditor(colliders[i].MyLocation, color);
+					if (colliders[i].MyLocation != null)
+					{
+						ColorHapticLocationInEditor(colliders[i].MyLocation, color);
+					}
 				}
 			}
-#endif
 		}
 
 		/// <summary>
@@ -819,7 +824,6 @@ namespace NullSpace.SDK
 		/// <param name="color">Defaults to red - the color to use. Will return to the default color of all haptic locations afterward.</param>
 		public void ColorHapticLocationInEditor(HapticLocation location, Color color = default(Color), float duration = .5f)
 		{
-#if UNITY_EDITOR
 			if (color == default(Color))
 			{
 				color = Color.red;
@@ -827,9 +831,22 @@ namespace NullSpace.SDK
 			MeshRenderer rend = location.gameObject.GetComponent<MeshRenderer>();
 			if (rend != null)
 			{
-				StartCoroutine(ColorHapticLocationCoroutine(rend, color, duration));
-			}
+				if (defaultBoxColor == default(Color))
+				{
+					defaultBoxColor = rend.material.color;
+				}
+
+				TemporaryRendererColoring.ApplyTemporaryColoring(rend, duration, color, defaultBoxColor);
+
+#if UNITY_EDITOR
+				//StartCoroutine(ColorHapticLocationCoroutine(rend, color, duration));
 #endif
+
+			}
+			else
+			{
+				Debug.LogError("Renderer is null\n");
+			}
 		}
 
 #if UNITY_EDITOR

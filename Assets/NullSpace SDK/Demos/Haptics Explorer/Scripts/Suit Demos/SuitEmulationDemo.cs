@@ -56,21 +56,21 @@ namespace NullSpace.SDK.Demos
 		{
 			if ((Effect)family == Effect.Click)
 			{
-				return Color.red;
+				return new Color32(255, 69, 0, 255);
 			}
 			if ((Effect)family == Effect.Double_Click)
 			{
-				return Color.red;
+				return new Color32(255, 69, 0, 255);
 			}
 			if ((Effect)family == Effect.Triple_Click)
 			{
-				return Color.red;
+				return new Color32(255, 69, 0, 255);
 			}
 			if ((Effect)family == Effect.Bump)
 			{
 				return Color.green;
 			}
-			if ((Effect)family == Effect.Buzz)
+			if ((Effect)family == Effect.Hum)
 			{
 				return Color.cyan;
 			}
@@ -78,17 +78,17 @@ namespace NullSpace.SDK.Demos
 			{
 				return Color.blue;
 			}
-			if ((Effect)family == Effect.Hum)
-			{
-				return Color.yellow;
-			}
 			if ((Effect)family == Effect.Pulse)
 			{
-				return new Color32(255, 69, 0, 255);
+				return Color.magenta;
+			}
+			if ((Effect)family == Effect.Buzz)
+			{
+				return Color.red;
 			}
 			if ((Effect)family == Effect.Fuzz)
 			{
-				return Color.magenta;
+				return Color.yellow;
 			}
 			return Color.white;
 		}

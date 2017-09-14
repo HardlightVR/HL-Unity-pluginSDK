@@ -8,6 +8,7 @@ namespace NullSpace.SDK.Demos
 {
 	public class SuitMassageDemo : SuitDemo
 	{
+		public HapticTrigger greenBox;
 		public Color selectedColor = new Color(100 / 255f, 200 / 255f, 200 / 255f, 1f);
 		public List<float> playingDurations = new List<float>();
 		public List<bool> isPlaying = new List<bool>();
@@ -43,7 +44,7 @@ namespace NullSpace.SDK.Demos
 		public override void Start()
 		{
 			//So we can move the green box around
-			myRB = LibraryManager.Inst.greenBox.GetComponent<Rigidbody>();
+			myRB = greenBox.GetComponent<Rigidbody>();
 
 			for (int i = 0; i < SuitObjects.Count; i++)
 			{

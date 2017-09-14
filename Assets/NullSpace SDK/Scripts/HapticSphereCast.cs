@@ -19,16 +19,16 @@ namespace NullSpace.SDK.Demos
 
 		[Header("Sphere Cast Attributes")]
 		[Range(0.05f, 500)]
-		public float SphereCastRange = 1;
+		private float sphereCastRange = 1;
 		[Range(0.01f, .5f)]
-		public float sphereCastRadius = .1f;
+		private float sphereCastRadius = .1f;
 
 		private HapticSequence mySequence = new HapticSequence();
 		[Header("Haptic Information")]
 		public string sequenceFileName = "Haptics/pain_short";
-		public float sequenceStrength = 1.0f;
+		private float sequenceStrength = 1.0f;
 
-		public Vector2 RangeOfDelayBetweenReplays = new Vector2(.2f, .5f);
+		private Vector2 RangeOfDelayBetweenReplays = new Vector2(.2f, .5f);
 		private float timeSinceLastPlay = 0.0f;
 
 		[Header("Gizmo Drawing Attribute")]
@@ -41,6 +41,69 @@ namespace NullSpace.SDK.Demos
 		private bool Ready = false;
 		private float scaledRange = 1;
 		HardlightSuit suit;
+
+		public float SphereCastRadius
+		{
+			get
+			{
+				return sphereCastRadius;
+			}
+
+			set
+			{
+				sphereCastRadius = value;
+			}
+		}
+		public float SphereCastRange
+		{
+			get
+			{
+				return sphereCastRange;
+			}
+
+			set
+			{
+				sphereCastRange = value;
+			}
+		}
+
+		public float SequenceStrength
+		{
+			get
+			{
+				return sequenceStrength;
+			}
+
+			set
+			{
+				sequenceStrength = value;
+			}
+		}
+		public float MinRangeBetweenPlays
+		{
+			get
+			{
+				return RangeOfDelayBetweenReplays.x;
+			}
+
+			set
+			{
+				RangeOfDelayBetweenReplays.x = value;
+			}
+		}
+		public float MaxRangeBetweenPlays
+		{
+			get
+			{
+				return RangeOfDelayBetweenReplays.y;
+			}
+
+			set
+			{
+				RangeOfDelayBetweenReplays.y = value;
+			}
+		}
+
 		void Start()
 		{
 			suit = HardlightSuit.Find();
@@ -67,7 +130,7 @@ namespace NullSpace.SDK.Demos
 
 				if (Application.isPlaying && SphereCastActive)
 				{
-					var Where = suit.GetAreasFromSphereCast(startLocation, worldDirection, sphereCastRadius, scaledRange);
+					var Where = suit.GetAreasFromSphereCast(startLocation, worldDirection, SphereCastRadius, scaledRange);
 
 					var singles = Where.ToArray();
 
@@ -84,7 +147,7 @@ namespace NullSpace.SDK.Demos
 					}
 					if (Where != AreaFlag.None && Ready)
 					{
-						var handle = mySequence.CreateHandle(Where, sequenceStrength);
+						var handle = mySequence.CreateHandle(Where, SequenceStrength);
 						handleList.Add(handle);
 						handle.Play();
 						timeSinceLastPlay = Random.Range(RangeOfDelayBetweenReplays.x, RangeOfDelayBetweenReplays.y);
@@ -129,7 +192,7 @@ namespace NullSpace.SDK.Demos
 						Gizmos.color = Color.white - new Color(.5f, 0, .5f, .85f);
 					}
 
-					Gizmos.DrawSphere(Vector3.Lerp(startLocation, target, i / total), sphereCastRadius);
+					Gizmos.DrawSphere(Vector3.Lerp(startLocation, target, i / total), SphereCastRadius);
 				}
 			}
 		}

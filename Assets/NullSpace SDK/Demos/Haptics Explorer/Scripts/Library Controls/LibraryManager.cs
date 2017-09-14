@@ -36,13 +36,11 @@ namespace NullSpace.SDK.Demos
 		public Sprite processIcon;
 		public Sprite copyIcon;
 
-		public Dictionary<string, PackageViewer> ContentsDict;
+		public Dictionary<string, PackageViewer> ContentsDict = new Dictionary<string, PackageViewer>();
 		public PopulateContainer ContentContainer;
 		public PopulateContainer FolderContainer;
 		public PackagingResults ResultDisplay;
 
-		public HapticTrigger greenBox;
-		public Text greenBoxText;
 		public SuitRegionSelectorDemo selector;
 
 		private ScrollRect DirectoryScroll;
@@ -129,8 +127,7 @@ namespace NullSpace.SDK.Demos
 			FolderContainer.prefab = Resources.Load<GameObject>("UI/Library Element");
 
 			selector = FindObjectOfType<SuitRegionSelectorDemo>();
-			greenBox = GameObject.Find("Haptic Trigger - Green Box").GetComponent<HapticTrigger>();
-			greenBoxText = greenBox.transform.GetChild(0).GetChild(1).GetComponent<Text>();
+			
 			ResultDisplay = FindObjectOfType<PackagingResults>();
 			ResultDisplay.SetVisibility(false);
 		}
@@ -151,7 +148,6 @@ namespace NullSpace.SDK.Demos
 			FindRequiredElements();
 
 			//This is where we will keep reference to previously opened files/directories.
-			ContentsDict = new Dictionary<string, PackageViewer>();
 			assetTool = new AssetTool();
 		}
 
@@ -159,7 +155,7 @@ namespace NullSpace.SDK.Demos
 		{
 			//Populate the folders that contain packages.
 			SetupLibraries();
-			DirectoryScroll = transform.FindChild("Folder Viewer").FindChild("Sub Directory").FindChild("Scroll View").GetComponent<ScrollRect>();
+			DirectoryScroll = transform.FindChild("Left Half").FindChild("Folder Viewer").FindChild("Sub Directory").FindChild("Scroll View").GetComponent<ScrollRect>();
 
 			SetTriggerSequence("Haptics/pulse", "ns.pulse");
 
@@ -173,13 +169,8 @@ namespace NullSpace.SDK.Demos
 			{
 				ResultDisplay.Display("Hello World", "");
 			}
-			SetGUI();
 
 			GetInput();
-		}
-		void SetGUI()
-		{
-			greenBoxText.text = LastSequenceName;
 		}
 
 		//This includes a quit condition
@@ -189,7 +180,6 @@ namespace NullSpace.SDK.Demos
 			{
 				Application.Quit();
 			}
-
 		}
 
 		public void SetupLibraries()
@@ -266,7 +256,6 @@ namespace NullSpace.SDK.Demos
 		public void SetTriggerSequence(HapticSequence sequence, string labelName)
 		{
 			LastSequence = sequence;
-			greenBox.SetSequence(sequence);
 			LastSequenceName = labelName;
 			//Debug.Log("Set Last Sequence! \t" + (LastSequence != null) + "\n");
 		}
@@ -278,7 +267,6 @@ namespace NullSpace.SDK.Demos
 			{
 				LastSequence = new HapticSequence();
 				LastSequence.LoadFromAsset(sequenceName);
-				greenBox.SetSequence(LastSequence);
 			}
 			catch (HapticsAssetException hExcept)
 			{
@@ -289,7 +277,6 @@ namespace NullSpace.SDK.Demos
 				Debug.LogError("[Exception]   \n\tLoad failed and set was disallowed\n" + e.Message);
 			}
 			LastSequenceName = visibleName;
-			greenBoxText.text = visibleName;
 		}
 
 		//Creates a viewer for the given folder.

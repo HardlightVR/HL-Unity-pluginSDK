@@ -11,21 +11,39 @@ using System.Collections.Generic;
 
 namespace NullSpace.SDK.Demos
 {
-	/// <summary>
-	/// Largely Empty SuitDemo
-	/// Sharing an empty version over the incomplete & buggy one.
-	/// </summary>
-	public class SuitSphereCastDemo : SuitDemo
+	public class Suit3DMassageDemo : SuitDemo
 	{
 		public GameObject ExtentsLimiter;
 		public HapticSphereCast spherecast;
 		public HapticTrigger greenBox;
+
+		public Color selectedColor = new Color(100 / 255f, 200 / 255f, 200 / 255f, 1f);
 
 		public List<float> playingDurations = new List<float>();
 		public List<bool> isPlaying = new List<bool>();
 		public List<Rigidbody> myRB = new List<Rigidbody>();
 		private int currentRigidbodyIndex = 0;
 		public float Extent = 5f;
+
+		public float LerpInDuration = 0.0f;
+		public float SustainedColorDuration = 0.25f;
+
+		private float duration = .5f;
+		private float lerpColorOut = .25f;
+		private float minDuration = .05f;
+
+		public float Duration
+		{
+			get
+			{
+				return duration;
+			}
+
+			set
+			{
+				duration = value;
+			}
+		}
 
 		private Rigidbody CurrentRigidbody
 		{
@@ -63,8 +81,8 @@ namespace NullSpace.SDK.Demos
 			{
 				ColorSuitObject(SuitObjects[i], unselectedColor);
 
-				playingDurations.Add(0);
-				isPlaying.Add(false);
+				//playingDurations.Add(0);
+				//isPlaying.Add(false);
 			}
 
 			for (int i = 0; i < myRB.Count; i++)
@@ -76,7 +94,7 @@ namespace NullSpace.SDK.Demos
 				CurrentRigidbody.gameObject.SetActive(true);
 			base.Start();
 		}
-
+		
 		public override void CheckHotkeys()
 		{
 			#region [Arrows] Direction Controls
@@ -142,6 +160,18 @@ namespace NullSpace.SDK.Demos
 			}
 			#endregion
 
+			if (Input.GetKey(KeyCode.LeftShift))
+			{
+				if (Input.GetKeyDown(KeyCode.Q))
+				{
+					SetRigidbodyIndex(0);
+				}
+				if (Input.GetKeyDown(KeyCode.W))
+				{
+					SetRigidbodyIndex(1);
+				}
+			}
+
 			base.CheckHotkeys();
 		}
 
@@ -180,6 +210,11 @@ namespace NullSpace.SDK.Demos
 			Gizmos.color = lightColor;
 
 			Gizmos.DrawWireCube(ExtentsLimiter.transform.position, Vector3.one * Extent);
+		}
+
+		public override void DisplayHandleHaptic(HardlightCollider hit, HapticHandle handle)
+		{
+			ColorSuitObjectOverTime(hit, selectedColor, LerpInDuration, SustainedColorDuration);
 		}
 	}
 }

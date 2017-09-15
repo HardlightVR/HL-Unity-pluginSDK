@@ -505,6 +505,9 @@ namespace NullSpace.SDK.Demos
 			//Save the beginning in local scope in case it gets changed by additional input 
 			HardlightCollider start = ImpulseOrigin;
 
+			var duration = Mathf.Clamp(EffectDuration, .1f, 100.0f);
+			//I clamp this to a min of .1 for user visibility.
+
 			//List of Lists
 			//Stage 1: The pad clicked
 			//Stage 2: One adjacent pad
@@ -524,8 +527,11 @@ namespace NullSpace.SDK.Demos
 							HardlightCollider next = GetSuitForNode(nodes[outter][inner]);
 							if (next != null)
 							{
-								//Color that pad for the duration of the Effect
-								StartCoroutine(ColorPadForXDuration(next));
+								Debug.DrawLine(next.transform.position, next.transform.position + transform.forward * 15, Color.green, 15f);
+
+								//ColorSuitObjectOverTime(next.gameObject, selectedColor, .1f, duration);
+								//	//Color that pad for the duration of the Effect
+									StartCoroutine(ColorPadForXDuration(next));
 							}
 						}
 					}
@@ -538,6 +544,8 @@ namespace NullSpace.SDK.Demos
 		{
 			//Save the beginning in local scope in case it gets changed by additional input 
 			HardlightCollider end = ImpulseOrigin;
+			var duration = Mathf.Clamp(EffectDuration, .1f, 100.0f);
+			//I clamp this to a min of .1 for user visibility.
 
 			//List of Lists
 			//Stage 1: A few pads adjacent to last stage
@@ -557,8 +565,11 @@ namespace NullSpace.SDK.Demos
 						{
 							HardlightCollider next = GetSuitForNode(nodes[outter][inner]);
 							//Debug.Log("Painting: " + next.name + "  " + outter + "   " + inner + "  " + next.regionID.ToString() + "\n");
+
+
 							if (next != null)
 							{
+								//ColorSuitObjectOverTime(next.gameObject, selectedColor, .1f, duration);
 								//Color that pad for the duration of the Effect
 								StartCoroutine(ColorPadForXDuration(next));
 							}
@@ -574,6 +585,10 @@ namespace NullSpace.SDK.Demos
 			//Save the beginning and end in local scope in case they get changed by additional input (Which could cause some null refs/index out of bounds)
 			HardlightCollider start = ImpulseOrigin;
 			HardlightCollider destination = ImpulseDestination;
+
+			var duration = Mathf.Clamp(EffectDuration, .1f, 100.0f);
+			//I clamp this to a min of .1 for user visibility.
+
 			List<GraphEngine.SuitNode> nodes = ImpulseGenerator._grapher.Dijkstras(start.regionID, destination.regionID);
 			if (nodes != null && nodes.Count > 0)
 			{
@@ -586,6 +601,8 @@ namespace NullSpace.SDK.Demos
 						HardlightCollider next = GetSuitForNode(nodes[outter]);
 						if (next != null)
 						{
+							//ColorSuitObjectOverTime(next.gameObject, selectedColor, .1f, duration);
+
 							//Color that pad for it's effect duration.
 							StartCoroutine(ColorPadForXDuration(next));
 						}

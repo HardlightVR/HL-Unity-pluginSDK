@@ -2,17 +2,28 @@
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 namespace NullSpace.SDK.Demos
 {
 	public class SuitColorController : MonoBehaviour
 	{
 		public List<HardlightCollider> suitObjects = new List<HardlightCollider>();
+		private Dictionary<GameObject, TemporaryRendererColoring> ColorDict = new Dictionary<GameObject, TemporaryRendererColoring>();
 		public SuitRenderers suitRenderers;
+		public Color defaultBoxColor;
 
 		void Start()
 		{
 			suitObjects = FindObjectsOfType<HardlightCollider>().ToList();
+
+			for (int i = 0; i < suitObjects.Count; i++)
+			{
+				var rend = GetSuitColliderRenderer(suitObjects[i].gameObject);
+				CheckDefaultBoxColor(rend);
+
+				ColorDict.Add(suitObjects[i].gameObject, TemporaryRendererColoring.CreateTemporaryColoring(rend, defaultBoxColor, defaultBoxColor, .25f));
+			}
 		}
 
 		public Color unselectedColor = new Color(227 / 255f, 227 / 255f, 227 / 255f, 1f);
@@ -25,15 +36,20 @@ namespace NullSpace.SDK.Demos
 		{
 			RequestColoring(suitCollider.gameObject, setColor);
 		}
+
+		public void ColorSuitObject(GameObject suitCollider, Color setColor, float lerpDuration, float sustainDuration)
+		{
+			RequestColoringOverTime(suitCollider, setColor, lerpDuration, sustainDuration);
+		}
 		public void ColorSuitObject(int index, Color setColor)
 		{
 			RequestColoring(suitObjects[index].gameObject, setColor);
 		}
 
-		public void ColorSuitObject(GameObject suitCollider, Color setColor, float duration)
-		{
-			RequestColoringOverTime(suitCollider, setColor, duration);
-		}
+		//public void ColorSuitObject(GameObject suitCollider, Color setColor, float lerpDuration, float sustainDuration)
+		//{
+		//	RequestColoringOverTime(suitCollider, setColor, lerpDuration, sustainDuration);
+		//}
 		public void ColorSuitObject(HardlightCollider suitCollider, Color setColor, float duration)
 		{
 			RequestColoringOverTime(suitCollider.gameObject, setColor, duration);
@@ -70,15 +86,43 @@ namespace NullSpace.SDK.Demos
 		}
 		private void RequestColoring(GameObject suitObject, Color setColor)
 		{
+			//if (ColorDict.ContainsKey(suitObject.gameObject))
+			//{
+			//	ColorDict[suitObject.gameObject].ApplyTemporaryColoringOverTime(duration, setColor, .25f);
+			//}
+			//else
+			//{
 			MeshRenderer rend = GetSuitColliderRenderer(suitObject);
+
 			ApplyColorToRenderer(rend, setColor);
+			//}
 		}
-		private void RequestColoringOverTime(GameObject suitObject, Color setColor, float duration = .25f)
+		private void RequestColoringOverTime(GameObject suitObject, Color setColor, float lerpDuration = 0.0f, float sustainDuration = .25f)
 		{
-			MeshRenderer rend = GetSuitColliderRenderer(suitObject);
-			duration = Mathf.Clamp(duration, .15f, float.MaxValue);
-			StartCoroutine(ApplyColorToRendererOverTime(rend, setColor, duration));
+			if (ColorDict.ContainsKey(suitObject.gameObject))
+			{
+				Debug.Log("NEW stuff\n");
+				ColorDict[suitObject.gameObject].ApplyTemporaryColoringOverTime(setColor, lerpDuration, sustainDuration);
+			}
+			else
+			{
+				MeshRenderer rend = GetSuitColliderRenderer(suitObject);
+
+				CheckDefaultBoxColor(rend);
+
+				sustainDuration = Mathf.Clamp(sustainDuration, .15f, float.MaxValue);
+				StartCoroutine(ApplyColorToRendererOverTime(rend, setColor, sustainDuration));
+			}
 		}
+
+		private void CheckDefaultBoxColor(MeshRenderer rend)
+		{
+			if (defaultBoxColor == default(Color) && rend != null)
+			{
+				defaultBoxColor = rend.material.color;
+			}
+		}
+
 		private MeshRenderer GetSuitColliderRenderer(GameObject suitCollider)
 		{
 			if (suitRenderers)
@@ -104,6 +148,7 @@ namespace NullSpace.SDK.Demos
 		{
 			if (renderer != null)
 			{
+				CheckDefaultBoxColor(renderer);
 				renderer.material.color = setColor;
 			}
 		}
@@ -162,6 +207,7 @@ namespace NullSpace.SDK.Demos
 			yield return new WaitForSeconds(MinDuration);
 			ColorSuitObject(current, revertColor);
 		}
+
 		#endregion
 	}
 }

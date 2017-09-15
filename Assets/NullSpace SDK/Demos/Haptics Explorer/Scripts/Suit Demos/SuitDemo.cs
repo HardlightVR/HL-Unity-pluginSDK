@@ -181,15 +181,24 @@ namespace NullSpace.SDK.Demos
 			}
 			return Color.magenta;
 		}
-		public void ColorSuitObject(GameObject suitCollider, Color setColor)
+		public void ColorSuitObject(HardlightCollider suitCollider, Color setColor)
 		{
 			colorController.ColorSuitObject(suitCollider, setColor);
 		}
-		public void ColorSuitObject(HardlightCollider suitCollider, Color setColor)
+		public void ColorSuitObject(GameObject suitCollider, Color setColor)
 		{
 			if (suitCollider != null)
 			{
-				ColorSuitObject(suitCollider.gameObject, setColor);
+				var hardlightCol = suitCollider.GetComponent<HardlightCollider>();
+
+				if (hardlightCol != null)
+				{
+					ColorSuitObject(hardlightCol, setColor);
+				}
+				else
+				{
+					Debug.Log("Suit Demo attempted to color an object without a hardlight collider\n\t" + name, this);
+				}
 			}
 			else
 			{
@@ -199,35 +208,44 @@ namespace NullSpace.SDK.Demos
 		public void ColorSuitObject(int index, Color setColor)
 		{
 			var providedIndex = index;
-			index = Mathf.Clamp(index, 0, SuitObjects.Count-1);
+			index = Mathf.Clamp(index, 0, SuitObjects.Count - 1);
 			if (index != providedIndex)
 			{
 				Debug.LogError("Attempted to color a suit object by index for the provided index of [" + providedIndex + "] when only [" + SuitObjects.Count + "] valid indices exist\n", this);
 			}
 			if (SuitObjects.Count > index)
 			{
-				ColorSuitObject(SuitObjects[index].gameObject, setColor);
+				ColorSuitObject(SuitObjects[index], setColor);
 			}
 		}
 
-		public void ColorSuitObject(GameObject suitCollider, Color setColor, float duration)
+		public void ColorSuitObject(GameObject suitCollider, Color setColor, float lerpDuration, float sustainDuration)
 		{
-			colorController.ColorSuitObject(suitCollider, setColor, duration);
+			colorController.ColorSuitObject(suitCollider, setColor, lerpDuration, sustainDuration);
 		}
-		public void ColorSuitObject(HardlightCollider suitCollider, Color setColor, float duration)
+		public void ColorSuitObject(HardlightCollider suitCollider, Color setColor, float lerpDuration, float sustainDuration)
 		{
 			if (suitCollider != null)
 			{
-				ColorSuitObject(suitCollider.gameObject, setColor, duration);
+				ColorSuitObject(suitCollider.gameObject, setColor, lerpDuration, sustainDuration);
 			}
 			else
 			{
 				Debug.Log("Suit Demo attempted to color a null object\n\t" + name, this);
 			}
 		}
-		public void ColorSuitObject(int index, Color setColor, float duration)
+		public void ColorSuitObject(int index, Color setColor, float lerpDuration, float sustainDuration)
 		{
-			ColorSuitObject(SuitObjects[index].gameObject, setColor, duration);
+			ColorSuitObject(SuitObjects[index].gameObject, setColor, lerpDuration, sustainDuration);
+		}
+
+		public void ColorSuitObjectOverTime(GameObject suitCollider, Color setColor, float lerpDuration, float sustainDuration)
+		{
+			colorController.ColorSuitObject(suitCollider, setColor, lerpDuration, sustainDuration);
+		}
+		public void ColorSuitObjectOverTime(HardlightCollider suitCollider, Color setColor, float lerpDuration, float sustainDuration)
+		{
+			colorController.ColorSuitObject(suitCollider.gameObject, setColor, lerpDuration, sustainDuration);
 		}
 
 		public virtual void DeselectAllSuitColliders()
@@ -252,6 +270,11 @@ namespace NullSpace.SDK.Demos
 				yield return wait;
 			}
 			light.gameObject.SetActive(true);
+		}
+
+		public virtual void DisplayHandleHaptic(HardlightCollider hit, HapticHandle handle)
+		{
+			ColorSuitObject(hit, buttonSelected);
 		}
 	}
 

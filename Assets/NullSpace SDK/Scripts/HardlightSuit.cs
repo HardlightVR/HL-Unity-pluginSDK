@@ -836,7 +836,7 @@ namespace NullSpace.SDK
 					defaultBoxColor = rend.material.color;
 				}
 
-				TemporaryRendererColoring.ApplyTemporaryColoring(rend, duration, color, defaultBoxColor);
+				TemporaryRendererColoring.CreateTemporaryColoring(rend, defaultBoxColor, color, duration);
 
 #if UNITY_EDITOR
 				//StartCoroutine(ColorHapticLocationCoroutine(rend, color, duration));

@@ -14,7 +14,7 @@ namespace NullSpace.SDK.Demos
 	/// </summary>
 	public class HapticTrigger : MonoBehaviour
 	{
-		public SuitMassageDemo suitDemo;
+		public SuitDemo suitDemo;
 
 		void OnTriggerEnter(Collider collider)
 		{
@@ -28,7 +28,11 @@ namespace NullSpace.SDK.Demos
 					handle.Play();
 					if (suitDemo)
 					{
-						suitDemo.DisplayMassageHaptics(hit, handle);
+						suitDemo.DisplayHandleHaptic(hit, handle);
+					}
+					else
+					{
+						Debug.LogError("The Suit Demo of HapticTrigger [" + name + "] is not assigned\n", this);
 					}
 				}
 			}

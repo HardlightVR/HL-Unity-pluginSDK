@@ -6,6 +6,9 @@ using System.Linq;
 
 namespace NullSpace.SDK.Demos
 {
+	/// <summary>
+	/// This demo is largely outdated. It primarily served for the 2D version. See AdvancedMassageSuitDemo
+	/// </summary>
 	public class SuitMassageDemo : SuitDemo
 	{
 		public HapticTrigger greenBox;
@@ -140,7 +143,7 @@ namespace NullSpace.SDK.Demos
 		{
 		}
 
-		public void DisplayMassageHaptics(HardlightCollider hit, HapticHandle handle)
+		public override void DisplayHandleHaptic(HardlightCollider hit, HapticHandle handle)
 		{
 			//This could be done more efficiently. It is kept simple to make the code more readible.
 			int index = SuitObjects.IndexOf(hit);

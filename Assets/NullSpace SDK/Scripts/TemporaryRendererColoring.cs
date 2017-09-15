@@ -5,49 +5,178 @@ namespace NullSpace.SDK
 {
 	public class TemporaryRendererColoring : MonoBehaviour
 	{
-		protected MeshRenderer rend;
+		private MeshRenderer suitRenderer;
+		[SerializeField]
 		protected TemporaryColoring nextColoring;
-		protected Color originalColor;
+		[SerializeField]
+		private Color originalColor;
+		[SerializeField]
+		protected Color startingColor;
+
+		private enum TemporaryColoringState { ApplyForDuration, ApplyOverDuration, Inactive }
+		[SerializeField]
+		private TemporaryColoringState ColoringState;
+
+		public bool RevertColorAfterOperation = true;
+
+		[System.Serializable]
 		public class TemporaryColoring
 		{
+			[SerializeField]
 			float timeValue = .25f;
 			public Color color;
 
 			public TemporaryColoring(float time, Color col)
 			{
 				color = col;
-				timeValue = time;
+				timeValue = Mathf.Clamp(time, 0, float.MaxValue);
 			}
 		}
 		public float timeLeft;
+		public float lerpRemainingDuration;
+		[SerializeField]
+		private float lerpDuration;
 
-		void Start()
+		public MeshRenderer SuitRenderer
 		{
+			get
+			{
+				return suitRenderer;
+			}
 
+			set
+			{
+				suitRenderer = value;
+			}
+		}
+
+		public Color OriginalColor
+		{
+			get
+			{
+				return originalColor;
+			}
+
+			set
+			{
+				originalColor = value;
+			}
+		}
+
+		public float LerpDuration
+		{
+			get
+			{
+				return lerpDuration;
+			}
+
+			set
+			{
+				lerpDuration = value;
+			}
 		}
 
 		void Update()
 		{
-			if (timeLeft > 0)
+			if (ColoringState == TemporaryColoringState.ApplyForDuration)
 			{
 				timeLeft -= Time.deltaTime;
-				
+				SuitRenderer.material.color = nextColoring.color;
+
+				if (timeLeft <= 0)
+				{
+					nextColoring.color = Color.Lerp(nextColoring.color, OriginalColor, 10 * Time.deltaTime);
+					SuitRenderer.material.color = nextColoring.color;
+				}
+				if (timeLeft <= -.5f)
+				{
+					ResetToOriginalColor();
+				}
 			}
-			if (timeLeft <= 0)
+			else if (ColoringState == TemporaryColoringState.ApplyOverDuration)
 			{
-				nextColoring.color = Color.Lerp(nextColoring.color, originalColor, 10f * Time.deltaTime);
-				rend.material.color = nextColoring.color;
+				if (lerpRemainingDuration > 0)
+				{
+					lerpRemainingDuration -= Time.deltaTime;
+				}
+				Debug.Log("Lerping [" + startingColor + "] [" + nextColoring.color + "]\n", this);
+				var tempColor = Color.Lerp(startingColor, nextColoring.color, 1 - (lerpRemainingDuration / LerpDuration));
+				SuitRenderer.material.color = tempColor;
+				if (lerpRemainingDuration <= 0)
+				{
+					if (timeLeft > 0)
+					{
+						if (RevertColorAfterOperation)
+						{
+							ColoringState = TemporaryColoringState.ApplyForDuration;
+						}
+						else
+						{
+							ColoringState = TemporaryColoringState.Inactive;
+						}
+					}
+					else
+					{
+						ResetToOriginalColor();
+					}
+				}
+			}
+			else
+			{
+
 			}
 		}
 
-		public void AddColoring(TemporaryColoring tempColoring)
+		public void ResetToOriginalColor()
 		{
-			//Add it to our list.
+			ColoringState = TemporaryColoringState.Inactive;
+			SuitRenderer.material.color = originalColor;
 		}
 
-		public static TemporaryRendererColoring ApplyTemporaryColoring(MeshRenderer rend, float time, Color color, Color originalColor)
+		public void SetOriginalColoring(Color originalColor)
 		{
-			//Debug.Log("apply temp color\n", rend);
+			this.OriginalColor = originalColor;
+		}
+		public void ApplyTemporaryColoring(Color color, float coloringDuration)
+		{
+			ColoringState = TemporaryColoringState.ApplyForDuration;
+			//Get my current color
+			startingColor = SuitRenderer.material.color;
+
+			nextColoring = new TemporaryColoring(coloringDuration, color);
+			timeLeft = coloringDuration;
+			SuitRenderer.material.color = color;
+		}
+
+		public void ApplyTemporaryColoringOverTime(Color targetColor, float lerpDuration, float sustainEndColorDuration = 0)
+		{
+			if (LerpDuration <= 0)
+			{
+				ApplyTemporaryColoring(targetColor, sustainEndColorDuration);
+			}
+			else
+			{
+				ColoringState = TemporaryColoringState.ApplyOverDuration;
+				lerpRemainingDuration = lerpDuration;
+				LerpDuration = lerpDuration;
+				nextColoring = new TemporaryColoring(sustainEndColorDuration, targetColor);
+				timeLeft = lerpDuration;
+			}
+		}
+
+		//public void ApplyPermanentColoringOverTime(Color targetColor, float lerpDuration)
+		//{
+
+		//	ColoringState = TemporaryColoringState.ApplyOverDuration;
+		//	lerpRemainingDuration = lerpDuration;
+		//	LerpDuration = lerpDuration;
+		//	nextColoring = new TemporaryColoring(sustainEndColorDuration, targetColor);
+		//	timeLeft = lerpDuration;
+		//}
+
+		public static TemporaryRendererColoring CreateTemporaryColoring(MeshRenderer rend, Color originalColor, Color color, float time)
+		{
+			//Debug.Log("Create temp coloring [" + originalColor + "]\n", rend);
 			var coloring = rend.gameObject.GetComponent<TemporaryRendererColoring>();
 
 			if (coloring == null)
@@ -55,11 +184,9 @@ namespace NullSpace.SDK
 				coloring = rend.gameObject.AddComponent<TemporaryRendererColoring>();
 			}
 
-			coloring.originalColor = originalColor;
-			coloring.rend = rend;
-			coloring.nextColoring = new TemporaryColoring(time, color);
-			coloring.timeLeft = time;
-			coloring.rend.material.color = color;
+			coloring.SuitRenderer = rend;
+			coloring.SetOriginalColoring(originalColor);
+			coloring.ApplyTemporaryColoring(color, time);
 
 			//Debug.Log("HIT" + rend.name + "  " + color.ToString() + "\n", coloring);
 			return coloring;

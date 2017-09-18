@@ -13,6 +13,7 @@ namespace NullSpace.SDK.Demos
 		{
 			HandleRequiredObjects(true);
 
+			colorController.SetDefaultColor(notPlayingColor);
 			//I need nothing
 		}
 
@@ -25,6 +26,7 @@ namespace NullSpace.SDK.Demos
 			{
 				ColorSuitObject(SuitObjects[i], unselectedColor);
 			}
+			colorController.SetDefaultColor(unselectedColor);
 		}
 
 		public void Update()
@@ -43,11 +45,7 @@ namespace NullSpace.SDK.Demos
 					Color color = GetColorByFamily(samples[SuitObjects[i].regionID].Family);
 					Color currentColor = GetObjectCurrentColor(SuitObjects[i].gameObject);
 					//Debug.Log(samples[SuitObjects[i].regionID].Strength + "\n" + Color.Lerp(color, playingColor, val) + "   " + val, this);
-					ColorSuitObject(SuitObjects[i], Color.Lerp(currentColor, Color.Lerp(color, playingColor, val), .85f), .0f, .15f);
-				}
-				else
-				{
-					ColorSuitObject(SuitObjects[i], notPlayingColor);
+					ColorSuitObject(SuitObjects[i], Color.Lerp(currentColor, Color.Lerp(color, playingColor, val), .85f), .1f, .15f);
 				}
 			}
 		}

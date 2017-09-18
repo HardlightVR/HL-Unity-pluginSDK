@@ -5,11 +5,55 @@ using UnityEngine;
 public class TransformAdjustor : MonoBehaviour
 {
 	public bool rotateX = true;
-	public float XRotationSpeed;
+
+	[SerializeField]
+	private float xRotationSpeed;
+	public float XRotationSpeed
+	{
+		get
+		{
+			return xRotationSpeed;
+		}
+
+		set
+		{
+			xRotationSpeed = value;
+		}
+	}
+
 	public bool rotateY = true;
-	public float YRotationSpeed;
+
+	[SerializeField]
+	private float yRotationSpeed;
+	public float YRotationSpeed
+	{
+		get
+		{
+			return yRotationSpeed;
+		}
+
+		set
+		{
+			yRotationSpeed = value;
+		}
+	}
+
 	public bool rotateZ = true;
-	public float ZRotationSpeed;
+
+	[SerializeField]
+	private float zRotationSpeed;
+	public float ZRotationSpeed
+	{
+		get
+		{
+			return zRotationSpeed;
+		}
+
+		set
+		{
+			zRotationSpeed = value;
+		}
+	}
 
 	#region Euler Properties
 	private float xEulerAngle;
@@ -22,8 +66,12 @@ public class TransformAdjustor : MonoBehaviour
 
 		set
 		{
+			//Quaternion before = transform.rotation;
+			//Quaternion after = transform.rotation * (transform.up * .1f)
 			xEulerAngle = value;
-			transform.rotation = Quaternion.Euler(xEulerAngle, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
+			var euler = Quaternion.Euler(xEulerAngle, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
+			//Debug.Log("Before: " + transform.rotation.eulerAngles + "  " + euler.eulerAngles + "\n", this);
+			transform.rotation = euler;
 		}
 	}
 
@@ -55,7 +103,8 @@ public class TransformAdjustor : MonoBehaviour
 			zEulerAngle = value;
 			transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, zEulerAngle);
 		}
-	} 
+	}
+
 	#endregion
 
 	void Update()

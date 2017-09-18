@@ -547,6 +547,7 @@ namespace NullSpace.SDK.Demos
 			var duration = Mathf.Clamp(EffectDuration, .1f, 100.0f);
 			//I clamp this to a min of .1 for user visibility.
 
+			colorController.ColorSuitObject(ImpulseOrigin, OriginColor);
 			//List of Lists
 			//Stage 1: A few pads adjacent to last stage
 			//Stage 3: Four pads adjacent to the previous pad
@@ -627,7 +628,6 @@ namespace NullSpace.SDK.Demos
 
 			//I don't think we need to save this local reference. Just in case.
 			HardlightCollider current = suit;
-
 
 			//You could do a fancy color lerp functionality here...
 			colorController.ColorSuitObject(current, selectedColor);

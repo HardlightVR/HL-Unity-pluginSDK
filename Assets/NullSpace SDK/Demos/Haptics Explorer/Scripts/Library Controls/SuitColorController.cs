@@ -28,6 +28,18 @@ namespace NullSpace.SDK.Demos
 
 		public Color unselectedColor = new Color(227 / 255f, 227 / 255f, 227 / 255f, 1f);
 
+		public void SetDefaultColor(Color newColor)
+		{
+			for (int i = 0; i < suitObjects.Count; i++)
+			{
+				if (ColorDict.ContainsKey(suitObjects[i].gameObject))
+				{
+					ColorDict[suitObjects[i].gameObject].OriginalColor = newColor;
+					RequestColoring(suitObjects[i].gameObject, newColor);
+				}
+			}
+		}
+
 		public void ColorSuitObject(GameObject suitCollider, Color setColor)
 		{
 			RequestColoring(suitCollider, setColor);
@@ -101,7 +113,6 @@ namespace NullSpace.SDK.Demos
 		{
 			if (ColorDict.ContainsKey(suitObject.gameObject))
 			{
-				Debug.Log("NEW stuff\n");
 				ColorDict[suitObject.gameObject].ApplyTemporaryColoringOverTime(setColor, lerpDuration, sustainDuration);
 			}
 			else

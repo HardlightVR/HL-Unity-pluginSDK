@@ -33372,22 +33372,22 @@ Prefab:
     - target: {fileID: 224000011595414456, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 268
+      value: 269
       objectReference: {fileID: 0}
     - target: {fileID: 224000011595414456, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -421.5
+      value: -432
       objectReference: {fileID: 0}
     - target: {fileID: 224000011595414456, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 536
+      value: 538
       objectReference: {fileID: 0}
     - target: {fileID: 224000011595414456, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 843
+      value: 864
       objectReference: {fileID: 0}
     - target: {fileID: 224000013846922606, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -33402,7 +33402,7 @@ Prefab:
     - target: {fileID: 224000013846922606, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 270
+      value: 271
       objectReference: {fileID: 0}
     - target: {fileID: 224000013846922606, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -33412,7 +33412,7 @@ Prefab:
     - target: {fileID: 224000013846922606, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 536
+      value: 538
       objectReference: {fileID: 0}
     - target: {fileID: 224000013846922606, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -33432,22 +33432,22 @@ Prefab:
     - target: {fileID: 224000012050577180, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 270
+      value: 271
       objectReference: {fileID: 0}
     - target: {fileID: 224000012050577180, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -485.5
+      value: -496
       objectReference: {fileID: 0}
     - target: {fileID: 224000012050577180, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 536
+      value: 538
       objectReference: {fileID: 0}
     - target: {fileID: 224000012050577180, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 843
+      value: 864
       objectReference: {fileID: 0}
     - target: {fileID: 114000014057694236, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -47239,8 +47239,6 @@ MonoBehaviour:
   spherecast: {fileID: 2130410968}
   greenBox: {fileID: 1017545279}
   selectedColor: {r: 0, g: 0.60784316, b: 0.12941177, a: 1}
-  playingDurations: []
-  isPlaying: 
   myRB: []
   Extent: 1
   LerpInDuration: 0
@@ -47375,7 +47373,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 84164899}
   m_HandleRect: {fileID: 84164898}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -52390,7 +52388,7 @@ Prefab:
     - target: {fileID: 224000013709841350, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 257.5
+      value: 258.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000013709841350, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -52400,7 +52398,7 @@ Prefab:
     - target: {fileID: 224000013709841350, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 511
+      value: 513
       objectReference: {fileID: 0}
     - target: {fileID: 224000013709841350, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -52450,7 +52448,7 @@ Prefab:
     - target: {fileID: 224000012528230784, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 147
+      value: 148
       objectReference: {fileID: 0}
     - target: {fileID: 224000012528230784, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -52460,7 +52458,7 @@ Prefab:
     - target: {fileID: 224000012528230784, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 294
+      value: 296
       objectReference: {fileID: 0}
     - target: {fileID: 224000012528230784, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -52510,7 +52508,7 @@ Prefab:
     - target: {fileID: 224000010744236894, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 221
+      value: 222
       objectReference: {fileID: 0}
     - target: {fileID: 224000010744236894, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -52520,7 +52518,7 @@ Prefab:
     - target: {fileID: 224000010744236894, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 294
+      value: 296
       objectReference: {fileID: 0}
     - target: {fileID: 224000010744236894, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -52540,7 +52538,7 @@ Prefab:
     - target: {fileID: 224000013214566312, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 405
+      value: 407
       objectReference: {fileID: 0}
     - target: {fileID: 224000013214566312, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -52570,7 +52568,7 @@ Prefab:
     - target: {fileID: 224000013187125872, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 474
+      value: 476
       objectReference: {fileID: 0}
     - target: {fileID: 224000013187125872, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -55647,7 +55645,7 @@ MonoBehaviour:
   SpherecastStartObject: {fileID: 2130410966}
   startLocation: {x: -219.99902, y: 301.011, z: 0.361}
   localDirection: {x: 0, y: 1, z: 0}
-  sequenceFileName: Haptics/pain_short
+  ClearHapticsOnExit: 1
   ShowGizmos: 1
   sphereCount: 10
 --- !u!114 &2130410969

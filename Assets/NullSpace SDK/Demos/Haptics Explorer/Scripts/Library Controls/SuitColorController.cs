@@ -6,6 +6,10 @@ using System;
 
 namespace NullSpace.SDK.Demos
 {
+	/// <summary>
+	/// This class governs the coloring of MeshRenderers on HardlightCollider objects.
+	/// Keeps a dictionary of gameobject keys to TemporaryRenderColoring objects (which handle individual coloring)
+	/// </summary>
 	public class SuitColorController : MonoBehaviour
 	{
 		public List<HardlightCollider> suitObjects = new List<HardlightCollider>();
@@ -26,8 +30,80 @@ namespace NullSpace.SDK.Demos
 			}
 		}
 
+		/// <summary>
+		/// The source of truth for the default unselected color of the suit.
+		/// </summary>
 		public Color unselectedColor = new Color(227 / 255f, 227 / 255f, 227 / 255f, 1f);
 
+		#region Color Suit Object (no duration/lerping)
+		public void ColorSuitObject(GameObject suitCollider, Color setColor)
+		{
+			RequestColoring(suitCollider, setColor);
+		}
+		public void ColorSuitObject(HardlightCollider suitCollider, Color setColor)
+		{
+			RequestColoring(suitCollider.gameObject, setColor);
+		}
+		public void ColorSuitObject(int index, Color setColor)
+		{
+			RequestColoring(suitObjects[index].gameObject, setColor);
+		}
+		#endregion
+
+		#region Color Suit Object (with duration/lerp)
+		/// <summary>
+		/// Uses the TemporaryRendererColoring flow rather than the hard-setting flow.
+		/// </summary>
+		/// <param name="suitCollider">Who needs to be colored (it'll efficiently get & cache the MeshRenderer component)</param>
+		/// <param name="setColor">What color should it be. Alpha is discarded (unless you change the material of the renderer)</param>
+		/// <param name="sustainDuration">How long to maintain that color before lerping back to the default color (see: SetDefaultColor/unselectedColor)</param>
+		/// <param name="lerpDuration">Lerp from current color to the set color? Otherwise provide 0</param>
+		public void ColorSuitObject(GameObject suitCollider, Color setColor, float sustainDuration, float lerpDuration)
+		{
+			RequestColoringOverTime(suitCollider, setColor, sustainDuration, lerpDuration);
+		}
+		/// <summary>
+		/// Uses the TemporaryRendererColoring flow rather than the hard-setting flow.
+		/// </summary>
+		/// <param name="suitCollider">Who needs to be colored (it'll efficiently get & cache the MeshRenderer component)</param>
+		/// <param name="setColor">What color should it be. Alpha is discarded (unless you change the material of the renderer)</param>
+		/// <param name="sustainDuration">How long to maintain that color before lerping back to the default color (see: SetDefaultColor/unselectedColor)</param>
+		public void ColorSuitObject(HardlightCollider suitCollider, Color setColor, float sustainDuration)
+		{
+			RequestColoringOverTime(suitCollider.gameObject, setColor, sustainDuration);
+		}
+		public void ColorSuitObject(int index, Color setColor, float sustainDuration)
+		{
+			RequestColoringOverTime(suitObjects[index].gameObject, setColor, sustainDuration);
+		}
+
+		#endregion
+
+		#region Coloring the entire suit
+		/// <summary>
+		/// A helper function to color the entire suit without needing to loop through a function.
+		/// </summary>
+		/// <param name="setColor"></param>
+		public void ColorSuit(Color setColor)
+		{
+			for (int i = 0; i < suitObjects.Count; i++)
+			{
+				RequestColoring(suitObjects[i].gameObject, setColor);
+			}
+		}
+		/// <summary>
+		/// Equivalent to ColorSuit(unselectedColor)
+		/// </summary>
+		public void UncolorAllSuitColliders()
+		{
+			ColorSuit(unselectedColor);
+		}
+		/// <summary>
+		/// A function that assigns the TemporaryRendererColoring's inactive color.
+		/// If you want the pads by default to be black or orange, call this in ActivateDemo. 
+		/// (Make sure to return to the unselectedColor in DeactivateDemo)
+		/// </summary>
+		/// <param name="newColor"></param>
 		public void SetDefaultColor(Color newColor)
 		{
 			for (int i = 0; i < suitObjects.Count; i++)
@@ -38,43 +114,8 @@ namespace NullSpace.SDK.Demos
 					RequestColoring(suitObjects[i].gameObject, newColor);
 				}
 			}
-		}
-
-		public void ColorSuitObject(GameObject suitCollider, Color setColor)
-		{
-			RequestColoring(suitCollider, setColor);
-		}
-		public void ColorSuitObject(HardlightCollider suitCollider, Color setColor)
-		{
-			RequestColoring(suitCollider.gameObject, setColor);
-		}
-
-		public void ColorSuitObject(GameObject suitCollider, Color setColor, float lerpDuration, float sustainDuration)
-		{
-			RequestColoringOverTime(suitCollider, setColor, lerpDuration, sustainDuration);
-		}
-		public void ColorSuitObject(int index, Color setColor)
-		{
-			RequestColoring(suitObjects[index].gameObject, setColor);
-		}
-
-		//public void ColorSuitObject(GameObject suitCollider, Color setColor, float lerpDuration, float sustainDuration)
-		//{
-		//	RequestColoringOverTime(suitCollider, setColor, lerpDuration, sustainDuration);
-		//}
-		public void ColorSuitObject(HardlightCollider suitCollider, Color setColor, float duration)
-		{
-			RequestColoringOverTime(suitCollider.gameObject, setColor, duration);
-		}
-		public void ColorSuitObject(int index, Color setColor, float duration)
-		{
-			RequestColoringOverTime(suitObjects[index].gameObject, setColor, duration);
-		}
-
-		public void UncolorAllSuitColliders()
-		{
-			ColorSuit(unselectedColor);
-		}
+		} 
+		#endregion
 
 		#region Core Operations
 		/// <summary>
@@ -109,7 +150,7 @@ namespace NullSpace.SDK.Demos
 			ApplyColorToRenderer(rend, setColor);
 			//}
 		}
-		private void RequestColoringOverTime(GameObject suitObject, Color setColor, float lerpDuration = 0.0f, float sustainDuration = .25f)
+		private void RequestColoringOverTime(GameObject suitObject, Color setColor, float sustainDuration = .25f, float lerpDuration = 0.0f)
 		{
 			if (ColorDict.ContainsKey(suitObject.gameObject))
 			{
@@ -126,6 +167,11 @@ namespace NullSpace.SDK.Demos
 			}
 		}
 
+		/// <summary>
+		/// Caches the original box color..
+		/// See also: SetDefaultColor(Color inactive) - use this to change the default color for a specific mode.
+		/// </summary>
+		/// <param name="rend"></param>
 		private void CheckDefaultBoxColor(MeshRenderer rend)
 		{
 			if (defaultBoxColor == default(Color) && rend != null)
@@ -134,6 +180,11 @@ namespace NullSpace.SDK.Demos
 			}
 		}
 
+		/// <summary>
+		/// Attempts to use the caching class SuitRenderers.
+		/// Will GetComponent every time if SuitRenderers is null.
+		/// </summary>
+		/// <param name="suitCollider">The GameObject with a mesh renderer</param>
 		private MeshRenderer GetSuitColliderRenderer(GameObject suitCollider)
 		{
 			if (suitRenderers)
@@ -142,6 +193,13 @@ namespace NullSpace.SDK.Demos
 			}
 			return suitCollider.GetComponent<MeshRenderer>();
 		}
+		/// <summary>
+		/// A coroutine based coloring technique. Used if TemporaryRendererColoring technique does not work (due to null refs)
+		/// Colors the rendere back to the color it is when this coroutine was started. (Looks ugly if you call many coloring over times at once)
+		/// </summary>
+		/// <param name="renderer">The renderer to color</param>
+		/// <param name="setColor">The color to use</param>
+		/// <param name="duration">How long</param>
 		private IEnumerator ApplyColorToRendererOverTime(MeshRenderer renderer, Color setColor, float duration)
 		{
 			var origColor = GetObjectCurrentColor(renderer);
@@ -155,6 +213,12 @@ namespace NullSpace.SDK.Demos
 			}
 			ApplyColorToRenderer(renderer, setColor);
 		}
+		/// <summary>
+		/// Checks the renderer for null, then applies the color.
+		/// (Also checks to ensure we have a default color so we don't destroy that information)
+		/// </summary>
+		/// <param name="renderer"></param>
+		/// <param name="setColor"></param>
 		private void ApplyColorToRenderer(MeshRenderer renderer, Color setColor)
 		{
 			if (renderer != null)
@@ -163,13 +227,7 @@ namespace NullSpace.SDK.Demos
 				renderer.material.color = setColor;
 			}
 		}
-		public void ColorSuit(Color setColor)
-		{
-			for (int i = 0; i < suitObjects.Count; i++)
-			{
-				RequestColoring(suitObjects[i].gameObject, setColor);
-			}
-		}
+		
 		#endregion
 
 		#region Coroutines

@@ -14,15 +14,21 @@ namespace NullSpace.SDK.Demos
 	public class Suit3DMassageDemo : SuitDemo
 	{
 		public GameObject ExtentsLimiter;
+
 		public HapticSphereCast spherecast;
 		public HapticTrigger greenBox;
 
+		/// <summary>
+		/// For showing a haptic location is playing haptics
+		/// </summary>
 		public Color selectedColor = new Color(100 / 255f, 200 / 255f, 200 / 255f, 1f);
 
-		public List<float> playingDurations = new List<float>();
-		public List<bool> isPlaying = new List<bool>();
 		public List<Rigidbody> myRB = new List<Rigidbody>();
 		private int currentRigidbodyIndex = 0;
+
+		/// <summary>
+		/// How big the extents are.
+		/// </summary>
 		public float Extent = 5f;
 
 		public float LerpInDuration = 0.0f;

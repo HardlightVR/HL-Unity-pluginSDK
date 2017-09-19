@@ -622,7 +622,10 @@ namespace NullSpace.SDK
 		/// <returns></returns>
 		public AreaFlag GetAreasFromSphereCast(Vector3 source, Vector3 direction, float sphereCastRadius = .25f, float sphereCastLength = 100)
 		{
+			//Get the array of colliders
 			var hit = Definition.FindCollidersWithinSphereCast(source, direction, sphereCastRadius, sphereCastLength);
+
+			//Get the areaflags out of those colliders.
 			return FindAreaFlagFromHardlightColliders(hit);
 		}
 

@@ -4,10 +4,19 @@ using UnityEngine;
 
 namespace NullSpace.SDK.Demos
 {
+	/// <summary>
+	/// A line of haptics with a defined radius.
+	/// </summary>
 	[ExecuteInEditMode]
 	public class HapticSphereCast : MonoBehaviour
 	{
+		/// <summary>
+		/// Whether or not the collisions are detected and haptics are played
+		/// </summary>
 		public bool SphereCastActive = true;
+		/// <summary>
+		/// The object the spherecast begins at.
+		/// </summary>
 		public GameObject SpherecastStartObject;
 
 		public Vector3 startLocation;
@@ -24,10 +33,22 @@ namespace NullSpace.SDK.Demos
 		private float sphereCastRadius = .1f;
 
 		private HapticSequence mySequence = new HapticSequence();
+		/// <summary>
+		/// 
+		/// </summary>
 		[Header("Haptic Information")]
-		public string sequenceFileName = "Haptics/pain_short";
+		private string sequenceFileName = "Haptics/pain_short";
 		private float sequenceStrength = 1.0f;
 
+		/// <summary>
+		/// Should haptic effects stop playing when the spherecast hits nothing.
+		/// </summary>
+		public bool ClearHapticsOnExit = true;
+
+		/// <summary>
+		/// Provide two identical values to create a smoother texture.
+		/// Provide spread values to create odd textures.
+		/// </summary>
 		private Vector2 RangeOfDelayBetweenReplays = new Vector2(.2f, .5f);
 		private float timeSinceLastPlay = 0.0f;
 
@@ -42,6 +63,9 @@ namespace NullSpace.SDK.Demos
 		private float scaledRange = 1;
 		HardlightSuit suit;
 
+		/// <summary>
+		/// The size of the sphere cast (a rapier would have a low value)
+		/// </summary>
 		public float SphereCastRadius
 		{
 			get
@@ -54,6 +78,9 @@ namespace NullSpace.SDK.Demos
 				sphereCastRadius = value;
 			}
 		}
+		/// <summary>
+		/// How long the line is (a laser would want a high value)
+		/// </summary>
 		public float SphereCastRange
 		{
 			get
@@ -67,6 +94,9 @@ namespace NullSpace.SDK.Demos
 			}
 		}
 
+		/// <summary>
+		/// A control for adjusting the strength of the sequence.
+		/// </summary>
 		public float SequenceStrength
 		{
 			get
@@ -79,6 +109,9 @@ namespace NullSpace.SDK.Demos
 				sequenceStrength = value;
 			}
 		}
+		/// <summary>
+		/// Defines one of the values of RangeOfDelayBetweenReplays
+		/// </summary>
 		public float MinRangeBetweenPlays
 		{
 			get
@@ -91,6 +124,9 @@ namespace NullSpace.SDK.Demos
 				RangeOfDelayBetweenReplays.x = value;
 			}
 		}
+		/// <summary>
+		/// Defines one of the values of RangeOfDelayBetweenReplays
+		/// </summary>
 		public float MaxRangeBetweenPlays
 		{
 			get
@@ -103,11 +139,31 @@ namespace NullSpace.SDK.Demos
 				RangeOfDelayBetweenReplays.y = value;
 			}
 		}
+		/// <summary>
+		/// Controls what the private HapticSequence
+		/// Reloads the sequence every time you change the filename.
+		/// </summary>
+		public string SequenceFileName
+		{
+			get
+			{
+				return sequenceFileName;
+			}
+
+			set
+			{
+				if (value != sequenceFileName && Application.isPlaying)
+				{
+					mySequence.LoadFromAsset(SequenceFileName);
+				}
+				sequenceFileName = value;
+			}
+		}
 
 		void Start()
 		{
 			suit = HardlightSuit.Find();
-			mySequence.LoadFromAsset(sequenceFileName);
+			mySequence.LoadFromAsset(SequenceFileName);
 			handleList = new List<HapticHandle>();
 
 			if (SpherecastStartObject == null)
@@ -130,40 +186,45 @@ namespace NullSpace.SDK.Demos
 
 				if (Application.isPlaying && SphereCastActive)
 				{
-					var Where = suit.GetAreasFromSphereCast(startLocation, worldDirection, SphereCastRadius, scaledRange);
+					ApplySphereCast();
+				}
+			}
+		}
 
-					var singles = Where.ToArray();
+		private void ApplySphereCast()
+		{
+			//Get the area flags for where this spherecast is hitting.
+			var Where = suit.GetAreasFromSphereCast(startLocation, worldDirection, SphereCastRadius, scaledRange);
 
-					//for (int i = 0; i < singles.Length; i++)
-					//{
-					//}
-					if (!Ready)
+			//This handles the time delay between replays.
+			if (!Ready)
+			{
+				timeSinceLastPlay -= Time.deltaTime;
+				if (timeSinceLastPlay <= 0)
+				{
+					Ready = true;
+				}
+			}
+			if (Where != AreaFlag.None && Ready)
+			{
+				var handle = mySequence.CreateHandle(Where, SequenceStrength);
+				handleList.Add(handle);
+				handle.Play();
+
+				//Set our timing for later.
+				timeSinceLastPlay = Random.Range(RangeOfDelayBetweenReplays.x, RangeOfDelayBetweenReplays.y);
+				Ready = false;
+			}
+			//Clear out haptics on exit.
+			if (ClearHapticsOnExit && Where == AreaFlag.None)
+			{
+				for (int i = 0; i < handleList.Count; i++)
+				{
+					if (handleList[i] != null)
 					{
-						timeSinceLastPlay -= Time.deltaTime;
-						if (timeSinceLastPlay <= 0)
-						{
-							Ready = true;
-						}
+						handleList[i].Stop();
 					}
-					if (Where != AreaFlag.None && Ready)
-					{
-						var handle = mySequence.CreateHandle(Where, SequenceStrength);
-						handleList.Add(handle);
-						handle.Play();
-						timeSinceLastPlay = Random.Range(RangeOfDelayBetweenReplays.x, RangeOfDelayBetweenReplays.y);
-						Ready = false;
-					}
-					if (Where == AreaFlag.None)
-					{
-						for (int i = 0; i < handleList.Count; i++)
-						{
-							if (handleList[i] != null)
-							{
-								handleList[i].Stop();
-							}
-							handleList.Clear();
-						}
-					}
+					handleList.Clear();
 				}
 			}
 		}

@@ -160,6 +160,13 @@ namespace NullSpace.SDK
 		#endregion
 
 		#region Location Functions
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="start">World space start point for spherecast</param>
+		/// <param name="direction">A unit vector</param>
+		/// <param name="sphereCastRadius"></param>
+		/// <param name="sphereCastLength"></param>
 		public HardlightCollider[] FindCollidersWithinSphereCast(Vector3 start, Vector3 direction, float sphereCastRadius, float sphereCastLength = 100)
 		{
 			List<HardlightCollider> inRangeOfLine = new List<HardlightCollider>();
@@ -170,6 +177,7 @@ namespace NullSpace.SDK
 
 			for (int i = 0; i < SceneReferences.Count; i++)
 			{
+				//This is the actual spherecast math operation (sphere to points collision)
 				bool hit = IsHardlightColliderIsInRangeOfLine(SceneReferences[i], sphereCastRadius, A, B);
 				if (hit)
 				{
@@ -182,6 +190,13 @@ namespace NullSpace.SDK
 		//This is a 'Distance Point is from Line' calculation. Ref: http://www.r-5.org/files/books/computers/algo-list/realtime-3d/Christer_Ericson-Real-Time_Collision_Detection-EN.pdf (Pg 128/129)
 		//Short idea is: Have Line A->B, Want distance Point C is from AB. Get vector from A to B. Use dot products to project point C onto the line. This point will be D (closest point on line AB to point C). Then you find the distance (or sqrMagnitude for cheaper calculation cost) of C->D
 		//We specifically care if any relevant points to the collider are within range of the line AB.
+		/// <summary>
+		/// Checks if a collider (or its additional points) are within range of the line AB
+		/// </summary>
+		/// <param name="collider">The data object for the suit item</param>
+		/// <param name="range">Radius of line AB</param>
+		/// <param name="A">Start for line AB</param>
+		/// <param name="B">End for line AB</param>
 		private bool IsHardlightColliderIsInRangeOfLine(HardlightCollider collider, float range, Vector3 A, Vector3 B)
 		{
 			Vector3 checkedPosition;
@@ -246,7 +261,7 @@ namespace NullSpace.SDK
 		}
 
 		/// <summary>
-		///  
+		/// Basically Vector3.Distance that avoids the square root (which is more expensive than squaring the distance you're checking again)
 		/// </summary>
 		/// <param name="CheckedObjectPosition"></param>
 		/// <param name="ComparisonPoint"></param>
@@ -416,7 +431,6 @@ namespace NullSpace.SDK
 			}
 			return null;
 		}
-
 		#endregion
 
 		#region Visibility control (if you aren't using CameraExtension.HideLayer)

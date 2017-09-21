@@ -122,9 +122,9 @@ namespace NullSpace.SDK.Demos
 			copyIcon = Resources.Load<Sprite>("Button Icons/files");
 
 			ContentContainer = GameObject.Find("Package Viewer Parent").GetComponent<PopulateContainer>();
-			ContentContainer.prefab = Resources.Load<GameObject>("UI/Package Viewer");
+			ContentContainer.Prefab = Resources.Load<GameObject>("UI/Prefabs/Package Viewer");
 			FolderContainer = GameObject.Find("Folder Elements").GetComponent<PopulateContainer>();
-			FolderContainer.prefab = Resources.Load<GameObject>("UI/Library Element");
+			FolderContainer.Prefab = Resources.Load<GameObject>("UI/Prefabs/Folder Library Element");
 
 			selector = FindObjectOfType<SuitRegionSelectorDemo>();
 			
@@ -196,7 +196,7 @@ namespace NullSpace.SDK.Demos
 			{
 				//Debug.Log("Directory: " + folders[i] + "\n");
 				//A library element represents either a folder or a haptic file. It will configure it's appearance based on its name (if it has .seq/.exp/.pat in its name, it'll adjust accordingly)
-				LibraryElement libEle = FolderContainer.AddPrefabToContainerReturn().GetComponent<LibraryElement>();
+				FolderLibraryElement libEle = FolderContainer.AddPrefabToContainerReturn().GetComponent<FolderLibraryElement>();
 				libEle.Init(packages[i], assetTool);
 				libEle.playButton.transform.localScale = Vector3.one;
 				libEle.playButton.name = Path.GetFileName(packages[i].path);
@@ -205,11 +205,7 @@ namespace NullSpace.SDK.Demos
 				libEle.playButton.onClick.AddListener(
 					() => { SelectDirectory(tempP, libEle.playButton); }
 					);
-				tempRef = libEle.gameObject;
-
-				//Debug.Log(Selection == null);
-				//string lastAccessed = LastOpened;
-
+				
 				//If we have something that we last accessed
 				var found = packages.Find(item => item.path == LastPackageAccessed);
 				if (LastPackageAccessed.Length > 0 && found != null)

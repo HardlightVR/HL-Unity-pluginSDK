@@ -33,7 +33,7 @@ namespace NullSpace.SDK.Demos
 				Folder = transform.GetChild(0).GetChild(1).GetComponent<Text>();
 				fileContainer = GetComponent<PopulateContainer>();
 				fileContainer.container = transform.GetChild(1).GetChild(0).GetChild(0).GetChild(0).GetComponent<RectTransform>();
-				fileContainer.prefab = Resources.Load<GameObject>("UI/Library Element");
+				fileContainer.Prefab = Resources.Load<GameObject>("UI/Prefabs/Haptic Library Element");
 			}
 			catch (System.Exception e)
 			{
@@ -96,7 +96,7 @@ namespace NullSpace.SDK.Demos
 		public bool CreateRepresentations(string element)
 		{
 			//Debug.Log(s + "\n");
-			LibraryElement libEle = fileContainer.AddPrefabToContainerReturn().GetComponent<LibraryElement>();
+			HapticLibraryElement libEle = fileContainer.AddPrefabToContainerReturn().GetComponent<HapticLibraryElement>();
 			//Elements need to be initialized so they get the proper name/icon/color
 			libEle.Init(_assetTool, element, myNameSpace);
 

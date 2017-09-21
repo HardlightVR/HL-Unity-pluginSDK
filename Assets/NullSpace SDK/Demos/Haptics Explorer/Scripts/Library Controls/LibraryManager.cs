@@ -121,9 +121,11 @@ namespace NullSpace.SDK.Demos
 			processIcon = Resources.Load<Sprite>("Button Icons/cardboard-box");
 			copyIcon = Resources.Load<Sprite>("Button Icons/files");
 
-			ContentContainer = GameObject.Find("Package Viewer Parent").GetComponent<PopulateContainer>();
+			var containers = GameObject.FindObjectsOfType<PopulateContainer>();
+			ContentContainer = containers.Where(a => (a.gameObject.name == "Package Viewer Parent")).FirstOrDefault();
+			FolderContainer = containers.Where(a => (a.gameObject.name == "Folder Elements")).FirstOrDefault();
+
 			ContentContainer.Prefab = Resources.Load<GameObject>("UI/Prefabs/Package Viewer");
-			FolderContainer = GameObject.Find("Folder Elements").GetComponent<PopulateContainer>();
 			FolderContainer.Prefab = Resources.Load<GameObject>("UI/Prefabs/Folder Library Element");
 
 			selector = FindObjectOfType<SuitRegionSelectorDemo>();

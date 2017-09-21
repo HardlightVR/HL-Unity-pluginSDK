@@ -27,8 +27,10 @@ namespace NullSpace.SDK.Demos
 		private bool GrowRangeWithScale = false;
 
 		[Header("Sphere Cast Attributes")]
+		[SerializeField]
 		[Range(0.05f, 500)]
 		private float sphereCastRange = 1;
+		[SerializeField]
 		[Range(0.01f, .5f)]
 		private float sphereCastRadius = .1f;
 
@@ -37,7 +39,9 @@ namespace NullSpace.SDK.Demos
 		/// 
 		/// </summary>
 		[Header("Haptic Information")]
+		[SerializeField]
 		private string sequenceFileName = "Haptics/pain_short";
+		[SerializeField]
 		private float sequenceStrength = 1.0f;
 
 		/// <summary>
@@ -49,6 +53,7 @@ namespace NullSpace.SDK.Demos
 		/// Provide two identical values to create a smoother texture.
 		/// Provide spread values to create odd textures.
 		/// </summary>
+		[SerializeField]
 		private Vector2 RangeOfDelayBetweenReplays = new Vector2(.2f, .5f);
 		private float timeSinceLastPlay = 0.0f;
 
@@ -59,6 +64,7 @@ namespace NullSpace.SDK.Demos
 
 		private List<HapticHandle> handleList = new List<HapticHandle>();
 
+		[SerializeField]
 		private bool Ready = false;
 		private float scaledRange = 1;
 		HardlightSuit suit;

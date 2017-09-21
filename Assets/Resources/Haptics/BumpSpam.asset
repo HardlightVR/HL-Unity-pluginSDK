@@ -1,0 +1,14 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1559977699, guid: d93b8973e70219c4a962251869b24fa8, type: 3}
+  m_Name: BumpSpam
+  m_EditorClassIdentifier: 
+  json: '{"sequence_definitions":{"ns.demos.SmallBumps":[{"effect":"transition_hum","duration":0.0,"strength":1.0,"time":0.0},{"effect":"bump","duration":0.10000000149011612,"strength":0.20000000298023225,"time":0.05000000074505806},{"effect":"bump","duration":0.10000000149011612,"strength":0.4000000059604645,"time":0.15000000596046449},{"effect":"bump","duration":0.10000000149011612,"strength":0.20000000298023225,"time":0.25},{"effect":"bump","duration":0.10000000149011612,"strength":1.5,"time":0.4000000059604645}],"ns.demos.BigBumps":[{"effect":"bump","duration":0.0,"strength":1.0,"time":0.0},{"effect":"bump","duration":0.0,"strength":0.800000011920929,"time":0.05000000074505806},{"effect":"bump","duration":0.10000000149011612,"strength":0.699999988079071,"time":0.20000000298023225},{"effect":"bump","duration":0.10000000149011612,"strength":0.6000000238418579,"time":0.30000001192092898},{"effect":"bump","duration":0.10000000149011612,"strength":1.0,"time":0.4000000059604645}],"ns.demos.MediumBumps":[{"effect":"bump","duration":0.10000000149011612,"strength":0.4000000059604645,"time":0.0},{"effect":"bump","duration":0.10000000149011612,"strength":0.5,"time":0.15000000596046449},{"effect":"bump","duration":0.10000000149011612,"strength":0.699999988079071,"time":0.25},{"effect":"bump","duration":0.10000000149011612,"strength":0.6000000238418579,"time":0.4000000059604645}]},"pattern_definitions":{"ns.demos.bumpspam":[{"sequence":"ns.demos.SmallBumps","area":"Chest_Right","strength":1.0,"time":0.0},{"sequence":"ns.demos.BigBumps","area":"Upper_Ab_Left","strength":1.0,"time":0.30000001192092898},{"sequence":"ns.demos.MediumBumps","area":"Back_Both","strength":1.0,"time":0.6000000238418579},{"sequence":"ns.demos.BigBumps","area":"Chest_Left","strength":1.0,"time":0.949999988079071},{"sequence":"ns.demos.SmallBumps","area":"Forearm_Left","strength":1.0,"time":1.2999999523162842},{"sequence":"ns.demos.SmallBumps","area":"Upper_Arm_Right","strength":1.0,"time":1.600000023841858},{"sequence":"ns.demos.BigBumps","area":"Shoulder_Both","strength":1.0,"time":1.899999976158142},{"sequence":"ns.demos.MediumBumps","area":"Forearm_Both","strength":1.0,"time":2.299999952316284},{"sequence":"ns.demos.BigBumps","area":"Lower_Ab_Both","strength":1.0,"time":2.5}]},"experience_definitions":{},"root_effect":{"name":"ns.demos.bumpspam","type":"pattern"}}'

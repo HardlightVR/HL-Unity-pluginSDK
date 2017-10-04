@@ -220,6 +220,7 @@ namespace NullSpace.SDK
 			_vrCamera.Init(vrCamera);
 			_vrCamera.MimickedObjectType = VRObjectMimic.TypeOfMimickedObject.Camera;
 
+			//This is future feature for letting developers check 'head proximity collisions'
 			go = new GameObject();
 			var collider = go.AddComponent<SphereCollider>();
 			collider.isTrigger = true;

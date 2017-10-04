@@ -35,6 +35,15 @@ namespace NullSpace.SDK.Demos
 		private float sphereCastRadius = .1f;
 
 		private HapticSequence mySequence = new HapticSequence();
+		public HapticSequence MySequence
+		{
+			get
+			{ return mySequence; }
+
+			set
+			{ mySequence = value; }
+		}
+
 		/// <summary>
 		/// 
 		/// </summary>
@@ -160,16 +169,18 @@ namespace NullSpace.SDK.Demos
 			{
 				if (value != sequenceFileName && Application.isPlaying)
 				{
-					mySequence.LoadFromAsset(SequenceFileName);
+					Debug.Log("Reloading asset\n" + sequenceFileName + " -> " + value);
+					MySequence.LoadFromAsset(value);
 				}
 				sequenceFileName = value;
 			}
 		}
 
+
 		void Start()
 		{
 			suit = HardlightSuit.Find();
-			mySequence.LoadFromAsset(SequenceFileName);
+			MySequence.LoadFromAsset(SequenceFileName);
 			handleList = new List<HapticHandle>();
 
 			if (SpherecastStartObject == null)
@@ -213,7 +224,7 @@ namespace NullSpace.SDK.Demos
 			}
 			if (Where != AreaFlag.None && Ready)
 			{
-				var handle = mySequence.CreateHandle(Where, SequenceStrength);
+				var handle = MySequence.CreateHandle(Where, SequenceStrength);
 				handleList.Add(handle);
 				handle.Play();
 

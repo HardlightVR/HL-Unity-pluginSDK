@@ -111,6 +111,14 @@ namespace NullSpace.SDK.Demos
 			base.Start();
 		}
 
+		public void Update()
+		{
+			if (spherecast != null)
+			{
+				spherecast.MySequence = LibraryManager.Inst.LastSequence;
+			}
+		}
+
 		public override bool CheckForActivation()
 		{
 			return Input.GetKeyDown(AlternateActivationKey) || base.CheckForActivation();

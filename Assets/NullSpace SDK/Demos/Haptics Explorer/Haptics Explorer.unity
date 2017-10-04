@@ -6200,7 +6200,7 @@ MonoBehaviour:
   TooltipName: Effect Selector
   DetailedTooltip: 'Each of these is a default effect.
 
-    There are 16 effects each with a number of family members.
+    There are 8 effects each with a number of family members.
 
     Which family member is controlled by the strength attribute.'
   backgroundColor:
@@ -11884,7 +11884,7 @@ MonoBehaviour:
   TooltipName: Effect Selector
   DetailedTooltip: 'Each of these is a default effect.
 
-    There are 16 effects each with a number of family members.
+    There are 8 effects each with a number of family members.
 
     Which family member is controlled by the strength attribute.'
   backgroundColor:
@@ -14121,8 +14121,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1717757312}
   m_HandleRect: {fileID: 1717757311}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.20727654
+  m_Value: 0.99999994
+  m_Size: 0.19900303
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -17125,7 +17125,7 @@ MonoBehaviour:
   TooltipName: Effect Selector
   DetailedTooltip: 'Each of these is a default effect.
 
-    There are 16 effects each with a number of family members.
+    There are 8 effects each with a number of family members.
 
     Which family member is controlled by the strength attribute.'
   backgroundColor:
@@ -23832,7 +23832,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bcc51d246329284c9975afa56639734, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TooltipName: Massage / Collisions Haptics
+  TooltipName: Collisions Haptics
   DetailedTooltip: 'Create procedural massage haptics based on collisions.
 
     Features Spherecasting (lasers/swords) and box collisions
@@ -26718,7 +26718,7 @@ MonoBehaviour:
   TooltipName: Last Sequence
   DetailedTooltip: 'The last sequence played in the package window.
 
-    This is the sequence that will be played on spherecast collision with pads.'
+    This is the sequence that will be played on collision with suit pads.'
   backgroundColor:
     serializedVersion: 2
     rgba: 3372220415
@@ -34382,22 +34382,22 @@ Prefab:
     - target: {fileID: 224000011595414456, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 278.25
+      value: 278.75
       objectReference: {fileID: 0}
     - target: {fileID: 224000011595414456, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -306
+      value: -283.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000011595414456, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 556.5
+      value: 557.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000011595414456, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 612
+      value: 567
       objectReference: {fileID: 0}
     - target: {fileID: 224000013846922606, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -34412,7 +34412,7 @@ Prefab:
     - target: {fileID: 224000013846922606, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 280.25
+      value: 280.75
       objectReference: {fileID: 0}
     - target: {fileID: 224000013846922606, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -34422,7 +34422,7 @@ Prefab:
     - target: {fileID: 224000013846922606, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 556.5
+      value: 557.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000013846922606, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -34442,22 +34442,22 @@ Prefab:
     - target: {fileID: 224000012050577180, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 280.25
+      value: 280.75
       objectReference: {fileID: 0}
     - target: {fileID: 224000012050577180, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -370
+      value: -347.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000012050577180, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 556.5
+      value: 557.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000012050577180, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 612
+      value: 567
       objectReference: {fileID: 0}
     - target: {fileID: 114000014057694236, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -34467,7 +34467,7 @@ Prefab:
     - target: {fileID: 224000012628470334, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: -602
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224000013871009870, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -34856,7 +34856,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.89979714, b: 0.8088235, a: 1}
+  m_Color: {r: 0.9705882, g: 0.82844526, b: 0.69939446, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -42977,7 +42977,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.29411763, g: 1, b: 0.35740346, a: 1}
+  m_Color: {r: 0, g: 0.48627454, b: 0.10196079, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -48150,7 +48150,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 84164899}
   m_HandleRect: {fileID: 84164898}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -48519,7 +48519,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Haptics Explorer
 
-    v0.2.5
+    v0.2.6
 
     Plugin v0.4.1'
 --- !u!222 &1868340534
@@ -49654,8 +49654,7 @@ MonoBehaviour:
   TooltipName: 'Panel Mode: Draw Haptics'
   DetailedTooltip: 'Click and drag across pads to play haptics.
 
-    The last played sequence (labeled in the green box) will be played on the pads
-    selected by the cursor'
+    The last played sequence will be played on the pads selected by the cursor'
   backgroundColor:
     serializedVersion: 2
     rgba: 3372220415
@@ -52773,7 +52772,7 @@ Prefab:
     - target: {fileID: 224000013709841350, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 267.75
+      value: 268.25
       objectReference: {fileID: 0}
     - target: {fileID: 224000013709841350, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -52783,7 +52782,7 @@ Prefab:
     - target: {fileID: 224000013709841350, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 531.5
+      value: 532.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000013709841350, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -52833,7 +52832,7 @@ Prefab:
     - target: {fileID: 224000012528230784, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 157.25
+      value: 157.75
       objectReference: {fileID: 0}
     - target: {fileID: 224000012528230784, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -52843,7 +52842,7 @@ Prefab:
     - target: {fileID: 224000012528230784, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 314.5
+      value: 315.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000012528230784, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -52893,7 +52892,7 @@ Prefab:
     - target: {fileID: 224000010744236894, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 231.25
+      value: 231.75
       objectReference: {fileID: 0}
     - target: {fileID: 224000010744236894, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -52903,7 +52902,7 @@ Prefab:
     - target: {fileID: 224000010744236894, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 314.5
+      value: 315.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000010744236894, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -52923,7 +52922,7 @@ Prefab:
     - target: {fileID: 224000013214566312, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 425.5
+      value: 426.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000013214566312, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -52953,7 +52952,7 @@ Prefab:
     - target: {fileID: 224000013187125872, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 494.5
+      value: 495.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000013187125872, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -55957,7 +55956,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2120314427
 RectTransform:
   m_ObjectHideFlags: 0
@@ -55972,10 +55971,10 @@ RectTransform:
   - {fileID: 739773754}
   m_Father: {fileID: 721754454}
   m_RootOrder: 10
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 32, y: -164}
+  m_SizeDelta: {x: 64, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2120314428
 MonoBehaviour:

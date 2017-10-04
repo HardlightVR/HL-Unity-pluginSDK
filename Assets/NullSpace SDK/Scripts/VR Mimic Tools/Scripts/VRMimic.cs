@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 namespace NullSpace.SDK
 {
+	/// <summary>
+	/// Creates observing objects that mimic the movement and orientation of their mimic'd objects.
+	/// Useful to avoid nested prefabs & for creating an intermediate step to do movement processing.
+	/// </summary>
 	public class VRMimic : MonoBehaviour
 	{
 		[Header("VR Mimic creates children that copy", order = 0)]
@@ -17,6 +21,9 @@ namespace NullSpace.SDK
 		public bool SkipDebugLogErrors = false;
 
 		private static VRMimic instance;
+		/// <summary>
+		/// The public reference for getting access to the VRMimic.
+		/// </summary>
 		public static VRMimic Instance
 		{
 			get
@@ -48,7 +55,11 @@ namespace NullSpace.SDK
 				}
 				return instance;
 			}
-			set { instance = value; }
+			set
+			{
+				if (value != null)
+					instance = value;
+			}
 		}
 		//public Dictionary<VRObjectMimic.TypeOfMimickedObject, int> Mimics;
 
@@ -184,8 +195,8 @@ namespace NullSpace.SDK
 			//Debug.Log("Attempting initialization " + initialized + "  cam null? " + (vrCamera == null) + "\n");
 			if (!initialized)
 			{
-				NSManager.Instance.SuitConnected += OnSuitDisconnect;
-				//VRObjectMimic.InitializeVRCamera(vrCamera);
+				//Suit disconnect events are not consistent enough yet.
+				//NSManager.Instance.SuitConnected += OnSuitDisconnect;
 
 				//Set up VRCamera
 				VRObjectMimic setupCameraMimic = InitVRCamera(vrCamera);
@@ -197,17 +208,6 @@ namespace NullSpace.SDK
 				InitBodyMimic(setupCameraMimic, setupRigMimic, hapticLayer);
 
 				initialized = true;
-			}
-		}
-
-		private void OnSuitDisconnect(object sender, SuitConnectionArgs e)
-		{
-			var prefab = Resources.Load("Disconnect Notification");
-			if (prefab != null)
-			{
-				GameObject go = GameObject.Instantiate(prefab) as GameObject;
-
-				go.name = "Disconnect Notification";
 			}
 		}
 
@@ -268,7 +268,26 @@ namespace NullSpace.SDK
 
 			go.transform.SetParent(CameraRig.transform);
 		}
-		
+
+		/// <summary>
+		/// This feature isn't completely finished yet. The lower level disconnect events sometimes occur even when a disconnect did not occur.
+		/// </summary>
+		private void OnSuitDisconnect(object sender, SuitConnectionArgs e)
+		{
+			CreateSuitDisconnectNotification();
+		}
+
+		private void CreateSuitDisconnectNotification()
+		{
+			var prefab = Resources.Load("Disconnect Notification");
+			if (prefab != null)
+			{
+				GameObject go = GameObject.Instantiate(prefab) as GameObject;
+				go.GetComponent<FollowGazeCenter>().CameraToFollow = VRCamera.ObjectToMimic.GetComponent<Camera>();
+				go.name = "Disconnect Notification";
+			}
+		}
+
 		public static bool ValidInstance()
 		{
 			if (instance == null)

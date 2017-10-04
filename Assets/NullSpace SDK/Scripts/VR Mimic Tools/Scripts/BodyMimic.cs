@@ -94,6 +94,10 @@ namespace NullSpace.SDK
 		private void Awake()
 		{
 			updateRate = TargetUpdateRate;
+		}
+
+		void Start()
+		{
 			if (enabled)
 			{
 				if (hmd == null)

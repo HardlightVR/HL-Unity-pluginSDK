@@ -2,12 +2,16 @@
 using UnityEngine;
 using System.IO;
 
+/// <summary>
+/// Initial class for adding support of AssetBundles to Hardlight's asset pipeline.
+/// Better support will come in .26 (the Mark III suit support and kickstarter SDK release)
+/// </summary>
 public class CreateAssetBundles
 {
-	[MenuItem("Assets/Build AssetBundles")]
+	[MenuItem("Assets/Build Hardlight AssetBundles")]
 	static void BuildAllAssetBundles()
 	{
-		string assetBundleDirectory = "/NullSpace SDK/AssetBundles";
+		string assetBundleDirectory = "/Hardlight SDK/AssetBundles";
 		var path = Application.dataPath + assetBundleDirectory;
 		Debug.Log(path + "\n");
 

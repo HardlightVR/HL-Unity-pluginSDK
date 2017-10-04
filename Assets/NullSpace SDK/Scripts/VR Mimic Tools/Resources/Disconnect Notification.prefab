@@ -124,6 +124,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000012643341570}
   - 114: {fileID: 114000012341550412}
+  - 65: {fileID: 65000013351590884}
   m_Layer: 0
   m_Name: Disconnect Notification
   m_TagString: Untagged
@@ -154,13 +155,25 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013331160222}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.916244, y: -1.2292142, z: -2.1940029}
+  m_LocalPosition: {x: 0, y: 0, z: -2.1940029}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 224000011502967468}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!65 &65000013351590884
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013331160222}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 0.02, y: 0.02, z: 0.02}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &114000010613911844
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -289,17 +302,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraToFollow: {fileID: 0}
-  follower: {fileID: 0}
+  follower: {fileID: 223000011345730324}
   CurrentState: 0
   FollowOrientation: 0
   delayBetweenFollow: 0.5
   gazeUIDistanceFromCamera: 3
   tweenCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+    - time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   tweenCounter: 0
   tweenDuration: 1
   WillFade: 1
@@ -503,7 +526,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 50}
-  m_Pivot: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!224 &224000011966128284
 RectTransform:
   m_ObjectHideFlags: 1

@@ -3,13 +3,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Positions an object in the world in front of the camera.
+/// Will follow the center of the camera's gaze.
+/// 
+/// This is primarily used for notifications (disconnect, battery, etc)
+/// </summary>
 public class FollowGazeCenter : MonoBehaviour
 {
-	public Camera cameraToFollow;
+	[SerializeField]
+	[Header("Remember to set Canvas' Camera as well for performance reasons")]
+	private Camera cameraToFollow;
 	public Canvas follower;
 	private CanvasGroup followerGrp;
 
+	/// <summary>
+	/// The state machine for different notification actions.
+	/// This will be moved into a proper Notification class once it is created.
+	/// </summary>
 	public enum UpdateState { Idle, WaitingToMove, Moving, Fading, Inactive }
+	/// <summary>
+	/// This should be moved outside of this class.
+	/// </summary>
 	public enum Orientation { WorldUp, HeadsetUp }
 	[Header("Current State")]
 	public UpdateState CurrentState = UpdateState.Idle;
@@ -40,7 +55,7 @@ public class FollowGazeCenter : MonoBehaviour
 	[Range(.001f, 10)]
 	public float fadeDuration = 1.5f;
 
-	[Header("Exposed Math Variables")]
+	[Header("Exposed Private Math Variables")]
 	[SerializeField]
 	private float movementDelayCounter;
 	[SerializeField]
@@ -56,15 +71,38 @@ public class FollowGazeCenter : MonoBehaviour
 	[SerializeField]
 	private bool NeedsUpdate = true;
 
+	public Camera CameraToFollow
+	{
+		get
+		{
+			return cameraToFollow;
+		}
+
+		set
+		{
+			if (follower != null)
+				follower.worldCamera = value;
+			cameraToFollow = value;
+		}
+	}
+
 	void Start()
 	{
 		if (follower)
 		{
 			followerGrp = follower.GetComponent<CanvasGroup>();
 		}
+		else
+		{
+			Debug.LogError("Unable to find Canvas Follower for this notification [" + name + "]\n\tDisabling self for stability.", this);
+			gameObject.SetActive(false);
+		}
 		ResetGazeUI();
 	}
 
+	/// <summary>
+	/// For recycling notifications.
+	/// </summary>
 	public void ResetGazeUI()
 	{
 		oldPosition = Vector3.zero;
@@ -79,10 +117,10 @@ public class FollowGazeCenter : MonoBehaviour
 
 	void Update()
 	{
-		if (Input.GetKey(KeyCode.Home))
-		{
-			ResetGazeUI();
-		}
+		//if (Input.GetKey(KeyCode.Home))
+		//{
+		//	ResetGazeUI();
+		//}
 
 		if (CurrentState == UpdateState.Inactive)
 			return;
@@ -109,10 +147,10 @@ public class FollowGazeCenter : MonoBehaviour
 
 	private void GeneralUpdate()
 	{
-		Vector3 targ = (follower.transform.position - cameraToFollow.transform.position) * 1.1f;
-		Vector3 up = FollowOrientation == Orientation.WorldUp ? Vector3.up : cameraToFollow.transform.up;
-		Vector3 target = cameraToFollow.transform.position + cameraToFollow.transform.forward * gazeUIDistanceFromCamera * 2;
-		follower.transform.LookAt(cameraToFollow.transform.position + targ, up);
+		Vector3 targ = (follower.transform.position - CameraToFollow.transform.position) * 1.1f;
+		Vector3 up = FollowOrientation == Orientation.WorldUp ? Vector3.up : CameraToFollow.transform.up;
+		Vector3 target = CameraToFollow.transform.position + CameraToFollow.transform.forward * gazeUIDistanceFromCamera * 2;
+		follower.transform.LookAt(CameraToFollow.transform.position + targ, up);
 
 		potentialTargetPosition = GetCameraTargetPosition();
 		distanceBetweenCurrentAndTarget = Vector3.Distance(follower.transform.position, potentialTargetPosition);
@@ -214,7 +252,7 @@ public class FollowGazeCenter : MonoBehaviour
 
 	private Vector3 GetCameraTargetPosition()
 	{
-		return cameraToFollow.transform.position + cameraToFollow.transform.forward * gazeUIDistanceFromCamera;
+		return CameraToFollow.transform.position + CameraToFollow.transform.forward * gazeUIDistanceFromCamera;
 	}
 
 	void OnDrawGizmos()

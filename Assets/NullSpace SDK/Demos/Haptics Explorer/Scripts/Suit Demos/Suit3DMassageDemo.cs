@@ -11,9 +11,20 @@ using System.Collections.Generic;
 
 namespace NullSpace.SDK.Demos
 {
+	/// <summary>
+	/// This demo is an evolution of the SuitMassageDemo. It handles both 3D box collision and spherecasts
+	/// There is one demo for each of the two modes.
+	/// </summary>
 	public class Suit3DMassageDemo : SuitDemo
 	{
+		/// <summary>
+		/// Don't let the user drag the object into oblivion
+		/// </summary>
 		public GameObject ExtentsLimiter;
+
+		//This is an artifact from when a single Suit3DMassageDemo would deal with both potential objects. TODO: Refactor this out.
+		[SerializeField]
+		private int currentRigidbodyIndex = 0;
 
 		public HapticSphereCast spherecast;
 		public HapticTrigger greenBox;
@@ -24,19 +35,18 @@ namespace NullSpace.SDK.Demos
 		public Color selectedColor = new Color(100 / 255f, 200 / 255f, 200 / 255f, 1f);
 
 		public List<Rigidbody> myRB = new List<Rigidbody>();
-		private int currentRigidbodyIndex = 0;
 
 		/// <summary>
 		/// How big the extents are.
 		/// </summary>
 		public float Extent = 5f;
 
-		public float LerpInDuration = 0.0f;
-		public float SustainedColorDuration = 0.25f;
+		public KeyCode AlternateActivationKey = KeyCode.Alpha6;
+
+		public float LerpInDuration = 0.15f;
+		public float SustainedColorDuration = 0.5f;
 
 		private float duration = .5f;
-		private float lerpColorOut = .25f;
-		private float minDuration = .05f;
 
 		public float Duration
 		{
@@ -100,7 +110,12 @@ namespace NullSpace.SDK.Demos
 				CurrentRigidbody.gameObject.SetActive(true);
 			base.Start();
 		}
-		
+
+		public override bool CheckForActivation()
+		{
+			return Input.GetKeyDown(AlternateActivationKey) || base.CheckForActivation();
+		}
+
 		public override void CheckHotkeys()
 		{
 			#region [Arrows] Direction Controls
@@ -137,14 +152,14 @@ namespace NullSpace.SDK.Demos
 						CurrentRigidbody.AddForce(Vector3.back * velVal * Time.deltaTime);
 					}
 				}
-				if (Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.Q))
+				if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.Q))
 				{
 					if (CurrentRigidbody.transform.localPosition.y < Extent / 2)
 					{
 						CurrentRigidbody.AddForce(Vector3.up * velVal * Time.deltaTime);
 					}
 				}
-				if (Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.E))
+				if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.E))
 				{
 					if (CurrentRigidbody.transform.localPosition.y > -Extent / 2)
 					{
@@ -166,17 +181,19 @@ namespace NullSpace.SDK.Demos
 			}
 			#endregion
 
-			if (Input.GetKey(KeyCode.LeftShift))
-			{
-				if (Input.GetKeyDown(KeyCode.Q))
-				{
-					SetRigidbodyIndex(0);
-				}
-				if (Input.GetKeyDown(KeyCode.W))
-				{
-					SetRigidbodyIndex(1);
-				}
-			}
+			#region Select Rigidbodies //WARNING: CIRCUMNAVIGATES USUAL SUITDEMO ACTIVATION
+			//if (Input.GetKey(KeyCode.LeftShift))
+			//{
+			//if (Input.GetKeyDown(ActivateHotkey) || Input.GetKeyUp(ActivateHotkey))
+			//{
+			//	SetRigidbodyIndex(0);
+			//}
+			//if (Input.GetKeyDown(AlternateActivationKey) || Input.GetKeyUp(AlternateActivationKey))
+			//{
+			//	SetRigidbodyIndex(1);
+			//}
+			//} 
+			#endregion
 
 			base.CheckHotkeys();
 		}
@@ -185,6 +202,7 @@ namespace NullSpace.SDK.Demos
 		public override void ActivateDemo()
 		{
 			HandleRequiredObjects(true);
+			CurrentRigidbodyIndex = currentRigidbodyIndex;
 		}
 
 		//Turn off my needed things

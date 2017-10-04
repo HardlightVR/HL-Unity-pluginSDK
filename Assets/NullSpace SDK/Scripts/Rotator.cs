@@ -11,6 +11,8 @@ public class Rotator : MonoBehaviour
 	public bool rotateZ = true;
 	public float ZRotationSpeed;
 
+	public bool AllowControls = false;
+
 	private float yEulerAngle;
 
 	public float YEulerAngle
@@ -40,6 +42,25 @@ public class Rotator : MonoBehaviour
 		if (ZRotationSpeed != 0 && rotateZ)
 		{
 			transform.Rotate(Vector3.forward, ZRotationSpeed * Time.deltaTime);
+		}
+		if (AllowControls)
+		{
+			if (Input.GetKey(KeyCode.LeftArrow))
+			{
+				transform.Rotate(Vector3.up, 75 * Time.deltaTime);
+			}
+			if (Input.GetKey(KeyCode.RightArrow))
+			{
+				transform.Rotate(Vector3.up, -75 * Time.deltaTime);
+			}
+			if (Input.GetKey(KeyCode.UpArrow))
+			{
+				transform.Rotate(Vector3.right, 75 * Time.deltaTime);
+			}
+			if (Input.GetKey(KeyCode.DownArrow))
+			{
+				transform.Rotate(Vector3.right, -75 * Time.deltaTime);
+			}
 		}
 	}
 

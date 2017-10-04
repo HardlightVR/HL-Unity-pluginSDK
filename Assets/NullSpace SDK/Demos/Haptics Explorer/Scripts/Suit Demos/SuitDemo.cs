@@ -10,6 +10,7 @@ using UnityEngine.UI;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 //Effect tooltip?
 
@@ -17,6 +18,7 @@ namespace NullSpace.SDK.Demos
 {
 	abstract public class SuitDemo : MonoBehaviour
 	{
+		public HapticRecording recording;
 		public SuitColorController colorController;
 		//Turn on my needed things
 		abstract public void ActivateDemo();
@@ -71,6 +73,8 @@ namespace NullSpace.SDK.Demos
 				return Color.magenta;
 			}
 		}
+
+
 		/// <summary>
 		/// An overhead method that calls ActivateDemo.
 		/// Enforce abstract 'need implementation' while still calling certain things without overriding.
@@ -113,6 +117,10 @@ namespace NullSpace.SDK.Demos
 		public void AssignColorController(SuitColorController colorCont)
 		{
 			colorController = colorCont;
+		}
+		public void AssignHapticRecorder(HapticRecording newRecording)
+		{
+			recording = newRecording;
 		}
 		public virtual void Start()
 		{
@@ -274,7 +282,7 @@ namespace NullSpace.SDK.Demos
 
 		public virtual void DisplayHandleHaptic(HardlightCollider hit, HapticHandle handle)
 		{
-			ColorSuitObject(hit, buttonSelected);
+			ColorSuitObject(hit, buttonSelected, .05f, .15f);
 		}
 	}
 

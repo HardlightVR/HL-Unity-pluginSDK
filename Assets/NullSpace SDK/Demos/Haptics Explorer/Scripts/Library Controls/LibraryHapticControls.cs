@@ -1,6 +1,6 @@
 /* This code is licensed under the NullSpace Developer Agreement, available here:
 ** ***********************
-** http://nullspacevr.com/?wpdmpro=nullspace-developer-agreement
+** http://www.hardlightvr.com/wp-content/uploads/2017/01/NullSpace-SDK-License-Rev-3-Jan-2016-2.pdf
 ** ***********************
 ** Make sure that you have read, understood, and agreed to the Agreement before using the SDK
 */
@@ -27,6 +27,8 @@ namespace NullSpace.SDK.Demos
 		private SuitColorController colorController;
 		private HardlightColliderCollection collection;
 
+		public HapticRecording recording;
+
 		public SuitDemo[] AllDemos;
 
 		/// <summary>
@@ -44,6 +46,7 @@ namespace NullSpace.SDK.Demos
 			suitRenderers = GetComponent<SuitRenderers>();
 			colorController = GetComponent<SuitColorController>();
 			collection = GetComponent<HardlightColliderCollection>();
+			recording = GetComponent<HapticRecording>();
 			collection.Init();
 			AllDemos = FindObjectsOfType<SuitDemo>();
 			colorController.suitRenderers = suitRenderers;
@@ -51,6 +54,7 @@ namespace NullSpace.SDK.Demos
 			{
 				AllDemos[i].AssignColliderCollection(collection);
 				AllDemos[i].AssignColorController(colorController);
+				AllDemos[i].AssignHapticRecorder(recording);
 			}
 		}
 

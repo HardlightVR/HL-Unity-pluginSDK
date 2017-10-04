@@ -4,6 +4,10 @@ using System;
 
 namespace NullSpace.SDK.Demos
 {
+	/// <summary>
+	/// Handles spacing between two recttransforms.
+	/// Used for saying 'Distribute 60% of space to Side A'
+	/// </summary>
 	public class DividerSlider : MonoBehaviour
 	{
 		public string MediatorName;
@@ -19,10 +23,10 @@ namespace NullSpace.SDK.Demos
 		public RectTransform SecondRect;
 		public float SecondRectStartingValue;
 
-		private bool dividerObserveMouse;
-
 		private Vector2 targetAnchorMax;
 		private Vector2 targetAnchorMin;
+
+		private bool dividerObserveMouse;
 
 		[System.Serializable]
 		public class AnchorRect

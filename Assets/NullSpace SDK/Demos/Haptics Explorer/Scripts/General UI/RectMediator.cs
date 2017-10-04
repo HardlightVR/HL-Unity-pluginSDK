@@ -4,6 +4,10 @@ using System.Collections;
 
 namespace NullSpace.SDK.Demos
 {
+	/// <summary>
+	/// This class deals with sizing divisions of space between two RectTransforms
+	/// This class is not used as the constant rect transform updating creates TERRIBLE framerate.
+	/// </summary>
 	public class RectMediator : MonoBehaviour
 	{
 		public string MediatorName;

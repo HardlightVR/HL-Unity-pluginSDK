@@ -5,6 +5,10 @@ using System.Collections;
 
 namespace NullSpace.SDK.Demos
 {
+	/// <summary>
+	/// A component that stores the tooltip information.
+	/// For the act of tooltip display look at ExplorerTooltip.cs
+	/// </summary>
 	[RequireComponent(typeof(EventTrigger))]
 	public class TooltipDescriptor : MonoBehaviour, IScrollHandler
 	{
@@ -34,28 +38,6 @@ namespace NullSpace.SDK.Demos
 			}
 			);
 			et.triggers.Add(entry);
-
-			//if (gameObject.transform.parent != null)
-			//{
-			//	Debug.Log(gameObject.transform.name);
-			//	ScrollRect scrollRect = gameObject.transform.parent.GetComponent<ScrollRect>();
-			//	if (scrollRect && gameObject.transform.parent.parent != null)
-			//	{
-			//		scrollRect = gameObject.transform.parent.parent.GetComponent<ScrollRect>();
-			//	}
-
-			//	if (scrollRect != null)
-			//	{
-			//		entry = new EventTrigger.Entry();
-			//		entry.eventID = EventTriggerType.Scroll;
-			//		entry.callback.AddListener((eventData) =>
-			//		{
-			//			Debug.Log("HIT\n");
-			//			scrollRect.verticalNormalizedPosition += Input.GetAxis("Mouse ScrollWheel");
-			//		}
-			//		);
-			//	}
-			//}
 
 			entry = new EventTrigger.Entry();
 			entry.eventID = EventTriggerType.PointerExit;
@@ -111,6 +93,9 @@ namespace NullSpace.SDK.Demos
 			return RecursiveFindParentWithScrollRect(currentTransform.parent);
 		}
 
+		/// <summary>
+		/// Adds a tooltip to a UI object (tooltips don't work on non-canvas objects)
+		/// </summary>
 		public static TooltipDescriptor AddDescriptor(GameObject go, string name, string description)
 		{
 			TooltipDescriptor desc = go.AddComponent<TooltipDescriptor>();
@@ -119,6 +104,10 @@ namespace NullSpace.SDK.Demos
 			return desc;
 		}
 
+		/// <summary>
+		/// Adds a tooltip to a UI object (tooltips don't work on non-canvas objects)
+		/// Default color is a slightly transparent white.
+		/// </summary>
 		public static TooltipDescriptor AddDescriptor(GameObject go, string name, string description, Color color)
 		{
 			TooltipDescriptor desc = AddDescriptor(go, name, description);

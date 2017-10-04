@@ -31,11 +31,9 @@ namespace NullSpace.SDK.Demos
 
 		public void Update()
 		{
+			//Our initial emulation techniques 
 			var samples = NSManager.Instance.SamplePlayingStatus();
-			//foreach (var thing in things)
-			//{
-			//	Debug.Log(thing.Key + "\n");
-			//}
+
 			for (int i = 0; i < SuitObjects.Count; i++)
 			{
 				//Debug.Log(thing.Count);

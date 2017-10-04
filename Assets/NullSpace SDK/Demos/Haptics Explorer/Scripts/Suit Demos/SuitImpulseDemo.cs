@@ -375,12 +375,10 @@ namespace NullSpace.SDK.Demos
 
 		private void StoreImpulse(ImpulseGenerator.Impulse imp)
 		{
-			if (imp != null)
+			if (imp != null && recording != null)
 			{
-				recentImpulses.Add(imp);
-				count++;
-
-				//Debug.Log("Stored Impulse for saving\n");
+				//Currently disabled. We're adding better lower level support for recording.
+				//recording.AddNewHaptic(imp.GetImpulsePattern());
 			}
 		}
 
@@ -531,7 +529,7 @@ namespace NullSpace.SDK.Demos
 
 								//ColorSuitObjectOverTime(next.gameObject, selectedColor, .1f, duration);
 								//	//Color that pad for the duration of the Effect
-									StartCoroutine(ColorPadForXDuration(next));
+								StartCoroutine(ColorPadForXDuration(next));
 							}
 						}
 					}

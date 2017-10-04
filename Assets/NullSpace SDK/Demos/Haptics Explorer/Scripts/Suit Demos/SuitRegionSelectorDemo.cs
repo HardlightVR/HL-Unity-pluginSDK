@@ -13,6 +13,9 @@ using NullSpace.SDK;
 
 namespace NullSpace.SDK.Demos
 {
+	/// <summary>
+	/// This demo is largely deprecated and will be removed in the future.
+	/// </summary>
 	public class SuitRegionSelectorDemo : SuitDemo
 	{
 		private Color selectedColor = new Color(127 / 255f, 227 / 255f, 127 / 255f, 1f);

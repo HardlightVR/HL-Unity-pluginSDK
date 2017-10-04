@@ -16,6 +16,9 @@ using System.Runtime.Remoting.Messaging;
 
 namespace NullSpace.SDK.Demos
 {
+	/// <summary>
+	/// Base class for the library elements (folders & haptic elements)
+	/// </summary>
 	public class LibraryElement : ContainerItem
 	{
 		protected AssetTool _assetTool;

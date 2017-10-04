@@ -6,6 +6,9 @@ using System.Collections.Generic;
 
 namespace NullSpace.SDK.Demos
 {
+	/// <summary>
+	/// This is the visual element that displays the content of a TooltipDescriptor file.
+	/// </summary>
 	public class ExplorerTooltip : MonoBehaviour
 	{
 		public static ExplorerTooltip Tooltip;
@@ -61,58 +64,6 @@ namespace NullSpace.SDK.Demos
 			TooltipDescriptionDisplay = TooltipBackground.transform.FindChild("Tooltip Description").GetComponent<Text>();
 			Visible = false;
 		}
-
-		//void Update()
-		//{
-		//	//Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-		//	//Debug.Log(Camera.main.name + "\n" + ray.ToString());
-		//	//RaycastHit[] hit = Physics.RaycastAll(ray, 1000, RayCanHit);
-		//	//Debug.DrawLine(Camera.main.transform.position, Camera.main.transform.position + ray.direction * 100, Color.green, .1f);
-
-		//	////Code to be place in a MonoBehaviour with a GraphicRaycaster component
-		//	//GraphicRaycaster gr = this.GetComponent<GraphicRaycaster>();
-		//	////Create the PointerEventData with null for the EventSystem
-		//	//PointerEventData ped = new PointerEventData(null);
-		//	////Set required parameters, in this case, mouse position
-		//	//ped.position = Input.mousePosition;
-		//	////Create list to receive all results
-		//	//List<RaycastResult> results = new List<RaycastResult>();
-		//	////Raycast it
-		//	//gr.Raycast(ped, results);
-
-		//	//if (results != null && results.Count > 0)
-		//	//{
-		//	//	Debug.Log("Hit: " + results.Count + "\n");
-		//	//	//Reduce the tooltip to the deepest element?
-		//	//	if (TooltipIndex > ped.hovered.Count)
-		//	//	{
-		//	//		TooltipIndex = ped.hovered.Count - 1;
-		//	//	}
-
-		//	//	TooltipDescriptor ttD = ped.hovered[TooltipIndex].gameObject.GetComponent<TooltipDescriptor>();
-		//	//	//Get the TooltipDescriptor from the TooltipIndex's element
-		//	//	if (ttD)
-		//	//	{
-		//	//		ShowTooltip(ttD);
-		//	//	}
-		//	//	//Display the tooltip for the TooltipIndex element.
-
-		//	//	if (Visible)
-		//	//	{
-		//	//		//Position the tooltip at the mouse.
-		//	//	}
-
-		//	//	//If the user presses L/R, adjust the TooltipIndex element.
-		//	//}
-		//	//else
-		//	//{
-		//	//	HideTooltip();
-		//	//}
-		//	//Raycast the mouse
-		//	//If we hit something with a tooltipInfo.
-
-		//	//Show a tooltip
-		//}
 
 		void Update()
 		{
@@ -205,10 +156,5 @@ namespace NullSpace.SDK.Demos
 			TooltipBackground.color = backgroundColor;
 			ShowTooltip(nameText);
 		}
-		//public void ShowTooltip(string newText, Rect tooltipDimensions, Color backgroundColor)
-		//{
-		//	background.color = backgroundColor;
-		//	ShowTooltip(newText);
-		//}
 	}
 }

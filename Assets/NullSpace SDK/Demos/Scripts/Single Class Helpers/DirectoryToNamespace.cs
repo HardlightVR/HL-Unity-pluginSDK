@@ -11,7 +11,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 
 
-namespace NullSpace.SDK.Demos
+namespace Hardlight.SDK.Demos
 {
 	public static class DirectoryToNamespace
 	{

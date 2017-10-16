@@ -10,12 +10,12 @@ using UnityEngine.UI;
 using System;
 using System.Linq;
 using IOHelper;
-using NullSpace.SDK.FileUtilities;
+using Hardlight.SDK.FileUtilities;
 using System.IO;
 using System.Runtime.Remoting.Messaging;
 using System.ComponentModel;
 
-namespace NullSpace.SDK.Demos
+namespace Hardlight.SDK.Demos
 {
 	public class HapticLibraryElement : LibraryElement
 	{
@@ -170,24 +170,24 @@ namespace NullSpace.SDK.Demos
 
 				if (successfullyGotHdf)
 				{
-					if (hdf.rootEffect.type == "sequence")
+					if (hdf.root_effect.type == "sequence")
 					{
-						var seq = CodeHapticFactory.CreateSequence(hdf.rootEffect.name, hdf);
-						LibraryManager.Inst.SetTriggerSequence(seq, hdf.rootEffect.name);
+						var seq = CodeHapticFactory.CreateSequence(hdf.root_effect.name, hdf);
+						LibraryManager.Inst.SetTriggerSequence(seq, hdf.root_effect.name);
 						AreaFlag flag = LibraryManager.Inst.GetActiveAreas();
 
 						var handle = seq.CreateHandle(flag);
 
 						PlayHandleAndSetLastPlayed(handle);
 					}
-					else if (hdf.rootEffect.type == "pattern")
+					else if (hdf.root_effect.type == "pattern")
 					{
-						var pat = CodeHapticFactory.CreatePattern(hdf.rootEffect.name, hdf);
+						var pat = CodeHapticFactory.CreatePattern(hdf.root_effect.name, hdf);
 						PlayHandleAndSetLastPlayed(pat.CreateHandle());
 					}
-					else if (hdf.rootEffect.type == "experience")
+					else if (hdf.root_effect.type == "experience")
 					{
-						var exp = CodeHapticFactory.CreateExperience(hdf.rootEffect.name, hdf);
+						var exp = CodeHapticFactory.CreateExperience(hdf.root_effect.name, hdf);
 						PlayHandleAndSetLastPlayed(exp.CreateHandle());
 					}
 				}

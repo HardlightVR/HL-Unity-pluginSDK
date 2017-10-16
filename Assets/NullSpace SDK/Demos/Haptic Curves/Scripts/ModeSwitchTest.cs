@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace NullSpace.SDK.Demos
+namespace Hardlight.SDK.Demos
 {
 	/// <summary>
 	/// This tests to see that DirectMode is switching back to Retained Mode (standard use case for file based effects and code based effects)

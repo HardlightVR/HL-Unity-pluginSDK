@@ -9,7 +9,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace NullSpace.SDK.Demos
+namespace Hardlight.SDK.Demos
 {
 	/// <summary>
 	/// This demo is an evolution of the SuitMassageDemo. It handles both 3D box collision and spherecasts

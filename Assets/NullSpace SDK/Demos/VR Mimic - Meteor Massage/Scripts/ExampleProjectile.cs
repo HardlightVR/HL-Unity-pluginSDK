@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
-using NullSpace.SDK.FileUtilities;
+using Hardlight.SDK.FileUtilities;
 
-namespace NullSpace.SDK.Demos
+namespace Hardlight.SDK.Demos
 {
 	/// <summary>
 	/// This is an example type of projectile (fired by AutoPitcher)

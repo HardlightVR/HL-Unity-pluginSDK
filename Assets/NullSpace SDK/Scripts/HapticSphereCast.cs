@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace NullSpace.SDK.Demos
+namespace Hardlight.SDK.Demos
 {
 	/// <summary>
 	/// A line of haptics with a defined radius.
@@ -176,16 +176,18 @@ namespace NullSpace.SDK.Demos
 			}
 		}
 
-
 		void Start()
 		{
 			suit = HardlightSuit.Find();
-			MySequence.LoadFromAsset(SequenceFileName);
-			handleList = new List<HapticHandle>();
-
-			if (SpherecastStartObject == null)
+			if (Application.isPlaying)
 			{
-				Debug.LogError("[Haptic Spherecast] - [" + name + "] has a null object for where it should begin.\n", this);
+				MySequence.LoadFromAsset(SequenceFileName);
+				handleList = new List<HapticHandle>();
+
+				if (SpherecastStartObject == null)
+				{
+					Debug.LogError("[Haptic Spherecast] - [" + name + "] has a null object for where it should begin.\n", this);
+				}
 			}
 		}
 

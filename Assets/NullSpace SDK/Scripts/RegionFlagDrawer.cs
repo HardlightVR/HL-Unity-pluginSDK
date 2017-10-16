@@ -7,7 +7,7 @@
 using UnityEditor;
 using UnityEngine;
 using System.Linq;
-using NullSpace.SDK;
+using Hardlight.SDK;
 [CustomPropertyDrawer(typeof(RegionFlagAttribute))]
 public class RegionFlagsAttributeDrawer : PropertyDrawer
 {

@@ -11,8 +11,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
-using NullSpace.SDK.FileUtilities;
-namespace NullSpace.SDK.Demos
+using Hardlight.SDK.FileUtilities;
+namespace Hardlight.SDK.Demos
 {
 	public class LibraryManager : MonoBehaviour
 	{

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 
-namespace NullSpace.SDK
+namespace Hardlight.SDK
 {
 	public static class AreaFlagExtensions
 	{

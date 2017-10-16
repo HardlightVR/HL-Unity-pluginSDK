@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using NullSpace.SDK;
+using Hardlight.SDK;
 
-namespace NullSpace.SDK
+namespace Hardlight.SDK
 {
 	public class BodyMimic : MonoBehaviour
 	{

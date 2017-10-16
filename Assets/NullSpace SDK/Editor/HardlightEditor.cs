@@ -3,7 +3,7 @@ using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace NullSpace.SDK.Editor
+namespace Hardlight.SDK.Editor
 {
 	public class HardlightEditor : EditorWindow
 	{
@@ -144,7 +144,7 @@ namespace NullSpace.SDK.Editor
 
 		void OnGUI()
 		{
-			//NSVR.NSVR_Plugin.GetPluginVersion();
+			//HLVR.HLVR_Plugin.GetPluginVersion();
 			//Initialize if we aren't initialized
 			CheckIfInvalidSetup();
 

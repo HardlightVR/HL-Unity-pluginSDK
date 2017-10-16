@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using System.Collections;
 using IOHelper;
 
-namespace NullSpace.SDK.Demos
+namespace Hardlight.SDK.Demos
 {
 	/// <summary>
 	/// This class is a short term solution for displaying the text results of a HDF Packaging operation.

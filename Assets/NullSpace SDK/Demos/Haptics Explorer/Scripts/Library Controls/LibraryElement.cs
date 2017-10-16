@@ -10,11 +10,11 @@ using UnityEngine.UI;
 using System;
 using System.Linq;
 using IOHelper;
-using NullSpace.SDK.FileUtilities;
+using Hardlight.SDK.FileUtilities;
 using System.IO;
 using System.Runtime.Remoting.Messaging;
 
-namespace NullSpace.SDK.Demos
+namespace Hardlight.SDK.Demos
 {
 	/// <summary>
 	/// Base class for the library elements (folders & haptic elements)

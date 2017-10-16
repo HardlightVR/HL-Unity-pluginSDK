@@ -12,7 +12,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace NullSpace.SDK
+namespace Hardlight.SDK
 {
     public class SuitIndicator : MonoBehaviour
     {

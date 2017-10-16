@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-namespace NullSpace.SDK.Demos
+namespace Hardlight.SDK.Demos
 {
 	public class ViewportController : MonoBehaviour
 	{

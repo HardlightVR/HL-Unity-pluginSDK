@@ -8,7 +8,7 @@
 
 using System;
 
-namespace NullSpace.SDK
+namespace Hardlight.SDK
 {
     public class SuitConnectionArgs : EventArgs
     {

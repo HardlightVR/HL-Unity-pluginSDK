@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
-namespace NullSpace.SDK.Editor
+namespace Hardlight.SDK.Editor
 {
 	public enum ColorBoxType { Tutorial, Warning, Error, Normal, Black }
 	public enum ColorUsageState { Normal, Hover, Clicked, Active }

@@ -8,7 +8,7 @@
 using System;
 using UnityEngine;
 
-namespace NullSpace.SDK
+namespace Hardlight.SDK
 {
 	public static class Extensions
     {

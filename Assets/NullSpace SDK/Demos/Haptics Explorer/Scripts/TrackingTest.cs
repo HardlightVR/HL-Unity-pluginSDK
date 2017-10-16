@@ -6,10 +6,10 @@
 */
 
 using UnityEngine;
-using NullSpace.SDK;
-using NullSpace.SDK.Tracking;
+using Hardlight.SDK;
+using Hardlight.SDK.Tracking;
 
-namespace NullSpace.SDK.Demos
+namespace Hardlight.SDK.Demos
 {
 	public class TrackingTest : MonoBehaviour
 	{
@@ -57,7 +57,7 @@ namespace NullSpace.SDK.Demos
 		{
 			if (TrackedObject != null)
 			{
-				TrackedObject.transform.rotation = imus.GetOrientation(Imu.Chest);
+				//TrackedObject.transform.rotation = imus.GetOrientation(Imu.Chest);
 			}
 		}
 	}

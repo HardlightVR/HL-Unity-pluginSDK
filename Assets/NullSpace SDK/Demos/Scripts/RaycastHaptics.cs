@@ -9,7 +9,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
-using NullSpace.SDK;
+using Hardlight.SDK;
 
 public class RaycastHaptics : MonoBehaviour
 {

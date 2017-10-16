@@ -9,9 +9,9 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using NullSpace.SDK;
+using Hardlight.SDK;
 
-namespace NullSpace.SDK.Demos
+namespace Hardlight.SDK.Demos
 {
 	/// <summary>
 	/// This demo is largely deprecated and will be removed in the future.

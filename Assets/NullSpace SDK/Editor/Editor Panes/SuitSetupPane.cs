@@ -3,7 +3,7 @@ using UnityEditor;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace NullSpace.SDK.Editor
+namespace Hardlight.SDK.Editor
 {
 	public class SuitSetupPane : EditorPane
 	{

@@ -9,9 +9,9 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
-using NullSpace.SDK.Tracking;
+using Hardlight.SDK.Tracking;
 
-namespace NullSpace.SDK
+namespace Hardlight.SDK
 {
 
 	/// <summary>
@@ -20,7 +20,7 @@ namespace NullSpace.SDK
 	/// globally pausing and playing effects, and clearing all playing effects.
 	/// 
 	/// If you prefer to interact directly with the plugin, you may instantiate and destroy your own
-	/// NSVR_Plugin and remove NSManager.
+	/// HLVR_Plugin and remove NSManager.
 	/// </summary>
 	public sealed class NSManager : MonoBehaviour
 	{
@@ -128,7 +128,7 @@ namespace NullSpace.SDK
 		private DeviceConnectionStatus _DeviceConnectionStatus;
 		private ServiceConnectionStatus _ServiceConnectionStatus;
 
-		private NSVR.NSVR_Plugin _plugin;
+		private HLVR.HLVR_Plugin _plugin;
 
 		/// <summary>
 		/// Enable experimental tracking on the suit
@@ -157,11 +157,13 @@ namespace NullSpace.SDK
 
 		public static VersionInfo GetPluginVersionInfo()
 		{
-			return NSVR.NSVR_Plugin.GetPluginVersion();
+			return HLVR.HLVR_Plugin.GetPluginVersion();
 		}
 		public Dictionary<AreaFlag, EffectSampleInfo> SamplePlayingStatus()
 		{
-			return _plugin.SampleCurrentlyPlayingEffects();
+			throw new NotImplementedException("There is a big problem.\n\tSample Playing Status has not been reimplemented.\n");
+			//return _plugin.PollBodyView();
+			//return _plugin.SampleCurrentlyPlayingEffects();
 			//return _plugin.SampleStrengths();
 		}
 		/// <summary>
@@ -243,7 +245,7 @@ namespace NullSpace.SDK
 		private void InitPlugin()
 		{
 			//The plugin needs to load resources from your app's Streaming Assets folder
-			_plugin = new NSVR.NSVR_Plugin();
+			_plugin = new HLVR.HLVR_Plugin();
 		}
 		private void DoDelayedAction(float delay, Action action)
 		{
@@ -339,7 +341,7 @@ namespace NullSpace.SDK
 		{
 			while (true)
 			{
-				_imuCalibrator.ReceiveUpdate(_plugin.PollTracking());
+				//_imuCalibrator.ReceiveUpdate(_plugin.PollTracking());
 				yield return null;
 			}
 		}
@@ -348,7 +350,7 @@ namespace NullSpace.SDK
 		{
 			while (true)
 			{
-				ServiceConnectionStatus status = _plugin.TestServiceConnection();
+				ServiceConnectionStatus status = _plugin.IsConnectedToService();
 				if (status != _ServiceConnectionStatus)
 				{
 					_ServiceConnectionStatus = ChangeServiceConnectionStatus(status);
@@ -357,12 +359,12 @@ namespace NullSpace.SDK
 				if (status == ServiceConnectionStatus.Connected)
 				{
 
-					var suitConnection = _plugin.TestDeviceConnection();
-					if (suitConnection != _DeviceConnectionStatus)
-					{
-
-						_DeviceConnectionStatus = ChangeDeviceConnectionStatus(suitConnection);
-					}
+					var suitConnection = _plugin.IsConnectedToService();
+					throw new NotImplementedException("Suit/Device connection status is not yet implemented\n");
+					//if (suitConnection != _DeviceConnectionStatus)
+					//{
+					//	_DeviceConnectionStatus = ChangeDeviceConnectionStatus(suitConnection);
+					//}
 				}
 				else
 				{

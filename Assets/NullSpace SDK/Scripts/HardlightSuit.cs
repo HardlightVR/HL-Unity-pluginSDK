@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace NullSpace.SDK
+namespace Hardlight.SDK
 {
 	/// <summary>
 	/// This is a UnityComponent that contains a single SuitDefinition.

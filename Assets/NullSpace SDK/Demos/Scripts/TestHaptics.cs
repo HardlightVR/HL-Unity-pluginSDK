@@ -8,10 +8,10 @@
 using UnityEngine;
 
 using System.Collections;
-using NullSpace.SDK;
+using Hardlight.SDK;
 using System;
 
-namespace NullSpace.SDK.Demos
+namespace Hardlight.SDK.Demos
 {
 	public class TestHaptics : MonoBehaviour
 	{

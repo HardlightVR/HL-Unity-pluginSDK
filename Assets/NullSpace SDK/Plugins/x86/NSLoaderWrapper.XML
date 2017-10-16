@@ -469,73 +469,73 @@
             Internal testing tool; do not depend upon this. May change at any time.
             </summary>
         </member>
-        <member name="T:NullSpace.SDK.NSVR">
+        <member name="T:NullSpace.SDK.HLVR">
             <summary>
-            Wrapper around the main access point of the plugin, NSVR_Plugin
+            Wrapper around the main access point of the plugin, HLVR_Plugin
             </summary>
         </member>
-        <member name="T:NullSpace.SDK.NSVR.NSVR_Plugin">
+        <member name="T:NullSpace.SDK.HLVR.HLVR_Plugin">
             <summary>
             Main point of access to the plugin, implements IDisposable
             </summary>
         </member>
-        <member name="M:NullSpace.SDK.NSVR.NSVR_Plugin.SampleCurrentlyPlayingEffects">
+        <member name="M:NullSpace.SDK.HLVR.HLVR_Plugin.SampleCurrentlyPlayingEffects">
             <summary>
             Internal testing tool; do not depend upon this. May change at any time.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:NullSpace.SDK.NSVR.NSVR_Plugin.PauseAll">
+        <member name="M:NullSpace.SDK.HLVR.HLVR_Plugin.PauseAll">
             END INTERNAL *
             <summary>
             Pause all currently active effects
             </summary>
         </member>
-        <member name="M:NullSpace.SDK.NSVR.NSVR_Plugin.ResumeAll">
+        <member name="M:NullSpace.SDK.HLVR.HLVR_Plugin.ResumeAll">
             <summary>
             Resume all effects that were paused with a call to PauseAll()
             </summary>
         </member>
-        <member name="M:NullSpace.SDK.NSVR.NSVR_Plugin.ClearAll">
+        <member name="M:NullSpace.SDK.HLVR.HLVR_Plugin.ClearAll">
             <summary>
             Destroy all effects (invalidates any HapticHandles)
             </summary>
         </member>
-        <member name="M:NullSpace.SDK.NSVR.NSVR_Plugin.GetPluginVersion">
+        <member name="M:NullSpace.SDK.HLVR.HLVR_Plugin.GetPluginVersion">
             <summary>
             Return the plugin version
             </summary>
             <returns></returns>
         </member>
-        <member name="M:NullSpace.SDK.NSVR.NSVR_Plugin.TestDeviceConnection">
+        <member name="M:NullSpace.SDK.HLVR.HLVR_Plugin.TestDeviceConnection">
             <summary>
             Poll the status of suit connection 
             </summary>
             <returns>Connected if the service is running and a suit is plugged in, else Disconnected</returns>
         </member>
-        <member name="M:NullSpace.SDK.NSVR.NSVR_Plugin.EnableTracking">
+        <member name="M:NullSpace.SDK.HLVR.HLVR_Plugin.EnableTracking">
             <summary>
             Enable tracking on the suit
             </summary>
         </member>
-        <member name="M:NullSpace.SDK.NSVR.NSVR_Plugin.DisableTracking">
+        <member name="M:NullSpace.SDK.HLVR.HLVR_Plugin.DisableTracking">
             <summary>
             Disable tracking on the suit 
             </summary>
         </member>
-        <member name="M:NullSpace.SDK.NSVR.NSVR_Plugin.SetTrackingEnabled(System.Boolean)">
+        <member name="M:NullSpace.SDK.HLVR.HLVR_Plugin.SetTrackingEnabled(System.Boolean)">
             <summary>
             Enable or disable tracking
             </summary>
             <param name="enableTracking">If true, enables tracking. Else disables tracking.</param>
         </member>
-        <member name="M:NullSpace.SDK.NSVR.NSVR_Plugin.PollTracking">
+        <member name="M:NullSpace.SDK.HLVR.HLVR_Plugin.PollTracking">
             <summary>
             Poll the suit for the latest tracking data
             </summary>
             <returns>A data structure containing all valid quaternion data</returns>
         </member>
-        <member name="M:NullSpace.SDK.NSVR.NSVR_Plugin.Dispose">
+        <member name="M:NullSpace.SDK.HLVR.HLVR_Plugin.Dispose">
             <summary>
             Disposes the plugin. After calling dispose, the plugin cannot be used again.
             </summary>

@@ -11,9 +11,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
-using NullSpace.SDK.FileUtilities;
+using Hardlight.SDK.FileUtilities;
 
-namespace NullSpace.SDK.Demos
+namespace Hardlight.SDK.Demos
 {
 	public class PackageViewer : MonoBehaviour
 	{

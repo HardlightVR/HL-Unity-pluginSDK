@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using NullSpace.SDK;
+using Hardlight.SDK;
 
 public class DemoHaptics : MonoBehaviour {
 

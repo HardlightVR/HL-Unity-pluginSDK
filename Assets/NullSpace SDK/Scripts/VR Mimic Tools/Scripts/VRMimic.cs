@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace NullSpace.SDK
+namespace Hardlight.SDK
 {
 	/// <summary>
 	/// Creates observing objects that mimic the movement and orientation of their mimic'd objects.

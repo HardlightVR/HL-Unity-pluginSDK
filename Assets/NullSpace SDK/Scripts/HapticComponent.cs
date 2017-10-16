@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace NullSpace.SDK
+namespace Hardlight.SDK
 {
 	[System.Serializable]
 	public class HapticEvent : UnityEngine.Events.UnityEvent<SideOfHaptic> { }

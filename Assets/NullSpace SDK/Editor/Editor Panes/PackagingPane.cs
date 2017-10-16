@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEditor;
-using NullSpace.SDK.FileUtilities;
+using Hardlight.SDK.FileUtilities;
 using UnityEngine;
 using System.Collections;
 using System.Threading;
 
-namespace NullSpace.SDK.Editor
+namespace Hardlight.SDK.Editor
 {
 	public class PackagingPane : EditorPane
 	{
@@ -453,18 +453,18 @@ namespace NullSpace.SDK.Editor
 				//{
 				//	_pathError = true;
 				//	//The filename was not set. This could be if the registry key was not found
-				//	OutputMessage("Invalid Operation Exception - Could not locate the HapticAssetTools.exe program, make sure the NSVR Service was installed. Try reinstalling if the problem persists.", MessageType.Error);
+				//	OutputMessage("Invalid Operation Exception - Could not locate the HapticAssetTools.exe program, make sure the HLVR Service was installed. Try reinstalling if the problem persists.", MessageType.Error);
 
-				//	Debug.LogError("[NSVR] Could not locate the HapticAssetTools.exe program, make sure the NSVR Service was installed. Try reinstalling if the problem persists." + e.Message);
-				//	return new KeyValuePair<string, string>("NSVR_NO_HAT", "NSVR_FAILED");
+				//	Debug.LogError("[HLVR] Could not locate the HapticAssetTools.exe program, make sure the HLVR Service was installed. Try reinstalling if the problem persists." + e.Message);
+				//	return new KeyValuePair<string, string>("HLVR_NO_HAT", "HLVR_FAILED");
 				//}
 				//catch (System.ComponentModel.Win32Exception e)
 				//{
 				//	_pathError = true;
 				//	OutputMessage("Win32Exception - Could not open the HapticAssetTools.exe program (was it renamed? Does it exist within the service install directory?)", MessageType.Error);
 
-				//	Debug.LogError("[NSVR] Could not open the HapticAssetTools.exe program (was it renamed? Does it exist within the service install directory?): " + e.Message);
-				//	return new KeyValuePair<string, string>("NSVR_NO_OPEN", "NSVR_FAILED");
+				//	Debug.LogError("[HLVR] Could not open the HapticAssetTools.exe program (was it renamed? Does it exist within the service install directory?): " + e.Message);
+				//	return new KeyValuePair<string, string>("HLVR_NO_OPEN", "HLVR_FAILED");
 				//} 
 				#endregion
 
@@ -472,7 +472,7 @@ namespace NullSpace.SDK.Editor
 				if (json.Length < 1)
 				{
 					//_pathError = true;
-					Debug.LogWarning("[NSVR] Unable to load path [" + path + "] it's probably malformed\n");
+					Debug.LogWarning("[HLVR] Unable to load path [" + path + "] it's probably malformed\n");
 
 					MyPane.OutputMessage("Empty json result - likely a failure to load from\n\tpath [" + path + "]", MessageType.Error);
 
@@ -504,7 +504,7 @@ namespace NullSpace.SDK.Editor
 					//If the asset tool succeeded in running, but returned nothing, it's an error
 					if (json.Length < 1)
 					{
-						Debug.LogWarning("[NSVR] Unable to load " + path + " it's probably malformed");
+						Debug.LogWarning("[HLVR] Unable to load " + path + " it's probably malformed");
 						MyPane.OutputMessage("Unable to load path [" + path + "] - it is probably malformed", MessageType.Warning);
 						continue;
 					}
@@ -532,12 +532,12 @@ namespace NullSpace.SDK.Editor
 				catch (InvalidOperationException e)
 				{
 					//The filename was not set. This could be if the registry key was not found
-					Debug.LogError("[NSVR] Could not locate the HapticAssetTools.exe program, make sure the NSVR Service was installed. Try reinstalling if the problem persists." + e.Message);
+					Debug.LogError("[HLVR] Could not locate the HapticAssetTools.exe program, make sure the HLVR Service was installed. Try reinstalling if the problem persists." + e.Message);
 					continueInstead = true;
 				}
 				catch (System.ComponentModel.Win32Exception e)
 				{
-					Debug.LogError("[NSVR] Could not open the HapticAssetTools.exe program (was it renamed? Does it exist within the service install directory?): " + e.Message);
+					Debug.LogError("[HLVR] Could not open the HapticAssetTools.exe program (was it renamed? Does it exist within the service install directory?): " + e.Message);
 					continueInstead = true;
 				}
 				catch (HapticsAssetException e)
@@ -546,7 +546,7 @@ namespace NullSpace.SDK.Editor
 					//var thing = AssetDatabase.LoadAssetAtPath(path, typeof(UnityEngine.Object));
 					//if (thing != null)
 					//{
-					Debug.LogError("[NSVR] Haptics Asset Exception loading item at path [" + path + "]: " + e.Message);
+					Debug.LogError("[HLVR] Haptics Asset Exception loading item at path [" + path + "]: " + e.Message);
 					//}
 
 					continueInstead = true;
@@ -673,23 +673,23 @@ namespace NullSpace.SDK.Editor
 			catch (System.ComponentModel.Win32Exception)
 			{
 				//TODO: Win32Exception communicating with HapticAssetTools.
-				Debug.LogError("[NSVR] Problem communicating with HapticAssetTools.exe\n");
+				Debug.LogError("[HLVR] Problem communicating with HapticAssetTools.exe\n");
 				_status = new HelpMessage("Problem communicating with HapticAssetTools.exe", MessageType.Error);
 			}
 			catch (InvalidOperationException)
 			{
 				//TODO: Invalid Operation Exception finding HapticAssetTools.exe (service version problem?
 				//The filename was not set. This could be if the registry key was not found
-				Debug.LogError("[NSVR] Could not locate the HapticAssetTools.exe program, make sure the NSVR Service was installed. Try reinstalling if the problem persists.\n");
-				_status = new HelpMessage("Could not locate the HapticAssetTools.exe program, make sure the NSVR Service was installed. Try reinstalling if the problem persists.", MessageType.Error);
+				Debug.LogError("[HLVR] Could not locate the HapticAssetTools.exe program, make sure the HLVR Service was installed. Try reinstalling if the problem persists.\n");
+				_status = new HelpMessage("Could not locate the HapticAssetTools.exe program, make sure the HLVR Service was installed. Try reinstalling if the problem persists.", MessageType.Error);
 				return;
 			}
 			catch (HapticsAssetException e)
 			{
 				//TODO: Invalid Operation Exception finding HapticAssetTools.exe (service version problem?
 				//The filename was not set. This could be if the registry key was not found
-				Debug.LogError("[NSVR] Could not locate the HapticAssetTools.exe program, make sure the NSVR Service was installed. Try reinstalling if the problem persists.\n" + e.Message);
-				_status = new HelpMessage("Could not locate the HapticAssetTools.exe program, make sure the NSVR Service was installed.\nTry reinstalling if the problem persists.", MessageType.Error);
+				Debug.LogError("[HLVR] Could not locate the HapticAssetTools.exe program, make sure the HLVR Service was installed. Try reinstalling if the problem persists.\n" + e.Message);
+				_status = new HelpMessage("Could not locate the HapticAssetTools.exe program, make sure the HLVR Service was installed.\nTry reinstalling if the problem persists.", MessageType.Error);
 				return;
 			}
 		}
@@ -751,12 +751,12 @@ namespace NullSpace.SDK.Editor
 			catch (InvalidOperationException e)
 			{
 				//The filename was not set. This could be if the registry key was not found
-				Debug.LogError("[NSVR] Could not locate the HapticAssetTools.exe program, make sure the NSVR Service was installed. Try reinstalling if the problem persists." + e.Message);
+				Debug.LogError("[HLVR] Could not locate the HapticAssetTools.exe program, make sure the HLVR Service was installed. Try reinstalling if the problem persists." + e.Message);
 				return;
 			}
 			catch (System.ComponentModel.Win32Exception e)
 			{
-				Debug.LogError("[NSVR] Could not open the HapticAssetTools.exe program (was it renamed? Does it exist within the service install directory?): " + e.Message);
+				Debug.LogError("[HLVR] Could not open the HapticAssetTools.exe program (was it renamed? Does it exist within the service install directory?): " + e.Message);
 				return;
 			}
 
@@ -764,7 +764,7 @@ namespace NullSpace.SDK.Editor
 			//If the asset tool succeeded in running, but returned nothing, it's an error
 			if (json == "")
 			{
-				Debug.LogError("[NSVR] Unable to communicate with HapticAssetTools.exe");
+				Debug.LogError("[HLVR] Unable to communicate with HapticAssetTools.exe");
 				return;
 			}
 
@@ -1020,7 +1020,7 @@ namespace NullSpace.SDK.Editor
 				}
 
 				GUILayout.Space(14);
-				NSEditorStyles.DrawLabel("It is also possible you have a malformed config.json file.\nCheck the Console window to see if there is an NSVR error and then follow the path to the malformed file (and fix the json structural problems with it.)", 105, 4);
+				NSEditorStyles.DrawLabel("It is also possible you have a malformed config.json file.\nCheck the Console window to see if there is an HLVR error and then follow the path to the malformed file (and fix the json structural problems with it.)", 105, 4);
 
 
 				NSEditorStyles.CloseVertical();
@@ -1213,7 +1213,7 @@ namespace NullSpace.SDK.Editor
 				}
 				else
 				{
-					OutputMessage("NSVR Failed to create the asset for [" + hapticType + "] at path\n\t[" + path + "].", MessageType.Error);
+					OutputMessage("HLVR Failed to create the asset for [" + hapticType + "] at path\n\t[" + path + "].", MessageType.Error);
 				}
 			}
 		}
@@ -1369,9 +1369,9 @@ namespace NullSpace.SDK.Editor
 		//	//{
 		//	//	_pathError = true;
 		//	//	//The filename was not set. This could be if the registry key was not found
-		//	//	OutputMessage("Invalid Operation Exception - Could not locate the HapticAssetTools.exe program, make sure the NSVR Service was installed. Try reinstalling if the problem persists.", MessageType.Error);
+		//	//	OutputMessage("Invalid Operation Exception - Could not locate the HapticAssetTools.exe program, make sure the HLVR Service was installed. Try reinstalling if the problem persists.", MessageType.Error);
 
-		//	//	Debug.LogError("[NSVR] Could not locate the HapticAssetTools.exe program, make sure the NSVR Service was installed. Try reinstalling if the problem persists." + e.Message);
+		//	//	Debug.LogError("[HLVR] Could not locate the HapticAssetTools.exe program, make sure the HLVR Service was installed. Try reinstalling if the problem persists." + e.Message);
 		//	//	return new KeyValuePair<string, string>("NSVR_NO_HAT", "NSVR_FAILED");
 		//	//}
 		//	//catch (System.ComponentModel.Win32Exception e)
@@ -1379,7 +1379,7 @@ namespace NullSpace.SDK.Editor
 		//	//	_pathError = true;
 		//	//	OutputMessage("Win32Exception - Could not open the HapticAssetTools.exe program (was it renamed? Does it exist within the service install directory?)", MessageType.Error);
 
-		//	//	Debug.LogError("[NSVR] Could not open the HapticAssetTools.exe program (was it renamed? Does it exist within the service install directory?): " + e.Message);
+		//	//	Debug.LogError("[HLVR] Could not open the HapticAssetTools.exe program (was it renamed? Does it exist within the service install directory?): " + e.Message);
 		//	//	return new KeyValuePair<string, string>("NSVR_NO_OPEN", "NSVR_FAILED");
 		//	//} 
 		//	#endregion
@@ -1388,7 +1388,7 @@ namespace NullSpace.SDK.Editor
 		//	if (json.Length < 1)
 		//	{
 		//		_pathError = true;
-		//		Debug.LogWarning("[NSVR] Unable to load path [" + path + "] it's probably malformed\n");
+		//		Debug.LogWarning("[HLVR] Unable to load path [" + path + "] it's probably malformed\n");
 
 		//		OutputMessage("Empty json result - likely a failure to load from\n\tpath [" + path + "]", MessageType.Error);
 
@@ -1420,7 +1420,7 @@ namespace NullSpace.SDK.Editor
 		//		//If the asset tool succeeded in running, but returned nothing, it's an error
 		//		if (json.Length < 1)
 		//		{
-		//			Debug.LogWarning("[NSVR] Unable to load " + path + " it's probably malformed");
+		//			Debug.LogWarning("[HLVR] Unable to load " + path + " it's probably malformed");
 		//			OutputMessage("Unable to load path [" + path + "] - it is probably malformed", MessageType.Warning);
 		//			continue;
 		//		}
@@ -1448,17 +1448,17 @@ namespace NullSpace.SDK.Editor
 		//	catch (InvalidOperationException e)
 		//	{
 		//		//The filename was not set. This could be if the registry key was not found
-		//		Debug.LogError("[NSVR] Could not locate the HapticAssetTools.exe program, make sure the NSVR Service was installed. Try reinstalling if the problem persists." + e.Message);
+		//		Debug.LogError("[HLVR] Could not locate the HapticAssetTools.exe program, make sure the HLVR Service was installed. Try reinstalling if the problem persists." + e.Message);
 		//		continueInstead = true;
 		//	}
 		//	catch (System.ComponentModel.Win32Exception e)
 		//	{
-		//		Debug.LogError("[NSVR] Could not open the HapticAssetTools.exe program (was it renamed? Does it exist within the service install directory?): " + e.Message);
+		//		Debug.LogError("[HLVR] Could not open the HapticAssetTools.exe program (was it renamed? Does it exist within the service install directory?): " + e.Message);
 		//		continueInstead = true;
 		//	}
 		//	catch (HapticsAssetException e)
 		//	{
-		//		Debug.LogError("[NSVR] Haptics Asset Exception loading item at path [" + path + "]: " + e.Message);
+		//		Debug.LogError("[HLVR] Haptics Asset Exception loading item at path [" + path + "]: " + e.Message);
 		//		continueInstead = true;
 		//	}
 		//	return json;

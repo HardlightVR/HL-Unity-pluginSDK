@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace NullSpace.SDK
+namespace Hardlight.SDK
 {
 	public class GraphEngine
 	{

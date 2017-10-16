@@ -7,7 +7,7 @@
 
 using UnityEngine;
 
-namespace NullSpace.SDK.Demos
+namespace Hardlight.SDK.Demos
 {
 	/// <summary>
 	/// Scene-specific script to trigger haptic effects

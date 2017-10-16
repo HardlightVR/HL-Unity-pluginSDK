@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace NullSpace.SDK.Editor
+namespace Hardlight.SDK.Editor
 {
 	public class EmulationPane : EditorPane
 	{

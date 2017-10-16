@@ -2,7 +2,7 @@
 //using System.Collections;
 //using UnityEditor;
 
-//namespace NullSpace.SDK.Demos
+//namespace Hardlight.SDK.Demos
 //{
 //	[CustomEditor(typeof(HardlightSuit))]
 //	public class HardlightSuitEditor : Editor

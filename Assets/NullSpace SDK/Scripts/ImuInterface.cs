@@ -9,7 +9,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 
-namespace NullSpace.SDK.Tracking
+namespace Hardlight.SDK.Tracking
 {
 	using System;
 	using Quaternion = UnityEngine.Quaternion;
@@ -20,16 +20,16 @@ namespace NullSpace.SDK.Tracking
 	/// </summary>
 	public interface IImuCalibrator
 	{
-		void ReceiveUpdate(TrackingUpdate update);
-		Quaternion GetOrientation(Imu imu);
+		//void ReceiveUpdate(TrackingUpdate update);
+		//Quaternion GetOrientation(Imu imu);
 	}
 
 	public class MockImuCalibrator : IImuCalibrator
 	{
-		public Quaternion GetOrientation(Imu imu)
-		{
-			return Quaternion.identity;
-		}
+		//public Quaternion GetOrientation(Imu imu)
+		//{
+		//	return Quaternion.identity;
+		//}
 
 		public void ReceiveUpdate(TrackingUpdate t)
 		{
@@ -48,14 +48,14 @@ namespace NullSpace.SDK.Tracking
 		{
 			_calibrator = c;
 		}
-		public Quaternion GetOrientation(Imu imu)
-		{
-			return _calibrator.GetOrientation(imu);
-		}
+		//public Quaternion GetOrientation(Imu imu)
+		//{
+		//	return _calibrator.GetOrientation(imu);
+		//}
 
 		public void ReceiveUpdate(TrackingUpdate update)
 		{
-			_calibrator.ReceiveUpdate(update);
+			//_calibrator.ReceiveUpdate(update);
 		}
 	}
 	/// <summary>

@@ -14,7 +14,7 @@ using System;
 
 //Effect tooltip?
 
-namespace NullSpace.SDK.Demos
+namespace Hardlight.SDK.Demos
 {
 	abstract public class SuitDemo : MonoBehaviour
 	{

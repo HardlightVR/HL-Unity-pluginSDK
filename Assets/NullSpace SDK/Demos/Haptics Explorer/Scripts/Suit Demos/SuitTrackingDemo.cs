@@ -8,7 +8,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace NullSpace.SDK.Demos
+namespace Hardlight.SDK.Demos
 {
 	/// <summary>
 	/// Largely Empty SuitDemo

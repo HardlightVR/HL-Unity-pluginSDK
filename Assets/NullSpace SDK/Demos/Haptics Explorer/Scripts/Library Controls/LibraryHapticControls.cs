@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using UnityEngine.Events;
 using System;
 
-namespace NullSpace.SDK.Demos
+namespace Hardlight.SDK.Demos
 {
 	[RequireComponent(typeof(SuitRenderers))]
 	[RequireComponent(typeof(SuitColorController))]

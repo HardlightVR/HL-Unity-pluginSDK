@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 using System.Collections.Generic;
-using NullSpace.SDK.Demos;
+using Hardlight.SDK.Demos;
 
 [System.Serializable]
 public class SavedTooltips : ScriptableObject

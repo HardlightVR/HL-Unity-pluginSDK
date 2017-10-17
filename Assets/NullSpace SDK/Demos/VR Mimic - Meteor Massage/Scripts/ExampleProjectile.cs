@@ -100,12 +100,10 @@ namespace NullSpace.SDK.Demos
 			if (col.gameObject.layer == NSManager.HAPTIC_LAYER)
 			{
 				//Debug.DrawLine(transform.position, transform.position + Vector3.up * 100, Color.cyan, 15);
+				bool hapticCollisionOccurred = false;
 
 				//Is what we hit a Hardlight Suit?
 				HardlightSuit body = col.gameObject.GetComponent<HardlightSuit>();
-
-				//Default sequence, gets reassigned
-				HapticSequence seq = body.GetSequence("pulse");
 
 				//We make some assumptions about the impact point.
 				//Our projectiles are moving fast, so we keep track of our position last frame (lastPosition) and use that instead of our current one.
@@ -115,46 +113,73 @@ namespace NullSpace.SDK.Demos
 				//If we hit a suit
 				if (body != null)
 				{
-					//Depending on the type of projectile that we are.
-					switch (typeOfCollision)
+					CollideWithBody(body, col, where);
+					hapticCollisionOccurred = true;
+				}
+				else
+				{
+					HardlightCollider individualCollider = col.gameObject.GetComponent<HardlightCollider>();
+					if (individualCollider != null)
 					{
-						case CollisionType.Hit:
+						CollideWithBody(HardlightSuit.Find(), col, where);
 
-							//Hit the body with a simple effect name - which should be in "Resources/Haptics/<Name>"
-							body.HitNearest(lastPosition, "double_click");
-
-							break;
-						case CollisionType.HitImpulse:
-
-							//Plays a simple impulse on the assumed impact point.
-							body.HitImpulse(lastPosition, Effect.Pulse, .2f, .35f, 1, 2);
-
-							break;
-						case CollisionType.BigImpact:
-
-							//This plays an effect across all found pads within a range.
-							body.HitNearby(lastPosition, "buzz", BigImpactArea);
-
-							break;
-						case CollisionType.RepeatedImpulse:
-
-							//More helper function usage. This asset is from the Death and Dying pack (which is a very intense effect)
-							seq = body.GetSequence("pain_short");
-
-							//This makes use of the other HitImpulse which allows for repeated effects.
-							body.HitImpulse(lastPosition, seq, .2f, 2, 3, .15f, 1.0f);
-
-							break;
+						//CollideWithHardlightCollider(individualCollider, where);
+						hapticCollisionOccurred = true;
 					}
+				}
 
-					if (DestroyAfterCollision)
-					{
-						DestroyProjectile(DestroyDelay);
-					}
+				if (hapticCollisionOccurred && DestroyAfterCollision)
+				{
+					DestroyProjectile(DestroyDelay);
 				}
 			}
 			#endregion
 		}
+
+		public void CollideWithBody(HardlightSuit body, Collider col, Vector3 where)
+		{
+			//Default sequence, gets reassigned
+			HapticSequence seq = body.GetSequence("pulse");
+			
+			//Depending on the type of projectile that we are.
+			switch (typeOfCollision)
+			{
+				case CollisionType.Hit:
+
+					//Hit the body with a simple effect name - which should be in "Resources/Haptics/<Name>"
+					body.HitNearest(lastPosition, "double_click");
+
+					break;
+				case CollisionType.HitImpulse:
+
+					//Plays a simple impulse on the assumed impact point.
+					body.HitImpulse(lastPosition, Effect.Pulse, .2f, .35f, 1, 2);
+
+					break;
+				case CollisionType.BigImpact:
+
+					//This plays an effect across all found pads within a range.
+					body.HitNearby(lastPosition, "buzz", BigImpactArea);
+
+					break;
+				case CollisionType.RepeatedImpulse:
+
+					//More helper function usage. This asset is from the Death and Dying pack (which is a very intense effect)
+					seq = body.GetSequence("pain_short");
+
+					//This makes use of the other HitImpulse which allows for repeated effects.
+					body.HitImpulse(lastPosition, seq, .2f, 2, 3, .15f, 1.0f);
+
+					break;
+			}
+		}
+
+		//public void CollideWithHardlightCollider(HardlightCollider collider, Vector3 where)
+		//{
+		//	HardlightSuit.Find().HitNearest(lastPosition, "double_click");
+
+		//	//Debug.Log("HIT INDIVIDUAL COLLIDER\n" + collider.name + "     " + where);
+		//}
 
 		/// <summary>
 		/// Cleans up our projectile, marks that we can't collide anymore.

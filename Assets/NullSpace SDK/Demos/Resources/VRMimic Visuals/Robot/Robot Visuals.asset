@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5f2dcc5722ec04488af05f9032fa346, type: 3}
+  m_Name: Robot Visuals
+  m_EditorClassIdentifier: 
+  UpperArmPrefab: {fileID: 1000011813645608, guid: 4608f45b79d23a04786d93bb02823933,
+    type: 2}
+  ForearmPrefab: {fileID: 1000011486561216, guid: 078057a013a05114ea68646b756d2d93,
+    type: 2}
+  JointPrefab: {fileID: 1000010499546140, guid: a12ba475b375919458511848083c463a,
+    type: 2}
+  TorsoPrefab: {fileID: 1000012432368938, guid: 56de38a368526cf4caeebdf4bd701608,
+    type: 2}
+  ShoulderConnectorPrefab: {fileID: 1000010286425874, guid: a07404514a5b4d649a6bd1884b21fc94,
+    type: 2}

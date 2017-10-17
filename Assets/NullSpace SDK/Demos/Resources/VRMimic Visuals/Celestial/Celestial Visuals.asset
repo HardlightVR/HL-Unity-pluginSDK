@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5f2dcc5722ec04488af05f9032fa346, type: 3}
+  m_Name: Celestial Visuals
+  m_EditorClassIdentifier: 
+  UpperArmPrefab: {fileID: 1000011523886824, guid: 8bc43185437b4724697959d9da937c3c,
+    type: 2}
+  ForearmPrefab: {fileID: 1000011932816094, guid: 02114be1c213ab644acad1d7d96c18e2,
+    type: 2}
+  JointPrefab: {fileID: 1000010499546140, guid: 49f79cf40dbfe6f4088435738c54d64a,
+    type: 2}
+  TorsoPrefab: {fileID: 1000012432368938, guid: e4fda4e7eb232734eae03d26effabd74,
+    type: 2}
+  ShoulderConnectorPrefab: {fileID: 1000010286425874, guid: d7934db80de74064ab58896d85b34fc1,
+    type: 2}

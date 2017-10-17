@@ -211,7 +211,8 @@ namespace NullSpace.SDK.Demos
 		private void ApplySphereCast()
 		{
 			//Get the area flags for where this spherecast is hitting.
-			var Where = suit.GetAreasFromSphereCast(startLocation, worldDirection, SphereCastRadius, scaledRange);
+			throw new System.Exception();
+			var Where = AreaFlag.None; // suit.GetAreasFromSphereCast(startLocation, worldDirection, SphereCastRadius, scaledRange);
 
 			//This handles the time delay between replays.
 			if (!Ready)

@@ -17,10 +17,11 @@ namespace NullSpace.SDK
 
 		public Vector3 ScaleMultiplier;
 		public Vector3 PositionOffset;
+		public Vector3 EulerOffset;
 
 		private bool initialized = false;
 
-		public void Init(GameObject NewMimicTarget)
+		public void Init(GameObject NewMimicTarget, Vector3 rotationOffset = default(Vector3))
 		{
 			if (!initialized)
 			{
@@ -34,8 +35,10 @@ namespace NullSpace.SDK
 					Debug.Log(name + " - New mimic target is null\n");
 				}
 
+				EulerOffset = rotationOffset;
+
 				transform.position = ObjectToMimic.transform.position + PositionOffset;
-				transform.rotation = ObjectToMimic.transform.rotation;
+				transform.rotation = ObjectToMimic.transform.rotation * CalculateOffsetQuaternion();
 				transform.localScale = ObjectToMimic.transform.localScale + ScaleMultiplier;
 				initialized = true;
 
@@ -57,8 +60,21 @@ namespace NullSpace.SDK
 		void Update()
 		{
 			transform.position = ObjectToMimic.transform.position + PositionOffset;
-			transform.rotation = ObjectToMimic.transform.rotation;
+			transform.rotation =  ObjectToMimic.transform.rotation * CalculateOffsetQuaternion();
 			transform.localScale = ObjectToMimic.transform.localScale + ScaleMultiplier;
+		}
+
+		private Quaternion CalculateOffsetQuaternion()
+		{
+			Quaternion offset = Quaternion.identity;
+			offset.eulerAngles = EulerOffset;
+			return offset;
+		}
+
+		void OnDrawGizmos()
+		{
+			string icon = (MimickedObjectType == TypeOfMimickedObject.Camera ? "hmd-icon" : MimickedObjectType == TypeOfMimickedObject.TrackedObject ? "tracker-icon" : "controller-icon");
+			Gizmos.DrawIcon(transform.position, icon, true);
 		}
 
 		public static GameObject FindCameraObject()

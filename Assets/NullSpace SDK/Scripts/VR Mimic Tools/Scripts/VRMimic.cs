@@ -4,10 +4,6 @@ using System.Collections.Generic;
 
 namespace NullSpace.SDK
 {
-	/// <summary>
-	/// Creates observing objects that mimic the movement and orientation of their mimic'd objects.
-	/// Useful to avoid nested prefabs & for creating an intermediate step to do movement processing.
-	/// </summary>
 	public class VRMimic : MonoBehaviour
 	{
 		[Header("VR Mimic creates children that copy", order = 0)]
@@ -21,9 +17,6 @@ namespace NullSpace.SDK
 		public bool SkipDebugLogErrors = false;
 
 		private static VRMimic instance;
-		/// <summary>
-		/// The public reference for getting access to the VRMimic.
-		/// </summary>
 		public static VRMimic Instance
 		{
 			get
@@ -55,11 +48,7 @@ namespace NullSpace.SDK
 				}
 				return instance;
 			}
-			set
-			{
-				if (value != null)
-					instance = value;
-			}
+			set { instance = value; }
 		}
 		//public Dictionary<VRObjectMimic.TypeOfMimickedObject, int> Mimics;
 
@@ -101,6 +90,28 @@ namespace NullSpace.SDK
 			set { _trackedObjects = value; }
 		}
 
+		private Dictionary<VRObjectMimic.TypeOfMimickedObject, List<VRObjectMimic>> _trackedObjectDict = new Dictionary<VRObjectMimic.TypeOfMimickedObject, List<VRObjectMimic>>();
+		public List<VRObjectMimic> GetTrackedObjectsOfType(VRObjectMimic.TypeOfMimickedObject Key)
+		{
+			if (_trackedObjectDict.ContainsKey(Key))
+			{
+				if (_trackedObjectDict[Key] == null)
+					_trackedObjectDict[Key] = new List<VRObjectMimic>();
+				return _trackedObjectDict[Key];
+			}
+			return new List<VRObjectMimic>();
+		}
+		public void RecordTrackedObject(VRObjectMimic.TypeOfMimickedObject Key, VRObjectMimic newObject)
+		{
+			if (!_trackedObjectDict.ContainsKey(Key))
+			{
+				_trackedObjectDict.Add(Key, new List<VRObjectMimic>());
+			}
+			if (!_trackedObjectDict[Key].Contains(newObject))
+			{
+				_trackedObjectDict[Key].Add(newObject);
+			}
+		}
 
 		public VRObjectMimic GetTrackedObject(int index)
 		{
@@ -122,7 +133,8 @@ namespace NullSpace.SDK
 		}
 		public VRObjectMimic AddTrackedObject(GameObject objectToMimic, VRObjectMimic.TypeOfMimickedObject mimicType = VRObjectMimic.TypeOfMimickedObject.TrackedObject)
 		{
-			bool AlreadyTracked = false;
+			WatchedByMimic watching = objectToMimic.GetComponent<WatchedByMimic>();
+			bool AlreadyTracked = (watching != null);
 
 			//Debug.Log("Adding Tracked Object [" + objectToMimic.name + "] of type [" + mimicType.ToString() + "]\n");
 			if (!AlreadyTracked)
@@ -136,11 +148,18 @@ namespace NullSpace.SDK
 				TrackedObjects.Add(newTracked);
 				newTracked.MimickedObjectType = mimicType;
 
+				RecordTrackedObject(mimicType, newTracked);
+
 				return newTracked;
 			}
+			if (watching.WatchingMimic == null)
+			{
+				throw new System.Exception("An unusual exception has occurred. The WatchedByMimic.WatchingMimic is no longer valid.\n\tDid you modify the object watching " + objectToMimic.name + "?");
+			}
 
-			throw new System.Exception("Not Implemented Exception - returning already tracked object\n");
-			//return null;
+			return watching.WatchingMimic;
+
+			//throw new System.Exception("Not Implemented Exception - returning already tracked object\n");
 		}
 		#endregion
 
@@ -180,14 +199,10 @@ namespace NullSpace.SDK
 		public BodyMimic ActiveBodyMimic
 		{
 			get
-			{
-				return _bodyMimic;
-			}
+			{ return _bodyMimic; }
 
 			set
-			{
-				_bodyMimic = value;
-			}
+			{ _bodyMimic = value; }
 		}
 
 		private void Init(GameObject vrCamera = null, int hapticLayer = NSManager.HAPTIC_LAYER)
@@ -195,8 +210,7 @@ namespace NullSpace.SDK
 			//Debug.Log("Attempting initialization " + initialized + "  cam null? " + (vrCamera == null) + "\n");
 			if (!initialized)
 			{
-				//Suit disconnect events are not consistent enough yet.
-				//NSManager.Instance.SuitConnected += OnSuitDisconnect;
+				//VRObjectMimic.InitializeVRCamera(vrCamera);
 
 				//Set up VRCamera
 				VRObjectMimic setupCameraMimic = InitVRCamera(vrCamera);
@@ -219,17 +233,6 @@ namespace NullSpace.SDK
 			_vrCamera = go.AddComponent<VRObjectMimic>();
 			_vrCamera.Init(vrCamera);
 			_vrCamera.MimickedObjectType = VRObjectMimic.TypeOfMimickedObject.Camera;
-
-			//This is future feature for letting developers check 'head proximity collisions'
-			go = new GameObject();
-			var collider = go.AddComponent<SphereCollider>();
-			collider.isTrigger = true;
-			collider.radius = .35f;
-			var rb = go.AddComponent<Rigidbody>();
-			rb.constraints = RigidbodyConstraints.FreezeAll;
-			go.name = "Player Head Collider";
-			go.transform.SetParent(_vrCamera.transform);
-
 			return _vrCamera;
 		}
 
@@ -270,25 +273,6 @@ namespace NullSpace.SDK
 			go.transform.SetParent(CameraRig.transform);
 		}
 
-		/// <summary>
-		/// This feature isn't completely finished yet. The lower level disconnect events sometimes occur even when a disconnect did not occur.
-		/// </summary>
-		private void OnSuitDisconnect(object sender, SuitConnectionArgs e)
-		{
-			CreateSuitDisconnectNotification();
-		}
-
-		private void CreateSuitDisconnectNotification()
-		{
-			var prefab = Resources.Load("Disconnect Notification");
-			if (prefab != null)
-			{
-				GameObject go = GameObject.Instantiate(prefab) as GameObject;
-				go.GetComponent<FollowGazeCenter>().CameraToFollow = VRCamera.ObjectToMimic.GetComponent<Camera>();
-				go.name = "Disconnect Notification";
-			}
-		}
-
 		public static bool ValidInstance()
 		{
 			if (instance == null)
@@ -320,12 +304,6 @@ namespace NullSpace.SDK
 				instance = singleton.AddComponent<VRMimic>();
 				instance.Init(vrCamera, hapticLayer);
 				singleton.name = "VRMimic [Runtime Singleton]";
-
-				if (vrCamera != null && vrCamera.transform.parent != null && vrCamera.transform.parent.parent != null)
-				{
-					singleton.transform.SetParent(vrCamera.transform.parent.parent);
-				}
-
 			}
 		}
 	}

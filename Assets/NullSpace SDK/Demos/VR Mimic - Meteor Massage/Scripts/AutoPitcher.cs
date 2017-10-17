@@ -137,7 +137,6 @@ namespace NullSpace.SDK.Demos
 			Rigidbody rb = go.GetComponent<Rigidbody>();
 
 			//Find the world position of the target (a random node)
-			//Vector3 target = HardlightSuit.Find().FindRandomLocation().transform.position;
 			Vector3 target = HardlightSuit.Find().FindRandomLocation().transform.position;
 
 			if (CanMiss)
@@ -204,8 +203,11 @@ namespace NullSpace.SDK.Demos
 
 			//Debug.Log("Escalate: " + (System.DateTime.Now - start).TotalSeconds + " New Pitch Speed Range: " + pitchSpeedRange.ToString() + "\n");
 
-			//Display the level up effect.
-			EscalateEffect.Play();
+			if (EscalateEffect != null)
+			{
+				//Display the level up effect.
+				EscalateEffect.Play();
+			}
 		}
 
 		/// <summary>

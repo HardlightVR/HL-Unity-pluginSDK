@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace NullSpace.SDK
+namespace Hardlight.SDK
 {
 	public class AntiqueArmMimic : MonoBehaviour
 	{

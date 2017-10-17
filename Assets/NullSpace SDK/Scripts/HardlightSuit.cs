@@ -25,15 +25,17 @@ namespace Hardlight.SDK
 		/// </summary>
 		public bool AllowRegionalCollisions = false;
 
-		#region Collider Coloring Variables
+		#region In-Editor Collider Coloring Variables
+#if UNITY_EDITOR
 		/// <summary>
 		/// Colors the pads in the editor for easier debugging to see when areas are hit.
 		/// </summary>
-		public bool ColorRenderersOutsideEditor = false;
+		public bool ColorRendererInEditor = true;
 		/// <summary>
 		/// This variable is used to store the original box color so we can correctly revert.
 		/// </summary>
 		private Color defaultBoxColor = default(Color);
+#endif
 		#endregion
 
 		private Collider _singleVolumeCollider;
@@ -57,8 +59,8 @@ namespace Hardlight.SDK
 		/// This is a short term inefficiency that is intended to be fixed later.
 		/// </summary>
 		[SerializeField]
+		[Header("For Defined Areas, Zone Holders and Scene Refs")]
 		public SuitDefinition _definition;
-		[SerializeField]
 		public SuitDefinition Definition
 		{
 			set { _definition = value; }
@@ -68,16 +70,13 @@ namespace Hardlight.SDK
 				{
 					_definition = ScriptableObject.CreateInstance<SuitDefinition>();
 					_definition.Init();
+
+					//Call the transplant function.
 				}
 				return _definition;
 			}
 		}
 
-		/// <summary>
-		/// A value for filtering out specific regions.
-		/// Ex: Your player's health is a heartbeat haptic effect, therefore you never want to play anything else on that pad.
-		/// You would add the Chest_Left to the FilterFlag.
-		/// </summary>
 		[SerializeField]
 		public FilterFlag DisabledRegions
 		{
@@ -94,6 +93,7 @@ namespace Hardlight.SDK
 		public GameObject SuitRoot;
 
 		[SerializeField]
+		[Header("Do not refer to these fields at runtime")]
 		public List<AreaFlag> DefinedAreas;
 
 		//The Game Objects to fill the fields (which will get hardlight collider references)
@@ -105,6 +105,7 @@ namespace Hardlight.SDK
 		public List<HardlightCollider> SceneReferences;
 
 		[SerializeField]
+		[Space(12)]
 		public int HapticsLayer = NSManager.HAPTIC_LAYER;
 		[SerializeField]
 		public bool AddChildObjects = true;
@@ -160,7 +161,11 @@ namespace Hardlight.SDK
 				Definition.HapticsLayer = HapticsLayer;
 				Definition.AddExclusiveTriggerCollider = AddExclusiveTriggerCollider;
 
-				Definition.SetupDistanceDictionary();
+				DefinedAreas.Clear();
+				ZoneHolders.Clear();
+				SceneReferences.Clear();
+
+				Definition.SetupDictionary();
 				initialized = true;
 			}
 		}
@@ -268,10 +273,8 @@ namespace Hardlight.SDK
 		/// <param name="SingleFlagToModify"></param>
 		/// <param name="SingleHolder"></param>
 		/// <param name="newCollider"></param>
-		/// <returns></returns>
 		public bool ModifyValidRegions(AreaFlag SingleFlagToModify, GameObject SingleHolder, HardlightCollider newCollider)
 		{
-			bool Succeeded = false;
 
 			if (!SingleFlagToModify.IsSingleArea())
 			{
@@ -286,6 +289,18 @@ namespace Hardlight.SDK
 				return false;
 			}
 
+			return ReplaceValidRegions(SingleFlagToModify, SingleHolder, newCollider);
+		}
+
+		/// <summary>
+		/// The core actions of ModifyValidRegions (which does the validity checking this function wants)
+		/// </summary>
+		/// <param name="SingleFlagToModify"></param>
+		/// <param name="SingleHolder"></param>
+		/// <param name="newCollider"></param>
+		private bool ReplaceValidRegions(AreaFlag SingleFlagToModify, GameObject SingleHolder, HardlightCollider newCollider)
+		{
+			bool Succeeded = false;
 			bool ReplacedExistingElement = false;
 
 			var indexOfFlag = -1;
@@ -302,8 +317,10 @@ namespace Hardlight.SDK
 				//Store the old holder and old collider
 				oldHolder = Definition.ZoneHolders[indexOfFlag];
 				oldCollider = Definition.SceneReferences[indexOfFlag];
-
-				oldHolder.SetActive(false);
+				if (oldHolder != null && oldHolder != SingleHolder)
+				{
+					oldHolder.SetActive(false);
+				}
 
 				//No longer have this location as disabled
 				DisabledRegions.EnableArea(SingleFlagToModify);
@@ -340,40 +357,33 @@ namespace Hardlight.SDK
 		}
 
 		/// <summary>
-		/// A static self reference for the HardlightSuit.
-		/// Removes the need to use a GetComponent every time a user wants to have a reference to the suit.
-		/// </summary>
-		private static HardlightSuit _suit;
-		public static HardlightSuit Suit
-		{
-			get
-			{
-				if (_suit == null)
-				{
-					_suit = FindObjectOfType<HardlightSuit>();
-					if (_suit != null)
-					{
-						_suit.Init();
-						return _suit;
-					}
-				}
-
-				if (VRMimic.ValidInstance() && _suit == null)
-				{
-					Debug.LogError("Attempted to get a reference to HardlightSuit.Suit before calling VRMimic.Initialize()\nMust run VRMimic Initialize first - so you can configure hiding settings.");
-				}
-				return _suit;
-			}
-		}
-
-		/// <summary>
-		/// An easy way to find the current HardlightSuit in the scene. 
-		/// Will be extended once multiple suits are in the scene at once (networked play)
+		/// An easy way to find the current HardlightSuit in the scene (this becomes trickier if you have multiple suits in play at once IE a networking situation)
+		/// It will initialized the VRMimic if it is not yet initialized.
 		/// </summary>
 		/// <returns></returns>
 		public static HardlightSuit Find()
 		{
-			return Suit;
+			HardlightSuit suit = FindObjectOfType<HardlightSuit>();
+			if (suit != null)
+			{
+				suit.Init();
+				return suit;
+			}
+			if (VRMimic.ValidInstance())
+			{
+				suit = FindObjectOfType<HardlightSuit>();
+				if (suit != null)
+				{
+					suit.Init();
+					return suit;
+				}
+			}
+			else
+			{
+				Debug.Log("Attempted to run HardlightSuit.Find() before calling VRMimic.Initialize()\nMust run VRMimic Initialize first - so you can configure hiding settings.");
+			}
+
+			return null;
 		}
 
 		/// <summary>
@@ -443,7 +453,7 @@ namespace Hardlight.SDK
 		/// <param name="maxDistance">The max distance the point can be from any HapticLocations</param>
 		public AreaFlag HitNearest(Vector3 point, HapticSequence sequence, float maxDistance = 5.0f)
 		{
-			AreaFlag Where = GetNearestArea(point, maxDistance);
+			AreaFlag Where = FindNearestFlag(point, maxDistance);
 			if (Where != AreaFlag.None)
 			{
 				sequence.CreateHandle(Where).Play();
@@ -474,7 +484,7 @@ namespace Hardlight.SDK
 		/// <param name="impactRadius">The body is about .6 wide, .72 tall and .25 deep</param>
 		public AreaFlag HitNearby(Vector3 point, HapticSequence sequence, float impactRadius = .35f)
 		{
-			AreaFlag Where = GetAreasWithinRange(point, impactRadius, true);
+			AreaFlag Where = FindAllFlagsWithinRange(point, impactRadius, true);
 
 			if (Where != AreaFlag.None)
 			{
@@ -527,7 +537,7 @@ namespace Hardlight.SDK
 		/// <param name="maxDistance">Will not return locations further than the max distance.</param>
 		public void HitImpulse(Vector3 point, HapticSequence sequence, float impulseDuration = .2f, int depth = 2, int repeats = 0, float delayBetweenRepeats = .15f, float maxDistance = 5.0f)
 		{
-			AreaFlag loc = GetNearestArea(point, maxDistance);
+			AreaFlag loc = FindNearestFlag(point, maxDistance);
 			if (loc != AreaFlag.None)
 			{
 				ImpulseGenerator.Impulse imp = ImpulseGenerator.BeginEmanatingEffect(loc, depth).WithEffect(sequence).WithDuration(impulseDuration);
@@ -559,7 +569,7 @@ namespace Hardlight.SDK
 		/// <param name="maxDistance">Will not return locations further than the max distance.</param>
 		public void HitImpulse(Vector3 point, Effect eff = Effect.Pulse, float effectDuration = .2f, float impulseDuration = .5f, float strength = 1.0f, int depth = 1, float maxDistance = 5.0f)
 		{
-			AreaFlag loc = GetNearestArea(point, maxDistance);
+			AreaFlag loc = FindNearestFlag(point, maxDistance);
 			if (loc != AreaFlag.None)
 			{
 				ImpulseGenerator.BeginEmanatingEffect(loc, depth).WithEffect(Effect.Pulse, effectDuration, strength).WithDuration(impulseDuration).Play();
@@ -571,78 +581,6 @@ namespace Hardlight.SDK
 		}
 		#endregion
 
-		#region GetColliders
-		/// <summary>
-		/// Gets an array of colliders that had points within the haptic spherecast.
-		/// </summary>
-		/// <param name="source">The point of origination in world space</param>
-		/// <param name="direction">The direction of the spherecast in world space(magnitude does not matter)</param>
-		/// <param name="sphereCastRadius">The radius of the spherecast (</param>
-		/// <param name="sphereCastLength">The spherecast length</param>
-		/// <param name="displayInEditor">Displays a debug coloring on the returned hardlight collider objects</param>
-		public HardlightCollider[] GetCollidersFromSphereCast(Vector3 source, Vector3 direction, float sphereCastRadius = .25f, float sphereCastLength = 100, bool displayInEditor = false)
-		{
-			var closest = Definition.FindCollidersWithinSphereCast(source, direction, sphereCastRadius, sphereCastLength);
-
-			if (displayInEditor)
-			{
-				ColorColliders(closest, Color.blue);
-			}
-
-			return closest;
-		}
-
-		/// <summary>
-		/// Gets an array of colliders that had points within range of the point+distance.
-		/// </summary>
-		/// <param name="point">The center point in world space for the 'within range check'</param>
-		/// <param name="maxDistance">The max distance in any direction from point</param>
-		/// <param name="displayInEditor">Displays a debug coloring on the returned hardlight collider objects</param>
-		public HardlightCollider[] GetCollidersWithinRange(Vector3 point, float maxDistance, bool displayInEditor = false)
-		{
-			var closest = Definition.GetMultipleNearestLocations(point, 16, maxDistance);
-
-			if (displayInEditor)
-			{
-				ColorColliders(closest, Color.red);
-			}
-
-			return closest;
-		}
-		#endregion
-
-		#region Haptic Spherecasting
-		/// <summary>
-		/// Returns a complex area flag of all haptic locations within a 3D cylindrical haptic vector
-		/// </summary>
-		/// <param name="source">The start point in world space</param>
-		/// <param name="direction">Vector direction from starting point</param>
-		/// <param name="sphereCastRadius"></param>
-		/// <param name="sphereCastLength"></param>
-		/// <returns></returns>
-		public AreaFlag GetAreasFromSphereCast(Vector3 source, Vector3 direction, float sphereCastRadius = .25f, float sphereCastLength = 100)
-		{
-			//Get the array of colliders
-			var hit = Definition.FindCollidersWithinSphereCast(source, direction, sphereCastRadius, sphereCastLength);
-
-			//Get the areaflags out of those colliders.
-			return FindAreaFlagFromHardlightColliders(hit);
-		}
-
-		private AreaFlag FindAreaFlagFromHardlightColliders(HardlightCollider[] hit)
-		{
-			AreaFlag hitAreas = AreaFlag.None;
-
-			for (int i = 0; i < hit.Length; i++)
-			{
-				hitAreas = hitAreas.AddArea(hit[i].regionID);
-				ColorHapticLocationInEditor(hit[i].MyLocation, new Color(0.0f, .7f, 0.0f, 1), 0.1f);
-			}
-
-			return hitAreas;
-		}
-		#endregion
-
 		#region Finding HapticLocation and Flags
 		/// <summary>
 		/// Finds the nearest HapticLocation.Where on the HardlightSuit to the provided point
@@ -650,11 +588,10 @@ namespace Hardlight.SDK
 		/// <param name="point">The world space to compare to the PlayerTorso body.</param>
 		/// <param name="maxDistance">Disregard body parts less than the given distance</param>
 		/// <returns>Defaults to AreaFlag.None if no areas are within range.</returns>
-		public AreaFlag GetNearestArea(Vector3 point, float maxDistance = 5.0f, bool UseExpensiveNearLocation = false)
+		public AreaFlag FindNearestFlag(Vector3 point, float maxDistance = 5.0f)
 		{
 			//Maybe get a list of nearby regions?
-			//GameObject closest = Definition.GetNearestLocation(point, maxDistance);
-			GameObject closest = UseExpensiveNearLocation ? Definition.GetNearestLocationAdvanced(point, maxDistance) : Definition.GetNearestLocation(point, maxDistance);
+			GameObject closest = Definition.GetNearestLocation(point, maxDistance);
 
 			//Debug.Log("closest: " + closest.name + "\n");
 			if (closest != null && closest.GetComponent<HapticLocation>() != null)
@@ -673,21 +610,22 @@ namespace Hardlight.SDK
 		/// <param name="point">A worldspace point to compare</param>
 		/// <param name="maxDistance">The max distance to look for HapticLocations from this suit's definition.</param>
 		/// <returns>AreaFlag with the flagged areas within range. Tip: Use value.AreaCount() or value.IsSingleArea()</returns>
-		public AreaFlag GetAreasWithinRange(Vector3 point, float maxDistance, bool DisplayInEditor = false)
+		public AreaFlag FindAllFlagsWithinRange(Vector3 point, float maxDistance, bool DisplayInEditor = false)
 		{
 			AreaFlag result = AreaFlag.None;
-			var closest = GetCollidersWithinRange(point, maxDistance, DisplayInEditor);
+			GameObject[] closest = Definition.GetMultipleNearestLocations(point, 16, maxDistance);
 			for (int i = 0; i < closest.Length; i++)
 			{
-				if (closest[i].MyLocation != null)
+				HapticLocation loc = closest[i].GetComponent<HapticLocation>();
+				if (loc != null)
 				{
 					if (DisplayInEditor)
 					{
-						ColorHapticLocationInEditor(closest[i].MyLocation, Color.cyan);
+						ColorHapticLocationInEditor(loc, Color.cyan);
 					}
 
 					//Debug.Log("Adding: " + loc.name + "\n");
-					result = result.AddFlag(closest[i].MyLocation.Where);
+					result = result.AddFlag(loc.Where);
 				}
 			}
 			//Debug.Log("Result of find all flags: " + result.AreaCount() + "\n");
@@ -702,12 +640,12 @@ namespace Hardlight.SDK
 		public HapticLocation FindNearbyLocation(Vector3 point, float maxDistance = 5.0f)
 		{
 			//Maybe get a list of nearby regions?
-			HardlightCollider[] closest = Definition.GetMultipleNearestLocations(point, 1, maxDistance);
+			GameObject[] closest = Definition.GetMultipleNearestLocations(point, 1, maxDistance);
 
 			//Debug.Log("Find Nearby: " + closest.Length + "\n");
 			for (int i = 0; i < closest.Length; i++)
 			{
-				HapticLocation loc = closest[i].MyLocation;
+				HapticLocation loc = closest[i].GetComponent<HapticLocation>();
 				//Debug.DrawLine(source, loc.transform.position, Color.green, 15.0f);
 				if (closest[i] != null && loc != null && loc.LocationActive)
 				{
@@ -729,12 +667,12 @@ namespace Hardlight.SDK
 		/// <returns>A single HapticLocation that is close to the point and within line of sight of it. Defaults to null if nothing within MaxDistance is within range.</returns>
 		public HapticLocation FindNearbyLocation(Vector3 point, bool requireLineOfSight, LayerMask hitLayers, float maxDistance = 5.0f)
 		{
-			HardlightCollider[] closest = Definition.GetMultipleNearestLocations(point, 16, maxDistance);
+			GameObject[] closest = Definition.GetMultipleNearestLocations(point, 16, maxDistance);
 
 			//Debug.Log("Find Nearby: " + closest.Length + "\n");
 			for (int i = 0; i < closest.Length; i++)
 			{
-				HapticLocation loc = closest[i].MyLocation;
+				HapticLocation loc = closest[i].GetComponent<HapticLocation>();
 				Debug.DrawLine(point, loc.transform.position, Color.green, 15.0f);
 				if (closest[i] != null && loc != null && loc.LocationActive)
 				{
@@ -793,40 +731,14 @@ namespace Hardlight.SDK
 
 		#region Debug Coloring
 		/// <summary>
-		/// An easy way to request coloring for multiple colliders at once.
-		/// Preprocessor #if UNITY_EDITOR (does nothing in a built game)
-		/// </summary>
-		/// <param name="colliders">The colliders to color</param>
-		/// <param name="color">If you pass in default(Color) it will default to red.</param>
-		/// <param name="duration">How long to color the colliders (repeated calls will work but wont look good)</param>
-		private void ColorColliders(HardlightCollider[] colliders, Color color = default(Color), float duration = .5f)
-		{
-			bool inEditor = false;
-
-#if UNITY_EDITOR
-			inEditor = true;
-#endif
-
-			if (ColorRenderersOutsideEditor || inEditor)
-			{
-				for (int i = 0; i < colliders.Length; i++)
-				{
-					if (colliders[i].MyLocation != null)
-					{
-						ColorHapticLocationInEditor(colliders[i].MyLocation, color);
-					}
-				}
-			}
-		}
-
-		/// <summary>
 		/// This function is a no-op outside of the editor.
 		/// Preprocessor defines keep it from impacting your game's performance.
 		/// </summary>
 		/// <param name="location">The HapticLocation to color (gets the MeshRenderer)</param>
 		/// <param name="color">Defaults to red - the color to use. Will return to the default color of all haptic locations afterward.</param>
-		public void ColorHapticLocationInEditor(HapticLocation location, Color color = default(Color), float duration = .5f)
+		public void ColorHapticLocationInEditor(HapticLocation location, Color color = default(Color))
 		{
+#if UNITY_EDITOR
 			if (color == default(Color))
 			{
 				color = Color.red;
@@ -834,22 +746,9 @@ namespace Hardlight.SDK
 			MeshRenderer rend = location.gameObject.GetComponent<MeshRenderer>();
 			if (rend != null)
 			{
-				if (defaultBoxColor == default(Color))
-				{
-					defaultBoxColor = rend.material.color;
-				}
-
-				TemporaryRendererColoring.CreateTemporaryColoring(rend, defaultBoxColor, color, duration);
-
-#if UNITY_EDITOR
-				//StartCoroutine(ColorHapticLocationCoroutine(rend, color, duration));
+				StartCoroutine(ColorHapticLocationCoroutine(rend, color));
+			}
 #endif
-
-			}
-			else
-			{
-				Debug.LogError("Renderer is null\n");
-			}
 		}
 
 #if UNITY_EDITOR
@@ -867,12 +766,8 @@ namespace Hardlight.SDK
 			{
 				defaultBoxColor = rend.material.color;
 			}
-			rend.material.color = col;
-			if (duration > 0)
-			{
-				yield return new WaitForSeconds(duration);
-			}
-			yield return null;
+			rend.material.color = Color.red;
+			yield return new WaitForSeconds(duration);
 			rend.material.color = defaultBoxColor;
 		}
 #endif

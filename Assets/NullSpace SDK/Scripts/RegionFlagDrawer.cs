@@ -20,7 +20,7 @@ public class RegionFlagsAttributeDrawer : PropertyDrawer
 	{
 		//Two extra entries for the dev buttons
 		int extraEntries = 4;
-		return FoldoutOpened ? (CountValidEntries(property) + extraEntries) * 22 : (10 * extraEntries) + 10;
+		return FoldoutOpened ? (CountValidEntries(property) + extraEntries) * 22 : (22 * extraEntries) + 10;
 	}
 
 	//This OnGUI was modified by Nick Cellini to stack the buttons 
@@ -43,14 +43,6 @@ public class RegionFlagsAttributeDrawer : PropertyDrawer
 				buttonWidth,
 				20);
 
-		var propertyAttribute = this.attribute as RegionFlagAttribute;
-		EditorGUI.LabelField(buttonPos, "Area Flag: " + propertyAttribute.label, EditorStyles.boldLabel);
-
-		buttonPos = new Rect(
-					_position.x,
-					_position.y + (1 * 18),
-					buttonWidth,
-					22);
 		FoldoutOpened = EditorGUI.Toggle(buttonPos, (FoldoutOpened ? "Hide Areas" : "Show Areas"), FoldoutOpened);
 
 		int offset = 0;
@@ -70,7 +62,7 @@ public class RegionFlagsAttributeDrawer : PropertyDrawer
 			#region Toggle Buttons
 			buttonPos = new Rect(
 						_position.x,
-						_position.y + (2 * 18),
+						_position.y + (1 * 18),
 						buttonWidth,
 						22);
 
@@ -78,13 +70,13 @@ public class RegionFlagsAttributeDrawer : PropertyDrawer
 
 			buttonPos = new Rect(
 					_position.x,
-					_position.y + (3 * 18),
+					_position.y + (2 * 18),
 					buttonWidth,
 					22);
 			ShowMassRegions = EditorGUI.Toggle(buttonPos, (ShowMassRegions ? "Hide Mass Regions" : "Show Mass Regions"), ShowMassRegions);
 			buttonPos = new Rect(
 					_position.x,
-					_position.y + (4 * 18),
+					_position.y + (3 * 18),
 					buttonWidth,
 					22);
 			#endregion

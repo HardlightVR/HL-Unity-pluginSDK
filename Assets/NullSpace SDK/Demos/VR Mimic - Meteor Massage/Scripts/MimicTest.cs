@@ -71,7 +71,7 @@ namespace Hardlight.SDK
 			#endregion
 
 			//Useful for explosive projectiles
-			suit.GetAreasWithinRange(randPos, sphereRadius);
+			suit.FindAllFlagsWithinRange(randPos, sphereRadius);
 		}
 		private void ExampleRequestRandomLocation()
 		{
@@ -105,7 +105,7 @@ namespace Hardlight.SDK
 			Report += "How many flags in Mid Ab Left [1]:" + flag.NumberOfAreas() + " - is single area? [T] " + flag.IsSingleArea() + "\n";
 
 			flag = AreaFlag.Back_Both;
-			Report += "How many flags in Mid Ab Left [2]: " + flag.NumberOfAreas() + " - is single area? [T] " + flag.IsSingleArea() + "\n";
+			Report += "How many flags in Mid Ab Left [2]: " + flag.NumberOfAreas() + " - is single area? [F] " + flag.IsSingleArea() + "\n";
 
 			flag = (AreaFlag.All_Areas).RemoveArea(AreaFlag.Back_Both);
 			Report += "How many flags in All but Back Both [14]: " + flag.NumberOfAreas() + " - is single area? [T] " + flag.IsSingleArea() + "\n";

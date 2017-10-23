@@ -1,0 +1,13 @@
+{
+	"sequence" : [
+
+		{"time" : 0.0, "effect" : "fuzz", "strength" : 1.0, "duration" : 0.0},
+		{"time" : 0.1, "effect" : "hum", "strength" : 0.15, "duration" : 0.0}
+
+
+
+
+
+	]
+}
+

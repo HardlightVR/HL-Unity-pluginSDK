@@ -10,6 +10,7 @@ using UnityEngine.UI;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 //Effect tooltip?
 
@@ -17,6 +18,8 @@ namespace NullSpace.SDK.Demos
 {
 	abstract public class SuitDemo : MonoBehaviour
 	{
+		public HapticRecording recording;
+		public SuitColorController colorController;
 		//Turn on my needed things
 		abstract public void ActivateDemo();
 
@@ -27,6 +30,12 @@ namespace NullSpace.SDK.Demos
 		abstract public void OnSuitClicking(HardlightCollider suit, RaycastHit hit);
 		abstract public void OnSuitNoInput();
 
+		public Light MyLight;
+		public Light MainLight;
+		private float lightIntensity;
+		public Color lightColor;
+
+		public bool AutoDeactivate = true;
 		public Button MyEnableButton;
 		public Button MyDisableButton;
 
@@ -35,14 +44,36 @@ namespace NullSpace.SDK.Demos
 
 		public KeyCode ActivateHotkey = KeyCode.None;
 
-		public List<HardlightCollider> suitObjects;
+		private HardlightColliderCollection ColliderCollection;
+		public List<HardlightCollider> SuitObjects
+		{
+			get
+			{
+				if (ColliderCollection != null)
+				{
+					return ColliderCollection.SuitObjects;
+				}
+				throw new System.Exception("Collider Collection is null.\n\tCheck to ensure there is one in the scene, ideally on [Demo Controls and Selector] object.");
+			}
+		}
 
 		public List<GameObject> ActiveObjects;
 		public List<GameObject> ActiveIfDisabledObjects;
 
 		protected Color buttonSelected = new Color(150 / 255f, 150 / 255f, 150 / 255f, 1f);
-		//protected Color buttonSelected = new Color(30 / 255f, 167 / 255f, 210 / 255f, 1f);
 		protected Color buttonUnselected = new Color(255 / 255f, 255 / 255f, 255 / 255f, 1f);
+		protected Color unselectedColor
+		{
+			get
+			{
+				if (colorController)
+				{
+					return colorController.unselectedColor;
+				}
+				return Color.magenta;
+			}
+		}
+
 
 		/// <summary>
 		/// An overhead method that calls ActivateDemo.
@@ -53,8 +84,9 @@ namespace NullSpace.SDK.Demos
 			SetEnableButtonBackgroundColor(buttonSelected);
 			ActivateDemo();
 			HandleRequiredObjects(true);
+			StartCoroutine(LightTransition(MainLight, lightColor));
+			MyLight.gameObject.SetActive(false);
 		}
-
 		/// <summary>
 		/// An overhead method that calls DeactivateDemo.
 		/// Enforce abstract 'need implementation' while still calling certain things without overriding.
@@ -78,14 +110,37 @@ namespace NullSpace.SDK.Demos
 			}
 		}
 
+		public void AssignColliderCollection(HardlightColliderCollection coll)
+		{
+			ColliderCollection = coll;
+		}
+		public void AssignColorController(SuitColorController colorCont)
+		{
+			colorController = colorCont;
+		}
+		public void AssignHapticRecorder(HapticRecording newRecording)
+		{
+			recording = newRecording;
+		}
 		public virtual void Start()
 		{
-			suitObjects = new List<HardlightCollider>();
-			suitObjects = FindObjectsOfType<HardlightCollider>().ToList();
+			lightIntensity = MyLight.intensity;
 			SetupButtons();
 			SetEnableButtonBackgroundColor(buttonUnselected);
-			DeactivateDemo();
-			enabled = false;
+			if (AutoDeactivate)
+			{
+				DeactivateDemo();
+				enabled = false;
+			}
+		}
+
+		public virtual bool CheckForActivation()
+		{
+			return Input.GetKeyDown(ActivateHotkey);
+		}
+		public virtual void CheckHotkeys()
+		{
+
 		}
 
 		public void HandleRequiredObjects(bool Activating)
@@ -116,63 +171,118 @@ namespace NullSpace.SDK.Demos
 			}
 		}
 
-		public IEnumerator ChangeColorDelayed(GameObject targetObject, Color setColor, float delay, float minDuration = .15f)
+		public void ChangeColorDelayed(GameObject targetObject, Color setColor, float delay, float minDuration = .15f)
 		{
-			yield return new WaitForSeconds(Mathf.Clamp(delay, minDuration, float.MaxValue));
-			ColorSuitCollider(targetObject, setColor);
+			//yield return new WaitForSeconds(Mathf.Clamp(delay, minDuration, float.MaxValue));
+			//ColorSuitCollider(targetObject, setColor);
 		}
 
-		public void ColorSuitCollider(GameObject suitCollider, Color setColor)
+		public Color GetObjectCurrentColor(GameObject suitCollider)
 		{
-			MeshRenderer rend = suitCollider.GetComponent<MeshRenderer>();
-			if (rend != null)
+			if (suitCollider != null)
 			{
-				rend.material.color = setColor;
+				return colorController.GetObjectCurrentColor(suitCollider);
+			}
+			else
+			{
+				Debug.Log("Suit Demo attempted to color a null object\n\t" + name, this);
+			}
+			return Color.magenta;
+		}
+		public void ColorSuitObject(HardlightCollider suitCollider, Color setColor)
+		{
+			colorController.ColorSuitObject(suitCollider, setColor);
+		}
+		public void ColorSuitObject(GameObject suitCollider, Color setColor)
+		{
+			if (suitCollider != null)
+			{
+				var hardlightCol = suitCollider.GetComponent<HardlightCollider>();
+
+				if (hardlightCol != null)
+				{
+					ColorSuitObject(hardlightCol, setColor);
+				}
+				else
+				{
+					Debug.Log("Suit Demo attempted to color an object without a hardlight collider\n\t" + name, this);
+				}
+			}
+			else
+			{
+				Debug.Log("Suit Demo attempted to color a null object\n\t" + name, this);
 			}
 		}
-		public Color SuitColliderCurrentColor(GameObject suitCollider)
+		public void ColorSuitObject(int index, Color setColor)
 		{
-			MeshRenderer rend = suitCollider.GetComponent<MeshRenderer>();
-			if (rend != null)
+			var providedIndex = index;
+			index = Mathf.Clamp(index, 0, SuitObjects.Count - 1);
+			if (index != providedIndex)
 			{
-				return rend.material.color;
+				Debug.LogError("Attempted to color a suit object by index for the provided index of [" + providedIndex + "] when only [" + SuitObjects.Count + "] valid indices exist\n", this);
 			}
-			return Color.white;
-		}
-		public void ColorSuitCollider(HardlightCollider suitCollider, Color setColor)
-		{
-			ColorSuitCollider(suitCollider.gameObject, setColor);
-		}
-
-		/// <summary>
-		/// Colors a particular suit visual to the labeled color.
-		/// Performs a null check on suit first.
-		/// </summary>
-		/// <param name="suit"></param>
-		/// <param name="col"></param>
-		protected void ColorSuit(HardlightCollider suit, Color col)
-		{
-			//This is just sanitization and to make the code more robust.
-			if (suit != null)
+			if (SuitObjects.Count > index)
 			{
-				//We could easily be more efficient than getting the MeshRenderer each time (like having SuitBodyCollider hold onto a ref to it's MeshRenderer)
-				//However this isn't a VR application, so ease of programming/readability is the priority here.
-				suit.GetComponent<MeshRenderer>().material.color = col;
+				ColorSuitObject(SuitObjects[index], setColor);
 			}
 		}
 
-		public IEnumerator ColorPadForXDuration(HardlightCollider suit, Color targetColor, Color revertColor, float MinDuration = 0.0f)
+		public void ColorSuitObject(GameObject suitCollider, Color setColor, float lerpDuration, float sustainDuration)
 		{
-			//I don't think we need to save this local reference. Just in case.
-			HardlightCollider current = suit;
+			colorController.ColorSuitObject(suitCollider, setColor, lerpDuration, sustainDuration);
+		}
+		public void ColorSuitObject(HardlightCollider suitCollider, Color setColor, float lerpDuration, float sustainDuration)
+		{
+			if (suitCollider != null)
+			{
+				ColorSuitObject(suitCollider.gameObject, setColor, lerpDuration, sustainDuration);
+			}
+			else
+			{
+				Debug.Log("Suit Demo attempted to color a null object\n\t" + name, this);
+			}
+		}
+		public void ColorSuitObject(int index, Color setColor, float lerpDuration, float sustainDuration)
+		{
+			ColorSuitObject(SuitObjects[index].gameObject, setColor, lerpDuration, sustainDuration);
+		}
 
-			//You could do a fancy color lerp functionality here...
-			ColorSuit(current, targetColor);
+		public void ColorSuitObjectOverTime(GameObject suitCollider, Color setColor, float lerpDuration, float sustainDuration)
+		{
+			colorController.ColorSuitObject(suitCollider, setColor, lerpDuration, sustainDuration);
+		}
+		public void ColorSuitObjectOverTime(HardlightCollider suitCollider, Color setColor, float lerpDuration, float sustainDuration)
+		{
+			colorController.ColorSuitObject(suitCollider.gameObject, setColor, lerpDuration, sustainDuration);
+		}
 
-			//var duration = Mathf.Clamp(MinDuration, .1f, 100.0f);
-			//I clamp this to a min of .1 for user visibility.
-			yield return new WaitForSeconds(MinDuration);
-			ColorSuit(current, revertColor);
+		public virtual void DeselectAllSuitColliders()
+		{
+			UncolorAllSuitColliders();
+		}
+
+		protected void UncolorAllSuitColliders()
+		{
+			colorController.UncolorAllSuitColliders();
+		}
+		IEnumerator LightTransition(Light light, Color newColor)
+		{
+			float step = .15f;
+			var wait = new WaitForSeconds(.01f);
+			var oldColor = light.color;
+			var oldIntensity = light.intensity;
+			for (float i = 0; i < step; i += .01f)
+			{
+				light.color = Color.Lerp(oldColor, newColor, i / step);
+				light.intensity = Mathf.Lerp(oldIntensity, lightIntensity, i / step);
+				yield return wait;
+			}
+			light.gameObject.SetActive(true);
+		}
+
+		public virtual void DisplayHandleHaptic(HardlightCollider hit, HapticHandle handle)
+		{
+			ColorSuitObject(hit, buttonSelected, .05f, .15f);
 		}
 	}
 

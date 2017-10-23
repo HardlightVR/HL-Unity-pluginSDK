@@ -14,20 +14,27 @@ namespace NullSpace.SDK.Demos
 	/// </summary>
 	public class HapticTrigger : MonoBehaviour
 	{
-		public HapticSequence sequence;
-
-		public void SetSequence(HapticSequence seq)
-		{
-			//Debug.Log("Set Sequence: " + seq + "\n");
-			sequence = seq;
-		}
+		public SuitDemo suitDemo;
 
 		void OnTriggerEnter(Collider collider)
 		{
-			HardlightCollider hit = collider.GetComponent<HardlightCollider>();
-			if (hit != null)
+			//If it is on the haptics layer
+			if (collider.gameObject.layer == NSManager.HAPTIC_LAYER)
 			{
-				LibraryManager.Inst.LastSequence.CreateHandle(hit.regionID).Play();
+				HardlightCollider hit = collider.GetComponent<HardlightCollider>();
+				if (hit != null)
+				{
+					var handle = LibraryManager.Inst.LastSequence.CreateHandle(hit.regionID);
+					handle.Play();
+					if (suitDemo)
+					{
+						suitDemo.DisplayHandleHaptic(hit, handle);
+					}
+					else
+					{
+						Debug.LogError("The Suit Demo of HapticTrigger [" + name + "] is not assigned\n", this);
+					}
+				}
 			}
 		}
 	}

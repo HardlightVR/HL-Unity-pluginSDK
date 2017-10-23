@@ -148,7 +148,7 @@ namespace NullSpace.SDK.Demos
 		{
 			//RegionFlag is a special type of attribute which gives better inspector assignment behavior to a HapticLocation. 
 			//For more info look at Scripts/RegionFlawDrawer.cs
-			[RegionFlag]
+			[RegionFlag("My Location")]
 			public AreaFlag MyLocation;
 		}
 

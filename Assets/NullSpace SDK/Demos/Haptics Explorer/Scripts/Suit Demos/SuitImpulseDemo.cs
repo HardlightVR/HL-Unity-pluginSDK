@@ -14,7 +14,7 @@ namespace NullSpace.SDK.Demos
 {
 	public class SuitImpulseDemo : SuitDemo
 	{
-		public enum ImpulseType { Emanating, Traversing, /*RepeatedImpulse*/ }
+		public enum ImpulseType { Emanating, Traversing, Gathering/*, RepeatedImpulse*/ }
 		/// <summary>
 		/// Reusability focused. SuitImpulseDemo can come in multiple varieties (with a few unused variables depending on the mode.
 		/// Emanation - Start at a point and affect in waves the neighbor pads.
@@ -24,6 +24,9 @@ namespace NullSpace.SDK.Demos
 		/// </summary>
 		public ImpulseType CurrentMode = ImpulseType.Emanating;
 
+		public int count;
+		[SerializeField]
+		public List<ImpulseGenerator.Impulse> recentImpulses = new List<ImpulseGenerator.Impulse>();
 		#region Impulse Defining Attributes
 		//For some reason Unity back-recognizes Header tags. I put them in reverse order to fix that
 		//Weird.
@@ -154,7 +157,6 @@ namespace NullSpace.SDK.Demos
 		//Impulse Visual Color - feel free to change these if you have preferences.
 		//Region Selector Suit Demo uses a light green.
 		public Color selectedColor = new Color(227 / 255f, 127 / 255f, 127 / 255f, 1f);
-		public Color unselectedColor = new Color(227 / 255f, 227 / 255f, 227 / 255f, 1f);
 		public Color OriginColor = new Color(218 / 255f, 165 / 255f, 32 / 255f, 1f);
 		#endregion
 
@@ -187,7 +189,8 @@ namespace NullSpace.SDK.Demos
 		//Turn on my needed things
 		public override void ActivateDemo()
 		{
-			ColorSuit(ImpulseOrigin, OriginColor);
+			if (ImpulseOrigin)
+				ColorSuitObject(ImpulseOrigin, OriginColor);
 
 			HandleRequiredObjects(true);
 
@@ -198,8 +201,10 @@ namespace NullSpace.SDK.Demos
 		public override void DeactivateDemo()
 		{
 			HandleRequiredObjects(false);
-			ColorSuit(ImpulseOrigin, unselectedColor);
-			ColorSuit(ImpulseDestination, unselectedColor);
+			if (ImpulseOrigin)
+				ColorSuitObject(ImpulseOrigin, unselectedColor);
+			if (ImpulseDestination)
+				ColorSuitObject(ImpulseDestination, unselectedColor);
 		}
 
 		public override void OnSuitClicked(HardlightCollider clicked, RaycastHit hit)
@@ -213,7 +218,10 @@ namespace NullSpace.SDK.Demos
 				ImpulseGenerator.Impulse imp = ImpulseGenerator.BeginEmanatingEffect(clicked.regionID, (int)Depth);
 				if (imp != null)
 				{
-					ColorSuit(ImpulseOrigin, unselectedColor);
+					if (ImpulseOrigin != null)
+					{
+						ColorSuitObject(ImpulseOrigin, unselectedColor);
+					}
 					//Select first
 					ImpulseOrigin = clicked;
 
@@ -225,12 +233,38 @@ namespace NullSpace.SDK.Demos
 			{
 				ClickedSuitInTraversalMode(clicked, hit);
 			}
+			// Traversing - Start at a point and move in stages to the destination through neighbor pads
+			else if (CurrentMode == ImpulseType.Gathering)
+			{
+				//Debug.Log((int)suit.regionID + "\n");
+				ImpulseGenerator.Impulse imp = ImpulseGenerator.BeginGatheringEffect(clicked.regionID, (int)Depth);
+				if (imp != null)
+				{
+					if (ImpulseOrigin != null)
+					{
+						ColorSuitObject(ImpulseOrigin, unselectedColor);
+					}
+					//Select first
+					ImpulseOrigin = clicked;
+
+					ConfigureAndPlayImpulse(imp);
+				}
+			}
 		}
 
 		public override void OnSuitClicking(HardlightCollider suit, RaycastHit hit)
 		{ }
 		public override void OnSuitNoInput()
 		{ }
+
+		public override void CheckHotkeys()
+		{
+			if (Input.GetKeyDown(KeyCode.C))
+			{
+				DeselectAllSuitColliders();
+			}
+			base.CheckHotkeys();
+		}
 
 		private void ClickedSuitInTraversalMode(HardlightCollider clicked, RaycastHit hit)
 		{
@@ -241,7 +275,7 @@ namespace NullSpace.SDK.Demos
 				ImpulseOrigin = clicked;
 
 				//Mark it as selected
-				ColorSuit(clicked, OriginColor);
+				ColorSuitObject(clicked, OriginColor);
 			}
 			//First one is already selected
 			else
@@ -250,14 +284,14 @@ namespace NullSpace.SDK.Demos
 				if (ImpulseOrigin == clicked)
 				{
 					//Unselect First
-					ColorSuit(clicked, unselectedColor);
+					ColorSuitObject(clicked, unselectedColor);
 					ImpulseOrigin = null;
 
 					//If we had a destination
 					if (ImpulseDestination != null)
 					{
 						//Clear it.
-						ColorSuit(ImpulseDestination, unselectedColor);
+						ColorSuitObject(ImpulseDestination, unselectedColor);
 						ImpulseDestination = null;
 					}
 				}
@@ -267,13 +301,13 @@ namespace NullSpace.SDK.Demos
 					if (ImpulseDestination != null)
 					{
 						//Clear it to avoid leaving unnecessary colored nodes
-						ColorSuit(ImpulseDestination, unselectedColor);
+						ColorSuitObject(ImpulseDestination, unselectedColor);
 						ImpulseDestination = null;
 					}
 
 					//Set our destination
 					ImpulseDestination = clicked;
-					ColorSuit(clicked, OriginColor);
+					ColorSuitObject(clicked, OriginColor);
 
 					//Leftover log to see that we're playing from the start to end.
 					//Debug.Log((int)TraversalOrigin.regionID + "\t " + (int)suit.regionID);
@@ -294,15 +328,25 @@ namespace NullSpace.SDK.Demos
 		/// <param name="imp">A constructed impulse of the emanation or traversal</param>
 		private void ConfigureAndPlayImpulse(ImpulseGenerator.Impulse imp)
 		{
+			StoreImpulse(imp);
+
 			if (CurrentMode == ImpulseType.Emanating)
 			{
 				StartCoroutine(ColorSuitForEmanation());
 			}
-			else
+			else if (CurrentMode == ImpulseType.Traversing)
 			{
 				StartCoroutine(ColorSuitForTraversal());
 			}
-
+			else if (CurrentMode == ImpulseType.Gathering)
+			{
+				StartCoroutine(ColorSuitForGathering());
+			}
+			else
+			{
+				Debug.LogError("Impulse type [" + CurrentMode.ToString() + "] not recognized. Returning\n");
+				return;
+			}
 			//To support HapticSequence Samples
 			if (UseEffectSelectorSlider)
 			{
@@ -329,6 +373,21 @@ namespace NullSpace.SDK.Demos
 			}
 		}
 
+		private void StoreImpulse(ImpulseGenerator.Impulse imp)
+		{
+			if (imp != null && recording != null)
+			{
+				//Currently disabled. We're adding better lower level support for recording.
+				//recording.AddNewHaptic(imp.GetImpulsePattern());
+			}
+		}
+
+		public override void DeselectAllSuitColliders()
+		{
+			ImpulseOrigin = null;
+			ImpulseDestination = null;
+			base.DeselectAllSuitColliders();
+		}
 		#region Code Sequence Names
 		//Note: This is a junky way to do Code Sequences but I wanted to include them as samples
 		public static string[] SampleHapticSequence =
@@ -418,12 +477,18 @@ namespace NullSpace.SDK.Demos
 			//}
 		}
 
+		/// <summary>
+		/// Get the HardlightCollider node where the region IDs match.
+		/// Only returns active HardlightColliders.
+		/// If multiple matches exist, it returns the first
+		/// </summary>
+		/// <param name="target"></param>
 		HardlightCollider GetSuitForNode(GraphEngine.SuitNode target)
 		{
 			HardlightCollider suit = null;
 
 			//Get the SuitBodyCollider node where the region IDs match. If multiple match, take the first
-			suit = SuitNodes.Where(x => x.regionID == target.Location).First();
+			suit = SuitNodes.Where(x => x.regionID == target.Location && x.isActiveAndEnabled).First();
 			//Yay functional programming
 
 			//This is potentially problematic if you are using a suit model with MULTIPLE flags set for individual locations.
@@ -437,6 +502,9 @@ namespace NullSpace.SDK.Demos
 		{
 			//Save the beginning in local scope in case it gets changed by additional input 
 			HardlightCollider start = ImpulseOrigin;
+
+			var duration = Mathf.Clamp(EffectDuration, .1f, 100.0f);
+			//I clamp this to a min of .1 for user visibility.
 
 			//List of Lists
 			//Stage 1: The pad clicked
@@ -457,6 +525,50 @@ namespace NullSpace.SDK.Demos
 							HardlightCollider next = GetSuitForNode(nodes[outter][inner]);
 							if (next != null)
 							{
+								Debug.DrawLine(next.transform.position, next.transform.position + transform.forward * 15, Color.green, 15f);
+
+								//ColorSuitObjectOverTime(next.gameObject, selectedColor, .1f, duration);
+								//	//Color that pad for the duration of the Effect
+								StartCoroutine(ColorPadForXDuration(next));
+							}
+						}
+					}
+					//Wait for next stage of the impulse
+					yield return new WaitForSeconds(ImpulseDuration / nodes.Count);
+				}
+			}
+		}
+		IEnumerator ColorSuitForGathering()
+		{
+			//Save the beginning in local scope in case it gets changed by additional input 
+			HardlightCollider end = ImpulseOrigin;
+			var duration = Mathf.Clamp(EffectDuration, .1f, 100.0f);
+			//I clamp this to a min of .1 for user visibility.
+
+			colorController.ColorSuitObject(ImpulseOrigin, OriginColor);
+			//List of Lists
+			//Stage 1: A few pads adjacent to last stage
+			//Stage 3: Four pads adjacent to the previous pad
+			//Stage 2: One adjacent pad
+			//Stage 1: The pad clicked
+			List<List<GraphEngine.SuitNode>> nodes = ImpulseGenerator._grapher.BFS(end.regionID, (int)Depth);
+			if (nodes != null && nodes.Count > 0)
+			{
+				//For each possible stage
+				for (int outter = nodes.Count - 1; outter >= 0; outter--)
+				{
+					if (nodes[outter] != null && nodes[outter].Count > 0)
+					{
+						//For each node in this stage
+						for (int inner = nodes[outter].Count - 1; inner >= 0; inner--)
+						{
+							HardlightCollider next = GetSuitForNode(nodes[outter][inner]);
+							//Debug.Log("Painting: " + next.name + "  " + outter + "   " + inner + "  " + next.regionID.ToString() + "\n");
+
+
+							if (next != null)
+							{
+								//ColorSuitObjectOverTime(next.gameObject, selectedColor, .1f, duration);
 								//Color that pad for the duration of the Effect
 								StartCoroutine(ColorPadForXDuration(next));
 							}
@@ -467,12 +579,15 @@ namespace NullSpace.SDK.Demos
 				}
 			}
 		}
-
 		IEnumerator ColorSuitForTraversal()
 		{
 			//Save the beginning and end in local scope in case they get changed by additional input (Which could cause some null refs/index out of bounds)
 			HardlightCollider start = ImpulseOrigin;
 			HardlightCollider destination = ImpulseDestination;
+
+			var duration = Mathf.Clamp(EffectDuration, .1f, 100.0f);
+			//I clamp this to a min of .1 for user visibility.
+
 			List<GraphEngine.SuitNode> nodes = ImpulseGenerator._grapher.Dijkstras(start.regionID, destination.regionID);
 			if (nodes != null && nodes.Count > 0)
 			{
@@ -485,6 +600,8 @@ namespace NullSpace.SDK.Demos
 						HardlightCollider next = GetSuitForNode(nodes[outter]);
 						if (next != null)
 						{
+							//ColorSuitObjectOverTime(next.gameObject, selectedColor, .1f, duration);
+
 							//Color that pad for it's effect duration.
 							StartCoroutine(ColorPadForXDuration(next));
 						}
@@ -511,15 +628,25 @@ namespace NullSpace.SDK.Demos
 			HardlightCollider current = suit;
 
 			//You could do a fancy color lerp functionality here...
-			ColorSuit(current, selectedColor);
+			colorController.ColorSuitObject(current, selectedColor);
 
 			var duration = Mathf.Clamp(EffectDuration, .1f, 100.0f);
 			//I clamp this to a min of .1 for user visibility.
 			yield return new WaitForSeconds(duration);
 
-			//Revert our color
 			Color targetColor = (current == ImpulseOrigin || current == ImpulseDestination) ? OriginColor : unselectedColor;
-			ColorSuit(current, targetColor);
+			for (int i = 0; i < 10; i++)
+			{
+				var lerpColor = Color.Lerp(selectedColor, targetColor, i / 10.0f);
+				colorController.ColorSuitObject(current, lerpColor);
+				yield return new WaitForSeconds(duration / 10.0f);
+			}
+
+			bool shouldOrigin = (current == ImpulseOrigin || current == ImpulseDestination) && enabled;
+			targetColor = shouldOrigin ? OriginColor : unselectedColor;
+
+			//Revert our color
+			colorController.ColorSuitObject(current, targetColor);
 		}
 	}
 }

@@ -7,21 +7,42 @@ namespace NullSpace.SDK.Demos
 	//Can be used to clear/remove items
 	public class PopulateContainer : MonoBehaviour
 	{
-		public GameObject prefab;
+		[SerializeField]
+		private GameObject prefab;
 		public RectTransform container;
 
 		public int count;
 
+		public GameObject Prefab
+		{
+			get
+			{
+				return prefab;
+			}
+
+			set
+			{
+				if (value == null)
+				{
+					Debug.LogError("Attempted to set [" + name + "]'s Populate Container prefab to null\n", this);
+				}
+				prefab = value;
+			}
+		}
+
 		public GameObject AddPrefabToContainerReturn(bool worldPositionStays = false)
 		{
-			if (prefab != null)
+			if (Prefab != null)
 			{
-				var instance = Instantiate<GameObject>(prefab);
+				var instance = Instantiate<GameObject>(Prefab);
 				instance.transform.SetParent(container, worldPositionStays);
 
 				var indexer = instance.GetComponent<ContainerItem>();
-				if (indexer) indexer.Index(count++);
-
+				if (indexer)
+				{
+					indexer.container = this;
+					indexer.Index(count++);
+				}
 				return instance;
 			}
 			Debug.LogError("[" + name + "]'s Populate Container Prefab has not been assigned\n", this);

@@ -63,7 +63,7 @@ namespace NullSpace.SDK
 					time += timeStep;
 				}
 
-				return emanation.CreateHandle().Play();
+				return emanation;
 			};
 
 			return new Impulse(creation);
@@ -104,13 +104,64 @@ namespace NullSpace.SDK
 					time += timeStep;
 				}
 
-				return emanation.CreateHandle().Play();
+				return emanation;
 			};
 
 			return new Impulse(creation);
 		}
 
-		internal delegate HapticHandle CreateImpulse(float attenuation, float totalLength, HapticSequence seq);
+		/// <summary>
+		/// Begins a gathering impulse to arrive at the given destination.
+		/// Defaults to a simple 'hum' effect if you don't call WithEffect()
+		/// Remember to call .Play() on the returned impulse.
+		/// </summary>
+		/// <param name="destination">The end destination AreaFlag. Only allows a single AreaFlag.</param>
+		/// <param name="depth">How many pads away will this start before ending (will not traverse a pad >1x)</param>
+		public static Impulse BeginGatheringEffect(AreaFlag destination, int depth = 2)
+		{
+			if (!destination.IsSingleArea())
+			{
+				Debug.LogError("Invalid AreaFlag Provided: Destination is [" + destination.NumberOfAreas() + "] area(s).\n\tImpulse Generator only supports single area flag values.\n");
+				return null;
+			}
+
+			if (depth < 0)
+			{
+				Debug.LogError("Depth for emanation is negative: " + depth + "\n\tThis will be clamped to 0 under the hood, negative numbers will likely do nothing");
+			}
+
+			CreateImpulse creation = delegate (float attenuation, float totalLength, HapticSequence seq)
+			{
+				HapticPattern emanation = new HapticPattern();
+				var stages = _grapher.BFS(destination, depth);
+				float baseStrength = 1.0f;
+				float timeStep = totalLength / stages.Count;
+				float time = 0.0f;
+				for (int i = stages.Count - 1; i >= 0; i--)
+				{
+					AreaFlag area = AreaFlag.None;
+					foreach (var item in stages[i])
+					{
+						area |= item.Location;
+					}
+					if (i > 0)
+					{
+						baseStrength *= (attenuation);
+					}
+					//Debug.Log(timeStep + "\t\t" + time + "   " + baseStrength + "\n");
+
+					emanation.AddSequence(time, area, Mathf.Clamp(baseStrength, 0f, 1f), seq);
+					time += timeStep;
+				}
+
+				return emanation;
+			};
+
+			return new Impulse(creation);
+		}
+
+		internal delegate HapticPattern CreateImpulse(float attenuation, float totalLength, HapticSequence seq);
+		[Serializable]
 		public class Impulse
 		{
 			private float totalLength;
@@ -191,6 +242,11 @@ namespace NullSpace.SDK
 				return this;
 			}
 
+			public HapticPattern GetImpulsePattern()
+			{
+				return process(attenuation, totalLength, seq);
+			}
+
 			/// <summary>
 			/// Begins the Impulse. 
 			/// Can be called multiple times for multiple HapticHandle instances of the effect.
@@ -205,7 +261,7 @@ namespace NullSpace.SDK
 				}
 				else
 				{
-					return process(attenuation, totalLength, seq);
+					return process(attenuation, totalLength, seq).CreateHandle().Play();
 				}
 			}
 

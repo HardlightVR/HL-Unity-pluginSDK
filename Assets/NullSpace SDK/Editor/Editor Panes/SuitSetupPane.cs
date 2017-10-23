@@ -582,9 +582,9 @@ namespace NullSpace.SDK.Editor
 					MyDefinition.SuitRoot = hardlightSuit.gameObject;
 
 					//ERROR: This isn't an actual valid check yet.
-					if (hardlightSuit.Definition.CountValidZoneHolders() <= 0)
+					if (hardlightSuit.Definition._CountValidZoneHoldersInEditor() <= 0)
 					{
-						hardlightSuit.CheckListValidity();
+						hardlightSuit._EditorOnlyCheckListValidity();
 
 						MyDefinition.ZoneHolders = hardlightSuit.ZoneHolders.ToList();
 						MyDefinition.SceneReferences = hardlightSuit.SceneReferences.ToList();
@@ -1076,7 +1076,6 @@ namespace NullSpace.SDK.Editor
 
 			//EditorGUILayout.InspectorTitlebar(true, this, true);
 
-
 			if (Suits != null && Suits.Count > 1)
 			{
 				bool allowExpandAll = Suits != null && Suits.Count > 1;
@@ -1137,15 +1136,6 @@ namespace NullSpace.SDK.Editor
 		//		For each SuitHolder that is desired, it creates a list of Transforms sorted by confidence levels.
 		//		The user can then customize and select options for which spots get the body colliders
 
-		void ProcessRootObject()
-		{
-
-		}
-
-		public class LookupObject
-		{
-
-		}
 		//Record confidence? Highlight the poor matches
 		//Green/good for the ones that we light
 		//Look at UE4/Unity's Mecanim default rigs - this will be a common naming convention

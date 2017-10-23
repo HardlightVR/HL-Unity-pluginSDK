@@ -230,7 +230,7 @@ namespace NullSpace.SDK
 			else if (Instance != this)
 			{
 				Debug.LogError("There should only be one NSManager! Make sure there is only one NSManager prefab in the scene\n" +
-					"If there is no NSManager, one will be created for you!");
+					"If there is no NSManager, one will be created for you if you call any NSManager.Instance function.");
 			}
 
 			_trackingUpdateLoop = UpdateTracking();

@@ -97,7 +97,7 @@ namespace Hardlight.SDK.Demos
 			#region Hit Player
 			//Layer 31 is the default haptics layer.
 			//This lets us check if what we hit is a 'haptic object' since thats all the Example Projectile wants to hit.
-			if (col.gameObject.layer == NSManager.HAPTIC_LAYER)
+			if (col.gameObject.layer == HardlightManager.HAPTIC_LAYER)
 			{
 				//Debug.DrawLine(transform.position, transform.position + Vector3.up * 100, Color.cyan, 15);
 				bool hapticCollisionOccurred = false;

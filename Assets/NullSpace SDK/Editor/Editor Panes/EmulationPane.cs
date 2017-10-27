@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Hardlight.SDK.Editor
+namespace Hardlight.SDK.UEditor
 {
 	public class EmulationPane : EditorPane
 	{
@@ -42,9 +42,9 @@ namespace Hardlight.SDK.Editor
 		}
 		public override void DrawPaneContent()
 		{
-			NSEditorStyles.OpenHorizontal(ColorBoxType.Warning);
-			NSEditorStyles.DrawTitle("This tool is coming soon!\nIt will let you watch in real time what is going on in each pad.");
-			NSEditorStyles.CloseHorizontal();
+			HLEditorStyles.OpenHorizontal(ColorBoxType.Warning);
+			HLEditorStyles.DrawTitle("This tool is coming soon!\nIt will let you watch in real time what is going on in each pad.");
+			HLEditorStyles.CloseHorizontal();
 		}
 
 		#region Editor Saving

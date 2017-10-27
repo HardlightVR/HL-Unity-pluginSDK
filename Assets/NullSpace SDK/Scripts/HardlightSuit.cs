@@ -106,7 +106,7 @@ namespace Hardlight.SDK
 
 		[SerializeField]
 		[Space(12)]
-		public int HapticsLayer = NSManager.HAPTIC_LAYER;
+		public int HapticsLayer = HardlightManager.HAPTIC_LAYER;
 		[SerializeField]
 		public bool AddChildObjects = true;
 		[SerializeField]

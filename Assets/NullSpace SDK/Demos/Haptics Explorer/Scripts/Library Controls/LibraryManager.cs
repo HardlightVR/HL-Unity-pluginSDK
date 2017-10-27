@@ -192,8 +192,6 @@ namespace Hardlight.SDK.Demos
 			assetTool.SetRootHapticsFolder(path + "/Haptics/");
 			var packages = assetTool.TryGetPackageInfo();
 
-
-
 			for (int i = 0; i < packages.Count; i++)
 			{
 				//Debug.Log("Directory: " + folders[i] + "\n");

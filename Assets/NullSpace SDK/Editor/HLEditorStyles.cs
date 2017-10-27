@@ -5,12 +5,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Hardlight.SDK.Editor
+namespace Hardlight.SDK.UEditor
 {
 	public enum ColorBoxType { Tutorial, Warning, Error, Normal, Black }
 	public enum ColorUsageState { Normal, Hover, Clicked, Active }
 
-	public class NSEditorStyles
+	public class HLEditorStyles
 	{
 		public static bool CompactMode = true;
 		public static bool VisualOverhaul = true;
@@ -408,10 +408,15 @@ namespace Hardlight.SDK.Editor
 
 		public static void DrawLabel(string labelText, float minWidth = 105, float spacingAfterward = 0)
 		{
-			GUILayout.Label(labelText, NSEditorStyles.GetSmallLabel(), GUILayout.ExpandWidth(true), GUILayout.MinWidth(105));
+			GUILayout.Label(labelText, HLEditorStyles.GetSmallLabel(), GUILayout.ExpandWidth(true), GUILayout.MinWidth(minWidth));
 			GUILayout.Space(spacingAfterward);
 		}
-			/// <summary>
+		public static void DrawMinLabel(string labelText, float minWidth = 25, float maxWidth = 65, float spacingAfterward = 0)
+		{
+			GUILayout.Label(labelText, HLEditorStyles.GetSmallLabel(), GUILayout.ExpandWidth(false), GUILayout.MinWidth(minWidth), GUILayout.MaxWidth(maxWidth));
+			GUILayout.Space(spacingAfterward);
+		}
+		/// <summary>
 		/// Label Wrapper - takes a Rect to offset padding of the label by. Left/X, Top/Y, Right/Width, Bottom/Height format for the Rect
 		/// </summary>
 		/// <param name="labelText">Label text.</param>
@@ -419,7 +424,7 @@ namespace Hardlight.SDK.Editor
 		/// <param name="minWidth">Minimum width.</param>
 		public static void DrawLabel(string labelText, Rect offset, float minWidth = 105)
 		{
-			GUILayout.Label(labelText, NSEditorStyles.GetSubTitleLabel(offset), GUILayout.ExpandWidth(false), GUILayout.MinWidth(105));
+			GUILayout.Label(labelText, HLEditorStyles.GetSubTitleLabel(offset), GUILayout.ExpandWidth(false), GUILayout.MinWidth(minWidth));
 		}
 
 		public static bool DrawButton(Texture image, params GUILayoutOption[] options)
@@ -443,6 +448,16 @@ namespace Hardlight.SDK.Editor
 			GUIStyle buttonStyle = new GUIStyle(EditorStyles.toolbarButton);
 			return GUILayout.Button(content, buttonStyle, GUILayout.ExpandWidth(false));
 		}
+		public static bool DrawButton(string content, float minWidth, float maxWidth = 65, float spacingAfterward = 0)
+		{
+			if (VisualOverhaul != true)
+			{
+				GUIStyle oldButtonStyle = new GUIStyle(EditorStyles.miniButton);
+				return GUILayout.Button(content, oldButtonStyle, GUILayout.ExpandWidth(false), GUILayout.MinWidth(minWidth), GUILayout.MaxWidth(maxWidth));
+			}
+			GUIStyle buttonStyle = new GUIStyle(EditorStyles.toolbarButton);
+			return GUILayout.Button(content, buttonStyle, GUILayout.ExpandWidth(false), GUILayout.MinWidth(minWidth), GUILayout.MaxWidth(maxWidth));
+		}
 
 		public static bool DrawButton(GUIContent content, params GUILayoutOption[] options)
 		{
@@ -453,6 +468,28 @@ namespace Hardlight.SDK.Editor
 
 			GUIStyle buttonStyle = new GUIStyle(EditorStyles.toolbarButton);
 			return GUILayout.Button(content, buttonStyle, GUILayout.ExpandWidth(false));
+		}
+		#endregion
+
+		#region Floats
+		public static float FloatField(string labelText, float value, float minWidth = 25, float maxWidth = 65, float spacingAfterward = 0)
+		{
+			float result = EditorGUILayout.FloatField(labelText, value, HLEditorStyles.GetSmallTextField(), GUILayout.ExpandWidth(false), GUILayout.MinWidth(minWidth), GUILayout.MaxWidth(maxWidth));
+			GUILayout.Space(spacingAfterward);
+			return result;
+		}
+		public static float FloatField(float value, float minWidth = 25, float maxWidth = 65, float spacingAfterward = 0)
+		{
+			float result = EditorGUILayout.FloatField(value, HLEditorStyles.GetSmallTextField(), GUILayout.ExpandWidth(false), GUILayout.MinWidth(minWidth), GUILayout.MaxWidth(maxWidth));
+			GUILayout.Space(spacingAfterward);
+			return result;
+		}
+		#endregion
+
+		#region ObjectField
+		public static Object ObjectField(string label, Object obj, System.Type type, float minWidth = 25, float maxWidth = 65, float spacingAfterward = 0)
+		{
+			return EditorGUILayout.ObjectField(label, obj, type, false, GUILayout.ExpandWidth(false), GUILayout.MinWidth(minWidth), GUILayout.MaxWidth(maxWidth));
 		}
 		#endregion
 
@@ -598,6 +635,12 @@ namespace Hardlight.SDK.Editor
 		public static System.Enum DrawEnumPopup(System.Enum selectedIndex, params GUILayoutOption[] options)
 		{
 			System.Enum thing = EditorGUILayout.EnumPopup(selectedIndex, GetEnumPopup(), options);
+			return thing;
+		}
+
+		public static System.Enum DrawEnumPopup(System.Enum selectedIndex, float minWidth = 25, float maxWidth = 65, float spacingAfterward = 0)
+		{
+			System.Enum thing = EditorGUILayout.EnumPopup(selectedIndex, GetEnumPopup(), GUILayout.ExpandWidth(false), GUILayout.MinWidth(minWidth), GUILayout.MaxWidth(maxWidth));
 			return thing;
 		}
 		#endregion
@@ -858,6 +901,14 @@ namespace Hardlight.SDK.Editor
 		public static GUIStyle GetSmallLabel()
 		{
 			GUIStyle label = new GUIStyle(EditorStyles.label);
+			label.alignment = TextAnchor.LowerLeft;
+			label.wordWrap = true;
+			return label;
+		}
+
+		public static GUIStyle GetSmallTextField()
+		{
+			GUIStyle label = new GUIStyle(EditorStyles.textField);
 			label.alignment = TextAnchor.LowerLeft;
 			label.wordWrap = true;
 			return label;

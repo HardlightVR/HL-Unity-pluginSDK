@@ -92,9 +92,9 @@ namespace Hardlight.SDK
 			}
 
 			//We don't want haptics on different layers. It isn't an error, but a good practice thing.
-			if (gameObject.layer != NSManager.HAPTIC_LAYER)
+			if (gameObject.layer != HardlightManager.HAPTIC_LAYER)
 			{
-				Debug.LogWarning("You should aim to keep haptic content to Layer [" + NSManager.HAPTIC_LAYER + "].\n");
+				Debug.LogWarning("You should aim to keep haptic content to Layer [" + HardlightManager.HAPTIC_LAYER + "].\n");
 			}
 		}
 

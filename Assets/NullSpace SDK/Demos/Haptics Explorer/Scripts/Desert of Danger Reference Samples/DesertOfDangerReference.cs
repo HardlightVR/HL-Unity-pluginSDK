@@ -225,8 +225,8 @@ namespace Hardlight.SDK.Demos
 			HapticSequence seq = new HapticSequence();
 
 			//The elements we will add
-			HapticEffect eff = new HapticEffect(Effect.Buzz, 0.00f);
-			HapticEffect eff2 = new HapticEffect(Effect.Buzz, 0.15f);
+			HapticEffect eff = new HapticEffect(Effect.Buzz, 0.00);
+			HapticEffect eff2 = new HapticEffect(Effect.Buzz, 0.15);
 
 			//The time stamps of the different effects.
 			seq.AddEffect(0, 1.0, eff);
@@ -255,7 +255,7 @@ namespace Hardlight.SDK.Demos
 			//		HapticEffect eff = new HapticEffect(Effect.Buzz, 0.00f, 1.0f);
 
 			HapticEffect eff = new HapticEffect(Effect.Buzz, 0.10f);
-			
+
 			seq.AddEffect(0, eff);
 
 			//The Desert of Danger demo set the entire impulse duration to .25s, 
@@ -264,7 +264,7 @@ namespace Hardlight.SDK.Demos
 				.WithEffect(seq)
 				.WithDuration(.25f);
 		}
-		
+
 		/// <summary>
 		/// Desert of Danger - when the player is hit.
 		/// This is not the best way to implement the following. We're still learning the best way to make reusable haptics.
@@ -309,7 +309,7 @@ namespace Hardlight.SDK.Demos
 			Debug.LogError("This function does not ACTUALLY work in your game. It is provided sample code to give you the gist of what you should do.\nA better sample is coming soon - this was shipped early to help a particular partner hit one of their deadlines. Hopefully you never see this line.\n");
 
 			PlayerTorso torso = new PlayerTorso();
-	
+
 			//Maybe get a list of nearby regions?
 			GameObject closest = torso.TorsoHit(source);
 

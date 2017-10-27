@@ -527,11 +527,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 13946146}
   TryFindCollider: 0
-  DefaultLocationSize: 0.025
-  BubbleCollisionPoints: []
 --- !u!114 &13946144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1362,45 +1359,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AllowSingleVolumeCollisions: 0
   AllowRegionalCollisions: 0
-  ColorRenderersOutsideEditor: 0
+  ColorRendererInEditor: 1
   _definition: {fileID: 1595686186}
   SuitName: Player Body
   SuitRoot: {fileID: 40532543}
-  DefinedAreas: 01000000020000000400000008000000100000002000000040000000800000000000010000000200000004000000080000001000000020000000400000008000
-  ZoneHolders:
-  - {fileID: 86545247}
-  - {fileID: 2055901429}
-  - {fileID: 1123503590}
-  - {fileID: 785869379}
-  - {fileID: 1565366768}
-  - {fileID: 1006991278}
-  - {fileID: 13946141}
-  - {fileID: 437739973}
-  - {fileID: 1621281713}
-  - {fileID: 704936493}
-  - {fileID: 1745556757}
-  - {fileID: 2065374532}
-  - {fileID: 1119463295}
-  - {fileID: 1588392149}
-  - {fileID: 1226996603}
-  - {fileID: 1703622350}
-  SceneReferences:
-  - {fileID: 86545249}
-  - {fileID: 2055901431}
-  - {fileID: 1123503592}
-  - {fileID: 785869381}
-  - {fileID: 1565366770}
-  - {fileID: 1006991280}
-  - {fileID: 13946143}
-  - {fileID: 437739975}
-  - {fileID: 1621281715}
-  - {fileID: 704936495}
-  - {fileID: 1745556759}
-  - {fileID: 2065374534}
-  - {fileID: 1119463297}
-  - {fileID: 1588392151}
-  - {fileID: 1226996605}
-  - {fileID: 1703622352}
+  DefinedAreas: 
+  ZoneHolders: []
+  SceneReferences: []
   HapticsLayer: 31
   AddChildObjects: 0
   AddExclusiveTriggerCollider: 0
@@ -1792,11 +1757,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 51099315}
   TryFindCollider: 0
-  DefaultLocationSize: 0.025
-  BubbleCollisionPoints: []
 --- !u!114 &51099321
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2112,11 +2074,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 66341553}
   TryFindCollider: 0
-  DefaultLocationSize: 0.025
-  BubbleCollisionPoints: []
 --- !u!114 &66341559
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2646,13 +2605,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 86545252}
   TryFindCollider: 0
-  DefaultLocationSize: 0.05
-  BubbleCollisionPoints:
-  - {fileID: 1172477675}
-  - {fileID: 2064716237}
 --- !u!114 &86545250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5420,11 +5374,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 231638045}
   TryFindCollider: 0
-  DefaultLocationSize: 0.025
-  BubbleCollisionPoints: []
 --- !u!114 &231638051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5666,11 +5617,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 235601803}
   TryFindCollider: 0
-  DefaultLocationSize: 0.025
-  BubbleCollisionPoints: []
 --- !u!114 &235601809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8324,11 +8272,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 339531494}
   TryFindCollider: 0
-  DefaultLocationSize: 0.025
-  BubbleCollisionPoints: []
 --- !u!114 &339531500
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9158,11 +9103,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 370827611}
   TryFindCollider: 0
-  DefaultLocationSize: 0.025
-  BubbleCollisionPoints: []
 --- !u!114 &370827617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9918,11 +9860,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 391798259}
   TryFindCollider: 0
-  DefaultLocationSize: 0.025
-  BubbleCollisionPoints: []
 --- !u!114 &391798265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10729,11 +10668,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 437739978}
   TryFindCollider: 0
-  DefaultLocationSize: 0.025
-  BubbleCollisionPoints: []
 --- !u!114 &437739976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14504,11 +14440,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 581987838}
   TryFindCollider: 0
-  DefaultLocationSize: 0.025
-  BubbleCollisionPoints: []
 --- !u!114 &581987844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17652,13 +17585,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 704936498}
   TryFindCollider: 0
-  DefaultLocationSize: 0.05
-  BubbleCollisionPoints:
-  - {fileID: 211405191}
-  - {fileID: 1405600554}
 --- !u!114 &704936496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18454,11 +18382,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 724691968}
   TryFindCollider: 0
-  DefaultLocationSize: 0.025
-  BubbleCollisionPoints: []
 --- !u!114 &724691974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19866,11 +19791,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 779213935}
   TryFindCollider: 0
-  DefaultLocationSize: 0.025
-  BubbleCollisionPoints: []
 --- !u!114 &779213942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20096,15 +20018,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 785869384}
   TryFindCollider: 0
-  DefaultLocationSize: 0.05
-  BubbleCollisionPoints:
-  - {fileID: 376891753}
-  - {fileID: 1415698321}
-  - {fileID: 970100000}
-  - {fileID: 743266521}
 --- !u!114 &785869382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21030,11 +20945,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 834042538}
   TryFindCollider: 0
-  DefaultLocationSize: 0.025
-  BubbleCollisionPoints: []
 --- !u!114 &834042544
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21320,11 +21232,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 849871115}
   TryFindCollider: 0
-  DefaultLocationSize: 0.025
-  BubbleCollisionPoints: []
 --- !u!114 &849871121
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24294,11 +24203,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 975393516}
   TryFindCollider: 0
-  DefaultLocationSize: 0.025
-  BubbleCollisionPoints: []
 --- !u!114 &975393522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25015,11 +24921,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 1006991283}
   TryFindCollider: 0
-  DefaultLocationSize: 0.025
-  BubbleCollisionPoints: []
 --- !u!114 &1006991281
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27709,15 +27612,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 1119463300}
   TryFindCollider: 0
-  DefaultLocationSize: 0.05
-  BubbleCollisionPoints:
-  - {fileID: 1298332215}
-  - {fileID: 1953601080}
-  - {fileID: 785570102}
-  - {fileID: 307470584}
 --- !u!114 &1119463298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27829,11 +27725,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 1123503595}
   TryFindCollider: 0
-  DefaultLocationSize: 0.025
-  BubbleCollisionPoints: []
 --- !u!114 &1123503593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30338,11 +30231,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 1226996608}
   TryFindCollider: 0
-  DefaultLocationSize: 0.025
-  BubbleCollisionPoints: []
 --- !u!114 &1226996606
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34467,7 +34357,7 @@ Prefab:
     - target: {fileID: 224000012628470334, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: -557
       objectReference: {fileID: 0}
     - target: {fileID: 224000013871009870, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -38333,16 +38223,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hmd: {fileID: 0}
+  PositionTechnique: 0
   NeckVerticalAnchor: 0.15
   NeckFwdAnchor: 0
-  HideBodyMimicFromView: 1
+  HmdPoseWeight: 1
+  ArmTrackerPoseWeight: 1.25
+  LowerBackTrackerWeight: 1.25
   UseDevHeight: 0
   devHeightPercentage: -0.15
-  assumedForward: {x: 0, y: 0, z: 0}
   LastUpdatedPosition: {x: 0, y: 0, z: 0}
   LeftShoulder: {fileID: 1123503590}
   RightShoulder: {fileID: 1745556757}
+  LeftArm: {fileID: 0}
+  RightArm: {fileID: 0}
+  AbsoluteLeftArm: {fileID: 0}
+  AbsoluteRightArm: {fileID: 0}
+  LowerBack: {fileID: 0}
+  VisualPrefabs: {fileID: 0}
+  DataModelPrefabs: {fileID: 0}
+  ShoulderBarVisual: {fileID: 0}
+  ShouldCreateVisuals: 1
   SnapUpdateDist: 1
+  ShoulderBarData: {fileID: 0}
 --- !u!1 &1524804213
 GameObject:
   m_ObjectHideFlags: 0
@@ -40178,15 +40080,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 1565366773}
   TryFindCollider: 0
-  DefaultLocationSize: 0.05
-  BubbleCollisionPoints:
-  - {fileID: 634700646}
-  - {fileID: 846953092}
-  - {fileID: 350347560}
-  - {fileID: 903460627}
 --- !u!114 &1565366771
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41077,11 +40972,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 1588392154}
   TryFindCollider: 0
-  DefaultLocationSize: 0.025
-  BubbleCollisionPoints: []
 --- !u!114 &1588392152
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41330,41 +41222,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SuitName: Player Body
   SuitRoot: {fileID: 40532543}
-  DefinedAreas: 01000000020000000400000008000000100000002000000040000000800000000000010000000200000004000000080000001000000020000000400000008000
-  ZoneHolders:
-  - {fileID: 86545247}
-  - {fileID: 2055901429}
-  - {fileID: 1123503590}
-  - {fileID: 785869379}
-  - {fileID: 1565366768}
-  - {fileID: 1006991278}
-  - {fileID: 13946141}
-  - {fileID: 437739973}
-  - {fileID: 1621281713}
-  - {fileID: 704936493}
-  - {fileID: 1745556757}
-  - {fileID: 2065374532}
-  - {fileID: 1119463295}
-  - {fileID: 1588392149}
-  - {fileID: 1226996603}
-  - {fileID: 1703622350}
-  SceneReferences:
-  - {fileID: 86545249}
-  - {fileID: 2055901431}
-  - {fileID: 1123503592}
-  - {fileID: 785869381}
-  - {fileID: 1565366770}
-  - {fileID: 1006991280}
-  - {fileID: 13946143}
-  - {fileID: 437739975}
-  - {fileID: 1621281715}
-  - {fileID: 704936495}
-  - {fileID: 1745556759}
-  - {fileID: 2065374534}
-  - {fileID: 1119463297}
-  - {fileID: 1588392151}
-  - {fileID: 1226996605}
-  - {fileID: 1703622352}
+  DefinedAreas: 
+  ZoneHolders: []
+  SceneReferences: []
   HapticsLayer: 31
   AddChildObjects: 0
   AddExclusiveTriggerCollider: 0
@@ -42056,13 +41916,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 1621281718}
   TryFindCollider: 0
-  DefaultLocationSize: 0.05
-  BubbleCollisionPoints:
-  - {fileID: 769519383}
-  - {fileID: 55319657}
 --- !u!114 &1621281716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43138,11 +42993,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 1655463003}
   TryFindCollider: 0
-  DefaultLocationSize: 0.025
-  BubbleCollisionPoints: []
 --- !u!114 &1655463009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44001,11 +43853,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 1703622355}
   TryFindCollider: 0
-  DefaultLocationSize: 0.025
-  BubbleCollisionPoints: []
 --- !u!114 &1703622353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45151,11 +45000,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 1745556762}
   TryFindCollider: 0
-  DefaultLocationSize: 0.025
-  BubbleCollisionPoints: []
 --- !u!114 &1745556760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54072,13 +53918,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 2055901434}
   TryFindCollider: 0
-  DefaultLocationSize: 0.05
-  BubbleCollisionPoints:
-  - {fileID: 2108444140}
-  - {fileID: 1354469536}
 --- !u!114 &2055901432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54416,15 +54257,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 2065374537}
   TryFindCollider: 0
-  DefaultLocationSize: 0.05
-  BubbleCollisionPoints:
-  - {fileID: 1464206126}
-  - {fileID: 1481360647}
-  - {fileID: 35791912}
-  - {fileID: 2056965479}
 --- !u!114 &2065374535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55464,11 +55298,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 2093660021}
   TryFindCollider: 0
-  DefaultLocationSize: 0.025
-  BubbleCollisionPoints: []
 --- !u!114 &2093660027
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -56342,11 +56173,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1a7a39bebda15498a023b0e222a94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.05
   myCollider: {fileID: 2134527031}
   TryFindCollider: 0
-  DefaultLocationSize: 0.025
-  BubbleCollisionPoints: []
 --- !u!114 &2134527037
 MonoBehaviour:
   m_ObjectHideFlags: 0

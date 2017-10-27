@@ -1,6 +1,6 @@
 ﻿using UnityEditor;
 
-namespace Hardlight.SDK.Editor
+namespace Hardlight.SDK.UEditor
 {
 	public class HelpMessage
 	{

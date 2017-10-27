@@ -205,7 +205,7 @@ namespace Hardlight.SDK
 			{ _bodyMimic = value; }
 		}
 
-		private void Init(GameObject vrCamera = null, int hapticLayer = NSManager.HAPTIC_LAYER)
+		private void Init(GameObject vrCamera = null, int hapticLayer = HardlightManager.HAPTIC_LAYER)
 		{
 			//Debug.Log("Attempting initialization " + initialized + "  cam null? " + (vrCamera == null) + "\n");
 			if (!initialized)
@@ -254,7 +254,7 @@ namespace Hardlight.SDK
 			return null;
 		}
 
-		private void InitBodyMimic(VRObjectMimic vrCamera, VRObjectMimic cameraRigMimic, int hapticLayer = NSManager.HAPTIC_LAYER)
+		private void InitBodyMimic(VRObjectMimic vrCamera, VRObjectMimic cameraRigMimic, int hapticLayer = HardlightManager.HAPTIC_LAYER)
 		{
 			Camera playerCameraToHideBodyFrom = vrCamera.ObjectToMimic.GetComponent<Camera>();
 			ActiveBodyMimic = BodyMimic.Initialize(playerCameraToHideBodyFrom, cameraRigMimic, hapticLayer);
@@ -287,7 +287,7 @@ namespace Hardlight.SDK
 		/// </summary>
 		/// <param name="vrCamera"></param>
 		/// <param name="hapticLayer"></param>
-		public static void Initialize(GameObject vrCamera, int hapticLayer = NSManager.HAPTIC_LAYER)
+		public static void Initialize(GameObject vrCamera, int hapticLayer = HardlightManager.HAPTIC_LAYER)
 		{
 			if (ValidInstance())
 			{

@@ -3,7 +3,7 @@ using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Hardlight.SDK.Editor
+namespace Hardlight.SDK.UEditor
 {
 	public class HardlightEditor : EditorWindow
 	{
@@ -148,7 +148,7 @@ namespace Hardlight.SDK.Editor
 			//Initialize if we aren't initialized
 			CheckIfInvalidSetup();
 
-			NSEditorStyles.DrawBackgroundImage(icon, mat, this);
+			HLEditorStyles.DrawBackgroundImage(icon, mat, this);
 
 			DrawHardlightEditor();
 		}
@@ -175,22 +175,22 @@ namespace Hardlight.SDK.Editor
 			EditorGUILayout.BeginHorizontal();
 
 			EditorGUILayout.BeginVertical();
-			NSEditorStyles.DrawTitle(new GUIContent(" Hardlight Editor"));
+			HLEditorStyles.DrawTitle(new GUIContent(" Hardlight Editor"));
 			EditorGUILayout.EndVertical();
-			//NSEditorStyles.DrawLabel("   v" + NSManager.GetPluginVersionInfo().ToString());
+			//NSEditorStyles.DrawLabel("   v" + HardlightManager.GetPluginVersionInfo().ToString());
 
-			NSEditorStyles.DrawButton("Plugin v" + NSManager.GetPluginVersionInfo().ToString());
-			if (NSEditorStyles.DrawButton(NSEditorStyles.CompactMode ? "Feedback" : "Send Feedback"))
+			HLEditorStyles.DrawButton("Plugin v" + HardlightManager.GetPluginVersionInfo().ToString());
+			if (HLEditorStyles.DrawButton(HLEditorStyles.CompactMode ? "Feedback" : "Send Feedback"))
 			{
 				Application.OpenURL(FeedbackLink);
 			}
-			if (NSEditorStyles.DrawButton(NSEditorStyles.CompactMode ? "Docs" : "Documentation"))
+			if (HLEditorStyles.DrawButton(HLEditorStyles.CompactMode ? "Docs" : "Documentation"))
 			{
 				Application.OpenURL(DocumentationLink);
 			}
-			if (NSEditorStyles.DrawButton(NSEditorStyles.CompactMode ? "+" : "Compact Mode"))
+			if (HLEditorStyles.DrawButton(HLEditorStyles.CompactMode ? "+" : "Compact Mode"))
 			{
-				NSEditorStyles.CompactMode = !NSEditorStyles.CompactMode;
+				HLEditorStyles.CompactMode = !HLEditorStyles.CompactMode;
 			}
 			EditorGUILayout.EndHorizontal();
 
@@ -225,7 +225,7 @@ namespace Hardlight.SDK.Editor
 		{
 			if (DebugHardlightEditor)
 			{
-				NSEditorStyles.DrawLabel("Active Tab:" + (ActiveTab == null ? "Null Active Tab" : ActiveTab.GetType().ToString()));
+				HLEditorStyles.DrawLabel("Active Tab:" + (ActiveTab == null ? "Null Active Tab" : ActiveTab.GetType().ToString()));
 			}
 
 			//Draw horizontal row(s) of tab buttons.
@@ -273,7 +273,7 @@ namespace Hardlight.SDK.Editor
 							{
 								//NSEditorStyles.DrawLabel("Attempt Draw Pane ");
 								HardlightPanes[i].DrawPane();
-								NSEditorStyles.DrawDivider();
+								HLEditorStyles.DrawDivider();
 							}
 						}
 						//else

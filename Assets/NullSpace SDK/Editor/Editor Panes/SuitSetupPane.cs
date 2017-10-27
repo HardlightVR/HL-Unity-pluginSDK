@@ -3,7 +3,7 @@ using UnityEditor;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace Hardlight.SDK.Editor
+namespace Hardlight.SDK.UEditor
 {
 	public class SuitSetupPane : EditorPane
 	{
@@ -51,13 +51,13 @@ namespace Hardlight.SDK.Editor
 				//Opening Greetings
 				myPane.IsTutorialStep(0, () =>
 				{
-					NSEditorStyles.DrawLabel("Welcome to the Suit Setup Tool-torial!\nThis is a tool for setting up a suit on a collection of existing scene objects.\nIt comes with an existing prefab to give you the general gist.\nYou don't need to use this tool at all, it is intended to be a quick way to configure different objects to the body for area/positional haptics.", 105, 14);
+					HLEditorStyles.DrawLabel("Welcome to the Suit Setup Tool-torial!\nThis is a tool for setting up a suit on a collection of existing scene objects.\nIt comes with an existing prefab to give you the general gist.\nYou don't need to use this tool at all, it is intended to be a quick way to configure different objects to the body for area/positional haptics.", 105, 14);
 				});
 
 				//Closing Words Tutorial Content
 				myPane.IsTutorialStep(11, () =>
 				{
-					NSEditorStyles.DrawLabel("Closing Words\n" +
+					HLEditorStyles.DrawLabel("Closing Words\n" +
 						"This tool will attempt to auto-find any existing suit definitions. Suit Definitions should be prefab friendly (assuming you aren't referencing outside of the created prefab.\n\n" +
 						"This tool supports undoing most operations [Ctrl+Z].\nUndo functionality has passed most testing but might not undo all operations.\n\n"
 
@@ -69,7 +69,7 @@ namespace Hardlight.SDK.Editor
 				string suitDisplayName = MyDefinition.SuitName.Length > 0 ? MyDefinition.SuitName : MyDefinition.SuitRoot == null ? "Unnamed Suit" : MyDefinition.SuitRoot.name;
 				myPane.TutorialHighlight(!TopFoldout && myPane.IsStepWithinRange(1, 8), () =>
 				{
-					TopFoldout = NSEditorStyles.DrawGUILayoutToggle(TopFoldout, "Show Suit: " + suitDisplayName);
+					TopFoldout = HLEditorStyles.DrawGUILayoutToggle(TopFoldout, "Show Suit: " + suitDisplayName);
 				});
 				#region Top Foldout
 				if (TopFoldout)
@@ -83,7 +83,7 @@ namespace Hardlight.SDK.Editor
 					//ObjectFieldFoldout = NSEditorStyles.DrawFoldout(ObjectFieldFoldout, "Show Suit Configuration");
 					myPane.TutorialHighlight(!ObjectFieldFoldout && myPane.IsStepWithinRange(2, 6), () =>
 					{
-						ObjectFieldFoldout = NSEditorStyles.DrawGUILayoutToggle(ObjectFieldFoldout, "Show Suit Configuration");
+						ObjectFieldFoldout = HLEditorStyles.DrawGUILayoutToggle(ObjectFieldFoldout, "Show Suit Configuration");
 					});
 
 					if (ObjectFieldFoldout)
@@ -97,7 +97,7 @@ namespace Hardlight.SDK.Editor
 					{
 						myPane.IsTutorialStep(myPane.IsStepWithinRange(2, 6), () =>
 						{
-							NSEditorStyles.DrawLabel("Expand this foldout to continue!", 105, 14);
+							HLEditorStyles.DrawLabel("Expand this foldout to continue!", 105, 14);
 						});
 					}
 
@@ -109,7 +109,7 @@ namespace Hardlight.SDK.Editor
 				{
 					myPane.IsTutorialStep(myPane.IsStepWithinRange(1, 8), () =>
 					{
-						NSEditorStyles.DrawLabel("Expand this foldout to continue!", 105, 14);
+						HLEditorStyles.DrawLabel("Expand this foldout to continue!", 105, 14);
 					});
 				}
 				#endregion
@@ -141,7 +141,7 @@ namespace Hardlight.SDK.Editor
 
 					content = new GUIContent("Autoconfigure based on Root Object", "Uses common names to try and establish the different suit body colliders for the suit.");
 
-					bool Result = NSEditorStyles.OperationButton(MyDefinition.SuitRoot == null, content);
+					bool Result = HLEditorStyles.OperationButton(MyDefinition.SuitRoot == null, content);
 					if (Result)
 					{
 						HardlightSuit definition = MyDefinition.SuitRoot.GetComponent<HardlightSuit>();
@@ -162,7 +162,7 @@ namespace Hardlight.SDK.Editor
 
 				myPane.IsTutorialStep(3, () =>
 				{
-					NSEditorStyles.DrawLabel("Once you have a root object, you can tell it to draw from a predefined SuitDefinition.\n\n" + (hasDefinition ?
+					HLEditorStyles.DrawLabel("Once you have a root object, you can tell it to draw from a predefined SuitDefinition.\n\n" + (hasDefinition ?
 						"\tIt looks like you have an existing definition. This will populate from the SuitDefinition" :
 						"\tIt looks like you don't have an existing SuitDefinition")
 
@@ -173,7 +173,7 @@ namespace Hardlight.SDK.Editor
 				//content = new GUIContent("Can Change Values", "Can't be adjusted if you have a current layout. Remove HardlightCollider to adjust config.");
 				//CanChangeValues = CreateStyledToggle(false, CanChangeValues, content, innerOptions);
 
-				GUILayoutOption[] twoColumns = NSEditorStyles.NColumnsLayoutOptions();
+				GUILayoutOption[] twoColumns = HLEditorStyles.NColumnsLayoutOptions();
 
 				EditorGUILayout.BeginHorizontal();
 				content = new GUIContent("Add Child Objects", "Create child objects instead of directly adding to the targeted object.");
@@ -181,7 +181,7 @@ namespace Hardlight.SDK.Editor
 				myPane.TutorialHighlight(4, () =>
 				{
 					//The toggle for whether or not to add fresh child objects.
-					MyDefinition.AddChildObjects = NSEditorStyles.DrawGUILayoutToggle(false, MyDefinition.AddChildObjects, content, twoColumns);
+					MyDefinition.AddChildObjects = HLEditorStyles.DrawGUILayoutToggle(false, MyDefinition.AddChildObjects, content, twoColumns);
 				});
 				//MyDefinition.AddChildObjects = CreateStyledToggle(!CanChangeValues, MyDefinition.AddChildObjects, content, twoColumns);
 
@@ -190,7 +190,7 @@ namespace Hardlight.SDK.Editor
 				myPane.TutorialHighlight(5, () =>
 				{
 					//The toggle for whether or not to add trigger colliders.
-					MyDefinition.AddExclusiveTriggerCollider = NSEditorStyles.DrawGUILayoutToggle(false, MyDefinition.AddExclusiveTriggerCollider, content, twoColumns);
+					MyDefinition.AddExclusiveTriggerCollider = HLEditorStyles.DrawGUILayoutToggle(false, MyDefinition.AddExclusiveTriggerCollider, content, twoColumns);
 				});
 
 				EditorGUILayout.EndHorizontal();
@@ -198,14 +198,14 @@ namespace Hardlight.SDK.Editor
 				//This tutorial content is outside of the Horizontal region (for presentation reasons)
 				myPane.IsTutorialStep(4, () =>
 				{
-					NSEditorStyles.DrawLabel("This option controls whether new child objects will be created to store the added components that define which part of the suit this relates too.\n" + ""
+					HLEditorStyles.DrawLabel("This option controls whether new child objects will be created to store the added components that define which part of the suit this relates too.\n" + ""
 
 						, 105, 14);
 				});
 
 				myPane.IsTutorialStep(5, () =>
 				{
-					NSEditorStyles.DrawLabel("Do you want to add trigger colliders to the different suit objects?\nThe added colliders will be box colliders (which is accurate enough for most action gameplay)\nDisable this if you want to detect collisions elsewhere or use a more specific collider shape.\n" + ""
+					HLEditorStyles.DrawLabel("Do you want to add trigger colliders to the different suit objects?\nThe added colliders will be box colliders (which is accurate enough for most action gameplay)\nDisable this if you want to detect collisions elsewhere or use a more specific collider shape.\n" + ""
 
 						, 105, 14);
 				});
@@ -216,12 +216,12 @@ namespace Hardlight.SDK.Editor
 			{
 				myPane.TutorialHighlight(1, () =>
 				{
-					MyDefinition.SuitName = NSEditorStyles.TextField("Suit Name", MyDefinition.SuitName, options);
+					MyDefinition.SuitName = HLEditorStyles.TextField("Suit Name", MyDefinition.SuitName, options);
 				});
 
 				myPane.IsTutorialStep(1, () =>
 				{
-					NSEditorStyles.DrawLabel("Let's start by giving a name to your Suit.", 105, 14);
+					HLEditorStyles.DrawLabel("Let's start by giving a name to your Suit.", 105, 14);
 				});
 			}
 			void SuitRootObjectField(GUILayoutOption[] options)
@@ -237,7 +237,7 @@ namespace Hardlight.SDK.Editor
 
 				myPane.IsTutorialStep(2, () =>
 				{
-					NSEditorStyles.DrawLabel("This field is for an in-scene object.\nYou can create a SuitDefinition with this tool and it will attach a component to that object.", 105, 14);
+					HLEditorStyles.DrawLabel("This field is for an in-scene object.\nYou can create a SuitDefinition with this tool and it will attach a component to that object.", 105, 14);
 				});
 
 				//Disallow Prefabs
@@ -251,8 +251,8 @@ namespace Hardlight.SDK.Editor
 			#region Core Columns
 			void DrawAssignmentAndDisplay()
 			{
-				GUILayoutOption[] threeColumns = NSEditorStyles.NColumnsLayoutOptions(3);
-				GUIStyle columnStyle = NSEditorStyles.GetColumnStyle();
+				GUILayoutOption[] threeColumns = HLEditorStyles.NColumnsLayoutOptions(3);
+				GUIStyle columnStyle = HLEditorStyles.GetColumnStyle();
 
 				for (int i = 0; i < MyDefinition.DefinedAreas.Count; i++)
 				{
@@ -283,7 +283,7 @@ namespace Hardlight.SDK.Editor
 
 				myPane.IsTutorialStep(6, () =>
 				{
-					NSEditorStyles.DrawLabel("Drag or select Scene Objects that are part of your suit into each of the corresponding locations."
+					HLEditorStyles.DrawLabel("Drag or select Scene Objects that are part of your suit into each of the corresponding locations."
 						, 105, 14);
 				});
 			}
@@ -401,20 +401,20 @@ namespace Hardlight.SDK.Editor
 				//Suit Setup Operation Tutorial Content
 				myPane.IsTutorialStep(7, () =>
 				{
-					NSEditorStyles.DrawLabel("IMPORTANT: This box will create HardlightCollider components.\nIt will add them to the provided objects (or create children and add the components to the children)\nThis operation will not add excessive components (instead adding flags to the components.\n\nThis operation will also add a SuitDefinition to the provided root object, which is useful for modifying the configuration later.", 105, 14);
+					HLEditorStyles.DrawLabel("IMPORTANT: This box will create HardlightCollider components.\nIt will add them to the provided objects (or create children and add the components to the children)\nThis operation will not add excessive components (instead adding flags to the components.\n\nThis operation will also add a SuitDefinition to the provided root object, which is useful for modifying the configuration later.", 105, 14);
 				}, ColorBoxType.Warning);
 				if ((MyDefinition.SuitRoot == null))
 				{
 					myPane.IsTutorialStep(7, () =>
 					{
-						NSEditorStyles.DrawLabel("You have not set a Suit Root. Last chance..."
+						HLEditorStyles.DrawLabel("You have not set a Suit Root. Last chance..."
 							, 105, 14);
 					}, ColorBoxType.Error);
 				}
 				//Suit Removal Operation Tutorial Content
 				myPane.IsTutorialStep(8, () =>
 				{
-					NSEditorStyles.DrawLabel("This will remove all of the SuitDefinitions from the root & node objects.\nIt will delete the information defined in this EditorWindow.\nThis means you could change whether " + ""
+					HLEditorStyles.DrawLabel("This will remove all of the SuitDefinitions from the root & node objects.\nIt will delete the information defined in this EditorWindow.\nThis means you could change whether " + ""
 
 						, 105, 14);
 				});
@@ -432,7 +432,7 @@ namespace Hardlight.SDK.Editor
 
 				myPane.TutorialHighlight(7, () =>
 				{
-					Result = NSEditorStyles.OperationButton(OperationForbidden, content);
+					Result = HLEditorStyles.OperationButton(OperationForbidden, content);
 
 				});
 
@@ -975,7 +975,7 @@ namespace Hardlight.SDK.Editor
 		void DrawQuickButtonsForHardlightColliders()
 		{
 			//GUILayoutOption[] options = new GUILayoutOption[0];
-			GUILayoutOption[] threeColumns = NSEditorStyles.NColumnsLayoutOptions(3);
+			GUILayoutOption[] threeColumns = HLEditorStyles.NColumnsLayoutOptions(3);
 			GUIContent content = new GUIContent(string.Empty);
 			//Toggle to show a list of all the suits
 			List<HardlightCollider> suitObjects = new List<HardlightCollider>();
@@ -992,7 +992,7 @@ namespace Hardlight.SDK.Editor
 
 				TutorialHighlight(!QuickButtonFoldout && IsStepWithinRange(9, 9), () =>
 				{
-					QuickButtonFoldout = NSEditorStyles.DrawGUILayoutToggle(QuickButtonFoldout, showQuickButtonName + " Existing Hardlight Colliders");
+					QuickButtonFoldout = HLEditorStyles.DrawGUILayoutToggle(QuickButtonFoldout, showQuickButtonName + " Existing Hardlight Colliders");
 				});
 
 				if (QuickButtonFoldout)
@@ -1013,7 +1013,7 @@ namespace Hardlight.SDK.Editor
 							{
 								content = new GUIContent(suitObjects[i].name, "Quick Navigate to " + suitObjects[i].name);
 								//Create a select button
-								NSEditorStyles.QuickSelectButton(false, suitObjects[i].gameObject, content, threeColumns);
+								HLEditorStyles.QuickSelectButton(false, suitObjects[i].gameObject, content, threeColumns);
 							}
 						}
 						if (horizOpen) EditorGUILayout.EndHorizontal();
@@ -1021,7 +1021,7 @@ namespace Hardlight.SDK.Editor
 
 					IsTutorialStep(9, QuickButtonFoldout, () =>
 					{
-						NSEditorStyles.DrawLabel("Quickly navigates to existing Suit Body Collider objects in the scene.\n"
+						HLEditorStyles.DrawLabel("Quickly navigates to existing Suit Body Collider objects in the scene.\n"
 							, 105, 14);
 					});
 
@@ -1036,7 +1036,7 @@ namespace Hardlight.SDK.Editor
 				{
 					IsTutorialStep(9, () =>
 					{
-						NSEditorStyles.DrawLabel(" Open this to continue! " + ""
+						HLEditorStyles.DrawLabel(" Open this to continue! " + ""
 
 							, 105, 14);
 					});
@@ -1071,7 +1071,7 @@ namespace Hardlight.SDK.Editor
 			//Make a button that auto looks things up in children of an object
 			if (icon != null)
 			{
-				NSEditorStyles.DrawBackgroundImage(icon, mat, HLEditor);
+				HLEditorStyles.DrawBackgroundImage(icon, mat, HLEditor);
 			}
 
 			//EditorGUILayout.InspectorTitlebar(true, this, true);
@@ -1086,7 +1086,7 @@ namespace Hardlight.SDK.Editor
 					ShouldCollapse = Suits.Where(x => x.TopFoldout).Count() > 0;
 				}
 				GUIContent content = new GUIContent(ShouldCollapse ? "Collapse All" : "Expand All");
-				bool result = NSEditorStyles.OperationButton(!allowExpandAll, content);
+				bool result = HLEditorStyles.OperationButton(!allowExpandAll, content);
 
 				if (result)
 				{
@@ -1121,7 +1121,7 @@ namespace Hardlight.SDK.Editor
 
 			IsTutorialStep(10, () =>
 			{
-				NSEditorStyles.DrawLabel("This button adds additional suit configurations.\nWe don't anticipate anyone will need multiple definitions yet but this is a future oriented feature.", 105, 14);
+				HLEditorStyles.DrawLabel("This button adds additional suit configurations.\nWe don't anticipate anyone will need multiple definitions yet but this is a future oriented feature.", 105, 14);
 			});
 
 			//Label describing section

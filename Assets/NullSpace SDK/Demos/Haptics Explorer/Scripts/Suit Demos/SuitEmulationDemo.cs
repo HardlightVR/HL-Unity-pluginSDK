@@ -32,7 +32,7 @@ namespace Hardlight.SDK.Demos
 		public void Update()
 		{
 			//Our initial emulation techniques 
-			var samples = NSManager.Instance.SamplePlayingStatus();
+			var samples = HardlightManager.Instance.SamplePlayingStatus();
 
 			for (int i = 0; i < SuitObjects.Count; i++)
 			{

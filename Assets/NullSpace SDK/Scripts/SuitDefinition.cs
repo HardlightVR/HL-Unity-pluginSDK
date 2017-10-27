@@ -30,7 +30,7 @@ namespace Hardlight.SDK
 		Dictionary<GameObject, float> Distances;
 
 		[SerializeField]
-		public int HapticsLayer = NSManager.HAPTIC_LAYER;
+		public int HapticsLayer = HardlightManager.HAPTIC_LAYER;
 		[SerializeField]
 		public bool AddChildObjects = true;
 		[SerializeField]

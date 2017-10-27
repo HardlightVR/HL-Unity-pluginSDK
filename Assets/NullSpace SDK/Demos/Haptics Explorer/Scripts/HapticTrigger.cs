@@ -19,7 +19,7 @@ namespace Hardlight.SDK.Demos
 		void OnTriggerEnter(Collider collider)
 		{
 			//If it is on the haptics layer
-			if (collider.gameObject.layer == NSManager.HAPTIC_LAYER)
+			if (collider.gameObject.layer == HardlightManager.HAPTIC_LAYER)
 			{
 				HardlightCollider hit = collider.GetComponent<HardlightCollider>();
 				if (hit != null)

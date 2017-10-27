@@ -229,7 +229,7 @@ namespace Hardlight.SDK.Demos
 		public void ClearAllEffects()
 		{
 			//This stops all haptic effects and clears them out.
-			NSManager.Instance.ClearAllEffects();
+			HardlightManager.Instance.ClearAllEffects();
 		}
 		public void ReloadScene()
 		{

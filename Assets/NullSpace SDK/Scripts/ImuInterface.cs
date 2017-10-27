@@ -15,7 +15,7 @@ namespace Hardlight.SDK.Tracking
 	using Quaternion = UnityEngine.Quaternion;
 
 	/// <summary>
-	/// If you implement this interface and add your calibration script to the NSManager prefab object, 
+	/// If you implement this interface and add your calibration script to the HardlightManager prefab object, 
 	/// the SDK will 
 	/// </summary>
 	public interface IImuCalibrator

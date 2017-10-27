@@ -25,7 +25,7 @@ public class RaycastHaptics : MonoBehaviour
 	{
 		if (GUI.Button(new Rect(10, 10, 120, 40), "Stop Everything!"))
 		{
-			NSManager.Instance.ClearAllEffects();
+			HardlightManager.Instance.ClearAllEffects();
 		}
 	}
 

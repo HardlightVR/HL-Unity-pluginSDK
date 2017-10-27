@@ -4,7 +4,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Hardlight.SDK.Editor
+namespace Hardlight.SDK.UEditor
 {
 	public class EditorPane : ScriptableObject
 	{
@@ -132,8 +132,8 @@ namespace Hardlight.SDK.Editor
 		}
 		public virtual void DrawTitleContent()
 		{
-			NSEditorStyles.OpenHorizontal();
-			NSEditorStyles.DrawTitle(PaneTitle);
+			HLEditorStyles.OpenHorizontal();
+			HLEditorStyles.DrawTitle(PaneTitle);
 			if (!TutorialModeActive)
 			{
 				//Draw a walkthrough button
@@ -142,50 +142,50 @@ namespace Hardlight.SDK.Editor
 			else
 			{
 				//Draw a exit tutorial button
-				if (NSEditorStyles.TutorialToolbarButton(false, "Exit Tutorial"))
+				if (HLEditorStyles.TutorialToolbarButton(false, "Exit Tutorial"))
 				{
 					TutorialModeActive = false;
 				}
 			}
-			NSEditorStyles.CloseHorizontal();
+			HLEditorStyles.CloseHorizontal();
 		}
 		public virtual void DrawPaneContent()
 		{
 			IsTutorialStep(2, () =>
 			{
-				NSEditorStyles.DrawLabel("A tutorial's content can even jump around and be out of order with the code order!");
+				HLEditorStyles.DrawLabel("A tutorial's content can even jump around and be out of order with the code order!");
 			});
 
 
-			NSEditorStyles.DrawLabel("This is text");
+			HLEditorStyles.DrawLabel("This is text");
 
 
 			IsTutorialStep(0, () =>
 			{
-				NSEditorStyles.DrawLabel("Welcome to a tutorial");
+				HLEditorStyles.DrawLabel("Welcome to a tutorial");
 			});
 			IsTutorialStep(1, () =>
 			{
-				NSEditorStyles.DrawLabel("A tutorial can contain much content");
+				HLEditorStyles.DrawLabel("A tutorial can contain much content");
 			});
 			IsTutorialStep(2, () =>
 			{
 				GUILayout.Space(20);
-				NSEditorStyles.DrawLabel("Divided up amongst multiple entries.");
+				HLEditorStyles.DrawLabel("Divided up amongst multiple entries.");
 			});
 
 
 			IsTutorialStep(3, () =>
 			{
-				NSEditorStyles.DrawLabel("Isn't that cool!");
+				HLEditorStyles.DrawLabel("Isn't that cool!");
 			});
 
-			NSEditorStyles.DrawLabel("This is ending text");
+			HLEditorStyles.DrawLabel("This is ending text");
 
 		}
 		public virtual bool DrawTabButton(bool maintainPressed)
 		{
-			bool result = NSEditorStyles.OperationToolbarButton(false, new GUIContent(ShortPaneTitle), maintainPressed);
+			bool result = HLEditorStyles.OperationToolbarButton(false, new GUIContent(ShortPaneTitle), maintainPressed);
 			if (result)
 			{
 				ShouldDisplay = !ShouldDisplay;
@@ -252,7 +252,7 @@ namespace Hardlight.SDK.Editor
 			if (shouldHighlight && TutorialModeActive)
 			{
 				//EditorGUILayout.BeginVertical("Box");
-				EditorGUILayout.BeginVertical(NSEditorStyles.GetColoredHelpBoxStyle(boxType));
+				EditorGUILayout.BeginVertical(HLEditorStyles.GetColoredHelpBoxStyle(boxType));
 			}
 
 			StepDelegate();
@@ -345,12 +345,12 @@ namespace Hardlight.SDK.Editor
 		public void TutorialStepBox(TutorialStepDelegate StepDelegate, int tutorialStepNumber = -1, ColorBoxType boxType = ColorBoxType.Tutorial)
 		{
 			EditorGUILayout.BeginVertical("Box");
-			EditorGUILayout.BeginVertical(NSEditorStyles.GetColoredHelpBoxStyle(boxType));
+			EditorGUILayout.BeginVertical(HLEditorStyles.GetColoredHelpBoxStyle(boxType));
 			StepDelegate();
 			if (tutorialStepNumber != -1)
 			{
 				EditorGUILayout.BeginHorizontal();
-				NSEditorStyles.DrawLabel("[" + tutorialStepNumber + "]");
+				HLEditorStyles.DrawLabel("[" + tutorialStepNumber + "]");
 				EditorGUILayout.EndHorizontal();
 			}
 
@@ -361,18 +361,18 @@ namespace Hardlight.SDK.Editor
 		private void DrawTutorialButtons()
 		{
 			//GUILayout.Space(4);
-			NSEditorStyles.DrawTitle("Tutorial", 0);
-			NSEditorStyles.OpenHorizontal();
+			HLEditorStyles.DrawTitle("Tutorial", 0);
+			HLEditorStyles.OpenHorizontal();
 
 			//Draw a back button
-			if (NSEditorStyles.TutorialToolbarButton(CurrentTutorialIndex <= 0, "Previous"))
+			if (HLEditorStyles.TutorialToolbarButton(CurrentTutorialIndex <= 0, "Previous"))
 			{
 				//Decrement the current tutorial index
 				CurrentTutorialIndex--;
 			}
 
 			//Draw a restart button
-			if (NSEditorStyles.TutorialToolbarButton(CurrentTutorialIndex <= 0, "Restart"))
+			if (HLEditorStyles.TutorialToolbarButton(CurrentTutorialIndex <= 0, "Restart"))
 			{
 				//Set the tutorial index back to 0.
 				CurrentTutorialIndex = 0;
@@ -381,7 +381,7 @@ namespace Hardlight.SDK.Editor
 			if (CurrentTutorialIndex > LargestTutorialIndex - 1)
 			{
 				//Draw a finish button
-				if (NSEditorStyles.TutorialToolbarButton(false, "Finish!"))
+				if (HLEditorStyles.TutorialToolbarButton(false, "Finish!"))
 				{
 					//Increment the current tutorial index
 					TutorialModeActive = false;
@@ -390,7 +390,7 @@ namespace Hardlight.SDK.Editor
 			else
 			{
 				//Draw a next button
-				if (NSEditorStyles.TutorialToolbarButton(CurrentTutorialIndex > LargestTutorialIndex - 1, "Next"))
+				if (HLEditorStyles.TutorialToolbarButton(CurrentTutorialIndex > LargestTutorialIndex - 1, "Next"))
 				{
 					//OutputMessage("Next button hit", MessageType.Info);
 					//Increment the current tutorial index
@@ -398,8 +398,8 @@ namespace Hardlight.SDK.Editor
 				}
 			}
 
-			NSEditorStyles.DrawLabel("Current Index: " + CurrentTutorialIndex);
-			NSEditorStyles.CloseHorizontal();
+			HLEditorStyles.DrawLabel("Current Index: " + CurrentTutorialIndex);
+			HLEditorStyles.CloseHorizontal();
 			GUILayout.Space(2);
 		}
 
@@ -423,7 +423,7 @@ namespace Hardlight.SDK.Editor
 
 		private void DrawWalkthroughButton(string text)
 		{
-			if (NSEditorStyles.TutorialToolbarButton(false, text))
+			if (HLEditorStyles.TutorialToolbarButton(false, text))
 			{
 				TutorialModeActive = true;
 				CurrentTutorialIndex = 0;

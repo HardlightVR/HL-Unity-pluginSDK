@@ -26,8 +26,8 @@ namespace Hardlight.SDK
 		}
 		public void Start()
 		{
-			NSManager.Instance.SuitConnected += HandleSuitConnect;
-			NSManager.Instance.SuitDisconnected += HandleSuitDisconnect;
+			HardlightManager.Instance.SuitConnected += HandleSuitConnect;
+			HardlightManager.Instance.SuitDisconnected += HandleSuitDisconnect;
 		}
         void HandleSuitConnect(object sender, SuitConnectionArgs s)
         {

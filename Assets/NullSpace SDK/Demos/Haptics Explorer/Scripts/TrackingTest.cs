@@ -21,8 +21,8 @@ namespace Hardlight.SDK.Demos
 
 		void Start()
 		{
-			imus = NSManager.Instance.GetImuCalibrator();
-			NSManager.Instance.SetImuCalibrator(GetComponent<DefaultImuCalibrator>());
+			imus = HardlightManager.Instance.GetImuCalibrator();
+			HardlightManager.Instance.SetImuCalibrator(GetComponent<DefaultImuCalibrator>());
 
 			if (ParentObject != null)
 			{
@@ -41,7 +41,7 @@ namespace Hardlight.SDK.Demos
 			{
 				ParentObject.SetActive(true);
 			}
-			NSManager.Instance.EnableTracking();
+			HardlightManager.Instance.EnableTracking();
 		}
 
 		public void DisableTracking()
@@ -50,7 +50,7 @@ namespace Hardlight.SDK.Demos
 			{
 				ParentObject.SetActive(false);
 			}
-			NSManager.Instance.DisableTracking();
+			HardlightManager.Instance.DisableTracking();
 		}
 
 		void Update()

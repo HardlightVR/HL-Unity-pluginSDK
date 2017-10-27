@@ -890,7 +890,7 @@ namespace Hardlight.SDK
 		/// <param name="vrCamera">The camera to hide the body from. Calls camera.HideLayer(int)</param>
 		/// <param name="hapticObjectLayer">The layer that is removed from the provided camera's culling mask.</param>
 		/// <returns>The created body mimic</returns>
-		public static BodyMimic Initialize(Camera vrCamera, VRObjectMimic CameraRigMimic, int hapticObjectLayer = NSManager.HAPTIC_LAYER)
+		public static BodyMimic Initialize(Camera vrCamera, VRObjectMimic CameraRigMimic, int hapticObjectLayer = HardlightManager.HAPTIC_LAYER)
 		{
 			GameObject bodyMimicPrefab = Resources.Load<GameObject>("Body Mimic");
 

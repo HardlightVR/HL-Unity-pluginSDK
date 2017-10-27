@@ -15,14 +15,16 @@ namespace Hardlight.SDK
 {
 
 	/// <summary>
-	/// NSManager provides access to a essential suit functions, 
+	/// HardlightManager provides access to a essential suit functions, 
 	/// including enabling/disabling tracking, monitoring suit connection status, 
 	/// globally pausing and playing effects, and clearing all playing effects.
 	/// 
 	/// If you prefer to interact directly with the plugin, you may instantiate and destroy your own
-	/// HLVR_Plugin and remove NSManager.
+	/// HLVR_Plugin and remove HardlightManager.
 	/// </summary>
-	public sealed class NSManager : MonoBehaviour
+
+	[ExecuteInEditMode]
+	public sealed class HardlightManager : MonoBehaviour
 	{
 		public const int HAPTIC_LAYER = 31;
 
@@ -70,31 +72,31 @@ namespace Hardlight.SDK
 
 
 		/// <summary>
-		/// Use the Instance variable to access the NSManager object. There should only be one NSManager in a scene.
+		/// Use the Instance variable to access the HardlightManager object. There should only be one HardlightManager in a scene.
 		/// in the scene. 
 		/// </summary>
 
-		private static NSManager instance;
-		public static NSManager Instance
+		private static HardlightManager instance;
+		public static HardlightManager Instance
 		{
 			get
 			{
 				if (instance == null)
 				{
-					instance = FindObjectOfType<NSManager>();
+					instance = FindObjectOfType<HardlightManager>();
 
-					if (FindObjectsOfType<NSManager>().Length > 1)
+					if (FindObjectsOfType<HardlightManager>().Length > 1)
 					{
-						Debug.LogError("[NSManager] There is more than one NSManager Singleton\n" +
-							"There shouldn't be multiple NSManager objects");
+						Debug.LogError("[HardlightManager] There is more than one HardlightManager Singleton\n" +
+							"There shouldn't be multiple HardlightManager objects");
 						return instance;
 					}
 
 					if (instance == null)
 					{
 						GameObject singleton = new GameObject();
-						instance = singleton.AddComponent<NSManager>();
-						singleton.name = "NSManager [Runtime Singleton]";
+						instance = singleton.AddComponent<HardlightManager>();
+						singleton.name = "HardlightManager [Runtime Singleton]";
 					}
 					else
 					{
@@ -231,8 +233,8 @@ namespace Hardlight.SDK
 			}
 			else if (Instance != this)
 			{
-				Debug.LogError("There should only be one NSManager! Make sure there is only one NSManager prefab in the scene\n" +
-					"If there is no NSManager, one will be created for you if you call any NSManager.Instance function.");
+				Debug.LogError("There should only be one HardlightManager! Make sure there is only one HardlightManager prefab in the scene\n" +
+					"If there is no HardlightManager, one will be created for you if you call any HardlightManager.Instance function.");
 			}
 
 			_trackingUpdateLoop = UpdateTracking();
@@ -240,12 +242,16 @@ namespace Hardlight.SDK
 
 			_imuCalibrator = new CalibratorWrapper(new MockImuCalibrator());
 
-			InitPlugin();
+			InitPluginIfNull();
 		}
-		private void InitPlugin()
+		public void InitPluginIfNull()
 		{
+			Debug.Log("Plugin has been initialized\n", this);
 			//The plugin needs to load resources from your app's Streaming Assets folder
-			_plugin = new HLVR.HLVR_Plugin();
+			if (_plugin == null)
+			{
+				_plugin = new HLVR.HLVR_Plugin();
+			}
 		}
 		private void DoDelayedAction(float delay, Action action)
 		{
@@ -399,6 +405,7 @@ namespace Hardlight.SDK
 
 		public void Shutdown()
 		{
+			Debug.Log("Plugin has been disposed\n", this);
 			_plugin.Dispose();
 		}
 

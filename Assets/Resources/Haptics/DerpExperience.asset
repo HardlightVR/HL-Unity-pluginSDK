@@ -11,16 +11,4 @@ MonoBehaviour:
   m_Script: {fileID: -906891090, guid: 119ede4db15ee5342be23039356358ba, type: 3}
   m_Name: DerpExperience
   m_EditorClassIdentifier: 
-  _patterns:
-  - _time: 0
-    _strength: 0
-    _pattern: {fileID: 11400000, guid: c743154336fdb3841a30c68ca38843ea, type: 2}
-  - _time: 0
-    _strength: 0
-    _pattern: {fileID: 0}
-  - _time: 0
-    _strength: 0
-    _pattern: {fileID: 0}
-  - _time: 0
-    _strength: 0
-    _pattern: {fileID: 0}
+  _patterns: []

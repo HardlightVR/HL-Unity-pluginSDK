@@ -16,19 +16,19 @@ MonoBehaviour:
     _strength: 1
     _effect: 2
     _duration: 0
-  - _time: 0
+  - _time: 1
     _strength: 1
     _effect: 2
     _duration: 0
-  - _time: 0
+  - _time: 3
+    _strength: 1
+    _effect: 1
+    _duration: 0
+  - _time: 3
     _strength: 1
     _effect: 2
     _duration: 0
-  - _time: 0
-    _strength: 1
-    _effect: 2
-    _duration: 0
-  - _time: 0
+  - _time: 4
     _strength: 1
     _effect: 2
     _duration: 0

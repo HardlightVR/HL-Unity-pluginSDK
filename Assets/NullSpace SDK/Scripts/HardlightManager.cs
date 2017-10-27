@@ -246,10 +246,10 @@ namespace Hardlight.SDK
 		}
 		public void InitPluginIfNull()
 		{
-			Debug.Log("Plugin has been initialized\n", this);
 			//The plugin needs to load resources from your app's Streaming Assets folder
 			if (_plugin == null)
 			{
+				//Debug.Log("Plugin has been initialized\n", this);
 				_plugin = new HLVR.HLVR_Plugin();
 			}
 		}
@@ -385,7 +385,6 @@ namespace Hardlight.SDK
 			}
 		}
 
-
 		void Update()
 		{
 			if (_lastSuitTrackingEnabledValue != EnableSuitTracking)
@@ -405,8 +404,11 @@ namespace Hardlight.SDK
 
 		public void Shutdown()
 		{
-			Debug.Log("Plugin has been disposed\n", this);
+			//Debug.Log("Before Dispose() -> Plugin has been disposed? " + (_plugin == null) + " \n", this);
 			_plugin.Dispose();
+			//Debug.Log("After Dispose() -> Plugin has been disposed? " + (_plugin == null) + " \n", this);
+			_plugin = null;
+			//Debug.Log("After _plugin = null-> Plugin has been disposed? " + (_plugin == null) + " \n", this);
 		}
 
 		void OnApplicationQuit()

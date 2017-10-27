@@ -21,7 +21,7 @@ namespace Hardlight.SDK.UEditor
 
 		public override void OnInspectorGUI()
 		{
-			bool change = HLEditorStyles.DrawButton(DrawDefault ? "Draw Default Inspector" : "Dont Draw Default Inspector");
+			bool change = HLEditorStyles.DrawButton(!DrawDefault ? "Draw Default Inspector" : "Dont Draw Default Inspector");
 			if (change)
 				DrawDefault = !DrawDefault;
 

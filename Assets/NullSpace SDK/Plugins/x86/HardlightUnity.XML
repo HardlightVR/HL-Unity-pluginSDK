@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>HardlightUnity</name>
+        <name>UnityPluginWrapperExe</name>
     </assembly>
     <members>
         <member name="T:Hardlight.SDK.FileUtilities.AssetTool">
@@ -137,6 +137,90 @@
             <param name="hdf"></param>
             <returns></returns>
         </member>
+        <member name="T:Hardlight.SDK.FileUtilities.Area">
+            <summary>
+            Represents a discriminated union of all possible area types
+            Probably overkill for now..
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.Area.#ctor">
+            <summary>
+            Default construct an Area with value AreaFlag.None
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.Area.#ctor(Hardlight.SDK.AreaFlag)">
+            <summary>
+            Construct an Area from a given AreaFlag
+            </summary>
+            <param name="areaFlag"></param>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.Area.#ctor(System.Collections.Generic.List{System.Int32})">
+            <summary>
+            Construct an Area from a given list of Regions
+            </summary>
+            <param name="regions"></param>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.Area.Get(System.Action{Hardlight.SDK.AreaFlag},System.Action{System.Collections.Generic.List{System.Int32}})">
+            <summary>
+            Retrieve the value of the Area
+            </summary>
+            <param name="areaFlag"></param>
+            <param name="regions"></param>
+        </member>
+        <member name="T:Hardlight.SDK.FileUtilities.RawEntry">
+            <summary>
+            First representation of the generic json data within a pattern. Leaves the arguments for a generator
+            for later parsing. 
+            </summary>
+        </member>
+        <member name="T:Hardlight.SDK.FileUtilities.PatternEntry">
+            <summary>
+            Second representation of json data within a pattern. Arguments for generator have been parsed, submitted to generator,
+            and result in a list of Regions. 
+            </summary>
+        </member>
+        <member name="T:Hardlight.SDK.FileUtilities.InputModelParser.GeneratorDelegate">
+            <summary>
+            Represents a "generator" function that returns a list of areas given some user-defined parameters. 
+            The generator is responsible for validating its own arguments and throwing ArgumentExceptions if necessary.
+            </summary>
+            <param name="arguments">Raw dictionary of parameters</param>
+            <returns>List of areas</returns>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.InputModelParser.ParameterConstraint`1.GetListOr(System.Collections.Generic.IDictionary{System.String,System.Object},System.Collections.Generic.List{`0})">
+            <summary>
+            Retrieve a list of T from the json, or return a default value
+            Note: default integral type in the json is long, default floating point type is double
+            </summary>
+            <param name="arguments">arguments dictionary</param>
+            <param name="defaultVal">default value</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.InputModelParser.ParameterConstraint`1.GetOr(System.Collections.Generic.IDictionary{System.String,System.Object},`0)">
+            <summary>
+            Retrieve a T from the json, or return a default value
+            Note: default integral type in the json is long, default floating point type is double
+            </summary>
+            <param name="arguments">arguments dictionary</param>
+            <param name="defaultVal">default value</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.InputModelParser.Invoke(System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Invoke a generator by name with the given json arguments
+            Throws ArgumentException if generatorName does not match any known generators
+            </summary>
+            <param name="generatorName">name of the generator</param>
+            <param name="arguments">json arguments to the generator</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.InputModelParser.Parse(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Parse a RawEntry from the given raw json data
+            </summary>
+            <param name="rawEntry">raw json dictionary representing a RawEntry object</param>
+            <returns></returns>
+        </member>
         <member name="M:Hardlight.SDK.FileUtilities.ParsingUtils.tryParseFloatFromObject(System.Collections.Generic.IDictionary{System.String,System.Object},System.String,System.Single)">
             <summary>
             Attempt to parse a float from a json object representing a double
@@ -152,37 +236,6 @@
             <typeparam name="T">The json atom type</typeparam>
             <param name="dict">The raw json object</param>
             <returns>A dictionary representing the list of haptic effect IDs and their associated atoms</returns>
-        </member>
-        <!-- Badly formed XML comment ignored for member "T:Hardlight.SDK.HapticEffect" -->
-        <member name="P:Hardlight.SDK.HapticEffect.Effect">
-            <summary>
-            Retrieve the associated Effect
-            </summary>
-        </member>
-        <member name="P:Hardlight.SDK.HapticEffect.Duration">
-            <summary>
-            Retrieve the duration
-            </summary>
-        </member>
-        <member name="M:Hardlight.SDK.HapticEffect.#ctor(Hardlight.SDK.Effect,System.Double,System.Single,System.Single)">
-            <summary>
-            Construct a HapticEffect with a given Effect, and default duration of 0.0
-            </summary>
-            <param name="duration">Effect duration (fractional seconds)</param>
-            <param name="time">How long from the start of the parent does this begin</param>
-            <param name="strength">How strong this effect should be (between 0 and 1.0f)</param>
-        </member>
-        <member name="M:Hardlight.SDK.HapticEffect.Clone">
-            <summary>
-            Create an independent copy of this HapticEffect
-            </summary>
-            <returns>A copy</returns>
-        </member>
-        <member name="M:Hardlight.SDK.HapticEffect.ToString">
-            <summary>
-            Returns a string representation of this HapticEffect, including effect name and duration 
-            </summary>
-            <returns></returns>
         </member>
         <member name="T:Hardlight.SDK.HapticSequence">
             <summary>
@@ -411,6 +464,98 @@
             <param name="defaultEffect">The default to return if parsing fails</param>
             <returns></returns>
         </member>
+        <member name="M:Hardlight.SDK.ExperienceSO.AddPattern(System.Double,Hardlight.SDK.ParameterizedPattern)">
+            <summary>
+            Add a HapticPattern to this HapticExperience with a given time offset and default strength of 1.0
+            </summary>
+            <param name="time">Time offset (fractional seconds)</param>
+            <param name="area">AreaFlag on which to play the HapticSequence</param>
+            <param name="sequence">The HapticSequence to be added</param>
+        </member>
+        <member name="M:Hardlight.SDK.ExperienceSO.AddPattern(System.Double,System.Double,Hardlight.SDK.ParameterizedPattern)">
+            <summary>
+            Add a HapticPattern to this HapticExperience with a given time offset and strength.
+            </summary>
+            <param name="time">Time offset (fractional seconds)</param>
+            <param name="area">AreaFlag on which to play the HapticSequence</param>
+            <param name="strength">Strength of the HapticSequence (0.0 - 1.0)</param>
+            <param name="sequence">The HapticSequence to be added</param>
+        </member>
+        <member name="M:Hardlight.SDK.ExperienceSO.CreateHandle">
+            <summary>
+            Create a HapticHandle from this HapticExperience, which can be used to manipulate the effect. 
+            </summary>
+            <returns>A new HapticHandle</returns>
+        </member>
+        <member name="M:Hardlight.SDK.ExperienceSO.CreateHandle(System.Double)">
+            <summary>
+            Create a HapticHandle from this HapticExperience, passing in a given strength. 
+            </summary>
+            <param name="strength"></param>
+            <returns>A new HapticHandle</returns>
+        </member>
+        <member name="M:Hardlight.SDK.ExperienceSO.Play">
+            <summary>
+            <para>If you want to play an experience but don't care about controlling playback, use this method. It will automatically clean up resources.</para>
+            <para>Synonymous with someExperience.CreateHandle().Play()</para>
+            </summary>
+            <returns>A new HapticHandle</returns>
+        </member>
+        <member name="M:Hardlight.SDK.ExperienceSO.Play(System.Double)">
+            <summary>
+            <para>If you want to play an experience but don't care about controlling playback, use this method. It will automatically clean up resources.</para>
+            <para>Synonymous with someExperience.CreateHandle(strength).Play().Release()</para>
+            </summary>
+            <returns>A new HapticHandle</returns>
+        </member>
+        <member name="M:Hardlight.SDK.ExperienceSO.Clone">
+            <summary>
+            Create an independent copy of this HapticExperience
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.ExperienceSO.ToString">
+            <summary>
+            Returns a representation of this HapticExperience for debugging purposes, including the representation of child patterns
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Hardlight.SDK.HapticEffect">
+            <summary>
+            <para>HapticEffects are the base building blocks of more complex effects. They can be strung together, repeated over a duration, and given strengths and time offsets.
+            </para>
+            </summary>
+        </member>
+        <member name="P:Hardlight.SDK.HapticEffect.Effect">
+            <summary>
+            Retrieve the associated Effect
+            </summary>
+        </member>
+        <member name="P:Hardlight.SDK.HapticEffect.Duration">
+            <summary>
+            Retrieve the duration
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.HapticEffect.#ctor(Hardlight.SDK.Effect,System.Double,System.Single,System.Single)">
+            <summary>
+            Construct a HapticEffect with a given Effect, and default duration of 0.0
+            </summary>
+            <param name="duration">Effect duration (fractional seconds)</param>
+            <param name="time">How long from the start of the parent does this begin</param>
+            <param name="strength">How strong this effect should be (between 0 and 1.0f)</param>
+        </member>
+        <member name="M:Hardlight.SDK.HapticEffect.Clone">
+            <summary>
+            Create an independent copy of this HapticEffect
+            </summary>
+            <returns>A copy</returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticEffect.ToString">
+            <summary>
+            Returns a string representation of this HapticEffect, including effect name and duration 
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:Hardlight.SDK.AreaFlagExtensions.ContainsArea(Hardlight.SDK.AreaFlag,Hardlight.SDK.AreaFlag)">
             <summary>
             Checks if an AreaFlag contains another AreaFlag
@@ -608,62 +753,6 @@
             Create an independent copy of this ParameterizedSequence
             </summary>
             <returns>A copy</returns>
-        </member>
-        <member name="M:Hardlight.SDK.ExperienceSO.AddPattern(System.Double,Hardlight.SDK.ParameterizedPattern)">
-            <summary>
-            Add a HapticPattern to this HapticExperience with a given time offset and default strength of 1.0
-            </summary>
-            <param name="time">Time offset (fractional seconds)</param>
-            <param name="area">AreaFlag on which to play the HapticSequence</param>
-            <param name="sequence">The HapticSequence to be added</param>
-        </member>
-        <member name="M:Hardlight.SDK.ExperienceSO.AddPattern(System.Double,System.Double,Hardlight.SDK.ParameterizedPattern)">
-            <summary>
-            Add a HapticPattern to this HapticExperience with a given time offset and strength.
-            </summary>
-            <param name="time">Time offset (fractional seconds)</param>
-            <param name="area">AreaFlag on which to play the HapticSequence</param>
-            <param name="strength">Strength of the HapticSequence (0.0 - 1.0)</param>
-            <param name="sequence">The HapticSequence to be added</param>
-        </member>
-        <member name="M:Hardlight.SDK.ExperienceSO.CreateHandle">
-            <summary>
-            Create a HapticHandle from this HapticExperience, which can be used to manipulate the effect. 
-            </summary>
-            <returns>A new HapticHandle</returns>
-        </member>
-        <member name="M:Hardlight.SDK.ExperienceSO.CreateHandle(System.Double)">
-            <summary>
-            Create a HapticHandle from this HapticExperience, passing in a given strength. 
-            </summary>
-            <param name="strength"></param>
-            <returns>A new HapticHandle</returns>
-        </member>
-        <member name="M:Hardlight.SDK.ExperienceSO.Play">
-            <summary>
-            <para>If you want to play an experience but don't care about controlling playback, use this method. It will automatically clean up resources.</para>
-            <para>Synonymous with someExperience.CreateHandle().Play()</para>
-            </summary>
-            <returns>A new HapticHandle</returns>
-        </member>
-        <member name="M:Hardlight.SDK.ExperienceSO.Play(System.Double)">
-            <summary>
-            <para>If you want to play an experience but don't care about controlling playback, use this method. It will automatically clean up resources.</para>
-            <para>Synonymous with someExperience.CreateHandle(strength).Play().Release()</para>
-            </summary>
-            <returns>A new HapticHandle</returns>
-        </member>
-        <member name="M:Hardlight.SDK.ExperienceSO.Clone">
-            <summary>
-            Create an independent copy of this HapticExperience
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Hardlight.SDK.ExperienceSO.ToString">
-            <summary>
-            Returns a representation of this HapticExperience for debugging purposes, including the representation of child patterns
-            </summary>
-            <returns></returns>
         </member>
         <member name="M:Hardlight.SDK.PatternSO.OnEnable">
             <summary>

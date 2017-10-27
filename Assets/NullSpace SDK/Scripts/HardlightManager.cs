@@ -404,11 +404,11 @@ namespace Hardlight.SDK
 
 		public void Shutdown()
 		{
-			//Debug.Log("Before Dispose() -> Plugin has been disposed? " + (_plugin == null) + " \n", this);
-			_plugin.Dispose();
-			//Debug.Log("After Dispose() -> Plugin has been disposed? " + (_plugin == null) + " \n", this);
+			if (_plugin != null)
+			{
+				_plugin.Dispose();
+			}
 			_plugin = null;
-			//Debug.Log("After _plugin = null-> Plugin has been disposed? " + (_plugin == null) + " \n", this);
 		}
 
 		void OnApplicationQuit()

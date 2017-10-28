@@ -12,20 +12,8 @@ MonoBehaviour:
   m_Name: DerpPattern
   m_EditorClassIdentifier: 
   SequenceKeys:
-  - {fileID: 11400000, guid: 27aca80701a434b43847bf3c8fa8a0d6, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 1774a88cf8a40594093006dfa81796e2, type: 2}
+  - {fileID: 11400000, guid: 1774a88cf8a40594093006dfa81796e2, type: 2}
   - {fileID: 0}
   _sequences:
   - _time: 0

@@ -167,6 +167,11 @@
             <param name="areaFlag"></param>
             <param name="regions"></param>
         </member>
+        <member name="T:Hardlight.SDK.FileUtilities.RandomGenerator">
+            <summary>
+            How I think ScriptableGenerator will look like
+            </summary>
+        </member>
         <member name="T:Hardlight.SDK.FileUtilities.RawEntry">
             <summary>
             First representation of the generic json data within a pattern. Leaves the arguments for a generator
@@ -179,47 +184,11 @@
             and result in a list of Regions. 
             </summary>
         </member>
-        <member name="T:Hardlight.SDK.FileUtilities.InputModelParser.GeneratorDelegate">
+        <member name="T:Hardlight.SDK.FileUtilities.ScriptablePatternParser">
             <summary>
-            Represents a "generator" function that returns a list of areas given some user-defined parameters. 
-            The generator is responsible for validating its own arguments and throwing ArgumentExceptions if necessary.
+            Responsible for turning a raw JSON representation of a ScriptablePattern into an intermediate format
+            suitable for creating a real ScriptablePattern
             </summary>
-            <param name="arguments">Raw dictionary of parameters</param>
-            <returns>List of areas</returns>
-        </member>
-        <member name="M:Hardlight.SDK.FileUtilities.InputModelParser.ParameterConstraint`1.GetListOr(System.Collections.Generic.IDictionary{System.String,System.Object},System.Collections.Generic.List{`0})">
-            <summary>
-            Retrieve a list of T from the json, or return a default value
-            Note: default integral type in the json is long, default floating point type is double
-            </summary>
-            <param name="arguments">arguments dictionary</param>
-            <param name="defaultVal">default value</param>
-            <returns></returns>
-        </member>
-        <member name="M:Hardlight.SDK.FileUtilities.InputModelParser.ParameterConstraint`1.GetOr(System.Collections.Generic.IDictionary{System.String,System.Object},`0)">
-            <summary>
-            Retrieve a T from the json, or return a default value
-            Note: default integral type in the json is long, default floating point type is double
-            </summary>
-            <param name="arguments">arguments dictionary</param>
-            <param name="defaultVal">default value</param>
-            <returns></returns>
-        </member>
-        <member name="M:Hardlight.SDK.FileUtilities.InputModelParser.Invoke(System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            Invoke a generator by name with the given json arguments
-            Throws ArgumentException if generatorName does not match any known generators
-            </summary>
-            <param name="generatorName">name of the generator</param>
-            <param name="arguments">json arguments to the generator</param>
-            <returns></returns>
-        </member>
-        <member name="M:Hardlight.SDK.FileUtilities.InputModelParser.Parse(System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            Parse a RawEntry from the given raw json data
-            </summary>
-            <param name="rawEntry">raw json dictionary representing a RawEntry object</param>
-            <returns></returns>
         </member>
         <member name="M:Hardlight.SDK.FileUtilities.ParsingUtils.tryParseFloatFromObject(System.Collections.Generic.IDictionary{System.String,System.Object},System.String,System.Single)">
             <summary>

@@ -474,7 +474,7 @@ namespace Hardlight.SDK.UEditor
 		#region Floats
 		public static float FloatField(string labelText, float value, float minWidth = 25, float maxWidth = 65, float spacingAfterward = 0)
 		{
-			float result = EditorGUILayout.FloatField(labelText, value, HLEditorStyles.GetSmallTextField(), GUILayout.ExpandWidth(false), GUILayout.MinWidth(minWidth), GUILayout.MaxWidth(maxWidth));
+			float result = EditorGUILayout.FloatField(labelText, value, HLEditorStyles.GetUnalignedTextField(), GUILayout.ExpandWidth(false), GUILayout.MinWidth(minWidth), GUILayout.MaxWidth(maxWidth));
 			GUILayout.Space(spacingAfterward);
 			return result;
 		}
@@ -485,6 +485,13 @@ namespace Hardlight.SDK.UEditor
 			return result;
 		}
 		#endregion
+
+		public static float RangeField(float value, Vector2 range, float minWidth = 25, float maxWidth = 65, float spacingAfterward = 0)
+		{
+			float result = GUILayout.HorizontalSlider(Mathf.Round(value * 10f) / 10f, range.x, range.y, GUILayout.ExpandWidth(false), GUILayout.MinWidth(minWidth), GUILayout.MaxWidth(maxWidth));
+			GUILayout.Space(spacingAfterward);
+			return result;
+		}
 
 		#region ObjectField
 		public static Object ObjectField(string label, Object obj, System.Type type, float minWidth = 25, float maxWidth = 65, float spacingAfterward = 0)
@@ -910,6 +917,14 @@ namespace Hardlight.SDK.UEditor
 		{
 			GUIStyle label = new GUIStyle(EditorStyles.textField);
 			label.alignment = TextAnchor.LowerLeft;
+			label.wordWrap = true;
+			return label;
+		}
+
+		public static GUIStyle GetUnalignedTextField()
+		{
+			GUIStyle label = new GUIStyle(EditorStyles.textField);
+			label.alignment = TextAnchor.MiddleRight;
 			label.wordWrap = true;
 			return label;
 		}

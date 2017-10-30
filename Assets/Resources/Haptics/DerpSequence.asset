@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Name: DerpSequence
   m_EditorClassIdentifier: 
   _effects:
-  - _time: 0
-    _strength: 1
-    _effect: 2
-    _duration: 0
   - _time: 1
+    _strength: 0.2
+    _effect: 3
+    _duration: 0.1
+  - _time: 2
     _strength: 1
-    _effect: 2
+    _effect: 4
     _duration: 0
   - _time: 3
     _strength: 1
     _effect: 1
-    _duration: 0
-  - _time: 3
-    _strength: 1
-    _effect: 2
-    _duration: 0
+    _duration: 0.3
   - _time: 4
     _strength: 1
     _effect: 2
+    _duration: 0
+  - _time: 5
+    _strength: 1
+    _effect: 3
     _duration: 0

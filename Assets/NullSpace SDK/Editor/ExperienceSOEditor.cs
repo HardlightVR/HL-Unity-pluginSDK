@@ -22,10 +22,12 @@ namespace Hardlight.SDK.UEditor
 			if (HLEditorStyles.DrawButton("Add", 25, 65))
 			{
 				exp.Patterns.Add(new ParameterizedPattern(null));
+				Dirty = true;
 			}
 			if (HLEditorStyles.DrawButton("Sort", 25, 65))
 			{
 				EditorGUIUtility.keyboardControl = 0;
+				Dirty = true;
 				exp.Sort();
 			}
 			EditorGUILayout.EndHorizontal();
@@ -41,18 +43,33 @@ namespace Hardlight.SDK.UEditor
 			{
 				EditorGUILayout.BeginHorizontal("Box");
 				HLEditorStyles.DrawMinLabel(i + ":", 25, 45);
-				exp.Patterns[i].Time = HLEditorStyles.FloatField(exp.Patterns[i].Time, 40, 45);
-				//exp.Patterns[i].Area = (AreaFlag)HLEditorStyles.DrawEnumPopup(exp.Patterns[i].Area, 40, 90);
-				exp.Patterns[i].Pattern = (PatternSO)HLEditorStyles.ObjectField("", exp.Patterns[i].Pattern, typeof(PatternSO), 40, 90);
-				exp.Patterns[i].Strength = HLEditorStyles.FloatField(exp.Patterns[i].Strength, 40, 60);
+
+				var time = HLEditorStyles.FloatField(exp.Patterns[i].Time, 40, 45);
+				time = Mathf.Clamp(time, 0, float.MaxValue);
+				if (time != exp.Patterns[i].Time)
+					Dirty = true;
+				exp.Patterns[i].Time = time;
+
+				var patt = (PatternSO)HLEditorStyles.ObjectField("", exp.Patterns[i].Pattern, typeof(PatternSO), 40, 90);
+				if (patt != exp.Patterns[i].Pattern)
+					Dirty = true;
+				exp.Patterns[i].Pattern = patt;
+
+				var str = HLEditorStyles.FloatField(exp.Patterns[i].Strength, 40, 60);
+				str = Mathf.Clamp(str, 0, 1.0f);
+				if (str != exp.Patterns[i].Strength)
+					Dirty = true;
+				exp.Patterns[i].Strength = str;
 
 				if (HLEditorStyles.DrawButton("Copy", 25, 65))
 				{
 					exp.Patterns.Insert(i, exp.Patterns[i].Clone());
+					Dirty = true;
 				}
 				if (HLEditorStyles.DrawButton("Delete", 25, 65))
 				{
 					exp.Patterns.RemoveAt(i);
+					Dirty = true;
 				}
 				EditorGUILayout.EndHorizontal();
 			}

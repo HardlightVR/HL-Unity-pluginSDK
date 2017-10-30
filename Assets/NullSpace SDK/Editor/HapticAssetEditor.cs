@@ -8,6 +8,8 @@ namespace Hardlight.SDK.UEditor
 	{
 		private bool DrawDefault = false;
 		private Vector2 scrollPosition;
+		protected float thingy;
+		protected bool Dirty = false;
 		#region Plugin Init/Dispose
 		public void OnEnable()
 		{
@@ -18,6 +20,7 @@ namespace Hardlight.SDK.UEditor
 		{
 			HardlightManager.Instance.Shutdown();
 		}
+		#endregion
 
 		public override void OnInspectorGUI()
 		{
@@ -50,6 +53,11 @@ namespace Hardlight.SDK.UEditor
 			EditorGUILayout.Space();
 			EditorGUILayout.Space();
 
+			if (Dirty)
+			{
+				EditorUtility.SetDirty(target);
+				Dirty = false;
+			}
 			//if (GUILayout.Button("Save"))
 			//{
 			//	Undo.RecordObject(target, "Save");
@@ -79,7 +87,27 @@ namespace Hardlight.SDK.UEditor
 		{
 			HardlightManager.Instance.InitPluginIfNull();
 		}
-		#endregion
+		//protected void DirtyThing()
+		//{
+		//	System.Func<string> f = () => { return "hello"; };
+		//	string test = f();
 
+		//	System.Func<float> field = (x) => { return EditorGUILayout.FloatField(x);};
+
+
+		//	CheckDirty<float>((x) => { return EditorGUILayout.FloatField(x); }, thingy);
+		//}
+
+		//protected void CheckDirty<T>(System.Action<T> makeField, ref T oldOutput) where T : System.IComparable
+		//{
+		//	T newOutput = makeField(oldOutput);
+
+		//	if (newOutput.CompareTo(oldOutput) != 0)
+		//	{
+		//		Dirty = true;
+		//	}
+
+		//	oldOutput = newOutput;
+		//}
 	}
 }

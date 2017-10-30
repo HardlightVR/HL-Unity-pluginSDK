@@ -12,17 +12,17 @@ MonoBehaviour:
   m_Name: DerpPattern
   m_EditorClassIdentifier: 
   SequenceKeys:
-  - {fileID: 11400000, guid: 1774a88cf8a40594093006dfa81796e2, type: 2}
-  - {fileID: 11400000, guid: 1774a88cf8a40594093006dfa81796e2, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   _sequences:
   - _time: 0
-    _strength: 1
+    _strength: 0.4
     _sequenceKey: 0
     _sequence: {fileID: 11400000, guid: 27aca80701a434b43847bf3c8fa8a0d6, type: 2}
-    _area: 1048592
-  - _time: 2
-    _strength: 1
+    UsingGenerator: 0
+  - _time: 3
+    _strength: 0.7
     _sequenceKey: 0
     _sequence: {fileID: 11400000, guid: 27aca80701a434b43847bf3c8fa8a0d6, type: 2}
-    _area: 16711935
+    UsingGenerator: 1

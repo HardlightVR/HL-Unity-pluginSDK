@@ -32,7 +32,6 @@ namespace Hardlight.SDK.UEditor
 			}
 			EditorGUILayout.EndHorizontal();
 			#endregion
-
 		}
 
 		protected override void DrawElements()
@@ -74,7 +73,6 @@ namespace Hardlight.SDK.UEditor
 				EditorGUILayout.EndHorizontal();
 			}
 			#endregion
-
 		}
 
 		protected override void DrawPreview()
@@ -88,6 +86,5 @@ namespace Hardlight.SDK.UEditor
 			}
 			#endregion
 		}
-
 	}
 }

@@ -87,13 +87,13 @@ namespace Hardlight.SDK.UEditor
 		{
 			HardlightManager.Instance.InitPluginIfNull();
 		}
+		
 		//protected void DirtyThing()
 		//{
 		//	System.Func<string> f = () => { return "hello"; };
 		//	string test = f();
 
 		//	System.Func<float> field = (x) => { return EditorGUILayout.FloatField(x);};
-
 
 		//	CheckDirty<float>((x) => { return EditorGUILayout.FloatField(x); }, thingy);
 		//}

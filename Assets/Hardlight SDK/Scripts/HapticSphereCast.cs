@@ -187,7 +187,7 @@ namespace Hardlight.SDK.Demos
 			{
 				MySequence = HapticSequence.LoadFromAsset(SequenceFileName);
 				handleList = new List<HapticHandle>();
-
+	
 				if (SpherecastStartObject == null)
 				{
 					Debug.LogError("[Haptic Spherecast] - [" + name + "] has a null object for where it should begin.\n", this);
@@ -217,8 +217,7 @@ namespace Hardlight.SDK.Demos
 		private void ApplySphereCast()
 		{
 			//Get the area flags for where this spherecast is hitting.
-			throw new System.Exception();
-			var Where = AreaFlag.None; // suit.GetAreasFromSphereCast(startLocation, worldDirection, SphereCastRadius, scaledRange);
+			var Where = suit.GetAreasFromSphereCast(startLocation, worldDirection, SphereCastRadius, scaledRange);
 
 			//This handles the time delay between replays.
 			if (!Ready)

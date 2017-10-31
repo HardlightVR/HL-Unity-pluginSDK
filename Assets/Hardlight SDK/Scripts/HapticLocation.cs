@@ -21,5 +21,7 @@ namespace Hardlight.SDK
 		/// </summary>
 		[RegionFlag("Where")]
 		public AreaFlag Where;
+		//[SerializeField]
+		//public FilterFlag RemovedRegion;
 	}
 }

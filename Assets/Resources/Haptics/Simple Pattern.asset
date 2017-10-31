@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 2094192899, guid: 119ede4db15ee5342be23039356358ba, type: 3}
+  m_Name: Simple Pattern
+  m_EditorClassIdentifier: 
+  sequenceKeys:
+  - {fileID: 11400000, guid: 66b0a42b02a054140b578ef90b70e28e, type: 2}
+  _sequences:
+  - _time: 0
+    _strength: 1
+    _sequenceKey: 0
+    _sequence: {fileID: 11400000, guid: 66b0a42b02a054140b578ef90b70e28e, type: 2}
+    UsingGenerator: 0
+  - _time: 1
+    _strength: 1
+    _sequenceKey: 0
+    _sequence: {fileID: 11400000, guid: 66b0a42b02a054140b578ef90b70e28e, type: 2}
+    UsingGenerator: 0

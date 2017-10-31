@@ -1,0 +1,752 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>UnityPluginWrapperExe</name>
+    </assembly>
+    <members>
+        <member name="T:Hardlight.SDK.FileUtilities.AssetTool">
+            <summary>
+            A wrapper over the Haptic Asset Tool binary. Retrieves json responses from the tool, 
+            allowing the retrieval of a package list or .hdf
+            </summary>
+        </member>
+        <member name="T:Hardlight.SDK.FileUtilities.AssetTool.PackageInfo">
+            <summary>
+            Holds relevant information about a haptic package
+            </summary>
+        </member>
+        <member name="F:Hardlight.SDK.FileUtilities.AssetTool.PackageInfo.version">
+            <summary>
+            Version of the packages
+            </summary>
+        </member>
+        <member name="F:Hardlight.SDK.FileUtilities.AssetTool.PackageInfo.studio">
+            <summary>
+            Studio that created the packages
+            </summary>
+        </member>
+        <member name="F:Hardlight.SDK.FileUtilities.AssetTool.PackageInfo.namespace">
+            <summary>
+            Namespace of the packages
+            </summary>
+        </member>
+        <member name="F:Hardlight.SDK.FileUtilities.AssetTool.PackageInfo.path">
+            <summary>
+            Absolute file path to the package's root directory
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.AssetTool.PackageInfo.#ctor">
+            <summary>
+            Constructs an empty PackageInfo object
+            </summary>
+        </member>
+        <member name="F:Hardlight.SDK.FileUtilities.AssetTool.PackageInfo.description">
+            <summary>
+            Short description of this package
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.AssetTool.PackageInfo.Hardlight#SDK#FileUtilities#ParsingUtils#IJsonDeserializable#Deserialize(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Given a dictionary representing the json object of a package, deserialize into a PackageInfo
+            </summary>
+            <param name="dict">json object</param>
+        </member>
+        <member name="F:Hardlight.SDK.FileUtilities.AssetTool._process">
+            <summary>
+            This will deal with opening and running the asset tool binary
+            </summary>
+        </member>
+        <member name="F:Hardlight.SDK.FileUtilities.AssetTool._rootPath">
+            <summary>
+            The root path of the haptics folder
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.AssetTool.#ctor">
+            <summary>
+            Create a new AssetTool. Note that the asset tool MUST be in the user's registry, which means
+            the service MUST be installed. 
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.AssetTool.SetRootHapticsFolder(System.String)">
+            <summary>
+            Set the user's root haptics directory
+            </summary>
+            <param name="path">Absolute path to the root haptics directory</param>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.AssetTool.TryGetPackageInfo">
+            <summary>
+            Retrieve a list of the packages present in a haptics directory, along with associated info
+            </summary>
+            <exception cref="T:System.InvalidOperationException">If root haptics directory is not set</exception>
+            <returns>List of PackageInfo objects</returns>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.AssetTool.GetHapticDefinitionFile(System.String)">
+            <summary>
+            Given a path to the raw haptic asset, generate a HapticDefinitionFile 
+            </summary>
+            <param name="path">Path to haptic asset. Ex: C:\Haptics\my\patterns\test.pattern</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.AssetTool.GetHapticDefinitionFileJson(System.String)">
+            <summary>
+            Given a path to the raw haptic asset, return the json representation of a HapticDefinitionFile
+            </summary>
+            <param name="path">Path to haptic asset. Ex: C:\Haptics\my\patterns\test.pattern</param>
+            <returns>JSON string representing a HapticDefinitionFile</returns>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.AssetTool.ConvertPackageToHDFs(Hardlight.SDK.FileUtilities.AssetTool.PackageInfo,System.String)">
+            <summary>
+            Converts a haptic package into an HDF package, mirroring the standard haptic directory layout
+            </summary>
+            <param name="package">The package to convert</param>
+            <returns>An error string, if any</returns>
+        </member>
+        <member name="T:Hardlight.SDK.FileUtilities.CodeHapticFactory">
+            <summary>
+            Used to turn HapticDefinitionFiles into dynamic haptic effects
+            Example workflow: 
+            1. create a .hdf using the asset tool binary
+            2. Deserialize the .hdf into a HapticDefinitionFile
+            3. Pass the HapticDefinitionFile to the CodeHapticFactory, along with the key of the root effect
+            4. Get a dynamic effect out of it
+            
+            In practice, this is all done automatically by the plugin. 
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.CodeHapticFactory.CreateSequence(System.String,Hardlight.SDK.FileUtilities.HapticDefinitionFile)">
+            <summary>
+            Create a HapticSequence from a HapticDefinitionFile
+            </summary>
+            <param name="key">Name of the root effect</param>
+            <param name="hdf">A HapticDefinitionFile containing the root effect</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.CodeHapticFactory.CreatePattern(System.String,Hardlight.SDK.FileUtilities.HapticDefinitionFile)">
+            <summary>
+            Create a HapticPattern from a HapticDefinitionFile
+            </summary>
+            <param name="key">Name of the root effect</param>
+            <param name="hdf">A HapticDefinitionFile containing the root effect</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.CodeHapticFactory.CreateExperience(System.String,Hardlight.SDK.FileUtilities.HapticDefinitionFile)">
+            <summary>
+            Create a HapticExperience from a HapticDefinitionFile
+            </summary>
+            <param name="key"></param>
+            <param name="hdf"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Hardlight.SDK.FileUtilities.Area">
+            <summary>
+            Represents a discriminated union of all possible area types
+            Probably overkill for now..
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.Area.#ctor">
+            <summary>
+            Default construct an Area with value AreaFlag.None
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.Area.#ctor(Hardlight.SDK.AreaFlag)">
+            <summary>
+            Construct an Area from a given AreaFlag
+            </summary>
+            <param name="areaFlag"></param>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.Area.#ctor(System.Collections.Generic.List{System.Int32})">
+            <summary>
+            Construct an Area from a given list of Regions
+            </summary>
+            <param name="regions"></param>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.Area.Get(System.Action{Hardlight.SDK.AreaFlag},System.Action{System.Collections.Generic.List{System.Int32}})">
+            <summary>
+            Retrieve the value of the Area
+            </summary>
+            <param name="areaFlag"></param>
+            <param name="regions"></param>
+        </member>
+        <member name="T:Hardlight.SDK.FileUtilities.RandomGenerator">
+            <summary>
+            How I think ScriptableGenerator will look like
+            </summary>
+        </member>
+        <member name="T:Hardlight.SDK.FileUtilities.RawEntry">
+            <summary>
+            First representation of the generic json data within a pattern. Leaves the arguments for a generator
+            for later parsing. 
+            </summary>
+        </member>
+        <member name="T:Hardlight.SDK.FileUtilities.PatternEntry">
+            <summary>
+            Second representation of json data within a pattern. Arguments for generator have been parsed, submitted to generator,
+            and result in a list of Regions. 
+            </summary>
+        </member>
+        <member name="T:Hardlight.SDK.FileUtilities.ScriptablePatternParser">
+            <summary>
+            Responsible for turning a raw JSON representation of a ScriptablePattern into an intermediate format
+            suitable for creating a real ScriptablePattern
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.ParsingUtils.tryParseFloatFromObject(System.Collections.Generic.IDictionary{System.String,System.Object},System.String,System.Single)">
+            <summary>
+            Attempt to parse a float from a json object representing a double
+            </summary>
+            <param name="potentialFloat">The json object represented as a double</param>
+            <param name="defaultValue">A default value if the parse fails</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.ParsingUtils.parseDefinitionsDict``1(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Parse a json object into a list of atoms (smallest unit that describes a sequence, pattern, or experience)
+            </summary>
+            <typeparam name="T">The json atom type</typeparam>
+            <param name="dict">The raw json object</param>
+            <returns>A dictionary representing the list of haptic effect IDs and their associated atoms</returns>
+        </member>
+        <member name="T:Hardlight.SDK.FileEffectToCodeEffect">
+            <summary>
+            Used to map the effect written in a .hdf into the enum based version. 
+            Inside the engine this is translated back into a string, so this pipeline should be
+            fixed up. We need to be backwards compatible. 
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.FileEffectToCodeEffect.TryParse(System.String,Hardlight.SDK.Effect)">
+            <summary>
+            Attempt to parse a string into an Effect, returning defaultEffect if fail
+            </summary>
+            <param name="effect">A potential effect</param>
+            <param name="defaultEffect">The default to return if parsing fails</param>
+            <returns></returns>
+        </member>
+        <member name="T:Hardlight.SDK.HapticEffect">
+            <summary>
+            <para>HapticEffects are the base building blocks of more complex effects. They can be strung together, repeated over a duration, and given strengths and time offsets.
+            </para>
+            </summary>
+        </member>
+        <member name="P:Hardlight.SDK.HapticEffect.Effect">
+            <summary>
+            Retrieve the associated Effect
+            </summary>
+        </member>
+        <member name="P:Hardlight.SDK.HapticEffect.Duration">
+            <summary>
+            Retrieve the duration
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.HapticEffect.#ctor(Hardlight.SDK.Effect,System.Single,System.Double,System.Single)">
+            <summary>
+            Construct a HapticEffect with the given parameters
+            </summary>
+            <param name="effect">Which effect family should be used</param>
+            <param name="duration">Effect duration (fractional seconds)</param>
+            <param name="time">How long from the start of the parent does this begin</param>
+            <param name="strength">How strong this effect should be (between 0 and 1.0f)</param>
+        </member>
+        <member name="M:Hardlight.SDK.HapticEffect.Clone">
+            <summary>
+            Create an independent copy of this HapticEffect
+            </summary>
+            <returns>A copy</returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticEffect.ToString">
+            <summary>
+            Returns a string representation of this HapticEffect, including effect name and duration 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.AreaFlagExtensions.ContainsArea(Hardlight.SDK.AreaFlag,Hardlight.SDK.AreaFlag)">
+            <summary>
+            Checks if an AreaFlag contains another AreaFlag
+            </summary>
+            <param name="lhs"></param>
+            <param name="rhs"></param>
+            <returns>True of the AreaFlag contains the other, else false</returns>
+        </member>
+        <member name="M:Hardlight.SDK.AreaFlagExtensions.AddArea(Hardlight.SDK.AreaFlag,Hardlight.SDK.AreaFlag)">
+            <summary>
+            Adds the given area. Make sure to use the return value! Equivalent to area1 | area2
+            </summary>
+            <param name="lhs"></param>
+            <param name="other"></param>
+            <returns></returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Hardlight.SDK.AreaFlagExtensions.RemoveArea(Hardlight.SDK.AreaFlag,Hardlight.SDK.AreaFlag)" -->
+        <member name="T:Hardlight.SDK.VersionInfo">
+            <summary>
+            Represents version information, containing a major and minor version
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.VersionInfo.ToString">
+            <summary>
+            Returns Major.Minor
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Hardlight.SDK.EffectSampleInfo">
+            <summary>
+            Internal testing tool; do not depend upon this. May change at any time.
+            </summary>
+        </member>
+        <member name="T:Hardlight.SDK.HLVR">
+            <summary>
+            Wrapper around the main access point of the plugin, HLVR_Plugin
+            </summary>
+        </member>
+        <member name="T:Hardlight.SDK.HLVR.HLVR_Plugin">
+            <summary>
+            Main point of access to the plugin, implements IDisposable
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.HLVR.HLVR_Plugin.ControlDirectly(Hardlight.SDK.AreaFlag,System.Double)">
+            <summary>
+            Control the volume of an area directly. 
+            </summary>
+            <param name="singleArea">An AreaFlag representing a single area</param>
+            <param name="strength">Strength to play, from 0.0 - 1.0</param>
+        </member>
+        <member name="M:Hardlight.SDK.HLVR.HLVR_Plugin.ControlDirectly(Hardlight.SDK.AreaFlag[],System.UInt16[])">
+            <summary>
+            Control the volume of multiple areas directly. 
+            </summary>
+            <param name="singleAreas">List of AreaFlags, each representing a single area</param>
+            <param name="strengths">Strength to play, from 0-255</param>
+        </member>
+        <member name="M:Hardlight.SDK.HLVR.HLVR_Plugin.PauseAll">
+            END INTERNAL *
+            <summary>
+            Pause all currently active effects
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.HLVR.HLVR_Plugin.ResumeAll">
+            <summary>
+            Resume all effects that were paused with a call to PauseAll()
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.HLVR.HLVR_Plugin.ClearAll">
+            <summary>
+            Destroy all effects (invalidates any HapticHandles)
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.HLVR.HLVR_Plugin.GetPluginVersion">
+            <summary>
+            Return the plugin version
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.HLVR.HLVR_Plugin.EnableTracking">
+            <summary>
+            Enable tracking on the suit
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.HLVR.HLVR_Plugin.DisableTracking">
+            <summary>
+            Disable tracking on the suit 
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.HLVR.HLVR_Plugin.SetTrackingEnabled(System.Boolean)">
+            <summary>
+            Enable or disable tracking
+            </summary>
+            <param name="enableTracking">If true, enables tracking. Else disables tracking.</param>
+        </member>
+        <member name="M:Hardlight.SDK.HLVR.HLVR_Plugin.PollTracking">
+            <summary>
+            Poll the suit for the latest tracking data
+            </summary>
+            <returns>A data structure containing all valid quaternion data</returns>
+        </member>
+        <member name="M:Hardlight.SDK.HLVR.HLVR_Plugin.Dispose">
+            <summary>
+            Disposes the plugin. After calling dispose, the plugin cannot be used again.
+            </summary>
+        </member>
+        <member name="T:Hardlight.SDK.TrackingUpdate">
+            <summary>
+            Able to hold tracking data for chest and arm IMUs
+            </summary>
+        </member>
+        <member name="T:Hardlight.SDK.HapticHandle">
+            <summary>
+            Use a HapticHandle to Play, Pause, or Stop an effect. A HapticHandle represents a particular instance of an effect.
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.HapticHandle.#ctor(Hardlight.SDK.HapticHandle.CommandWithHandle)">
+             <summary>
+             If we want to construct the handle for the very first time, we have no duration info present.
+             So we end up calculating it in the constructor, then caching it. Subsequent Clones() will copy the duration
+            
+             </summary>
+             <param name="creator"></param>
+        </member>
+        <member name="M:Hardlight.SDK.HapticHandle.#ctor(Hardlight.SDK.HapticHandle.CommandWithHandle,System.Single)">
+            <summary>
+            Clones will call this constructor, grabbing the duration
+            </summary>
+            <param name="creator"></param>
+            <param name="duration"></param>
+        </member>
+        <member name="M:Hardlight.SDK.HapticHandle.Play">
+            <summary>
+            Cause the associated effect to play. If paused, play will resume where it left off. If stopped, play will resume from the beginning. 
+            </summary>
+            <returns>Reference to this HapticHandle</returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticHandle.Replay">
+            <summary>
+            Cause the associated effect to immediately play from the beginning.
+            Identical to Stop().Play()
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticHandle.Pause">
+            <summary>
+            Cause the associated effect to pause. 
+            </summary>
+            <returns>Reference to this HapticHandle</returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticHandle.Stop">
+            <summary>
+            Cause the associated effect to stop. Will reset the effect to the beginning in a paused state. 
+            </summary>
+            <returns>Reference to this HapticHandle</returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticHandle.IsFinishedPlaying">
+            <summary>
+            Returns true if the effect has completed playback
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticHandle.Clone">
+            <summary>
+            Clone this HapticHandle, allowing an identical effect to be controlled independently 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticHandle.GetElapsedTime">
+            <summary>
+            Returns how far this effect has advanced in fractional seconds. 
+            Returns a value less than 0 on failure.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticHandle.Dispose">
+            <summary>
+            Dispose the handle, releasing its resources from the plugin. After disposing a handle, it cannot be used again.
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.ParameterizedExperience.Clone">
+            <summary>
+            Create an independent copy of this ParameterizedExperience
+            </summary>
+            <returns>A copy</returns>
+        </member>
+        <member name="M:Hardlight.SDK.ParameterizedPattern.Clone">
+            <summary>
+            Create an independent copy of this ParameterizedPattern
+            </summary>
+            <returns>A copy</returns>
+        </member>
+        <member name="M:Hardlight.SDK.ParameterizedSequence.Clone">
+            <summary>
+            Create an independent copy of this ParameterizedSequence
+            </summary>
+            <returns>A copy</returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticExperience.#ctor">
+            <summary>
+            DO NOT use new HapticExperience(). It will not work.
+            Use HapticExperience.CreateNew()
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.HapticExperience.AddPattern(Hardlight.SDK.ParameterizedPattern)">
+            <summary>
+            Add a HapticPattern to this HapticExperience with a given time offset and default strength of 1.0
+            </summary>
+            <param name="time">Time offset (fractional seconds)</param>
+            <param name="area">AreaFlag on which to play the HapticSequence</param>
+            <param name="sequence">The HapticSequence to be added</param>
+        </member>
+        <member name="M:Hardlight.SDK.HapticExperience.AddPattern(System.Double,System.Double,Hardlight.SDK.ParameterizedPattern)">
+            <summary>
+            Add a HapticPattern to this HapticExperience with a given time offset and strength.
+            </summary>
+            <param name="time">Time offset (fractional seconds)</param>
+            <param name="area">AreaFlag on which to play the HapticSequence</param>
+            <param name="strength">Strength of the HapticSequence (0.0 - 1.0)</param>
+            <param name="sequence">The HapticSequence to be added</param>
+        </member>
+        <member name="M:Hardlight.SDK.HapticExperience.CreateHandle">
+            <summary>
+            Create a HapticHandle from this HapticExperience, which can be used to manipulate the effect. 
+            </summary>
+            <returns>A new HapticHandle</returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticExperience.CreateHandle(System.Double)">
+            <summary>
+            Create a HapticHandle from this HapticExperience, passing in a given strength. 
+            </summary>
+            <param name="strength"></param>
+            <returns>A new HapticHandle</returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticExperience.Play">
+            <summary>
+            <para>If you want to play an experience but don't care about controlling playback, use this method. It will automatically clean up resources.</para>
+            <para>Synonymous with someExperience.CreateHandle().Play()</para>
+            </summary>
+            <returns>A new HapticHandle</returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticExperience.Play(System.Double)">
+            <summary>
+            <para>If you want to play an experience but don't care about controlling playback, use this method. It will automatically clean up resources.</para>
+            <para>Synonymous with someExperience.CreateHandle(strength).Play().Release()</para>
+            </summary>
+            <returns>A new HapticHandle</returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticExperience.Clone">
+            <summary>
+            Create an independent copy of this HapticExperience
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticExperience.ToString">
+            <summary>
+            Returns a representation of this HapticExperience for debugging purposes, including the representation of child patterns
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticExperience.CreateNew">
+            <summary>
+            Use this instead of new HapticExperience()
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticExperience.LoadFromAsset(System.String)">
+            <summary>
+            Attempts to load an existing HapticSequence asset file
+            If the path does not exist, it will return CreateNew()
+            </summary>
+            <param name="resourcesPath">Files should be located in a Resources/Haptics folder. This does not append the Haptics folder (include it on your end)</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticExperience.LoadFromAssetBundle(System.String,UnityEngine.AssetBundle)">
+            <summary>
+            Attempts to load an existing HapticExperience asset file from the provided asset bundle
+            If the path does not exist, it will return CreateNew()
+            </summary>
+            <param name="experienceAssetName"></param>
+            <param name="bundle"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticPattern.#ctor">
+            <summary>
+            DO NOT use new HapticPattern(). It will not work.
+            Use HapticPattern.CreateNew()
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.HapticPattern.OnEnable">
+            <summary>
+            Construct an empty HapticSequence
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.HapticPattern.AddSequence(Hardlight.SDK.ParameterizedSequence)">
+            <summary>
+            Add a HapticSequence to this HapticPattern with a given time offset and AreaFlag, and default strength of 1.0
+            </summary>
+            <param name="time">Time offset (fractional seconds)</param>
+            <param name="area">AreaFlag on which to play the HapticSequence</param>
+            <param name="sequence">The HapticSequence to be added</param>
+        </member>
+        <member name="M:Hardlight.SDK.HapticPattern.AddSequence(System.Double,Hardlight.SDK.AreaFlag,System.Double,Hardlight.SDK.ParameterizedSequence)">
+            <summary>
+            Add a HapticSequence to this HapticPattern with a given time offset, AreaFlag, and strength.
+            </summary>
+            <param name="time">Time offset (fractional seconds)</param>
+            <param name="area">AreaFlag on which to play the HapticSequence</param>
+            <param name="strength">Strength of the HapticSequence (0.0 - 1.0)</param>
+            <param name="sequence">The HapticSequence to be added</param>
+        </member>
+        <member name="M:Hardlight.SDK.HapticPattern.CreateHandle">
+            <summary>
+            Create a HapticHandle from this HapticPattern, which can be used to manipulate the effect. 
+            </summary>
+            <returns>A new HapticHandle</returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticPattern.CreateHandle(System.Double)">
+            <summary>
+            Create a HapticHandle from this HapticPattern, passing in a given strength. 
+            </summary>
+            <param name="strength"></param>
+            <returns>A new HapticHandle</returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticPattern.Play">
+            <summary>
+            <para>If you want to play a pattern but don't care about controlling playback, use this method. It will automatically clean up resources.</para>
+            <para>Synonymous with somePattern.CreateHandle().Play().Release()</para>
+            </summary>
+            <returns>A new HapticHandle</returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticPattern.Play(System.Double)">
+            <summary>
+            <para>If you want to play a pattern but don't care about controlling playback, use this method. It will automatically clean up resources.</para>
+            <para>Synonymous with somePattern.CreateHandle(strength).Play().Release()</para>
+            </summary>
+            <returns>A new HapticHandle</returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticPattern.Clone">
+            <summary>
+            Create an independent copy of this HapticPattern
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticPattern.ToString">
+            <summary>
+            Returns a string representation of this HapticPattern for debugging purposes, including all child sequences
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.HapticPattern.CreateNew">
+            <summary>
+            Use this instead of new HapticPattern()
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticPattern.LoadFromAsset(System.String)">
+            <summary>
+            Attempts to load an existing HapticPattern asset file
+            If the path does not exist, it will return CreateNew()
+            </summary>
+            <param name="resourcesPath">Files should be located in a Resources/Haptics folder. This does not append the Haptics folder (include it on your end)</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticPattern.LoadFromAssetBundle(System.String,UnityEngine.AssetBundle)">
+            <summary>
+            Attempts to load an existing HapticPattern asset file from the provided asset bundle
+            If the path does not exist, it will return CreateNew()
+            </summary>
+            <param name="patternAssetName"></param>
+            <param name="bundle"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticSequence.#ctor">
+            <summary>
+            DO NOT use new HapticSequence(). It will not work.
+            Use HapticSequence.CreateNew()
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.HapticSequence.OnEnable">
+            <summary>
+            Construct an empty HapticSequence
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.HapticSequence.AddEffect(Hardlight.SDK.Effect,System.Single,System.Double,System.Single)">
+            <summary>
+            Adds a HapticEffect (these parameters go right to it)
+            Returns self for a builder pattern
+            </summary>
+            <param name="effect"></param>
+            <param name="time"></param>
+            <param name="duration"></param>
+            <param name="strength"></param>
+        </member>
+        <member name="M:Hardlight.SDK.HapticSequence.AddEffect(Hardlight.SDK.HapticEffect)">
+            <summary>
+            Add a preconstructed HapticEffect
+            Returns self for a builder pattern
+            </summary>
+            <param name="effect">The HapticEffect to add</param>
+        </member>
+        <member name="M:Hardlight.SDK.HapticSequence.CreateHandle(Hardlight.SDK.AreaFlag)">
+            <summary>
+            Create a HapticHandle from this HapticSequence, specifying an AreaFlag to play on.
+            </summary>
+            <param name="area">The AreaFlag where this HapticSequence should play</param>
+            <returns>A new HapticHandle bound to this effect playing on the given area</returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticSequence.CreateHandle(Hardlight.SDK.AreaFlag,System.Double)">
+            <summary>
+            Create a HapticHandle for this HapticSequence, specifying an AreaFlag and a strength.
+            </summary>
+            <param name="area">The AreaFlag where this HapticSequence should play</param>
+            <param name="strength">The strength of this HapticSequence (0.0-1.0)</param>
+            <returns>A new HapticHandle bound to this effect playing on the given area</returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticSequence.Play(Hardlight.SDK.AreaFlag)">
+            <summary>
+            <para>If you want to play a sequence but don't care about controlling playback, use this method. It will automatically clean up resources.</para>
+            <para>Synonymous with someSequence.CreateHandle(area).Play().Release() </para>
+            </summary>
+            <param name="area">The area on which to play this sequence</param>
+            <returns>A new HapticHandle bound to this effect playing on the given area</returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticSequence.Play(Hardlight.SDK.AreaFlag,System.Double)">
+            <summary>
+            <para>A helper which calls Play on a newly created HapticHandle.</para>
+            <para>Synonymous with someSequence.CreateHandle(area, strength).Play()</para>
+            </summary>
+            <param name="area">The area on which to play this sequence</param>
+            <param name="strength">The strength with which to play this sequence</param>
+            <returns>A new HapticHandle bound to this effect playing on the given area</returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticSequence.ToString">
+            <summary>
+            Returns a string representation of this HapticSequence for debugging purposes, including all child effects
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticSequence.CreateNew">
+            <summary>
+            Use this instead of new HapticSequence()
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticSequence.LoadFromHDF(System.String,Hardlight.SDK.FileUtilities.HapticDefinitionFile)">
+            <summary>
+            Internal use: turns an HDF into a pattern
+            </summary>
+            <param name="hdf"></param>
+        </member>
+        <member name="M:Hardlight.SDK.HapticSequence.LoadFromAsset(System.String)">
+            <summary>
+            Attempts to load an existing HapticSequence asset file
+            If the path does not exist, it will return CreateNew()
+            </summary>
+            <param name="resourcesPath">Files should be located in a Resources/Haptics folder. This does not append the Haptics folder (include it on your end)</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticSequence.LoadFromAssetBundle(System.String,UnityEngine.AssetBundle)">
+            <summary>
+            Attempts to load an existing HapticSequence asset file from the provided asset bundle
+            If the path does not exist, it will return CreateNew()
+            </summary>
+            <param name="sequenceAssetName"></param>
+            <param name="bundle"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MiniJSON.Json">
+             <summary>
+             This class encodes and decodes JSON strings.
+             Spec. details, see http://www.json.org/
+            
+             JSON uses Arrays and Objects. These correspond here to the datatypes IList and IDictionary.
+             All numbers are parsed to doubles.
+             </summary>
+        </member>
+        <member name="M:MiniJSON.Json.Deserialize(System.String)">
+            <summary>
+            Parses the string json into a value
+            </summary>
+            <param name="json">A JSON string.</param>
+            <returns>An List&lt;object&gt;, a Dictionary&lt;string, object&gt;, a double, an integer,a string, null, true, or false</returns>
+        </member>
+        <member name="M:MiniJSON.Json.Serialize(System.Object)">
+            <summary>
+            Converts a IDictionary / IList object or a simple type (string, int, etc.) into a JSON string
+            </summary>
+            <param name="json">A Dictionary&lt;string, object&gt; / List&lt;object&gt;</param>
+            <returns>A JSON encoded string, or null if object 'json' is not serializable</returns>
+        </member>
+    </members>
+</doc>

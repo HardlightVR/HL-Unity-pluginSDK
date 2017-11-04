@@ -151,6 +151,8 @@ namespace Hardlight.SDK.UEditor
 		{
 			if (!seq.UsingGenerator)
 			{
+				//IMPORTANT NOTE: Using Generators is currently a problem because of Unity serialization (like always)
+				//Basically using temporary objects needs a solid place to serialize the data always. This should get solved later when generators are closer to being usable.
 				//if (HLEditorStyles.DrawButton("Use Area", 25, widths[2] / 2))
 				//{
 				//	seq.info = new AreaFlagLocation();
@@ -164,10 +166,11 @@ namespace Hardlight.SDK.UEditor
 				//{
 				//var areaLocation = (AreaFlagLocation)seq.info;
 
-				var area = seq.Area = (AreaFlag)HLEditorStyles.DrawEnumPopup(seq.Area, 40, widths[2]);
+				
+				var area = seq.Area;
+				seq.Area = (AreaFlag)HLEditorStyles.DrawEnumPopup(seq.Area, 40, widths[2]);
 				if (area != seq.Area)
 					Dirty = true;
-				seq.Area = area;
 
 				GUILayout.Space(4);
 

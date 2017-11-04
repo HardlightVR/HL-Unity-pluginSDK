@@ -630,6 +630,12 @@
             <param name="bundle"></param>
             <returns></returns>
         </member>
+        <member name="T:Hardlight.SDK.HapticSequence">
+            <summary>
+            Don't use HapticSequence seq = new HapticSequence
+            Use HapticSequence.CreateNew()
+            </summary>
+        </member>
         <member name="M:Hardlight.SDK.HapticSequence.#ctor">
             <summary>
             DO NOT use new HapticSequence(). It will not work.
@@ -690,12 +696,7 @@
             <param name="strength">The strength with which to play this sequence</param>
             <returns>A new HapticHandle bound to this effect playing on the given area</returns>
         </member>
-        <member name="M:Hardlight.SDK.HapticSequence.ToString">
-            <summary>
-            Returns a string representation of this HapticSequence for debugging purposes, including all child effects
-            </summary>
-            <returns></returns>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Hardlight.SDK.HapticSequence.ToString" -->
         <member name="M:Hardlight.SDK.HapticSequence.CreateNew">
             <summary>
             Use this instead of new HapticSequence()

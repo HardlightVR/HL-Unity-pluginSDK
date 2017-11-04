@@ -120,6 +120,8 @@ namespace Hardlight.SDK
 		public BodyVisualPrefabData VisualPrefabs;
 		[SerializeField]
 		public BodyVisualPrefabData DataModelPrefabs;
+		[SerializeField]
+		public VRBodyDimensions BodyDimensions;
 
 		//public AntiqueArmMimic AntiqueLeftArm;
 		//public AntiqueArmMimic AntiqueRightArm;

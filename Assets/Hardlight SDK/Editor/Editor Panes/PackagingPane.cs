@@ -701,38 +701,63 @@ namespace Hardlight.SDK.UEditor
 		protected JsonAsset CreateHapticAsset(string oldPath, string json, int undoGroup = 0)
 		{
 			//Create our simple json holder. Later, this could be a complex object
-			var asset = CreateInstance<JsonAsset>();
-			asset.SetJson(json);
+			var assetPath = "Assets/Resources/Haptics/";
+			//var asset = CreateInstance<JsonAsset>();
+			//asset.SetJson(json);
 
 			var fileName = System.IO.Path.GetFileNameWithoutExtension(oldPath);
 
-			//If we don't replace . with _, then Unity has serious trouble locating the file
-			var newAssetName = fileName.Replace('.', '_') + ".asset";
+			////If we don't replace . with _, then Unity has serious trouble locating the file
+			//var newAssetName = fileName.Replace('.', '_') + ".asset";
+			//var newAssetName = fileName.Replace('.', '_') + ".asset";
+			ScriptableObjectHaptic Scrob = null;
 
-			//This is where we'd want to change the default location of new haptic assets
-			CreateAssetFolderIfNotExists();
+			bool isSeq = oldPath.Contains(".sequence");
+			bool isPat = oldPath.Contains(".pattern");
+			bool isExp = oldPath.Contains(".experience");
+			//Debug.Log("Attemtping haptic asset import: " + oldPath + " " + isSeq + "\n" + newAssetName + "\n\n" + json + "\n", this);
 
-			var newAssetPath = "Assets/Resources/Haptics/" + newAssetName;
-			asset.name = newAssetName;
-
-			EditorUtility.SetDirty(asset);
-
-			var old = AssetDatabase.LoadAssetAtPath(newAssetPath, typeof(JsonAsset));
-			if (old != null)
+			if (isSeq)
 			{
-				//Previous file exists
-				//Debug.LogError("Overwriting " + newAssetPath + "\n");
-				Undo.RecordObject(old, "Reimport " + asset.name);
+				Scrob = HapticSequence.CreateAsset(oldPath);
+				HapticSequence.SaveAsset(fileName, (HapticSequence)Scrob);
+			}
+			else if (isPat)
+			{
+				Scrob = HapticPattern.CreateAsset(oldPath);
+				HapticPattern.SaveAsset(fileName, (HapticPattern)Scrob);
+			}
+			else if (isPat)
+			{
+				//Scrob = HapticExperience.LoadFromHDF(oldPath);
 			}
 
-			AssetDatabase.CreateAsset(asset, newAssetPath);
-			if (old == null)
-			{
-				//Previous file did not exist
-				Undo.RegisterCreatedObjectUndo(asset, "Import " + asset.name);
-			}
+			////This is where we'd want to change the default location of new haptic assets
+			//CreateAssetFolderIfNotExists();
 
-			return asset;
+			//var newAssetPath = "Assets/Resources/Haptics/" + newAssetName;
+			//asset.name = newAssetName;
+			//EditorUtility.SetDirty(asset);
+
+			//var old = AssetDatabase.LoadAssetAtPath(newAssetPath, typeof(JsonAsset));
+			//if (old != null)
+			//{
+			//	//Previous file exists
+			//	//Debug.LogError("Overwriting " + newAssetPath + "\n");
+			//	Undo.RecordObject(old, "Reimport " + asset.name);
+			//}
+
+			//AssetDatabase.CreateAsset(asset, newAssetPath);
+			//if (old == null)
+			//{
+			//	//Previous file did not exist
+			//	Undo.RegisterCreatedObjectUndo(asset, "Import " + asset.name);
+			//}
+
+			return null;
+
+
+			//return asset;
 
 		}
 		private void CreateHapticAsset(string path)

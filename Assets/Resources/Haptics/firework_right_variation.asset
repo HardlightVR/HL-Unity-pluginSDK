@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 2094192899, guid: aeff96418ffa9f2428a4800799babb4c, type: 3}
+  m_Name: firework_right_variation
+  m_EditorClassIdentifier: 
+  sequenceKeys: []
+  _sequences:
+  - _time: 0
+    _strength: 1
+    _sequenceKey: 0
+    _sequence: {fileID: 11400000, guid: 05a65e736fb96fa429f0d9b921e2669a, type: 2}
+    UsingGenerator: 0
+    _areaFlag: 8388608
+  - _time: 0.15
+    _strength: 1
+    _sequenceKey: 0
+    _sequence: {fileID: 11400000, guid: 05a65e736fb96fa429f0d9b921e2669a, type: 2}
+    UsingGenerator: 0
+    _areaFlag: 4194304
+  - _time: 0.3
+    _strength: 1
+    _sequenceKey: 0
+    _sequence: {fileID: 11400000, guid: 05a65e736fb96fa429f0d9b921e2669a, type: 2}
+    UsingGenerator: 0
+    _areaFlag: 2097152
+  - _time: 0.45
+    _strength: 1
+    _sequenceKey: 0
+    _sequence: {fileID: 11400000, guid: 05a65e736fb96fa429f0d9b921e2669a, type: 2}
+    UsingGenerator: 0
+    _areaFlag: 1048576
+  - _time: 0.75
+    _strength: 1
+    _sequenceKey: 0
+    _sequence: {fileID: 11400000, guid: 5504d79ea3f4be343a897541ecbdf0fb, type: 2}
+    UsingGenerator: 0
+    _areaFlag: 262144
+  - _time: 0.75
+    _strength: 1
+    _sequenceKey: 0
+    _sequence: {fileID: 11400000, guid: 23d1807b61315584a82b7d997567d115, type: 2}
+    UsingGenerator: 0
+    _areaFlag: 1048576
+  - _time: 0.77
+    _strength: 1
+    _sequenceKey: 0
+    _sequence: {fileID: 11400000, guid: c59d12f23dae6d64bb0c99802e6136f5, type: 2}
+    UsingGenerator: 0
+    _areaFlag: 131072
+  - _time: 0.82
+    _strength: 1
+    _sequenceKey: 0
+    _sequence: {fileID: 11400000, guid: 34138d2f10b747b41b6a687e27f7db32, type: 2}
+    UsingGenerator: 0
+    _areaFlag: 16
+  - _time: 0.85
+    _strength: 1
+    _sequenceKey: 0
+    _sequence: {fileID: 11400000, guid: 23d1807b61315584a82b7d997567d115, type: 2}
+    UsingGenerator: 0
+    _areaFlag: 1048576
+  - _time: 0.87
+    _strength: 1
+    _sequenceKey: 0
+    _sequence: {fileID: 11400000, guid: 34138d2f10b747b41b6a687e27f7db32, type: 2}
+    UsingGenerator: 0
+    _areaFlag: 2097152
+  - _time: 0.9
+    _strength: 1
+    _sequenceKey: 0
+    _sequence: {fileID: 11400000, guid: c59d12f23dae6d64bb0c99802e6136f5, type: 2}
+    UsingGenerator: 0
+    _areaFlag: 262144
+  - _time: 0.91
+    _strength: 1
+    _sequenceKey: 0
+    _sequence: {fileID: 11400000, guid: 23d1807b61315584a82b7d997567d115, type: 2}
+    UsingGenerator: 0
+    _areaFlag: 524288
+  - _time: 0.93
+    _strength: 1
+    _sequenceKey: 0
+    _sequence: {fileID: 11400000, guid: c59d12f23dae6d64bb0c99802e6136f5, type: 2}
+    UsingGenerator: 0
+    _areaFlag: 2097152

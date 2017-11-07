@@ -650,6 +650,12 @@ namespace Hardlight.SDK.UEditor
 			System.Enum thing = EditorGUILayout.EnumPopup(selectedIndex, GetEnumPopup(), GUILayout.ExpandWidth(false), GUILayout.MinWidth(minWidth), GUILayout.MaxWidth(maxWidth));
 			return thing;
 		}
+
+		public static System.Enum DrawEnumFlagPopup(System.Enum selectedIndex, float minWidth = 25, float maxWidth = 65, float spacingAfterward = 0)
+		{
+			System.Enum thing = EditorGUILayout.EnumMaskField(selectedIndex, GetEnumPopup(), GUILayout.ExpandWidth(false), GUILayout.MinWidth(minWidth), GUILayout.MaxWidth(maxWidth));
+			return thing;
+		}
 		#endregion
 
 		#region Style Colors (These behave like groups of colors based on the enum ColorUsageState)

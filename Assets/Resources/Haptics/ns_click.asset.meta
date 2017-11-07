@@ -1,6 +1,9 @@
 fileFormatVersion: 2
-guid: 8b8055cab56930d4dbc1c1533ddcad45
-timeCreated: 1509754659
+guid: c59d12f23dae6d64bb0c99802e6136f5
+labels:
+- Haptics
+- Sequence
+timeCreated: 1510088148
 licenseType: Free
 NativeFormatImporter:
   userData: 

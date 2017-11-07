@@ -168,7 +168,7 @@ namespace Hardlight.SDK.UEditor
 
 				
 				var area = seq.Area;
-				seq.Area = (AreaFlag)HLEditorStyles.DrawEnumPopup(seq.Area, 40, widths[2]);
+				seq.Area = (AreaFlag)HLEditorStyles.DrawEnumFlagPopup(seq.Area, 40, widths[2]);
 				if (area != seq.Area)
 					Dirty = true;
 

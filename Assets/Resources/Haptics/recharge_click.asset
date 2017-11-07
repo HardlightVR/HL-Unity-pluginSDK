@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 2094192899, guid: aeff96418ffa9f2428a4800799babb4c, type: 3}
+  m_Name: recharge_click
+  m_EditorClassIdentifier: 
+  sequenceKeys: []
+  _sequences:
+  - _time: 0
+    _strength: 1
+    _sequenceKey: 0
+    _sequence: {fileID: 11400000, guid: c59d12f23dae6d64bb0c99802e6136f5, type: 2}
+    UsingGenerator: 0
+    _areaFlag: 8388736
+  - _time: 0.1
+    _strength: 1
+    _sequenceKey: 0
+    _sequence: {fileID: 11400000, guid: c59d12f23dae6d64bb0c99802e6136f5, type: 2}
+    UsingGenerator: 0
+    _areaFlag: 4194368
+  - _time: 0.2
+    _strength: 1
+    _sequenceKey: 0
+    _sequence: {fileID: 11400000, guid: c59d12f23dae6d64bb0c99802e6136f5, type: 2}
+    UsingGenerator: 0
+    _areaFlag: 2097184
+  - _time: 0.3
+    _strength: 1
+    _sequenceKey: 0
+    _sequence: {fileID: 11400000, guid: c59d12f23dae6d64bb0c99802e6136f5, type: 2}
+    UsingGenerator: 0
+    _areaFlag: 1048592
+  - _time: 0.4
+    _strength: 1
+    _sequenceKey: 0
+    _sequence: {fileID: 11400000, guid: c59d12f23dae6d64bb0c99802e6136f5, type: 2}
+    UsingGenerator: 0
+    _areaFlag: 262148
+  - _time: 0.5
+    _strength: 1
+    _sequenceKey: 0
+    _sequence: {fileID: 11400000, guid: c59d12f23dae6d64bb0c99802e6136f5, type: 2}
+    UsingGenerator: 0
+    _areaFlag: 655370
+  - _time: 0.6
+    _strength: 1
+    _sequenceKey: 0
+    _sequence: {fileID: 11400000, guid: c59d12f23dae6d64bb0c99802e6136f5, type: 2}
+    UsingGenerator: 0
+    _areaFlag: 65537

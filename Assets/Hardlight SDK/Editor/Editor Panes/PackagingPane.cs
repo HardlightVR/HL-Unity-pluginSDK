@@ -43,6 +43,8 @@ namespace Hardlight.SDK.UEditor
 		private enum ImportState { Idle, Fetching, Importing }
 		private PackageImport CurrentImport;
 
+		public ScriptableObjectHaptic JustCreated;
+
 		private class PackageImport
 		{
 			private class ImportStatus
@@ -119,7 +121,7 @@ namespace Hardlight.SDK.UEditor
 			float totalProgress = 0f;
 			float currentProgress = -1f;
 			bool ShouldRepaint = false;
-			public JsonAsset lastCreatedAsset;
+			public ScriptableObjectHaptic lastCreatedAsset;
 
 			Queue<KeyValuePair<string, string>> _workQueue = new Queue<KeyValuePair<string, string>>();
 			Queue<string> _fetchQueue = new Queue<string>();
@@ -214,6 +216,7 @@ namespace Hardlight.SDK.UEditor
 				{
 					ImportPackage(_packageQueue.Dequeue());
 				}
+				AssetDatabase.SaveAssets();
 
 				MyPane.Repaint();
 			}
@@ -698,7 +701,7 @@ namespace Hardlight.SDK.UEditor
 
 		}
 
-		protected JsonAsset CreateHapticAsset(string oldPath, string json, int undoGroup = 0)
+		protected ScriptableObjectHaptic CreateHapticAsset(string oldPath, string json, int undoGroup = 0)
 		{
 			//Create our simple json holder. Later, this could be a complex object
 			var assetPath = "Assets/Resources/Haptics/";
@@ -710,7 +713,7 @@ namespace Hardlight.SDK.UEditor
 			////If we don't replace . with _, then Unity has serious trouble locating the file
 			//var newAssetName = fileName.Replace('.', '_') + ".asset";
 			//var newAssetName = fileName.Replace('.', '_') + ".asset";
-			ScriptableObjectHaptic Scrob = null;
+			//ScriptableObjectHaptic Scrob = null;
 
 			bool isSeq = oldPath.Contains(".sequence");
 			bool isPat = oldPath.Contains(".pattern");
@@ -719,13 +722,13 @@ namespace Hardlight.SDK.UEditor
 
 			if (isSeq)
 			{
-				Scrob = HapticSequence.CreateAsset(oldPath);
-				HapticSequence.SaveAsset(fileName, (HapticSequence)Scrob);
+				JustCreated = HapticSequence.CreateAsset(oldPath);
+				HapticSequence.SaveAsset(fileName, (HapticSequence)JustCreated);
 			}
 			else if (isPat)
 			{
-				Scrob = HapticPattern.CreateAsset(oldPath);
-				HapticPattern.SaveAsset(fileName, (HapticPattern)Scrob);
+				JustCreated = HapticPattern.CreateAsset(oldPath);
+				HapticPattern.SaveAsset(fileName, (HapticPattern)JustCreated);
 			}
 			else if (isPat)
 			{
@@ -754,10 +757,7 @@ namespace Hardlight.SDK.UEditor
 			//	Undo.RegisterCreatedObjectUndo(asset, "Import " + asset.name);
 			//}
 
-			return null;
-
-
-			//return asset;
+			return JustCreated;
 
 		}
 		private void CreateHapticAsset(string path)
@@ -1237,6 +1237,7 @@ namespace Hardlight.SDK.UEditor
 				if (json.Value != "NSVR_FAILED")
 				{
 					this.CreateHapticAsset(json.Key, json.Value);
+					AssetDatabase.SaveAssets();
 				}
 				else
 				{

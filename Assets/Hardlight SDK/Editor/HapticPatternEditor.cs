@@ -93,54 +93,59 @@ namespace Hardlight.SDK.UEditor
 			{
 				if (pat.Sequences[i] != null)
 				{
-					EditorGUILayout.BeginHorizontal("Box");
-					HLEditorStyles.DrawMinLabel(i + ":", 20, widths[0]);
-					var time = HLEditorStyles.FloatField(pat.Sequences[i].Time, 35, widths[1] + 8);
-
-					if (pat.Sequences[i].Time != time)
-						Dirty = true;
-
-					pat.Sequences[i].Time = time;
-
-					//EditorGUILayout.EndHorizontal();
-					//EditorGUILayout.BeginHorizontal();
-					//CreateKeyArray();
-					//pat.Sequences[i].SequenceKey = EditorGUILayout.Popup(pat.Sequences[i].SequenceKey, Keys.ToArray());
-					//EditorGUILayout.EndHorizontal();
-					//EditorGUILayout.BeginHorizontal();
-					DrawLocationInfo(pat.Sequences[i]);
-
-					var newSeq = (HapticSequence)HLEditorStyles.ObjectField("", pat.Sequences[i].Sequence, typeof(HapticSequence), 10, widths[4]);
-					if (newSeq != pat.Sequences[i].Sequence)
-						Dirty = true;
-					pat.Sequences[i].Sequence = newSeq;
-
-					var str = HLEditorStyles.RangeField(pat.Sequences[i].Strength, new Vector2(0.0f, 1.0f), 20, widths[5] * 1 / 2);
-					str = Mathf.Clamp(str, 0, 1.0f);
-					if (str != pat.Sequences[i].Strength)
-						Dirty = true;
-
-					pat.Sequences[i].Strength = str;
-
-					str = HLEditorStyles.FloatField(pat.Sequences[i].Strength, 20, widths[5] / 2);
-					str = Mathf.Clamp(str, 0, 1.0f);
-					if (str != pat.Sequences[i].Strength)
-						Dirty = true;
-
-					pat.Sequences[i].Strength = str;
-
-					if (HLEditorStyles.DrawButton("Copy", 32, widths[6]))
+					bool showError = pat.Sequences[i].Sequence == null || pat.Sequences[i].Area == AreaFlag.None;
+					HLEditorStyles.HighlightBox(showError, () =>
 					{
-						Dirty = true;
-						pat.Sequences.Insert(i, pat.Sequences[i].Clone());
-					}
-					if (HLEditorStyles.DrawButton("Delete", 42, widths[7]))
-					{
-						Dirty = true;
-						pat.Sequences.RemoveAt(i);
-					}
-					EditorGUILayout.EndHorizontal();
-					//GUILayout.Space(18);
+						EditorGUILayout.BeginHorizontal("Box");
+						HLEditorStyles.DrawMinLabel(i + ":", 20, widths[0]);
+						var time = HLEditorStyles.FloatField(pat.Sequences[i].Time, 35, widths[1] + 8);
+						time = Mathf.Clamp(time, 0, float.MaxValue);
+
+						if (pat.Sequences[i].Time != time)
+							Dirty = true;
+
+						pat.Sequences[i].Time = time;
+
+						//EditorGUILayout.EndHorizontal();
+						//EditorGUILayout.BeginHorizontal();
+						//CreateKeyArray();
+						//pat.Sequences[i].SequenceKey = EditorGUILayout.Popup(pat.Sequences[i].SequenceKey, Keys.ToArray());
+						//EditorGUILayout.EndHorizontal();
+						//EditorGUILayout.BeginHorizontal();
+						DrawLocationInfo(pat.Sequences[i]);
+
+						var newSeq = (HapticSequence)HLEditorStyles.ObjectField("", pat.Sequences[i].Sequence, typeof(HapticSequence), 10, widths[4]);
+						if (newSeq != pat.Sequences[i].Sequence)
+							Dirty = true;
+						pat.Sequences[i].Sequence = newSeq;
+
+						var str = HLEditorStyles.RangeField(pat.Sequences[i].Strength, new Vector2(0.0f, 1.0f), 20, widths[5] * 1 / 2);
+						str = Mathf.Clamp(str, 0, 1.0f);
+						if (str != pat.Sequences[i].Strength)
+							Dirty = true;
+
+						pat.Sequences[i].Strength = str;
+
+						str = HLEditorStyles.FloatField(pat.Sequences[i].Strength, 20, widths[5] / 2);
+						str = Mathf.Clamp(str, 0, 1.0f);
+						if (str != pat.Sequences[i].Strength)
+							Dirty = true;
+
+						pat.Sequences[i].Strength = str;
+
+						if (HLEditorStyles.DrawButton("Copy", 32, widths[6]))
+						{
+							Dirty = true;
+							pat.Sequences.Insert(i, pat.Sequences[i].Clone());
+						}
+						if (HLEditorStyles.DrawButton("Delete", 42, widths[7]))
+						{
+							Dirty = true;
+							pat.Sequences.RemoveAt(i);
+						}
+						EditorGUILayout.EndHorizontal();
+						//GUILayout.Space(18);
+					});
 				}
 			}
 			#endregion
@@ -165,7 +170,7 @@ namespace Hardlight.SDK.UEditor
 				//{
 				//var areaLocation = (AreaFlagLocation)seq.info;
 
-				
+
 				var area = seq.Area;
 				seq.Area = (AreaFlag)HLEditorStyles.DrawEnumFlagPopup(seq.Area, 40, widths[2]);
 				if (area != seq.Area)
@@ -181,7 +186,7 @@ namespace Hardlight.SDK.UEditor
 			}
 			else/* if (seq.info.GetType() == typeof(GeneratorLocation))*/
 			{
-				HLEditorStyles.DrawMinLabel("derp", 40, widths[2]);
+				HLEditorStyles.DrawMinLabel("Gener8rs not implemented", 40, widths[2]);
 				//var areaLocation = (AreaFlagLocation)info;
 				//areaLocation.Area = (AreaFlag)HLEditorStyles.DrawEnumPopup(areaLocation.Area, 40, 90);
 

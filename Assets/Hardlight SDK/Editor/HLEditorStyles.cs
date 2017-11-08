@@ -493,6 +493,27 @@ namespace Hardlight.SDK.UEditor
 			return result;
 		}
 
+		#region Colored Boxes
+		public delegate void HighlightDelegate();
+		public static void HighlightBox(bool shouldHighlight, HighlightDelegate highlightDelegate, ColorBoxType boxType = ColorBoxType.Error)
+		{
+			if (shouldHighlight)
+			{
+				//EditorGUILayout.BeginVertical("Box");
+				EditorGUILayout.BeginVertical(HLEditorStyles.GetColoredHelpBoxStyle(boxType));
+			}
+
+			highlightDelegate();
+
+			if (shouldHighlight)
+			{
+				//EditorGUILayout.EndVertical();
+				EditorGUILayout.EndVertical();
+			}
+
+		}
+		#endregion
+
 		#region ObjectField
 		public static Object ObjectField(string label, Object obj, System.Type type, float minWidth = 25, float maxWidth = 65, float spacingAfterward = 0)
 		{

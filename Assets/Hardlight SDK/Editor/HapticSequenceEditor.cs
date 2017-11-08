@@ -7,7 +7,7 @@ namespace Hardlight.SDK.UEditor
 	[CustomEditor(typeof(HapticSequence), true)]
 	public class HapticSequenceEditor : HapticAssetEditor
 	{
-		private int[] widths = { 24, 26, 105, 40, 125, 80, 65, 65 };
+		private int[] widths = { 24, 26, 60, 80, 125, 80, 65, 65 };
 		protected override void DrawLabel()
 		{
 			var seq = (HapticSequence)target;
@@ -16,8 +16,8 @@ namespace Hardlight.SDK.UEditor
 
 			HLEditorStyles.DrawMinLabel("#", 15, widths[0]);
 			HLEditorStyles.DrawMinLabel("Time", 40, widths[1] + 8);
-			HLEditorStyles.DrawMinLabel("Duration", 40, 60);
-			HLEditorStyles.DrawMinLabel("Effect", 40, 90);
+			HLEditorStyles.DrawMinLabel("Duration", 40, widths[2]);
+			HLEditorStyles.DrawMinLabel("Effect", 40, widths[3]);
 			HLEditorStyles.DrawMinLabel("Strength", 40, widths[5]);
 
 			GUILayout.Space(4);
@@ -51,13 +51,13 @@ namespace Hardlight.SDK.UEditor
 					Dirty = true;
 				seq.Effects[i].Time = time;
 
-				var dur = HLEditorStyles.FloatField((float)seq.Effects[i].Duration, 40, 60);
+				var dur = HLEditorStyles.FloatField((float)seq.Effects[i].Duration, 40, widths[2]);
 				dur = Mathf.Clamp(dur, 0, float.MaxValue);
 				if (dur != seq.Effects[i].Duration)
 					Dirty = true;
 				seq.Effects[i].Duration = dur;
 
-				var eff = (Effect)HLEditorStyles.DrawEnumPopup(seq.Effects[i].Effect, 40, 90);
+				var eff = (Effect)HLEditorStyles.DrawEnumPopup(seq.Effects[i].Effect, 40, widths[3]);
 				if (eff != seq.Effects[i].Effect)
 					Dirty = true;
 				seq.Effects[i].Effect = eff;

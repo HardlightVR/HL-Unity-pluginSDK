@@ -16,60 +16,60 @@ MonoBehaviour:
   - _time: 0
     _strength: 1
     _sequenceKey: 0
-    _sequence: {fileID: 11400000, guid: 1cbd5175c658abd4e8421551f4e2d556, type: 2}
+    _sequence: {fileID: 11400000, guid: 763e6175f73d4dd47b8fe6422d4bb187, type: 2}
     UsingGenerator: 0
     _areaFlag: 1048576
   - _time: 0.5
     _strength: 1
     _sequenceKey: 0
-    _sequence: {fileID: 11400000, guid: 1cbd5175c658abd4e8421551f4e2d556, type: 2}
+    _sequence: {fileID: 11400000, guid: 763e6175f73d4dd47b8fe6422d4bb187, type: 2}
     UsingGenerator: 0
     _areaFlag: 16
   - _time: 1
     _strength: 1
     _sequenceKey: 0
-    _sequence: {fileID: 11400000, guid: 1cbd5175c658abd4e8421551f4e2d556, type: 2}
+    _sequence: {fileID: 11400000, guid: 763e6175f73d4dd47b8fe6422d4bb187, type: 2}
     UsingGenerator: 0
     _areaFlag: 262144
   - _time: 1.5
     _strength: 1
     _sequenceKey: 0
-    _sequence: {fileID: 11400000, guid: 1cbd5175c658abd4e8421551f4e2d556, type: 2}
+    _sequence: {fileID: 11400000, guid: 763e6175f73d4dd47b8fe6422d4bb187, type: 2}
     UsingGenerator: 0
     _areaFlag: 4
   - _time: 2
     _strength: 1
     _sequenceKey: 0
-    _sequence: {fileID: 11400000, guid: 1cbd5175c658abd4e8421551f4e2d556, type: 2}
+    _sequence: {fileID: 11400000, guid: 763e6175f73d4dd47b8fe6422d4bb187, type: 2}
     UsingGenerator: 0
     _areaFlag: 131072
   - _time: 2.5
     _strength: 1
     _sequenceKey: 0
-    _sequence: {fileID: 11400000, guid: 1cbd5175c658abd4e8421551f4e2d556, type: 2}
+    _sequence: {fileID: 11400000, guid: 763e6175f73d4dd47b8fe6422d4bb187, type: 2}
     UsingGenerator: 0
     _areaFlag: 2
   - _time: 3.4
     _strength: 1
     _sequenceKey: 0
-    _sequence: {fileID: 11400000, guid: 4008cdaf9c56f784a91ec2965d08e878, type: 2}
+    _sequence: {fileID: 11400000, guid: 20f6b3d7853ca6e4eb2df4596026b0b3, type: 2}
     UsingGenerator: 0
     _areaFlag: 1048592
   - _time: 3.9
     _strength: 1
     _sequenceKey: 0
-    _sequence: {fileID: 11400000, guid: 4008cdaf9c56f784a91ec2965d08e878, type: 2}
+    _sequence: {fileID: 11400000, guid: 20f6b3d7853ca6e4eb2df4596026b0b3, type: 2}
     UsingGenerator: 0
     _areaFlag: 1048592
   - _time: 4.4
     _strength: 1
     _sequenceKey: 0
-    _sequence: {fileID: 11400000, guid: 4008cdaf9c56f784a91ec2965d08e878, type: 2}
+    _sequence: {fileID: 11400000, guid: 20f6b3d7853ca6e4eb2df4596026b0b3, type: 2}
     UsingGenerator: 0
     _areaFlag: 16711935
   - _time: 4.9
     _strength: 1
     _sequenceKey: 0
-    _sequence: {fileID: 11400000, guid: 4008cdaf9c56f784a91ec2965d08e878, type: 2}
+    _sequence: {fileID: 11400000, guid: 20f6b3d7853ca6e4eb2df4596026b0b3, type: 2}
     UsingGenerator: 0
     _areaFlag: 1048592

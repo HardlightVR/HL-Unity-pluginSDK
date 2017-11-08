@@ -14,16 +14,16 @@ MonoBehaviour:
   _patterns:
   - _time: 0
     _strength: 1
-    _pattern: {fileID: 11400000, guid: 076a804a05fdf2c4080321602beb065c, type: 2}
+    _pattern: {fileID: 11400000, guid: 42936297568a91947ac5263d838faee9, type: 2}
   - _time: 1.1
     _strength: 1
-    _pattern: {fileID: 11400000, guid: 076a804a05fdf2c4080321602beb065c, type: 2}
+    _pattern: {fileID: 11400000, guid: 42936297568a91947ac5263d838faee9, type: 2}
   - _time: 2.2
     _strength: 1
-    _pattern: {fileID: 11400000, guid: 076a804a05fdf2c4080321602beb065c, type: 2}
+    _pattern: {fileID: 11400000, guid: 42936297568a91947ac5263d838faee9, type: 2}
   - _time: 3.3
     _strength: 1
-    _pattern: {fileID: 11400000, guid: 076a804a05fdf2c4080321602beb065c, type: 2}
+    _pattern: {fileID: 11400000, guid: 42936297568a91947ac5263d838faee9, type: 2}
   - _time: 4.4
     _strength: 1
-    _pattern: {fileID: 11400000, guid: 076a804a05fdf2c4080321602beb065c, type: 2}
+    _pattern: {fileID: 11400000, guid: 42936297568a91947ac5263d838faee9, type: 2}

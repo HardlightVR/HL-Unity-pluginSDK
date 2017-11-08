@@ -916,7 +916,7 @@ namespace Hardlight.SDK.UEditor
 			IsTutorialStep(0, () =>
 			{
 				HLEditorStyles.DrawLabel("Welcome to the Haptic Package Tool-torial!\n" +
-					"We will go over how to import JSON Haptic Assets into Unity-specific assets\n" +
+					"We will go over how to import JSON Haptic Assets into Unity Scriptable Object assets\n" +
 					"As well as the benefits for doing so."
 					, 105, 14);
 			});
@@ -1207,7 +1207,7 @@ namespace Hardlight.SDK.UEditor
 				});
 			IsTutorialStep(4, packageIndex == 0, () =>
 			{
-				HLEditorStyles.DrawLabel("Sequences are the smallest user component.\nThey contain no location information, merely time, effect and strength.\nA sequence can be played if you give it Area information using AreaFlags.\n\n" +
+				HLEditorStyles.DrawLabel("Sequences are the smallest user component.\nThey contain no location information, merely time, duration, effect and strength.\nA sequence can be played if you give it Area information using AreaFlags.\n\n" +
 					"This option is recommended if you have a single new asset or if you want to reimport a damaged haptic file."
 						, 105, 14);
 			});

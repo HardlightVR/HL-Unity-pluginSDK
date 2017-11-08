@@ -14,13 +14,13 @@ MonoBehaviour:
   _patterns:
   - _time: 0
     _strength: 1
-    _pattern: {fileID: 11400000, guid: 227c2fcc7a191a44b93f82126a20e7d4, type: 2}
+    _pattern: {fileID: 11400000, guid: 70191ba5c53e0224ab6370c8ceda27da, type: 2}
   - _time: 0.8
     _strength: 1
-    _pattern: {fileID: 11400000, guid: 227c2fcc7a191a44b93f82126a20e7d4, type: 2}
+    _pattern: {fileID: 11400000, guid: 70191ba5c53e0224ab6370c8ceda27da, type: 2}
   - _time: 1.6
     _strength: 1
-    _pattern: {fileID: 11400000, guid: 227c2fcc7a191a44b93f82126a20e7d4, type: 2}
+    _pattern: {fileID: 11400000, guid: 70191ba5c53e0224ab6370c8ceda27da, type: 2}
   - _time: 2.4
     _strength: 1
-    _pattern: {fileID: 11400000, guid: 227c2fcc7a191a44b93f82126a20e7d4, type: 2}
+    _pattern: {fileID: 11400000, guid: 70191ba5c53e0224ab6370c8ceda27da, type: 2}

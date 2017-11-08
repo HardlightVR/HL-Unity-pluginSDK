@@ -462,22 +462,20 @@
             Use HapticExperience.CreateNew()
             </summary>
         </member>
+        <member name="M:Hardlight.SDK.HapticExperience.AddPattern(Hardlight.SDK.HapticPattern,System.Double,System.Double)">
+            <summary>
+            Adds a HapticPattern to this HapticExperience with a given time offset and default strength of 1.0
+            </summary>
+            <param name="pattern">The pattern with time/strength attributes</param>
+            <param name="time">Time offset (fractional seconds)</param>
+            <param name="strength">Strength of the Pattern (for switching which effects are used)</param>
+            <returns></returns>
+        </member>
         <member name="M:Hardlight.SDK.HapticExperience.AddPattern(Hardlight.SDK.ParameterizedPattern)">
             <summary>
             Add a HapticPattern to this HapticExperience with a given time offset and default strength of 1.0
             </summary>
-            <param name="time">Time offset (fractional seconds)</param>
-            <param name="area">AreaFlag on which to play the HapticSequence</param>
-            <param name="sequence">The HapticSequence to be added</param>
-        </member>
-        <member name="M:Hardlight.SDK.HapticExperience.AddPattern(System.Double,System.Double,Hardlight.SDK.ParameterizedPattern)">
-            <summary>
-            Add a HapticPattern to this HapticExperience with a given time offset and strength.
-            </summary>
-            <param name="time">Time offset (fractional seconds)</param>
-            <param name="area">AreaFlag on which to play the HapticSequence</param>
-            <param name="strength">Strength of the HapticSequence (0.0 - 1.0)</param>
-            <param name="sequence">The HapticSequence to be added</param>
+            <param name="pattern">The pattern with time/strength attributes</param>
         </member>
         <member name="M:Hardlight.SDK.HapticExperience.CreateHandle">
             <summary>

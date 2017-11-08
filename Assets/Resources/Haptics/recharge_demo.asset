@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 482294231, guid: aeff96418ffa9f2428a4800799babb4c, type: 3}
+  m_Name: recharge_demo
+  m_EditorClassIdentifier: 
+  _patterns:
+  - _time: 0
+    _strength: 1
+    _pattern: {fileID: 11400000, guid: d00a406eebcc95546a551ef564be8113, type: 2}
+  - _time: 1
+    _strength: 1
+    _pattern: {fileID: 11400000, guid: 7a0cdbb50a2ecd541ae2140ddcce2486, type: 2}
+  - _time: 2
+    _strength: 1
+    _pattern: {fileID: 11400000, guid: 5372d6a9931765d4298ec8d23f13464a, type: 2}
+  - _time: 3
+    _strength: 1
+    _pattern: {fileID: 11400000, guid: b3922157933842d4389f34b2b45e90b0, type: 2}

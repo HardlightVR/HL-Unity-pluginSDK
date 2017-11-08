@@ -13,61 +13,61 @@ namespace Hardlight.SDK.UEditor
 		private bool useRanges = false;
 		private List<string> Keys = new List<string>();
 
-		private int[] widths = { 45, 35, 105, 55, 90, 80, 65, 65 };
+		private int[] widths = { 24, 26, 105, 40, 125, 80, 65, 65 };
 
 		protected override void DrawLabel()
 		{
 			var pat = (HapticPattern)target;
 
 			#region Sequence Key Elements
-			bool change = HLEditorStyles.DrawButton(!showKeys ? "Show Sequence Keys" : "Hide Sequence Keys");
-			if (change)
-				showKeys = !showKeys;
+			//bool change = HLEditorStyles.DrawButton(!showKeys ? "Show Sequence Keys" : "Hide Sequence Keys");
+			//if (change)
+			//	showKeys = !showKeys;
 
-			if (showKeys)
-			{
-				EditorGUILayout.BeginHorizontal();
-				EditorGUILayout.BeginVertical("Box");
+			//if (showKeys)
+			//{
+			//	EditorGUILayout.BeginHorizontal();
+			//	EditorGUILayout.BeginVertical("Box");
 
-				if (HLEditorStyles.DrawButton("Add", 25, 65))
-				{
-					pat.SequenceKeys.Add(null);
-				}
+			//	if (HLEditorStyles.DrawButton("Add", 25, 65))
+			//	{
+			//		pat.SequenceKeys.Add(null);
+			//	}
 
-				EditorGUILayout.BeginHorizontal();
-				for (int i = 0; i < pat.SequenceKeys.Count; i++)
-				{
-					HLEditorStyles.DrawMinLabel("Key [" + i + "]", 25, 55);
-					var received = (HapticSequence)HLEditorStyles.ObjectField("", pat.SequenceKeys[i], typeof(HapticSequence), 40, 90);
-					if (received != pat.SequenceKeys[i])
-						Dirty = true;
-					pat.SequenceKeys[i] = received;
-					GUILayout.Space(18);
+			//	EditorGUILayout.BeginHorizontal();
+			//	for (int i = 0; i < pat.SequenceKeys.Count; i++)
+			//	{
+			//		HLEditorStyles.DrawMinLabel("Key [" + i + "]", 25, 55);
+			//		var received = (HapticSequence)HLEditorStyles.ObjectField("", pat.SequenceKeys[i], typeof(HapticSequence), 40, 90);
+			//		if (received != pat.SequenceKeys[i])
+			//			Dirty = true;
+			//		pat.SequenceKeys[i] = received;
+			//		GUILayout.Space(18);
 
-					if (i > 0 && (i + 1) % 3 == 0)
-					{
-						EditorGUILayout.EndHorizontal();
-						EditorGUILayout.BeginHorizontal();
-					}
-				}
-				EditorGUILayout.EndHorizontal();
-				EditorGUILayout.EndVertical();
-				EditorGUILayout.EndHorizontal();
-				GUILayout.Space(24);
-			}
+			//		if (i > 0 && (i + 1) % 3 == 0)
+			//		{
+			//			EditorGUILayout.EndHorizontal();
+			//			EditorGUILayout.BeginHorizontal();
+			//		}
+			//	}
+			//	EditorGUILayout.EndHorizontal();
+			//	EditorGUILayout.EndVertical();
+			//	EditorGUILayout.EndHorizontal();
+			//	GUILayout.Space(24);
+			//}
 			#endregion
 
 			#region Label Section
 			EditorGUILayout.BeginHorizontal("Box");
 
-			HLEditorStyles.DrawMinLabel("Index", 25, widths[0]);
+			HLEditorStyles.DrawMinLabel("#", 15, widths[0]);
 			HLEditorStyles.DrawMinLabel("Time", 40, widths[1] + 8);
-			HLEditorStyles.DrawMinLabel("Area", 40, widths[2]);
-			HLEditorStyles.DrawMinLabel("Mode", 40, widths[3]);
-			HLEditorStyles.DrawMinLabel("Sequence", 40, widths[4]);
-			HLEditorStyles.DrawMinLabel("Strength", 40, widths[5]);
+			HLEditorStyles.DrawMinLabel(" Area", 40, widths[2]);
+			HLEditorStyles.DrawMinLabel(" Mode", 40, widths[3]);
+			HLEditorStyles.DrawMinLabel("  Sequence", 40, widths[4]);
+			HLEditorStyles.DrawMinLabel("   Strength", 40, widths[5]);
 
-			GUILayout.Space(2);
+			GUILayout.Space(4);
 			if (HLEditorStyles.DrawButton("Add", 25, widths[6]))
 			{
 				pat.Sequences.Add(new ParameterizedSequence(null, AreaFlag.None));
@@ -94,8 +94,7 @@ namespace Hardlight.SDK.UEditor
 				if (pat.Sequences[i] != null)
 				{
 					EditorGUILayout.BeginHorizontal("Box");
-					GUILayout.Space(10);
-					HLEditorStyles.DrawMinLabel(i + ":", 15, widths[0] - 12);
+					HLEditorStyles.DrawMinLabel(i + ":", 20, widths[0]);
 					var time = HLEditorStyles.FloatField(pat.Sequences[i].Time, 35, widths[1] + 8);
 
 					if (pat.Sequences[i].Time != time)

@@ -379,9 +379,9 @@ namespace Hardlight.SDK.UEditor
 			{
 				AssetTool.PackageInfo package = (AssetTool.PackageInfo)(state);
 
-				var allHapticFiles = GetFilesWithExtension(package.path + "/sequences/", ".sequence");
+				var allHapticFiles = GetFilesWithExtension(package.path + "/experiences/", ".experience");
 				allHapticFiles.AddRange(GetFilesWithExtension(package.path + "/patterns/", ".pattern"));
-				allHapticFiles.AddRange(GetFilesWithExtension(package.path + "/experiences/", ".experience"));
+				allHapticFiles.AddRange(GetFilesWithExtension(package.path + "/sequences/", ".sequence"));
 				currentProgress = 0f;
 				totalProgress = allHapticFiles.Count;
 				_lastImport.Total = allHapticFiles.Count;
@@ -722,17 +722,18 @@ namespace Hardlight.SDK.UEditor
 
 			if (isSeq)
 			{
-				JustCreated = HapticSequence.CreateAsset(oldPath);
+				JustCreated = HapticSequence.LoadFromJson(oldPath);
 				HapticSequence.SaveAsset(fileName, (HapticSequence)JustCreated);
 			}
 			else if (isPat)
 			{
-				JustCreated = HapticPattern.CreateAsset(oldPath);
+				JustCreated = HapticPattern.LoadFromJson(oldPath);
 				HapticPattern.SaveAsset(fileName, (HapticPattern)JustCreated);
 			}
-			else if (isPat)
+			else if (isExp)
 			{
-				//Scrob = HapticExperience.LoadFromHDF(oldPath);
+				JustCreated = HapticExperience.LoadFromJson(oldPath);
+				HapticExperience.SaveAsset(fileName, (HapticExperience)JustCreated);
 			}
 
 			////This is where we'd want to change the default location of new haptic assets

@@ -601,7 +601,6 @@ namespace Hardlight.SDK.UEditor
 						MyDefinition.HapticsLayer = hardlightSuit.Definition.HapticsLayer;
 						//We can't change stuff, we imported it
 						CanChangeValues = false;
-						Debug.Log("Disallow modification\n");
 						MyDefinition.AddChildObjects = hardlightSuit.Definition.AddChildObjects;
 						MyDefinition.AddExclusiveTriggerCollider = hardlightSuit.Definition.AddExclusiveTriggerCollider;
 					}

@@ -345,12 +345,10 @@ namespace Hardlight.SDK
 			_plugin.ClearAll();
 		}
 
-
 		private void ActivateImus(object sender, SuitConnectionArgs e)
 		{
 			this.EnableTracking();
 		}
-
 
 		private IEnumerator UpdateTracking()
 		{

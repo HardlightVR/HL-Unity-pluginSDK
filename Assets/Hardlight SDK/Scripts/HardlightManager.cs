@@ -126,6 +126,7 @@ namespace Hardlight.SDK
 		private IImuCalibrator _imuCalibrator;
 		private IEnumerator _trackingUpdateLoop;
 		private IEnumerator _ServiceConnectionStatusLoop;
+		private IEnumerator _DeviceConnectionStatusLoop;
 
 		private DeviceConnectionStatus _DeviceConnectionStatus;
 		private ServiceConnectionStatus _ServiceConnectionStatus;
@@ -248,6 +249,7 @@ namespace Hardlight.SDK
 
 			_trackingUpdateLoop = UpdateTracking();
 			_ServiceConnectionStatusLoop = CheckServiceConnection();
+			_DeviceConnectionStatusLoop = CheckHardlightSuitConnection();
 
 			_imuCalibrator = new CalibratorWrapper(new MockImuCalibrator());
 
@@ -273,24 +275,28 @@ namespace Hardlight.SDK
 		}
 		private void OnSuitConnected(SuitConnectionArgs a)
 		{
+			//Debug.Log("Suit Connected\n");
 			var handler = SuitConnected;
 			if (handler != null) { handler(this, a); }
 		}
 
 		private void OnSuitDisconnected(SuitConnectionArgs a)
 		{
+			//Debug.Log("Suit Disconnected\n");
 			var handler = SuitDisconnected;
 			if (handler != null) { handler(this, a); }
 		}
 
 		private void OnServiceConnected(ServiceConnectionArgs a)
 		{
+			//Debug.Log("Service Connected\n");
 			var handler = ServiceConnected;
 			if (handler != null) { handler(this, a); }
 		}
 
 		private void OnServiceDisconnected(ServiceConnectionArgs a)
 		{
+			//Debug.Log("Service Disconnected\n");
 			var handler = ServiceDisconnected;
 			if (handler != null) { handler(this, a); }
 		}
@@ -311,6 +317,10 @@ namespace Hardlight.SDK
 			DoDelayedAction(1.0f, delegate ()
 			{
 				StartCoroutine(_ServiceConnectionStatusLoop);
+			});
+			DoDelayedAction(1.0f, delegate ()
+			{
+				StartCoroutine(_DeviceConnectionStatusLoop);
 			});
 		}
 		/// <summary>
@@ -359,6 +369,31 @@ namespace Hardlight.SDK
 			}
 		}
 
+		private IEnumerator CheckHardlightSuitConnection()
+		{
+			while (true)
+			{
+				if(true)
+				{
+					var devices = _plugin.GetKnownDevices();
+					bool hasSuit = false;
+					for (int i = 0; i < devices.Count; i++)
+					{
+						hasSuit = devices[0].Connected && devices[0].Name.Contains("Hardlight");
+					}
+
+					var deviceConnected = hasSuit ? DeviceConnectionStatus.Connected : DeviceConnectionStatus.Disconnected;
+					if (deviceConnected != _DeviceConnectionStatus)
+					{
+						_DeviceConnectionStatus = ChangeDeviceConnectionStatus(deviceConnected);
+					}
+
+					_DeviceConnectionStatus = deviceConnected;
+				}
+				yield return new WaitForSeconds(0.5f);
+			}
+		}
+
 		private IEnumerator CheckServiceConnection()
 		{
 			while (true)
@@ -371,9 +406,11 @@ namespace Hardlight.SDK
 
 				if (status == ServiceConnectionStatus.Connected)
 				{
-
+					//_plugin.GetKnownDevices().Count > 0;
 					var suitConnection = _plugin.IsConnectedToService();
-					Debug.Log("Suit/Device connection status is not yet implemented\n");
+
+					_ServiceConnectionStatus = suitConnection;
+					//Debug.Log("Suit/Device connection status is not yet implemented\n");
 					//throw new NotImplementedException("Suit/Device connection status is not yet implemented\n");
 					//if (suitConnection != _DeviceConnectionStatus)
 					//{

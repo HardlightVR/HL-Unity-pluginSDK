@@ -19,6 +19,7 @@ namespace Hardlight.SDK.Demos
 {
 	public class HapticLibraryElement : LibraryElement
 	{
+		public ScriptableObjectHaptic OnPlay;
 		public void Init(AssetTool tool, string fullPath, string packageName = "")
 		{
 			if (fullPath.Length == 0)
@@ -170,25 +171,26 @@ namespace Hardlight.SDK.Demos
 
 				if (successfullyGotHdf)
 				{
+					
 					if (hdf.root_effect.type == "sequence")
 					{
-						var seq = CodeHapticFactory.CreateSequence(hdf.root_effect.name, hdf);
-						LibraryManager.Inst.SetTriggerSequence(seq, hdf.root_effect.name);
+						OnPlay = CodeHapticFactory.CreateSequence(hdf.root_effect.name, hdf);
+						LibraryManager.Inst.SetTriggerSequence((OnPlay as HapticSequence), hdf.root_effect.name);
 						AreaFlag flag = LibraryManager.Inst.GetActiveAreas();
 
-						var handle = seq.CreateHandle(flag);
+						var handle = (OnPlay as HapticSequence).CreateHandle(flag);
 
 						PlayHandleAndSetLastPlayed(handle);
 					}
 					else if (hdf.root_effect.type == "pattern")
 					{
-						var pat = CodeHapticFactory.CreatePattern(hdf.root_effect.name, hdf);
-						PlayHandleAndSetLastPlayed(pat.CreateHandle());
+						OnPlay = CodeHapticFactory.CreatePattern(hdf.root_effect.name, hdf);
+						PlayHandleAndSetLastPlayed((OnPlay as HapticPattern).CreateHandle());
 					}
 					else if (hdf.root_effect.type == "experience")
 					{
-						var exp = CodeHapticFactory.CreateExperience(hdf.root_effect.name, hdf);
-						PlayHandleAndSetLastPlayed(exp.CreateHandle());
+						OnPlay = CodeHapticFactory.CreateExperience(hdf.root_effect.name, hdf);
+						PlayHandleAndSetLastPlayed((OnPlay as HapticExperience).CreateHandle());
 					}
 				}
 			}

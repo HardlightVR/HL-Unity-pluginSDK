@@ -9,31 +9,31 @@ using UnityEngine;
 using Hardlight.SDK;
 using Hardlight.SDK.Tracking;
 
-namespace Hardlight.SDK.Tracking
+namespace Hardlight.SDK.Demos
 {
 	public class TrackingTest : MonoBehaviour
 	{
 		private IImuCalibrator imus;
-		public GameObject TrackedRepresentation;
+		public GameObject TrackedObject;
 		public GameObject ParentObject;
-		public Imu whichIMU = Imu.Chest;
+		public Imu MyIMU = Imu.Chest;
 		public bool DisableObject = true;
 		public bool ShowOnGUI = false;
-		public bool VisibleIdentity = false;
-		public bool AutoEnableTracking = false;
 
 		void Start()
 		{
-			imus = GetComponent<DefaultImuCalibrator>();
+			imus = HardlightManager.Instance.GetImuCalibrator();
 			HardlightManager.Instance.SetImuCalibrator(GetComponent<DefaultImuCalibrator>());
 
 			if (ParentObject != null)
 			{
 				ParentObject.SetActive(!DisableObject);
 			}
+		}
 
-			if (AutoEnableTracking)
-				EnableTracking();
+		void OnGUI()
+		{
+		
 		}
 
 		public void EnableTracking()
@@ -56,27 +56,10 @@ namespace Hardlight.SDK.Tracking
 
 		void Update()
 		{
-			if (TrackedRepresentation != null)
+			if (TrackedObject != null)
 			{
 				var tracking = HardlightManager.Instance.PollTracking();
-				//Debug.Log(tracking.Chest + "\n" + imus.GetType().ToString());
-				Quaternion assign = Quaternion.identity;
-
-				if (whichIMU == Imu.Chest)
-				{
-					assign = tracking.Chest;
-				}
-				else if (whichIMU == Imu.Left_Upper_Arm)
-				{
-					assign = tracking.LeftUpperArm;
-				}
-				else if (whichIMU == Imu.Right_Upper_Arm)
-				{
-					assign = tracking.RightUpperArm;
-				}
-				VisibleIdentity = assign != Quaternion.identity;
-
-				TrackedRepresentation.transform.rotation = assign;// imus.GetOrientation(MyIMU);
+				TrackedObject.transform.rotation = imus.GetOrientation(MyIMU);
 			}
 		}
 	}

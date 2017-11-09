@@ -88,7 +88,7 @@ namespace Hardlight.SDK.Demos
 		public bool StopLastPlaying;
 		public HapticHandle LastPlayed;
 		public HapticSequence LastSequence;
-		public string LastSequenceName;
+		public string LastSequenceName = "pulse";
 
 		public string currentFolderSelected = "";
 		public string lastFileSelected = "";
@@ -149,6 +149,10 @@ namespace Hardlight.SDK.Demos
 
 			FindRequiredElements();
 
+			if (LastSequence == null)
+			{
+				LastSequence = HapticSequence.LoadFromAsset("Haptics/pulse");
+			}
 			//This is where we will keep reference to previously opened files/directories.
 			assetTool = new AssetTool();
 		}

@@ -10,8 +10,8 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: Haptics Explorer
-  productName: Haptics Explorer v0.2.1
+  companyName: Hardlight VR
+  productName: Haptics Explorer v0.3
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenStyle: 0

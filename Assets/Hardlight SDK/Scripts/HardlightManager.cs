@@ -38,15 +38,14 @@ namespace Hardlight.SDK
 		/// </summary>
 		public event EventHandler<SuitConnectionArgs> SuitConnected;
 		/// <summary>
-		/// Raised when the plugin establishes connection with the NullSpace VR Runtime
+		/// Raised when the plugin establishes connection with the Hardlight VR Runtime
 		/// </summary>
 		public event EventHandler<ServiceConnectionArgs> ServiceConnected;
 		/// <summary>
-		/// Raised when the plugin loses connection to the NullSpace VR Runtime
+		/// Raised when the plugin loses connection to the Hardlight VR Runtime
 		/// </summary>
 		public event EventHandler<ServiceConnectionArgs> ServiceDisconnected;
 		#endregion
-
 
 		/// <summary>
 		/// Returns DeviceConnectionStatus.Connected if a suit is connected, else returns DeviceConnectionStatus.Disconnected
@@ -60,7 +59,7 @@ namespace Hardlight.SDK
 		}
 
 		/// <summary>
-		/// Returns ServiceConnectionStatus.Connected if the plugin is connected to the NullSpace VR Runtime service, else returns ServiceConnectionStatus.Disconnected
+		/// Returns ServiceConnectionStatus.Connected if the plugin is connected to the Hardlight VR Runtime service, else returns ServiceConnectionStatus.Disconnected
 		/// </summary>
 		public bool IsServiceConnected
 		{
@@ -70,12 +69,10 @@ namespace Hardlight.SDK
 			}
 		}
 
-
 		/// <summary>
 		/// Use the Instance variable to access the HardlightManager object. There should only be one HardlightManager in a scene.
 		/// in the scene. 
 		/// </summary>
-
 		private static HardlightManager instance;
 		public static HardlightManager Instance
 		{
@@ -134,7 +131,7 @@ namespace Hardlight.SDK
 		private HLVR.HLVR_Plugin _plugin;
 
 		/// <summary>
-		/// Enable experimental tracking on the suit
+		/// Enable SDK tracking management loop.
 		/// </summary>
 		public void EnableTracking()
 		{
@@ -144,18 +141,16 @@ namespace Hardlight.SDK
 				StartCoroutine(_trackingUpdateLoop);
 				_isTrackingCoroutineRunning = true;
 			}
-			_plugin.EnableTracking();
 		}
 
 		/// <summary>
-		/// Disable experimental tracking on the suit
+		/// Disable SDK tracking management loop.
 		/// </summary>
 		public void DisableTracking()
 		{
 			EnableSuitTracking = false;
 			StopCoroutine(_trackingUpdateLoop);
 			_isTrackingCoroutineRunning = false;
-			_plugin.DisableTracking();
 		}
 
 		public TrackingUpdate PollTracking()
@@ -275,28 +270,24 @@ namespace Hardlight.SDK
 		}
 		private void OnSuitConnected(SuitConnectionArgs a)
 		{
-			//Debug.Log("Suit Connected\n");
 			var handler = SuitConnected;
 			if (handler != null) { handler(this, a); }
 		}
 
 		private void OnSuitDisconnected(SuitConnectionArgs a)
 		{
-			//Debug.Log("Suit Disconnected\n");
 			var handler = SuitDisconnected;
 			if (handler != null) { handler(this, a); }
 		}
 
 		private void OnServiceConnected(ServiceConnectionArgs a)
 		{
-			//Debug.Log("Service Connected\n");
 			var handler = ServiceConnected;
 			if (handler != null) { handler(this, a); }
 		}
 
 		private void OnServiceDisconnected(ServiceConnectionArgs a)
 		{
-			//Debug.Log("Service Disconnected\n");
 			var handler = ServiceDisconnected;
 			if (handler != null) { handler(this, a); }
 		}
@@ -458,11 +449,6 @@ namespace Hardlight.SDK
 
 		void OnApplicationQuit()
 		{
-			if (_plugin != null)
-			{
-				_plugin.DisableTracking();
-			}
-
 			ClearAllEffects();
 			System.Threading.Thread.Sleep(100);
 		}

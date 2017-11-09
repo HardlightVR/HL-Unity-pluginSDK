@@ -202,12 +202,13 @@ namespace Hardlight.SDK.UEditor
 		{
 			var pat = (HapticPattern)target;
 			Keys.Clear();
+			Debug.LogError("Sequence Keys is commented out.\n");
 			for (int i = 0; i < pat.Sequences.Count; i++)
 			{
-				if (pat.SequenceKeys[i] != null)
-				{
-					Keys.Add(pat.SequenceKeys[i].name);
-				}
+				//if (pat.SequenceKeys[i] != null)
+				//{
+				//	Keys.Add(pat.SequenceKeys[i].name);
+				//}
 			}
 		}
 

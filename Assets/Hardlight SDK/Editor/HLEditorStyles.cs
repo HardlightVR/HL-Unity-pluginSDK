@@ -292,6 +292,7 @@ namespace Hardlight.SDK.UEditor
 
 		public static void DrawBackgroundImage(Texture2D Logo, Material transparentBackground, EditorWindow current)
 		{
+			//Debug.Log((Logo == null) + "  " + (transparentBackground == null) + "  " + (current == null) + "\n");
 			if (Logo != null && current != null)
 			{
 				//Debug.Log((Logo == null) + "  " + (transparentBackground == null) + "  " + (current == null) + "\n");
@@ -306,7 +307,7 @@ namespace Hardlight.SDK.UEditor
 				style.stretchHeight = false;
 				style.padding = new RectOffset(0, 0, 0, 0);
 				style.alignment = TextAnchor.LowerCenter;
-				//EditorGUI.DrawPreviewTexture(rect, (Texture)Logo, (Material)transparentBackground, ScaleMode.ScaleToFit);
+				//EditorGUI.DrawPreviewTexture(rect2, (Texture)Logo, (Material)transparentBackground, ScaleMode.ScaleToFit);
 
 				GUI.Label(rect2, (Texture)Logo, style);
 				style.alignment = TextAnchor.UpperLeft;

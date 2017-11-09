@@ -108,12 +108,22 @@
             1. create a .hdf using the asset tool binary
             2. Deserialize the .hdf into a HapticDefinitionFile
             3. Pass the HapticDefinitionFile to the CodeHapticFactory, along with the key of the root effect
-            4. Get a dynamic effect out of it
+            4. Get a ScriptableObjectHaptic out of the code haptic factory.
             
             In practice, this is all done automatically by the plugin. 
             </summary>
         </member>
-        <member name="M:Hardlight.SDK.FileUtilities.CodeHapticFactory.CreateSequence(System.String,Hardlight.SDK.FileUtilities.HapticDefinitionFile)">
+        <member name="T:Hardlight.SDK.FileUtilities.CodeHapticFactory.SequenceImportData">
+            <summary>
+            A class which exists as the Value in LoadedSequences dictionary to prevent duplicate HapticSequence creation from ones that already exist.
+            </summary>
+        </member>
+        <member name="T:Hardlight.SDK.FileUtilities.CodeHapticFactory.PatternImportData">
+            <summary>
+            A class which exists as the Value in LoadedPatterns dictionary to prevent duplicate HapticPattern creation from ones that already exist.
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.CodeHapticFactory.CreateSequenceFromHDF(System.String,Hardlight.SDK.FileUtilities.HapticDefinitionFile)">
             <summary>
             Create a HapticSequence from a HapticDefinitionFile
             </summary>
@@ -121,7 +131,7 @@
             <param name="hdf">A HapticDefinitionFile containing the root effect</param>
             <returns></returns>
         </member>
-        <member name="M:Hardlight.SDK.FileUtilities.CodeHapticFactory.CreatePattern(System.String,Hardlight.SDK.FileUtilities.HapticDefinitionFile)">
+        <member name="M:Hardlight.SDK.FileUtilities.CodeHapticFactory.CreatePatternFromHDF(System.String,Hardlight.SDK.FileUtilities.HapticDefinitionFile)">
             <summary>
             Create a HapticPattern from a HapticDefinitionFile
             </summary>
@@ -129,7 +139,7 @@
             <param name="hdf">A HapticDefinitionFile containing the root effect</param>
             <returns></returns>
         </member>
-        <member name="M:Hardlight.SDK.FileUtilities.CodeHapticFactory.CreateExperience(System.String,Hardlight.SDK.FileUtilities.HapticDefinitionFile)">
+        <member name="M:Hardlight.SDK.FileUtilities.CodeHapticFactory.CreateExperienceFromHDF(System.String,Hardlight.SDK.FileUtilities.HapticDefinitionFile)">
             <summary>
             Create a HapticExperience from a HapticDefinitionFile
             </summary>
@@ -189,6 +199,45 @@
             Responsible for turning a raw JSON representation of a ScriptablePattern into an intermediate format
             suitable for creating a real ScriptablePattern
             </summary>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.HapticResources.IsSequence(System.String)">
+            <summary>
+            Returns whether or not the key has the '.sequence' file extension
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.HapticResources.IsPattern(System.String)">
+            <summary>
+            Returns whether or not the key has the '.pattern' file extension
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.HapticResources.IsExperience(System.String)">
+            <summary>
+            Returns whether or not the key has the '.experience' file extension
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.HapticResources.CreateSequence(System.String)">
+            <summary>
+            Attempts to create a haptic sequence from the provided json path
+            It will create a HDF and then turn the hdf into a HapticSequence.
+            </summary>
+            <param name="jsonPath">Ex: StreamingAssets/Haptics/NS Demos/sequences/click.sequence</param>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.HapticResources.CreatePattern(System.String)">
+            <summary>
+            Attempts to create a haptic pattern from the provided json path
+            It will create a HDF and then turn the hdf into a HapticPattern.
+            </summary>
+            <param name="jsonPath">Ex: StreamingAssets/Haptics/NS Demos/patterns/mech_stomp_left.pattern</param>
+        </member>
+        <member name="M:Hardlight.SDK.FileUtilities.HapticResources.CreateExperience(System.String)">
+            <summary>
+            Attempts to create a haptic experience from the provided json path
+            It will create a HDF and then turn the hdf into a HapticExperience.
+            </summary>
+            <param name="jsonPath">Ex: StreamingAssets/Haptics/NS Demos/experiences/mech_stomp.experience</param>
         </member>
         <member name="M:Hardlight.SDK.FileUtilities.ParsingUtils.tryParseFloatFromObject(System.Collections.Generic.IDictionary{System.String,System.Object},System.String,System.Single)">
             <summary>
@@ -257,6 +306,12 @@
             Returns a string representation of this HapticEffect, including effect name and duration 
             </summary>
             <returns></returns>
+        </member>
+        <member name="T:Hardlight.SDK.ParameterizedHapticElement">
+            <summary>
+            An abstract base class for the parameterized elements (which means that they have time and strength)
+            At any level of haptics, you can adjust timing or strength of elements. This represents that.
+            </summary>
         </member>
         <member name="M:Hardlight.SDK.AreaFlagExtensions.ContainsArea(Hardlight.SDK.AreaFlag,Hardlight.SDK.AreaFlag)">
             <summary>
@@ -336,22 +391,6 @@
             Return the plugin version
             </summary>
             <returns></returns>
-        </member>
-        <member name="M:Hardlight.SDK.HLVR.HLVR_Plugin.EnableTracking">
-            <summary>
-            Enable tracking on the suit
-            </summary>
-        </member>
-        <member name="M:Hardlight.SDK.HLVR.HLVR_Plugin.DisableTracking">
-            <summary>
-            Disable tracking on the suit 
-            </summary>
-        </member>
-        <member name="M:Hardlight.SDK.HLVR.HLVR_Plugin.SetTrackingEnabled(System.Boolean)">
-            <summary>
-            Enable or disable tracking
-            </summary>
-            <param name="enableTracking">If true, enables tracking. Else disables tracking.</param>
         </member>
         <member name="M:Hardlight.SDK.HLVR.HLVR_Plugin.PollTracking">
             <summary>
@@ -438,17 +477,25 @@
             Dispose the handle, releasing its resources from the plugin. After disposing a handle, it cannot be used again.
             </summary>
         </member>
+        <!-- Badly formed XML comment ignored for member "T:Hardlight.SDK.ParameterizedExperience" -->
         <member name="M:Hardlight.SDK.ParameterizedExperience.Clone">
             <summary>
             Create an independent copy of this ParameterizedExperience
             </summary>
             <returns>A copy</returns>
         </member>
+        <!-- Badly formed XML comment ignored for member "T:Hardlight.SDK.ParameterizedPattern" -->
         <member name="M:Hardlight.SDK.ParameterizedPattern.Clone">
             <summary>
             Create an independent copy of this ParameterizedPattern
             </summary>
             <returns>A copy</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:Hardlight.SDK.ParameterizedSequence" -->
+        <member name="F:Hardlight.SDK.ParameterizedSequence._generator">
+            <summary>
+            [Incomplete] This exists for the future capability to add Generators to Parameterized sequences (allowing for randomization of which area to play a haptic on)
+            </summary>
         </member>
         <member name="M:Hardlight.SDK.ParameterizedSequence.Clone">
             <summary>
@@ -516,11 +563,18 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Hardlight.SDK.HapticExperience.CreateNew">
+        <member name="M:Hardlight.SDK.HapticExperience.CreateNew(System.String)">
             <summary>
             Use this instead of new HapticExperience()
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticExperience.SaveAsset(System.String,Hardlight.SDK.HapticExperience)">
+            <summary>
+            Only available in UnityEditor
+            </summary>
+            <param name="fileNameWithoutExtension"></param>
+            <param name="experience"></param>
         </member>
         <member name="M:Hardlight.SDK.HapticExperience.LoadFromAsset(System.String)">
             <summary>
@@ -605,11 +659,18 @@
             Returns a string representation of this HapticPattern for debugging purposes, including all child sequences
             </summary>
         </member>
-        <member name="M:Hardlight.SDK.HapticPattern.CreateNew">
+        <member name="M:Hardlight.SDK.HapticPattern.CreateNew(System.String)">
             <summary>
             Use this instead of new HapticPattern()
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticPattern.SaveAsset(System.String,Hardlight.SDK.HapticPattern)">
+            <summary>
+            Only available in UnityEditor
+            </summary>
+            <param name="fileNameWithoutExtension"></param>
+            <param name="pattern"></param>
         </member>
         <member name="M:Hardlight.SDK.HapticPattern.LoadFromAsset(System.String)">
             <summary>
@@ -695,17 +756,12 @@
             <returns>A new HapticHandle bound to this effect playing on the given area</returns>
         </member>
         <!-- Badly formed XML comment ignored for member "M:Hardlight.SDK.HapticSequence.ToString" -->
-        <member name="M:Hardlight.SDK.HapticSequence.CreateNew">
+        <member name="M:Hardlight.SDK.HapticSequence.CreateNew(System.String)">
             <summary>
             Use this instead of new HapticSequence()
             </summary>
+            <param name="name">Assigns the new SO's name</param>
             <returns></returns>
-        </member>
-        <member name="M:Hardlight.SDK.HapticSequence.LoadFromHDF(System.String,Hardlight.SDK.FileUtilities.HapticDefinitionFile)">
-            <summary>
-            Internal use: turns an HDF into a pattern
-            </summary>
-            <param name="hdf"></param>
         </member>
         <member name="M:Hardlight.SDK.HapticSequence.LoadFromAsset(System.String)">
             <summary>
@@ -723,6 +779,18 @@
             <param name="sequenceAssetName"></param>
             <param name="bundle"></param>
             <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticSequence.SaveAsset(System.String,Hardlight.SDK.HapticSequence)">
+            <summary>
+            Only available in UnityEditor
+            </summary>
+            <param name="fileNameWithoutExtension"></param>
+            <param name="sequence"></param>
+        </member>
+        <member name="T:Hardlight.SDK.GeneratorLocation">
+            <summary>
+            An incomplete stub class for handling the future feature of generators (such as randomization of which location to pick)
+            </summary>
         </member>
         <member name="T:MiniJSON.Json">
              <summary>

@@ -174,7 +174,7 @@ namespace Hardlight.SDK.Demos
 					
 					if (hdf.root_effect.type == "sequence")
 					{
-						OnPlay = CodeHapticFactory.CreateSequence(hdf.root_effect.name, hdf);
+						OnPlay = CodeHapticFactory.CreateSequenceFromHDF(hdf.root_effect.name, hdf);
 						LibraryManager.Inst.SetTriggerSequence((OnPlay as HapticSequence), hdf.root_effect.name);
 						AreaFlag flag = LibraryManager.Inst.GetActiveAreas();
 
@@ -184,12 +184,12 @@ namespace Hardlight.SDK.Demos
 					}
 					else if (hdf.root_effect.type == "pattern")
 					{
-						OnPlay = CodeHapticFactory.CreatePattern(hdf.root_effect.name, hdf);
+						OnPlay = CodeHapticFactory.CreatePatternFromHDF(hdf.root_effect.name, hdf);
 						PlayHandleAndSetLastPlayed((OnPlay as HapticPattern).CreateHandle());
 					}
 					else if (hdf.root_effect.type == "experience")
 					{
-						OnPlay = CodeHapticFactory.CreateExperience(hdf.root_effect.name, hdf);
+						OnPlay = CodeHapticFactory.CreateExperienceFromHDF(hdf.root_effect.name, hdf);
 						PlayHandleAndSetLastPlayed((OnPlay as HapticExperience).CreateHandle());
 					}
 				}

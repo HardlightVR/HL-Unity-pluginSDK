@@ -34,26 +34,28 @@ namespace Hardlight.SDK.Demos
 		[Range(0.01f, .5f)]
 		private float sphereCastRadius = .1f;
 
-		private HapticSequence mySequence;
-		public HapticSequence MySequence
-		{
-			get
-			{
-				if (mySequence == null)
-					mySequence = HapticSequence.CreateNew();
-				return mySequence;
-			}
-
-			set
-			{ mySequence = value; }
-		}
 
 		/// <summary>
 		/// 
 		/// </summary>
 		[Header("Haptic Information")]
 		[SerializeField]
-		private string sequenceFileName = "Haptics/pain_short";
+		private HapticSequence mySequence;
+		public HapticSequence MySequence
+		{
+			get
+			{
+				if (mySequence == null)
+				{
+					mySequence = HapticSequence.CreateNew();
+					mySequence.name = "Empty Sequence";
+				}
+				return mySequence;
+			}
+
+			set
+			{ mySequence = value; }
+		}
 		[SerializeField]
 		private float sequenceStrength = 1.0f;
 
@@ -158,36 +160,14 @@ namespace Hardlight.SDK.Demos
 				RangeOfDelayBetweenReplays.y = value;
 			}
 		}
-		/// <summary>
-		/// Controls what the private HapticSequence
-		/// Reloads the sequence every time you change the filename.
-		/// </summary>
-		public string SequenceFileName
-		{
-			get
-			{
-				return sequenceFileName;
-			}
-
-			set
-			{
-				if (value != sequenceFileName && Application.isPlaying)
-				{
-					Debug.Log("Reloading asset\n" + sequenceFileName + " -> " + value);
-					MySequence = HapticSequence.LoadFromAsset(value);
-				}
-				sequenceFileName = value;
-			}
-		}
 
 		void Start()
 		{
 			suit = HardlightSuit.Find();
 			if (Application.isPlaying)
 			{
-				MySequence = HapticSequence.LoadFromAsset(SequenceFileName);
 				handleList = new List<HapticHandle>();
-	
+
 				if (SpherecastStartObject == null)
 				{
 					Debug.LogError("[Haptic Spherecast] - [" + name + "] has a null object for where it should begin.\n", this);

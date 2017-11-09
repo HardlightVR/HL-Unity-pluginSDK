@@ -67,7 +67,7 @@ namespace Hardlight.SDK.UEditor
 				//HardlightPanes.Add(new AssetImporterPane());
 				//HardlightPanes.Add(new EmulationPane());
 
-				icon = (Texture2D)Resources.Load("Button Icons/NullSpace Logo 256x256", typeof(Texture2D));
+				icon = (Texture2D)Resources.Load("Hardlight Logo 256x256", typeof(Texture2D));
 				mat = Resources.Load<Material>("EditorIcon");
 
 				initialized = true;

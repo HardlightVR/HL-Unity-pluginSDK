@@ -6,4 +6,4 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/NullSpace SDK/Demos/Haptics Explorer/Haptics Explorer.unity
+    path: Assets/Hardlight SDK/Demos/Haptics Explorer/Haptics Explorer.unity

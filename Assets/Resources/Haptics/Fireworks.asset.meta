@@ -1,8 +1,11 @@
 fileFormatVersion: 2
-guid: 7285311c2e5849949a49bdc3c0ca870a
-timeCreated: 1505933675
+guid: dd375201fb387e644b3f8101744915ec
+labels:
+- Experience
+- Haptics
+timeCreated: 1510184157
 licenseType: Free
 NativeFormatImporter:
   userData: 
-  assetBundleName: haptics
-  assetBundleVariant: hardlight
+  assetBundleName: 
+  assetBundleVariant: 

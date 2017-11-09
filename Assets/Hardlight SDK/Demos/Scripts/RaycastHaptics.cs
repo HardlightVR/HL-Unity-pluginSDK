@@ -1,0 +1,79 @@
+﻿/* This code is licensed under the NullSpace Developer Agreement, available here:
+** ***********************
+** http://www.hardlightvr.com/wp-content/uploads/2017/01/NullSpace-SDK-License-Rev-3-Jan-2016-2.pdf
+** ***********************
+** Make sure that you have read, understood, and agreed to the Agreement before using the SDK
+*/
+
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using System;
+using Hardlight.SDK;
+
+public class RaycastHaptics : MonoBehaviour
+{
+	HapticSequence longHum;
+	void Start()
+	{
+		longHum = HapticSequence.CreateNew();
+		longHum.AddEffect(new HapticEffect(Effect.Hum, 0, 3));
+	}
+
+
+	public void OnGUI()
+	{
+		if (GUI.Button(new Rect(10, 10, 120, 40), "Stop Everything!"))
+		{
+			HardlightManager.Instance.ClearAllEffects();
+		}
+	}
+
+	public IEnumerator ChangeColorDelayed(GameObject g, Color c, float timeout)
+	{
+		yield return new WaitForSeconds(timeout);
+		g.GetComponent<MeshRenderer>().material.color = c;
+	}
+
+	void Update()
+	{
+		ToggleSelectedArea();
+
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			Application.Quit();
+		}
+
+	}
+
+	public void ToggleSelectedArea()
+	{
+		if (Input.GetMouseButtonDown(0))
+		{
+			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+			RaycastHit hit;
+			Debug.DrawRay(ray.origin, ray.direction * 100, Color.blue, 3.5f);
+
+			if (Physics.Raycast(ray, out hit, 100))
+			{
+				if (hit.collider.gameObject.tag == "Haptic Region")
+				{
+					HardlightCollider haptic = hit.collider.gameObject.GetComponent<HardlightCollider>();
+
+					if (haptic != null)
+					{
+						Debug.LogFormat("Starting Haptic: Region ID {0}\n", haptic.regionID);
+						longHum.CreateHandle(haptic.regionID).Play();
+
+
+						hit.collider.gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
+						StartCoroutine(ChangeColorDelayed(
+							hit.collider.gameObject,
+							new Color(227 / 255f, 227 / 255f, 227 / 255f, 1f),
+							5.0f));
+					}
+				}
+			}
+		}
+	}
+}

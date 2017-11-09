@@ -8,7 +8,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1559977699, guid: d93b8973e70219c4a962251869b24fa8, type: 3}
+  m_Script: {fileID: -938899632, guid: aeff96418ffa9f2428a4800799babb4c, type: 3}
   m_Name: pain_short
   m_EditorClassIdentifier: 
-  json: '{"sequence_definitions":{"ns.dying.pain_short":[{"effect":"buzz","duration":0.0,"strength":1.0,"time":0.0},{"effect":"buzz","duration":0.0,"strength":1.0,"time":0.03999999910593033},{"effect":"buzz","duration":0.0,"strength":1.0,"time":0.07999999821186066}]},"pattern_definitions":{},"experience_definitions":{},"root_effect":{"name":"ns.dying.pain_short","type":"sequence"}}'
+  _effects:
+  - _time: 0
+    _strength: 1
+    _effect: 2
+    _duration: 0
+  - _time: 0.04
+    _strength: 1
+    _effect: 2
+    _duration: 0
+  - _time: 0.08
+    _strength: 1
+    _effect: 2
+    _duration: 0

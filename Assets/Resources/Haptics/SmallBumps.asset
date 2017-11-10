@@ -29,6 +29,6 @@ MonoBehaviour:
     _effect: 1
     _duration: 0.1
   - _time: 0.4
-    _strength: 1.5
+    _strength: 1
     _effect: 1
     _duration: 0.1

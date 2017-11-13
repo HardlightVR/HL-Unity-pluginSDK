@@ -130,12 +130,9 @@ namespace Hardlight.SDK.Demos
 				if (LibraryManager.Inst.LastPlayed != null && LibraryManager.Inst.StopLastPlaying)
 				{
 					LibraryManager.Inst.LastPlayed.Stop();
-					//Todo: implement dispose again
-					//	LibraryManager.Inst.LastPlayed
 				}
 
 				_asyncResult = _caller.BeginInvoke(fullFilePath, null, null);
-
 			}
 			catch (Exception e)
 			{
@@ -150,7 +147,7 @@ namespace Hardlight.SDK.Demos
 			ResolveAfterGettingHDF();
 
 			base.MidwayUpdate();
-	}
+		}
 		private void ResolveAfterGettingHDF()
 		{
 			if (_asyncResult != null && _asyncResult.IsCompleted)
@@ -171,10 +168,10 @@ namespace Hardlight.SDK.Demos
 
 				if (successfullyGotHdf)
 				{
-					
 					if (hdf.root_effect.type == "sequence")
 					{
 						OnPlay = CodeHapticFactory.CreateSequenceFromHDF(hdf.root_effect.name, hdf);
+
 						LibraryManager.Inst.SetTriggerSequence((OnPlay as HapticSequence), hdf.root_effect.name);
 						AreaFlag flag = LibraryManager.Inst.GetActiveAreas();
 

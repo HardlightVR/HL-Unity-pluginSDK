@@ -163,10 +163,12 @@ namespace Hardlight.SDK.Demos
 			SetupLibraries();
 			DirectoryScroll = transform.FindChild("Left Half").FindChild("Folder Viewer").FindChild("Sub Directory").FindChild("Scroll View").GetComponent<ScrollRect>();
 
-			//SetTriggerSequence("Haptics/pulse", "ns.pulse");
-			LastSequenceName = "ns.pulse";
-			LastSequence = HapticSequence.CreateNew();
-			LastSequence.AddEffect(Effect.Pulse);
+			if (LastSequence == null)
+			{
+				LastSequence = HapticSequence.CreateNew("Simple Pulse");
+				LastSequence.AddEffect(Effect.Pulse);
+			}
+			LastSequenceName = LastSequence.name;
 
 			//Minor tweak to get the scroll position to start at the top.
 			DirectoryScroll.verticalNormalizedPosition = 1;

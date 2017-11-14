@@ -1,7 +1,7 @@
 {
 	"experience" : [
-		{"time" : 0.0, "pattern" : "ns.test"},
-		{"time" : 3.0, "pattern" : "ns.test"}
+		{"time" : 0.0, "pattern" : "hl.test"},
+		{"time" : 3.0, "pattern" : "hl.test"}
  
 	]
 }

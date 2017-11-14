@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Hardlight.SDK
 {
-	[CreateAssetMenu(menuName = "Hardlight/VR Mimic Visual Data")]
+	[CreateAssetMenu(menuName = "Hardlight/VR/Mimic Visual Data")]
 	[System.Serializable]
 	public class BodyVisualPrefabData : ScriptableObject
 	{

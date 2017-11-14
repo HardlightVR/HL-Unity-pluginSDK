@@ -1,6 +1,6 @@
 {
 	"version" : "0.9.0",
 	"studio" : "Hardlight VR",
-	"package" : "ns.dod",
+	"package" : "hl.dod",
 	"description" : "Desert of Danger is the scorpion shootout demo by NullSpace VR."
 }

@@ -14,7 +14,7 @@ MonoBehaviour:
   _effects:
   - _time: 0
     _strength: 1
-    _effect: 1
+    _effect: 4
     _duration: 0
   - _time: 0.05
     _strength: 0.8

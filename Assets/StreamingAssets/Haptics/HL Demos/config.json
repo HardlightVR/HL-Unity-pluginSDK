@@ -1,7 +1,7 @@
 {
 	"version" : "0.1.0",
 	"studio" : "Hardlight VR",
-	"package" : "ns.demos",
+	"package" : "hl.demos",
 	"description" : "A simple collection of very basic haptics."
 }
 

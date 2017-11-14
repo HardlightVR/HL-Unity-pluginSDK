@@ -1,6 +1,6 @@
 {
 	"version" : "0.9.0",
 	"studio" : "Hardlight VR",
-	"package" : "ns",
+	"package" : "hl",
 	"description" : "A basic haptic package with simple sequences."
 }

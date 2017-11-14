@@ -35,7 +35,7 @@ namespace Hardlight.SDK.Demos
 		{
 			myRB = GameObject.Find("Haptic Trigger").GetComponent<Rigidbody>();
 
-			//var a = new Sequence("ns.basic.click_click_click");
+			//var a = new Sequence("hl.basic.click_click_click");
 			//a.CreateHandle(AreaFlag.All_Areas).Play();	
 
 			//clicker.CreateHandle(AreaFlag.All_Areas).Play();

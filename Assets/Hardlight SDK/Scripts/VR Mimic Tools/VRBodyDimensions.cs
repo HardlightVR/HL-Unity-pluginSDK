@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[CreateAssetMenu(menuName = "Hardlight/VR Body Dimension")]
+[CreateAssetMenu(menuName = "Hardlight/VR/Body Dimension Data")]
 public class VRBodyDimensions : ScriptableObject 
 {
 	public bool UpdateEveryFrame; 

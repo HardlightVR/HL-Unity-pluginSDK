@@ -1,6 +1,6 @@
 {
-	"version" : "0.1.0",
-	"studio" : "NullSpace VR",
+	"version" : "0.9.0",
+	"studio" : "Hardlight VR",
 	"package" : "ns.dying",
 	"description" : "Inflict grievous wounds and violent ends upon your player. A collection of injury and death related haptics."
 }

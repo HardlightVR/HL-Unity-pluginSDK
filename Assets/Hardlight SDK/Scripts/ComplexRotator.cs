@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rotator2 : MonoBehaviour
+public class ComplexRotator : MonoBehaviour
 {
 	public bool rotateX = true;
 	public float XRotationSpeed;

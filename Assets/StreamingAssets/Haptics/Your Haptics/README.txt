@@ -7,5 +7,6 @@ Why is this helpful?
 If you create a sequence called "beating_heart.sequence", then in code you can refer to it
 as "my.beating_heart". If you write a pattern and want to refer to this sequence, you can also use "my.beating_heart". 
 
-You can also refer to other packages to facilitate reuse of haptics. If you want to use any of the sequences in NS Core (namespace "ns") in your haptics, just write "ns.[haptics_name]". Remember that if you change your namespace after having written some haptics, you must update your haptics appropriately or else the references will be broken and you will receive errors. 
+You can also refer to other packages to facilitate reuse of haptics. If you want to use any of the sequences in HL Core (namespace "ns") in your haptics, just write "ns.[haptics_name]". Remember that if you change your namespace after having written some haptics, you must update your haptics appropriately or else the references will be broken and you will receive errors. 
 
+Hardlight used to be named NullSpace, hence why all the old namespaces are 'NS' or 'ns'

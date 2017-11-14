@@ -1,5 +1,7 @@
 fileFormatVersion: 2
 guid: 8fb31ea63d1e02345859e6340f15bc33
+labels:
+- Haptics
 timeCreated: 1480721867
 licenseType: Free
 NativeFormatImporter:

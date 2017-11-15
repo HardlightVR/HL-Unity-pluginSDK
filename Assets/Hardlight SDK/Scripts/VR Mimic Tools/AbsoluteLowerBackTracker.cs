@@ -2,7 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Hardlight.SDK
+//Contents of this namespace are subject to change
+namespace Hardlight.SDK.Experimental
 {
 	public class AbsoluteLowerBackTracker : AbstractTracker
 	{

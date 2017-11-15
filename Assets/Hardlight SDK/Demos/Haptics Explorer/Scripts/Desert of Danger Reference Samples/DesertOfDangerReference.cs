@@ -45,6 +45,7 @@ namespace Hardlight.SDK.Demos
 
 		/// <summary>
 		/// This was the early-wave Desert of Danger implementation to track the player body and to simulate hits.
+		/// You ideally want to be dealing with BodyMimic
 		/// This class lets you define the players body and query for distances between pads.
 		/// Will not work unless you give an object a PlayerTorso, assign refs by hand and then give HapticLocations.
 		/// </summary>

@@ -26,7 +26,7 @@ namespace Hardlight.SDK
 		public string PlayableResourceName = "Haptics/click";
 
 		[ConditionalHide("TypeOfPlayable", "Sequence")]
-		//[RegionFlag]
+		//[RegionFlag("Where")] //This is the least flexible element, you can't use an actual flag enum
 		public AreaFlag Where;
 
 		//[Header("Impulse Attributes")]
@@ -39,7 +39,7 @@ namespace Hardlight.SDK
 		public float Duration = .5f;
 
 		[ConditionalHide("TypeOfImpulse", true, "None")]
-		//[Range(-3, 3)]
+		//[Range(-3, 3)] //We cant do a nice attenuation range limiter
 		public float attenuationPercentage = 1;
 
 		[ConditionalHide("TypeOfImpulse", true, "None")]
@@ -47,9 +47,8 @@ namespace Hardlight.SDK
 		[ConditionalHide("TypeOfImpulse", "Traversal")]
 		public AreaFlag EndLocation;
 
-
 		[ConditionalHide("TypeOfImpulse", "Emanation")]
-		//[Range(1, 8)]
+		//[Range(1, 8)] //We cant do a depth limiter
 		public int depth = 3;
 
 		public HapticHandle TryToPlayPlay(SideOfHaptic side)
@@ -103,7 +102,7 @@ namespace Hardlight.SDK
 		private HapticHandle CreateHandle(SideOfHaptic side)
 		{
 			HapticHandle handle = null;
-			
+
 			if (TypeOfPlayable == PlayableType.Sequence)
 			{
 				HapticSequence seq = HapticSequence.LoadFromAsset(PlayableResourceName);
@@ -162,6 +161,10 @@ namespace Hardlight.SDK
 		}
 	}
 
+	/// <summary>
+	/// A compound component for playing repeated haptics with any type of provided haptic asset.
+	/// Bulk of information is stored in the class HapticInfo
+	/// </summary>
 	public class HapticComponent : MonoBehaviour
 	{
 		public bool ShouldPlayImmediately = false;

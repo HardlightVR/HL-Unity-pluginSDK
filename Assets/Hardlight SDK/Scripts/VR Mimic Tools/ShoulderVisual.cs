@@ -2,7 +2,8 @@
 using System.Collections;
 using System;
 
-namespace Hardlight.SDK
+//Contents of this namespace are subject to change
+namespace Hardlight.SDK.Experimental
 {
 	public class ShoulderVisual : MonoBehaviour
 	{

@@ -363,6 +363,10 @@ namespace Hardlight.SDK
 		/// Removes the need to use a GetComponent every time a user wants to have a reference to the suit.
 		/// </summary>
 		private static HardlightSuit _suit;
+		/// <summary>
+		/// A static self reference for the HardlightSuit.
+		/// Removes the need to use a GetComponent every time a user wants to have a reference to the suit.
+		/// </summary>
 		public static HardlightSuit Suit
 		{
 			get
@@ -387,9 +391,9 @@ namespace Hardlight.SDK
 
 		/// <summary>
 		/// An easy way to find the current HardlightSuit in the scene. 
+		/// (Only calls a Unity Find() function if the suit is null)
 		/// Will be extended once multiple suits are in the scene at once (networked play)
 		/// </summary>
-		/// <returns></returns>
 		public static HardlightSuit Find()
 		{
 			return Suit;
@@ -407,37 +411,35 @@ namespace Hardlight.SDK
 			return seq;
 		}
 
-		/// <summary>
-		/// This function is for 
-		/// This function has unintended consequences if you use multiple areaflags on the same area (such as Chest_Both)
-		/// 
-		/// </summary>
-		/// <param name="enabled"></param>
-		/// <param name="flag"></param>
-		public void SetHapticLocationActivity(bool enabled, AreaFlag flag)
-		{
-			throw new System.Exception("Incomplete\n");
+		///// <summary>
+		///// This function has unintended consequences if you use multiple areaflags on the same area (such as Chest_Both)
+		///// </summary>
+		///// <param name="enabled"></param>
+		///// <param name="flag"></param>
+		//public void SetHapticLocationActivity(bool enabled, AreaFlag flag)
+		//{
+		//	throw new System.Exception("Incomplete\n");
 
-			if (DefinedAreas.Contains(flag))
-			{
-				var indexOfArea = DefinedAreas.IndexOf(flag);
-				if (indexOfArea < 0)
-				{
-					Debug.LogError("Deactivate Haptic Location failed. It did not contain the requested flag " + flag.ToString() + "\n");
-					return;
-				}
-				SceneReferences[indexOfArea].LocationActive = enabled;
-				AreaFlag locationsArea = SceneReferences[indexOfArea].MyLocation.Where;
-				if (enabled)
-				{
-					DisabledRegions.DisableArea(locationsArea);
-				}
-				else
-				{
-					DisabledRegions.DisableArea(locationsArea);
-				}
-			}
-		}
+		//	if (DefinedAreas.Contains(flag))
+		//	{
+		//		var indexOfArea = DefinedAreas.IndexOf(flag);
+		//		if (indexOfArea < 0)
+		//		{
+		//			Debug.LogError("Deactivate Haptic Location failed. It did not contain the requested flag " + flag.ToString() + "\n");
+		//			return;
+		//		}
+		//		SceneReferences[indexOfArea].LocationActive = enabled;
+		//		AreaFlag locationsArea = SceneReferences[indexOfArea].MyLocation.Where;
+		//		if (enabled)
+		//		{
+		//			DisabledRegions.DisableArea(locationsArea);
+		//		}
+		//		else
+		//		{
+		//			DisabledRegions.DisableArea(locationsArea);
+		//		}
+		//	}
+		//}
 
 		#region Simple Hit (Nearest and Nearby)
 		/// <summary>

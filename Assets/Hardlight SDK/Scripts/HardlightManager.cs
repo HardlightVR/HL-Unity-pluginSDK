@@ -19,8 +19,7 @@ namespace Hardlight.SDK
 	/// including enabling/disabling tracking, monitoring suit connection status, 
 	/// globally pausing and playing effects, and clearing all playing effects.
 	/// 
-	/// If you prefer to interact directly with the plugin, you may instantiate and destroy your own
-	/// HLVR_Plugin and remove HardlightManager.
+	/// If you prefer to interact directly with the plugin, you may create your own HLVR_Plugin and remove HardlightManager.
 	/// </summary>
 
 	[ExecuteInEditMode]
@@ -173,26 +172,26 @@ namespace Hardlight.SDK
 			//return _plugin.SampleCurrentlyPlayingEffects();
 			//return _plugin.SampleStrengths();
 		}
-		/// <summary>
-		/// Control the haptic volume of an area directly. 
-		/// </summary>
-		/// <param name="singleArea">An AreaFlag representing a single area</param>
-		/// <param name="strength">Strength to play, from 0.0-1.0</param>
-		public void ControlDirectly(AreaFlag singleArea, double strength)
-		{
+		//Disabled Direct/RTP (Real time playback) Mode
+		///// <summary>
+		///// Control the haptic volume of an area directly. 
+		///// </summary>
+		///// <param name="singleArea">An AreaFlag representing a single area</param>
+		///// <param name="strength">Strength to play, from 0.0-1.0</param>
+		//public void ControlDirectly(AreaFlag singleArea, double strength)
+		//{
 			//_plugin.ControlDirectly(singleArea, strength * .66f);
-		}
+		//}
 
-		/// <summary>
-		/// Control the haptic volume of multiple areas directly. 
-		/// </summary>
-		/// <param name="singleAreas">List of AreaFlags, each representing a single area</param>
-		/// <param name="strengths">Strength to play, from 0-255</param>
-		public void ControlDirectly(AreaFlag[] singleAreas, ushort[] strengths)
-		{
+		///// <summary>
+		///// Control the haptic volume of multiple areas directly. 
+		///// </summary>
+		///// <param name="singleAreas">List of AreaFlags, each representing a single area</param>
+		///// <param name="strengths">Strength to play, from 0-255</param>
+		//public void ControlDirectly(AreaFlag[] singleAreas, ushort[] strengths)
+		//{
 			//_plugin.ControlDirectly(singleAreas, strengths);
-
-		}
+		//}
 
 		/// <summary>
 		/// Tell the manager to use a different IMU calibrator

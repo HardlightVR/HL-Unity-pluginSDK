@@ -4,9 +4,17 @@ using System.Linq;
 using System.Collections;
 using Hardlight.SDK;
 using System;
+using Hardlight.SDK.Experimental;
 
 namespace Hardlight.SDK
 {
+	/// <summary>
+	/// A class for handling the best possible mimicking of the user's bodily motions with whatever information is available.
+	/// This version has references to MANY experimental features which will gain finished support.
+	/// The PositionTechnique variable will define what information is coming in and being used.
+	/// The basic case of Pure HMD should work without using any of the experimental features.
+	/// This positions an invisible torso object with a HardlightSuit which handles Haptic collisions
+	/// </summary>
 	public class BodyMimic : MonoBehaviour
 	{
 		[Header("Body Hang Origin")]
@@ -105,6 +113,8 @@ namespace Hardlight.SDK
 
 		public GameObject LeftShoulder;
 		public GameObject RightShoulder;
+
+		#region Experimental Arms
 		[SerializeField]
 		public AbstractArmMimic LeftArm;
 		[SerializeField]
@@ -112,23 +122,40 @@ namespace Hardlight.SDK
 
 		public AbsoluteArmMimic AbsoluteLeftArm;
 		public AbsoluteArmMimic AbsoluteRightArm;
+		#endregion
 
+		#region Experimental Main Torso Body (Chest/Lower Back Tracker)
 		[SerializeField]
 		public AbstractTracker LowerBack;
+		#endregion
 
-		[SerializeField]
-		public BodyVisualPrefabData VisualPrefabs;
+		#region Visuals & Body Dimensions
+		/// <summary>
+		/// Controls whether or not visuals are automatically created when required data is available (such as trackers/lower back)
+		/// </summary>
+		public bool ShouldCreateVisuals = true;
+
+		/// <summary>
+		/// Prefabs with no visual components that are used for the data model of the player's body. Separate visuals are appended with the VisualPrefabs when requested
+		/// This is separated from visuals to allow for things like faster character creation.
+		/// </summary>
 		[SerializeField]
 		public BodyVisualPrefabData DataModelPrefabs;
+		/// <summary>
+		/// Prefabs with visual components. You can request/dispose of the visuals repeatedly to allow switching of character appearances.
+		/// </summary>
+		[SerializeField]
+		public BodyVisualPrefabData VisualPrefabs;
+		/// <summary>
+		/// A future feature representing the dimensions of the player's body.
+		/// </summary>
 		[SerializeField]
 		public VRBodyDimensions BodyDimensions;
-
-		//public AntiqueArmMimic AntiqueLeftArm;
-		//public AntiqueArmMimic AntiqueRightArm;
-
+		/// <summary>
+		/// Reference to the current shoulder bar visual
+		/// </summary>
 		public GameObject ShoulderBarVisual;
-
-		public bool ShouldCreateVisuals = true;
+		#endregion
 
 		/// <summary>
 		/// When this distance is exceeded, it will force an update (for teleporting/very fast motion)
@@ -143,6 +170,10 @@ namespace Hardlight.SDK
 		public GameObject ShoulderBarData;
 		
 		#region Calculated Poses Class & Usage
+		/// <summary>
+		/// A private class for representing the body pose of a data set
+		/// Allows for selective merging of calculated pose where certain parts are weighted more.
+		/// </summary>
 		[System.Serializable]
 		private class CalculatedPose
 		{
@@ -468,6 +499,12 @@ namespace Hardlight.SDK
 
 		#region Public (Arm/Back) Functions
 		//Also Included in our public facing functions is ImmediateUpdatePosition (in Update Position & Orientation region)
+		/// <summary>
+		/// Experimental and subject to change.
+		/// 
+		/// </summary>
+		/// <param name="Tracker"></param>
+		/// <returns></returns>
 		public AbstractTracker BindLowerBackTracker(VRObjectMimic Tracker)
 		{
 			//Create an Arm Prefab
@@ -485,6 +522,15 @@ namespace Hardlight.SDK
 			return newLowerBackTracker;
 		}
 
+		/// <summary>
+		/// Experimental and subject to change.
+		/// Creates an Absolute arm based on a controller and tracker.
+		/// This is not the final function signature being as this does not adequately deal with the creation of ImuArmMimics (future tech)
+		/// </summary>
+		/// <param name="WhichSide"></param>
+		/// <param name="Tracker"></param>
+		/// <param name="Controller"></param>
+		/// <param name="prefabsToUse"></param>
 		public AbstractArmMimic CreateArm(ArmSide WhichSide, VRObjectMimic Tracker, VRObjectMimic Controller, BodyVisualPrefabData prefabsToUse = null)
 		{
 			var ExistingArm = AccessArm(WhichSide);
@@ -517,6 +563,12 @@ namespace Hardlight.SDK
 			return newArm;
 		}
 
+		/// <summary>
+		/// Does what it says on the tin.
+		/// Experimental and subject to change.
+		/// </summary>
+		/// <param name="WhichSide"></param>
+		/// <param name="Arm"></param>
 		public void AttachArmToOurBody(ArmSide WhichSide, AbstractArmMimic Arm)
 		{
 			if (WhichSide == ArmSide.Left)
@@ -534,6 +586,11 @@ namespace Hardlight.SDK
 			}
 		}
 
+		/// <summary>
+		/// Gets the connecting shoulder location, necessary for attaching arms in the right spot
+		/// Experimental & subject to change
+		/// </summary>
+		/// <param name="WhichSide"></param>
 		public GameObject GetShoulder(ArmSide WhichSide)
 		{
 			if (WhichSide == ArmSide.Left)
@@ -552,6 +609,11 @@ namespace Hardlight.SDK
 			throw new System.Exception("Shoulder Mount Requested [" + WhichSide.ToString() + "] was not added or configured according to the BodyMimic\nThis behavior will attempt an autosetup on the requested arm in the future");
 		}
 
+		/// <summary>
+		/// Experimental & subject to change.
+		/// For requesting abstract arm mimic
+		/// </summary>
+		/// <param name="WhichSide"></param>
 		public AbstractArmMimic AccessArm(ArmSide WhichSide)
 		{
 			if (WhichSide == ArmSide.Left)
@@ -569,68 +631,6 @@ namespace Hardlight.SDK
 			//And comment the exception out. This shouldn't happen, but we know how code & releases work.
 			//throw new System.Exception("Arm Requested [" + WhichSide.ToString() + "] was not added or configured according to the BodyMimic\nThis behavior will attempt an autosetup on the requested arm in the future");
 		}
-
-		#region Antique Arm Mimic
-		/// <summary>
-		/// This is an old technique which used a Kinematic Arm (AntiqueArmMimic)
-		/// It is largely obsolete and should be stripped from the public release
-		/// </summary>
-		/// <param name="WhichSide"></param>
-		/// <param name="Tracker"></param>
-		/// <param name="Controller"></param>
-		/// <returns></returns>
-		public AntiqueArmMimic CreateAntiqueArm(ArmSide WhichSide, VRObjectMimic Tracker, VRObjectMimic Controller)
-		{
-			//Create an Arm Prefab
-			AntiqueArmMimic newArm = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>("Arm Mimic Prefab")).GetComponent<AntiqueArmMimic>();
-
-			newArm.transform.SetParent(transform);
-
-			//Initialize the arm prefab (handing in the side and connector points)
-			newArm.Initialize(WhichSide, GetShoulder(WhichSide), Tracker, Controller);
-
-			//Keep track of this as our Left/Right arm?
-			Debug.LogError("Did not attach antique arm to body. This function is largely deprecated\n", this);
-			//AttachArmToOurBody(WhichSide, newArm);
-			return newArm;
-		}
-
-		//public void AttachArmToOurBody(ArmSide WhichSide, AntiqueArmMimic Arm)
-		//{
-		//	if (WhichSide == ArmSide.Left)
-		//	{
-		//		AntiqueLeftArm = Arm;
-		//		AntiqueLeftArm.transform.SetParent(LeftShoulder.transform);
-		//		AntiqueLeftArm.transform.localPosition = Arm.transform.right * -.5f;
-		//		AntiqueLeftArm.MirrorKeyArmElements();
-		//	}
-		//	else
-		//	{
-		//		AntiqueRightArm = Arm;
-		//		AntiqueRightArm.transform.SetParent(RightShoulder.transform);
-		//		AntiqueRightArm.transform.localPosition = Arm.transform.right * .5f;
-		//	}
-		//}
-
-
-		//public AntiqueArmMimic AccessAntiqueArm(ArmSide WhichSide)
-		//{
-		//	if (WhichSide == ArmSide.Left)
-		//	{
-		//		if (AntiqueLeftArm != null)
-		//			return AntiqueLeftArm;
-		//	}
-		//	else
-		//	{
-		//		if (AntiqueRightArm != null)
-		//			return AntiqueRightArm;
-		//	}
-		//	//If this code has reached you, you can add 
-		//	//return null;
-		//	//And comment the exception out. This shouldn't happen, but we know how code & releases work.
-		//	throw new System.Exception("Arm Requested [" + WhichSide.ToString() + "] was not added or configured according to the BodyMimic\nThis behavior will attempt an autosetup on the requested arm in the future");
-		//} 
-		#endregion
 		#endregion
 
 		#region Update Body Elements
@@ -781,6 +781,11 @@ namespace Hardlight.SDK
 		#endregion
 
 		#region Visual Handling
+		/// <summary>
+		/// Disposes of any existing visuals (immediate removal) and then attempts to create all avaiable visuals based on data available
+		/// </summary>
+		/// <param name="prefabs"></param>
+		/// <param name="disposer"></param>
 		public void CreateVisuals(BodyVisualPrefabData prefabs = null, VisualDisposer disposer = null)
 		{
 			if (prefabs == null)

@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 namespace Hardlight.SDK
 {
+	/// <summary>
+	/// A singleton style class that manages creating mimic objects that copy the movement/orientation of tracked VR objects (playspace, headset, controllers, tracked objects)
+	/// This prevents the need to be tied to SteamVR or Oculus SDKs
+	/// </summary>
 	public class VRMimic : MonoBehaviour
 	{
 		[Header("VR Mimic creates children that copy", order = 0)]
@@ -50,7 +54,6 @@ namespace Hardlight.SDK
 			}
 			set { instance = value; }
 		}
-		//public Dictionary<VRObjectMimic.TypeOfMimickedObject, int> Mimics;
 
 		private bool initialized = false;
 		[SerializeField]
@@ -131,6 +134,12 @@ namespace Hardlight.SDK
 			}
 			return null;
 		}
+		/// <summary>
+		/// Sets an object to be tracked. The VRObjectMimic will regularly update based on the tracked object.
+		/// Adds a WatchedByMimic component which can be used to get the VRObjectMimic
+		/// </summary>
+		/// <param name="objectToMimic"></param>
+		/// <param name="mimicType"></param>
 		public VRObjectMimic AddTrackedObject(GameObject objectToMimic, VRObjectMimic.TypeOfMimickedObject mimicType = VRObjectMimic.TypeOfMimickedObject.TrackedObject)
 		{
 			WatchedByMimic watching = objectToMimic.GetComponent<WatchedByMimic>();
@@ -196,6 +205,9 @@ namespace Hardlight.SDK
 		/// </summary>
 		[SerializeField]
 		private BodyMimic _bodyMimic;
+		/// <summary>
+		/// The BodyMimic (which contains a HardlightSuit/Definition, for haptic functionality)
+		/// </summary>
 		public BodyMimic ActiveBodyMimic
 		{
 			get
@@ -273,6 +285,10 @@ namespace Hardlight.SDK
 			go.transform.SetParent(CameraRig.transform);
 		}
 
+		/// <summary>
+		/// A bool check to see if the Instance field is null.
+		/// </summary>
+		/// <returns></returns>
 		public static bool ValidInstance()
 		{
 			if (instance == null)
@@ -283,7 +299,8 @@ namespace Hardlight.SDK
 		}
 
 		/// <summary>
-		/// Initializes and sets up 
+		/// Initializes and sets up the VR Mimic tools. Creates a playspace and camera mimic.
+		/// Removes the haptic layer from the camera's culling mask (hides objects on that layer)
 		/// </summary>
 		/// <param name="vrCamera"></param>
 		/// <param name="hapticLayer"></param>
@@ -291,11 +308,11 @@ namespace Hardlight.SDK
 		{
 			if (ValidInstance())
 			{
-				Debug.LogError("VRMimic is already initialized\nDoes not yet support multiple initializations");
+				Debug.LogError("VRMimic is already initialized\nDoes not yet support multiple initializations", VRMimic.Instance);
 			}
 			else if (vrCamera == null)
 			{
-				Debug.LogError("VRMimic was requested initialization with a null VR Camera\n");
+				Debug.LogError("VRMimic initialization was requested but a null VR Camera parameter was provided. Aborting\n", VRMimic.Instance);
 			}
 			else
 			{

@@ -9,7 +9,8 @@ using UnityEngine;
 using Hardlight.SDK;
 using Hardlight.SDK.Tracking;
 
-namespace Hardlight.SDK.Tracking
+//Contents of this namespace are subject to change
+namespace Hardlight.SDK.Experimental
 {
 	public class TrackingTest : MonoBehaviour
 	{

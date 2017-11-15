@@ -5,9 +5,9 @@ using UnityEngine;
 namespace Hardlight.SDK.Demos
 {
 	/// <summary>
-	/// A line of haptics with a defined radius.
+	/// A 3D line of haptics with a defined radius.
 	/// </summary>
-	[ExecuteInEditMode]
+	[ExecuteInEditMode] //We execute in edit mode so if you adjust the rotation/radius in edit mode, it will update the object. Haptics wont happen outside of play mode
 	public class HapticSphereCast : MonoBehaviour
 	{
 		/// <summary>
@@ -23,7 +23,7 @@ namespace Hardlight.SDK.Demos
 		public Vector3 localDirection = Vector3.up;
 		private Vector3 worldDirection = Vector3.zero;
 
-		//[Header("Note: Scale only works in Z Axis currently")]
+		[Header("Note: Scale only works in Z Axis currently")]
 		private bool GrowRangeWithScale = false;
 
 		[Header("Sphere Cast Attributes")]
@@ -47,8 +47,7 @@ namespace Hardlight.SDK.Demos
 			{
 				if (mySequence == null)
 				{
-					mySequence = HapticSequence.CreateNew();
-					mySequence.name = "Empty Sequence";
+					mySequence = HapticSequence.CreateNew("Empty Sequence");
 				}
 				return mySequence;
 			}

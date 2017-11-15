@@ -2,16 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VRNotification : MonoBehaviour 
+//Contents of this namespace are subject to change
+namespace Hardlight.SDK.Experimental
 {
+	public class VRNotification : MonoBehaviour
+	{
 
-	void Start () 
-	{
-		
-	}
-	
-	void Update () 
-	{
-		
+		void Start()
+		{
+
+		}
+
+		void Update()
+		{
+
+		}
 	}
 }

@@ -1,18 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[CreateAssetMenu(menuName = "Hardlight/VR/Body Dimension Data")]
-public class VRBodyDimensions : ScriptableObject 
+//Contents of this namespace are subject to change
+namespace Hardlight.SDK.Experimental
 {
-	public bool UpdateEveryFrame; 
-	public float NeckSize = .1f;
-	public float ForwardAmount = -.1f;
-	public float ShoulderWidth;
-	public float UpperArmLength;
+	[CreateAssetMenu(menuName = "Hardlight/VR/Body Dimension Data")]
+	public class VRBodyDimensions : ScriptableObject
+	{
+		public bool UpdateEveryFrame;
+		public float NeckSize = .1f;
+		public float ForwardAmount = -.1f;
+		public float ShoulderWidth;
+		public float UpperArmLength;
 
-	public float UpperTorsoDepth;
-	public float LowerTorsoDepth;
+		public float UpperTorsoDepth;
+		public float LowerTorsoDepth;
 
-	public float UpperTorsoWidth;
-	public float LowerTorsoWidth;
+		public float UpperTorsoWidth;
+		public float LowerTorsoWidth;
+	}
 }

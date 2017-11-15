@@ -104,7 +104,7 @@ namespace Hardlight.SDK.Demos
 			{
 				hit += "Silencing: " + areas[i].ToString() + "\n";
 				//Debug.Log("Silencing: " + areas[i].ToString() + "\n\t" + name);
-				HardlightManager.Instance.ControlDirectly(areas[i], 0);
+				//HardlightManager.Instance.ControlDirectly(areas[i], 0);
 			}
 			//for (int i = 0; i < areas.Length; i++)
 			//{
@@ -148,7 +148,7 @@ namespace Hardlight.SDK.Demos
 
 				for (int i = 0; i < areas.Length; i++)
 				{
-					HardlightManager.Instance.ControlDirectly(areas[i], vol);
+					//HardlightManager.Instance.ControlDirectly(areas[i], vol);
 				}
 				counter = Mathf.Clamp(counter + Time.deltaTime, 0.0f, Duration);
 				eval = MyCurve.Evaluate(counter / Duration);
@@ -166,7 +166,7 @@ namespace Hardlight.SDK.Demos
 
 				for (int i = 0; i < areas.Length; i++)
 				{
-					HardlightManager.Instance.ControlDirectly(areas[i], vol);
+					//HardlightManager.Instance.ControlDirectly(areas[i], vol);
 				}
 				yield return new WaitForSeconds(endingSustain);
 			}

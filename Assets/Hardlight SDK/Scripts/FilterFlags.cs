@@ -3,6 +3,10 @@ using System.Collections;
 
 namespace Hardlight.SDK
 {
+	/// <summary>
+	/// A class for filtering out certain flags. Uses AreaFlagExtensions AddFlag/RemoveArea.
+	/// This is mostly a convenience class.
+	/// </summary>
 	[System.Serializable]
 	public class FilterFlag
 	{

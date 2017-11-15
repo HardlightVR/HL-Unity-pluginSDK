@@ -2,7 +2,7 @@
 using System.Collections;
 
 /// <summary>
-/// A sphere representation for collision functions within 
+/// A sphere representation for collision functions within haptic spherecasting
 /// </summary>
 public class SizedBubble : MonoBehaviour
 {

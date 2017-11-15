@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections;
 using Hardlight.SDK;
 using System;
+using Hardlight.SDK.Tracking;
 using Hardlight.SDK.Experimental;
 
 namespace Hardlight.SDK

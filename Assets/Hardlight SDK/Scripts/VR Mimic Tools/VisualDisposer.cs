@@ -6,12 +6,21 @@ using System.Collections.Generic;
 //Contents of this namespace are subject to change
 namespace Hardlight.SDK.Experimental
 {
+	/// <summary>
+	/// A 'To Do' class for disposing of visuals and the behavior in which they should be disposed of.
+	/// Generalization is intended to allow for developers to custom visual cleanup (such as fancy particles, etc)
+	/// The basic sweet of deleting, dropping, scattering or blasting them in a direction feels pretty good.
+	/// Record the visuals and then call Dispose.
+	/// </summary>
 	public class VisualDisposer
 	{
 		public enum DisposalBehaviors { ImmediateDelete, RigidbodyDrop, RigidbodyScatter, DestructionVector }
 		public DisposalBehaviors DisposalTechnique;
 		public List<GameObject> visualsToDispose;
 		private Vector3 destructionDirection = Vector3.up;
+
+		//Has been disposed (to implement later)
+		//public bool HasBeenDisposed;
 
 		public VisualDisposer(DisposalBehaviors Technique = DisposalBehaviors.ImmediateDelete)
 		{

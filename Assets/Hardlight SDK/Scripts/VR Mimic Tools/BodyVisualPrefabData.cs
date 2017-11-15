@@ -4,6 +4,10 @@ using System.Collections;
 //Contents of this namespace are subject to change
 namespace Hardlight.SDK.Experimental
 {
+	/// <summary>
+	/// Defines a collection of prefabs that are used to create visuals for the player body.
+	/// One core visual is that of 'No Visual' which is used for the data model that other visuals are dependant upon.
+	/// </summary>
 	[CreateAssetMenu(menuName = "Hardlight/VR/Mimic Visual Data")]
 	[System.Serializable]
 	public class BodyVisualPrefabData : ScriptableObject
@@ -22,7 +26,6 @@ namespace Hardlight.SDK.Experimental
 		/// <summary>
 		/// Creates a prefab data clone (not the original so we don't encounter asset breaking problems)
 		/// </summary>
-		/// <returns></returns>
 		public BodyVisualPrefabData Clone()
 		{
 			hideFlags = HideFlags.DontSave;

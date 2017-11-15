@@ -2,10 +2,16 @@
 using System.Collections;
 using System;
 using System.Collections.Generic;
+using Hardlight.SDK.Tracking;
 
 //Contents of this namespace are subject to change
 namespace Hardlight.SDK.Experimental
 {
+	/// <summary>
+	/// An arm mimic that uses an upper-arm mounted absolute tracker.
+	/// Some of this behavior will be abstracted into AbstractArmMimic/IArmMimic later.
+	/// This is a working upper arm test case.
+	/// </summary>
 	public class AbsoluteArmMimic : AbstractArmMimic
 	{
 		public override ArmKinematicMode ArmMode
@@ -192,6 +198,10 @@ namespace Hardlight.SDK.Experimental
 			//throw new NotImplementedException("Currently, the arm colliders are never turned off after they are added.\n");
 		}
 
+		/// <summary>
+		/// The update approach we use is to only update what is valid.
+		/// This extends to visual creation in other sections, of create visuals based on what data is available and valid.
+		/// </summary>
 		void Update()
 		{
 			HandleObjectOffsets();

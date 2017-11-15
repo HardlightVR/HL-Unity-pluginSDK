@@ -4,6 +4,11 @@ using System.Collections;
 //Contents of this namespace are subject to change
 namespace Hardlight.SDK.Experimental
 {
+	/// <summary>
+	/// A class similar to ForearmMimic. Used for offsetting the upper arm from its tied tracker.
+	/// Keeps track of its visual (even though it is created/assigned outside of this class)
+	/// This behavior will be generalized later.
+	/// </summary>
 	public class UpperArmMimic : MonoBehaviour
 	{
 		public GameObject UpperArmBody;

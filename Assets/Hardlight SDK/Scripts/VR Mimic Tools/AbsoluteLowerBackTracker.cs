@@ -5,6 +5,13 @@ using System.Collections.Generic;
 //Contents of this namespace are subject to change
 namespace Hardlight.SDK.Experimental
 {
+	/// <summary>
+	/// This is a tracker that is used to define the torso.
+	/// The torso created with this script is similar to a soft-body
+	/// Soft Body Torso does things like allow your waist to face a different direction from your shoulders.
+	/// There is not yet a good way to distribute regional haptic colliders among the body.
+	/// This class is likely VERY volatile
+	/// </summary>
 	public class AbsoluteLowerBackTracker : AbstractTracker
 	{
 		public GameObject ShoulderBarData;

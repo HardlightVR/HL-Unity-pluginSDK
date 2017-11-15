@@ -1,9 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Hardlight.SDK.Tracking;
 
 //Contents of this namespace are subject to change
 namespace Hardlight.SDK.Experimental
 {
+	/// <summary>
+	/// This interface is for representing a tracker (either built into the suit or an absolute tracker like Vive pucks/standard)
+	/// It is not locked in stone quite yet (hence Experimental namespace)
+	/// It is being released to give an idea for the direction/solution we're building towards.
+	/// We'd love to hear your feedback: devs@hardlightvr.com if you feel like pawing through the code
+	/// </summary>
 	public interface ITracker
 	{
 		GameObject ObjectToInfluence
@@ -28,6 +35,10 @@ namespace Hardlight.SDK.Experimental
 		void Setup(GameObject objectToInfluence, VRObjectMimic Tracker);
 	}
 
+	/// <summary>
+	/// Using an Interface-Abstract-UseCase approach allows for defaulted behavior while maintaining required components.
+	/// Continuation of the goals for ITracker (see that summary)
+	/// </summary>
 	public abstract class AbstractTracker : MonoBehaviour, ITracker
 	{
 		[Header("Arm Torso Attributes")]

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Hardlight.SDK.Tracking;
 
 //Contents of this namespace are subject to change
 namespace Hardlight.SDK.Experimental

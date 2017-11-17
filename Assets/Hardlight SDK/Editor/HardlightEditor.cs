@@ -179,7 +179,7 @@ namespace Hardlight.SDK.UEditor
 			EditorGUILayout.EndVertical();
 			//NSEditorStyles.DrawLabel("   v" + HardlightManager.GetPluginVersionInfo().ToString());
 
-			HLEditorStyles.DrawButton("Plugin v" + HardlightManager.GetPluginVersionInfo().ToString());
+			HLEditorStyles.DrawButton("Hardlight DLL v" + HardlightManager.GetPluginVersionInfo().ToString());
 			if (HLEditorStyles.DrawButton(HLEditorStyles.CompactMode ? "Feedback" : "Send Feedback"))
 			{
 				Application.OpenURL(FeedbackLink);

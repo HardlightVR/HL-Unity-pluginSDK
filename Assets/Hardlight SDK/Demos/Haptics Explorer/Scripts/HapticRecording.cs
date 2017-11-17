@@ -12,167 +12,167 @@ namespace Hardlight.SDK.Demos
 	/// </summary>
 	public class HapticRecording : MonoBehaviour
 	{
-		//public CanvasGroup QueryForNewFileName;
-		//public Button RecordingButton;
-		[SerializeField]
-		private bool isRecording = false;
-		float timeSinceRecordingStart = 0;
+		////public CanvasGroup QueryForNewFileName;
+		////public Button RecordingButton;
+		//[SerializeField]
+		//private bool isRecording = false;
+		//float timeSinceRecordingStart = 0;
 
-		[System.Serializable]
-		public class TimedSerializableHaptic
-		{
-			public ScriptableObjectHaptic haptic;
-			private float playTime;
-			public float PlayTime
-			{
-				get
-				{
-					return playTime;
-				}
-				set
-				{
-					playTime = Mathf.Clamp(value, 0, float.MaxValue);
-				}
-			}
+		//[System.Serializable]
+		//public class TimedSerializableHaptic
+		//{
+		//	public ScriptableObjectHaptic haptic;
+		//	private float playTime;
+		//	public float PlayTime
+		//	{
+		//		get
+		//		{
+		//			return playTime;
+		//		}
+		//		set
+		//		{
+		//			playTime = Mathf.Clamp(value, 0, float.MaxValue);
+		//		}
+		//	}
 
-			public TimedSerializableHaptic(ScriptableObjectHaptic newHaptic, float time = 0.0f)
-			{
-				haptic = newHaptic;
-				PlayTime = time;
-			}
+		//	public TimedSerializableHaptic(ScriptableObjectHaptic newHaptic, float time = 0.0f)
+		//	{
+		//		haptic = newHaptic;
+		//		PlayTime = time;
+		//	}
 
-			public override string ToString()
-			{
-				string output = "{\"time\" : " + PlayTime + ", \"" + haptic.GetType().ToString() + "\" : \"thing\"}";
-				return output;
-			}
-		}
+		//	public override string ToString()
+		//	{
+		//		string output = "{\"time\" : " + PlayTime + ", \"" + haptic.GetType().ToString() + "\" : \"thing\"}";
+		//		return output;
+		//	}
+		//}
 
-		[SerializeField]
-		public List<TimedSerializableHaptic> recordedHaptics = new List<TimedSerializableHaptic>();
+		//[SerializeField]
+		//public List<TimedSerializableHaptic> recordedHaptics = new List<TimedSerializableHaptic>();
 
-		public bool IsRecording
-		{
-			get
-			{
-				return isRecording;
-			}
+		//public bool IsRecording
+		//{
+		//	get
+		//	{
+		//		return isRecording;
+		//	}
 
-			set
-			{
-				isRecording = value;
-			}
-		}
+		//	set
+		//	{
+		//		isRecording = value;
+		//	}
+		//}
 
-		public void StartRecording()
-		{
-			Debug.Log("Start Recording\n");
-			IsRecording = true;
-			timeSinceRecordingStart = 0.0f;
-		}
+		//public void StartRecording()
+		//{
+		//	Debug.Log("Start Recording\n");
+		//	IsRecording = true;
+		//	timeSinceRecordingStart = 0.0f;
+		//}
 
-		public void EndRecording()
-		{
-			IsRecording = false;
-			OutputRecordedHapticInfo();
-		}
+		//public void EndRecording()
+		//{
+		//	IsRecording = false;
+		//	OutputRecordedHapticInfo();
+		//}
 
-		public void FinishRecording()
-		{
-			Debug.Log("End Recording\n");
-			OutputRecordedHapticInfo();
-			EndRecording();
+		//public void FinishRecording()
+		//{
+		//	Debug.Log("End Recording\n");
+		//	OutputRecordedHapticInfo();
+		//	EndRecording();
 
-			//If auto-naming files
-			//	
+		//	//If auto-naming files
+		//	//	
 
-			//Else
+		//	//Else
 
-			//Open the save as file information
-			//Add the delegate for naming the file?
+		//	//Open the save as file information
+		//	//Add the delegate for naming the file?
 
-			ClearRecordedHaptics();
-		}
+		//	ClearRecordedHaptics();
+		//}
 
-		public void ClearRecordedHaptics()
-		{
-			OutputRecordedHapticInfo();
+		//public void ClearRecordedHaptics()
+		//{
+		//	OutputRecordedHapticInfo();
 
-			IsRecording = false;
-			timeSinceRecordingStart = 0.0f;
-			recordedHaptics.Clear();
-		}
-		public void PlayRecordedHaptics()
-		{
-			OutputRecordedHapticInfo();
-			StartCoroutine(Playback(recordedHaptics.ToList()));
-		}
+		//	IsRecording = false;
+		//	timeSinceRecordingStart = 0.0f;
+		//	recordedHaptics.Clear();
+		//}
+		//public void PlayRecordedHaptics()
+		//{
+		//	OutputRecordedHapticInfo();
+		//	StartCoroutine(Playback(recordedHaptics.ToList()));
+		//}
 
-		public void Update()
-		{
-			if (IsRecording)
-			{
-				timeSinceRecordingStart += Time.deltaTime;
-			}
+		//public void Update()
+		//{
+		//	if (IsRecording)
+		//	{
+		//		timeSinceRecordingStart += Time.deltaTime;
+		//	}
 			
-			GetInput();
-		}
+		//	GetInput();
+		//}
 
-		void GetInput()
-		{
-			if (Input.GetKeyDown(KeyCode.ScrollLock))
-			{
-				OutputRecordedHapticInfo();
-			}
-		}
+		//void GetInput()
+		//{
+		//	if (Input.GetKeyDown(KeyCode.ScrollLock))
+		//	{
+		//		OutputRecordedHapticInfo();
+		//	}
+		//}
 
-		private void OutputRecordedHapticInfo()
-		{
-			System.Text.StringBuilder ss = new System.Text.StringBuilder("Recorded Haptics:\n");
-			for (int i = 0; i < recordedHaptics.Count; i++)
-			{
-				ss.AppendLine(recordedHaptics[i].ToString());
-			}
-			Debug.Log(ss.ToString() + "\n");
+		//private void OutputRecordedHapticInfo()
+		//{
+		//	System.Text.StringBuilder ss = new System.Text.StringBuilder("Recorded Haptics:\n");
+		//	for (int i = 0; i < recordedHaptics.Count; i++)
+		//	{
+		//		ss.AppendLine(recordedHaptics[i].ToString());
+		//	}
+		//	Debug.Log(ss.ToString() + "\n");
 
-		}
+		//}
 
-		public void AddNewHaptic(SerializableHaptic newHaptic)
-		{
-			Debug.Log("Add new haptic disabled\n");
-			//recordedHaptics.Add(new TimedSerializableHaptic(newHaptic, timeSinceRecordingStart));
-		}
+		//public void AddNewHaptic(SerializableHaptic newHaptic)
+		//{
+		//	Debug.Log("Add new haptic disabled\n");
+		//	//recordedHaptics.Add(new TimedSerializableHaptic(newHaptic, timeSinceRecordingStart));
+		//}
 
-		public void AddNewHaptic(float specificTime, SerializableHaptic newHaptic)
-		{
-			Debug.Log("Add new haptic disabled\n");
-			//recordedHaptics.Add(new TimedSerializableHaptic(newHaptic, specificTime));
-		}
+		//public void AddNewHaptic(float specificTime, SerializableHaptic newHaptic)
+		//{
+		//	Debug.Log("Add new haptic disabled\n");
+		//	//recordedHaptics.Add(new TimedSerializableHaptic(newHaptic, specificTime));
+		//}
 
-		public void SortElements()
-		{
-			recordedHaptics = recordedHaptics.OrderBy(x => x.PlayTime).ToList();
-		}
+		//public void SortElements()
+		//{
+		//	recordedHaptics = recordedHaptics.OrderBy(x => x.PlayTime).ToList();
+		//}
 
-		IEnumerator Playback(List<TimedSerializableHaptic> haptics)
-		{
-			float lastPlayTime = 0.0f;
-			for (int i = 0; i < haptics.Count; i++)
-			{
-				float timeTillNextPlaytime = haptics[i].PlayTime - lastPlayTime;
-				lastPlayTime = haptics[i].PlayTime;
-				yield return new WaitForSeconds(timeTillNextPlaytime);
+		//IEnumerator Playback(List<TimedSerializableHaptic> haptics)
+		//{
+		//	float lastPlayTime = 0.0f;
+		//	for (int i = 0; i < haptics.Count; i++)
+		//	{
+		//		float timeTillNextPlaytime = haptics[i].PlayTime - lastPlayTime;
+		//		lastPlayTime = haptics[i].PlayTime;
+		//		yield return new WaitForSeconds(timeTillNextPlaytime);
 
-				var h = haptics[i].haptic;
-				if (h.GetType() == typeof(HapticPattern))
-				{
-					((HapticPattern)h).Play();
-				}
-				if (h.GetType() == typeof(HapticExperience))
-				{
-					((HapticExperience)h).Play();
-				}
-			}
-		}
+		//		var h = haptics[i].haptic;
+		//		if (h.GetType() == typeof(HapticPattern))
+		//		{
+		//			((HapticPattern)h).Play();
+		//		}
+		//		if (h.GetType() == typeof(HapticExperience))
+		//		{
+		//			((HapticExperience)h).Play();
+		//		}
+		//	}
+		//}
 	}
 }

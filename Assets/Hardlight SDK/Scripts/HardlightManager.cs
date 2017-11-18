@@ -88,17 +88,16 @@ namespace Hardlight.SDK
 						return instance;
 					}
 
+				
 					if (instance == null)
 					{
+						Debug.Log("Creating HardlightManager for the first time");
 						GameObject singleton = new GameObject();
 						instance = singleton.AddComponent<HardlightManager>();
 						singleton.name = "HardlightManager [Runtime Singleton]";
+						instance.InitPluginIfNull();
 					}
-					else
-					{
-						//Debug.Log("[Singleton] Using instance already created: " +
-						//	_instance.gameObject.name + "\n");
-					}
+				
 				}
 				return instance;
 			}
@@ -249,13 +248,16 @@ namespace Hardlight.SDK
 
 			InitPluginIfNull();
 		}
-		public void InitPluginIfNull()
+		private void InitPluginIfNull()
 		{
 			//The plugin needs to load resources from your app's Streaming Assets folder
 			if (_plugin == null)
 			{
-				//Debug.Log("Plugin has been initialized\n", this);
+				Debug.Log("Plugin has been initialized\n", this);
 				_plugin = new HLVR.HLVR_Plugin();
+			} else
+			{
+				Debug.Log("Plugin was already initialized");
 			}
 		}
 		private void DoDelayedAction(float delay, Action action)

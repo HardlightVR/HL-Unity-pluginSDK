@@ -109,7 +109,10 @@ namespace Hardlight.SDK.UEditor
 
 		protected void EnsurePluginIsValid()
 		{
-			HardlightManager.Instance.InitPluginIfNull();
+			//poke the singleton
+			var whatever = HardlightManager.Instance;
+
+		//	HardlightManager.Instance.InitPluginIfNull();
 		}
 		
 		//protected void DirtyThing()

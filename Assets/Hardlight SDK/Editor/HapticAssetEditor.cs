@@ -8,6 +8,7 @@ namespace Hardlight.SDK.UEditor
 	{
 		private bool DrawDefault = false;
 		private Vector2 scrollPosition;
+		protected HapticHandle handle;
 		protected float thingy;
 		protected bool Dirty = false;
 
@@ -19,7 +20,9 @@ namespace Hardlight.SDK.UEditor
 
 		public void OnDisable()
 		{
-			HardlightManager.Instance.Shutdown();
+			if (handle != null)
+				handle.Stop();
+			//HardlightManager.Instance.Shutdown();
 		}
 		#endregion
 
@@ -44,6 +47,7 @@ namespace Hardlight.SDK.UEditor
 			EditorGUI.BeginDisabledGroup(serializedObject.isEditingMultipleObjects);
 
 			DrawPreview();
+			DrawHaltAll();
 
 			EditorGUI.EndDisabledGroup();
 
@@ -82,6 +86,25 @@ namespace Hardlight.SDK.UEditor
 		protected virtual void DrawPreview()
 		{
 
+		}
+
+		protected virtual void DrawHaltAll()
+		{
+			#region Preview
+			if (GUILayout.Button("Stop All"))
+			{
+				EnsurePluginIsValid();
+
+				try
+				{
+					HardlightManager.Instance.ClearAllEffects();
+				}
+				catch (System.Exception e)
+				{
+					Debug.LogError("An exception was caught while clearing all effects \n" + e.Message);
+				}
+			}
+			#endregion
 		}
 
 		protected void EnsurePluginIsValid()

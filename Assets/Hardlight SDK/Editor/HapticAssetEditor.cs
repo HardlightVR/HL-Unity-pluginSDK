@@ -14,7 +14,6 @@ namespace Hardlight.SDK.UEditor
 		#region Plugin Init/Dispose
 		public void OnEnable()
 		{
-			EnsurePluginIsValid();
 		}
 
 		public void OnDisable()

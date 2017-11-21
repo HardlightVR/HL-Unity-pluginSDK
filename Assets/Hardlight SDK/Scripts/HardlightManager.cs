@@ -78,12 +78,7 @@ namespace Hardlight.SDK
 		{
 			get
 			{
-				if (applicationIsQuitting)
-				{
-					Debug.LogWarning("[HardlightManager] .Instance access: HardlightManager was already destroyed OnApplicationQuit, won't create again - returning null!");
-					return null;
-				}
-
+				
 				lock (_lock)
 				{
 					if (instance == null)
@@ -465,11 +460,9 @@ namespace Hardlight.SDK
 			}
 		}
 
-		private static bool applicationIsQuitting = false;
 
 		public void OnDestroy()
 		{
-			applicationIsQuitting = true;
 		}
 		//public void Shutdown()
 		//{

@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using Hardlight.SDK.Tracking;
+using Hardlight.SDK.Internal;
 
 namespace Hardlight.SDK
 {
@@ -22,7 +23,7 @@ namespace Hardlight.SDK
 	/// If you prefer to interact directly with the plugin, you may create your own HLVR_Plugin and remove HardlightManager.
 	/// </summary>
 
-	[ExecuteInEditMode]
+	//[ExecuteInEditMode]
 	public sealed class HardlightManager : MonoBehaviour
 	{
 		public const int HAPTIC_LAYER = 31;
@@ -77,32 +78,49 @@ namespace Hardlight.SDK
 		{
 			get
 			{
-				if (instance == null)
+				if (applicationIsQuitting)
 				{
-					instance = FindObjectOfType<HardlightManager>();
+					Debug.LogWarning("[HardlightManager] .Instance access: HardlightManager was already destroyed OnApplicationQuit, won't create again - returning null!");
+					return null;
+				}
 
-					if (FindObjectsOfType<HardlightManager>().Length > 1)
-					{
-						Debug.LogError("[HardlightManager] There is more than one HardlightManager Singleton\n" +
-							"There shouldn't be multiple HardlightManager objects");
-						return instance;
-					}
-
-				
+				lock (_lock)
+				{
 					if (instance == null)
 					{
-						Debug.Log("Creating HardlightManager for the first time");
-						GameObject singleton = new GameObject();
-						instance = singleton.AddComponent<HardlightManager>();
-						singleton.name = "HardlightManager [Runtime Singleton]";
-						instance.InitPluginIfNull();
+						instance = FindObjectOfType<HardlightManager>();
+
+						if (FindObjectsOfType<HardlightManager>().Length > 1)
+						{
+							Debug.LogError("[HardlightManager] .Instance access: There is more than one HardlightManager Singleton\n" +
+								"There shouldn't be multiple HardlightManager objects");
+							
+						}
+
+						else if (instance == null)
+						{
+							//Debug.Log("[HardlightManager] .Instance access: Instance was null, creating for first time");
+							GameObject singleton = new GameObject();
+							instance = singleton.AddComponent<HardlightManager>();
+							singleton.name = "HardlightManager [Runtime Singleton]";
+						} else
+						{
+						//	Debug.Log("[HardlightManager] .Instance access: Instance was not null, using that");
+						}
+
 					}
-				
+
+					instance.InstantiateNativePlugin();
+
+					return instance;
 				}
-				return instance;
 			}
 			set { instance = value; }
 		}
+
+
+		HardlightPlugin _cachedTempPlugin;
+
 
 		#region Suit Options 
 		[Header("- Suit Options -")]
@@ -127,6 +145,7 @@ namespace Hardlight.SDK
 		private ServiceConnectionStatus _ServiceConnectionStatus;
 
 		private HLVR.HLVR_Plugin _plugin;
+		private static object _lock = new object();
 
 		/// <summary>
 		/// Enable SDK tracking management loop.
@@ -240,24 +259,31 @@ namespace Hardlight.SDK
 					"If there is no HardlightManager, one will be created for you if you call any HardlightManager.Instance function.");
 			}
 
+			InstantiateNativePlugin();
+
 			_trackingUpdateLoop = UpdateTracking();
 			_ServiceConnectionStatusLoop = CheckServiceConnection();
 			_DeviceConnectionStatusLoop = CheckHardlightSuitConnection();
 
 			_imuCalibrator = new CalibratorWrapper(new MockImuCalibrator());
 
-			InitPluginIfNull();
+			
 		}
-		private void InitPluginIfNull()
+		public void InstantiateNativePlugin()
 		{
-			//The plugin needs to load resources from your app's Streaming Assets folder
 			if (_plugin == null)
 			{
-				Debug.Log("Plugin has been initialized\n", this);
-				_plugin = new HLVR.HLVR_Plugin();
-			} else
-			{
-				Debug.Log("Plugin was already initialized");
+				
+				//Debug.Log("[HardlightManager] Gotta make a new instance");
+
+				//create a new one because user didn't make an asset
+				_cachedTempPlugin = ScriptableObject.CreateInstance<HardlightPlugin>();
+				_cachedTempPlugin.name = "T " + System.DateTime.Now.ToString();
+				_plugin = _cachedTempPlugin.Plugin;
+
+				
+
+				Debug.Assert(_plugin != null);
 			}
 		}
 		private void DoDelayedAction(float delay, Action action)
@@ -439,21 +465,22 @@ namespace Hardlight.SDK
 			}
 		}
 
-		public void Shutdown()
-		{
-			if (_plugin != null)
-			{
-				_plugin.Dispose();
-			}
-			_plugin = null;
-		}
+		private static bool applicationIsQuitting = false;
 
-		void OnApplicationQuit()
+		public void OnDestroy()
 		{
-			ClearAllEffects();
-			System.Threading.Thread.Sleep(100);
+			applicationIsQuitting = true;
 		}
+		//public void Shutdown()
+		//{
+		//	if (_plugin != null)
+		//	{
+		//		_plugin.Dispose();
+		//	}
+		//	_plugin = null;
+		//}
 
+	
 		/// <summary>
 		/// Retrieve the current IMU calibration utility
 		/// </summary>

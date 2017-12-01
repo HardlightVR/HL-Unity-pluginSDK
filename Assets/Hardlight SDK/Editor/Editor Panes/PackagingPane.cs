@@ -723,17 +723,26 @@ namespace Hardlight.SDK.UEditor
 			if (isSeq)
 			{
 				JustCreated = HapticSequence.LoadFromJson(oldPath);
-				HapticSequence.SaveAsset(fileName, (HapticSequence)JustCreated);
+				if (JustCreated != null)
+				{
+					HapticAssetEditorUtils.SaveSequence(fileName, (HapticSequence)JustCreated);
+				}
 			}
 			else if (isPat)
 			{
 				JustCreated = HapticPattern.LoadFromJson(oldPath);
-				HapticPattern.SaveAsset(fileName, (HapticPattern)JustCreated);
+				if (JustCreated != null)
+				{
+					HapticAssetEditorUtils.SavePattern(fileName, (HapticPattern)JustCreated);
+				}
 			}
 			else if (isExp)
 			{
 				JustCreated = HapticExperience.LoadFromJson(oldPath);
-				HapticExperience.SaveAsset(fileName, (HapticExperience)JustCreated);
+				if (JustCreated != null)
+				{
+					HapticAssetEditorUtils.SaveExperience(fileName, (HapticExperience)JustCreated);
+				}
 			}
 
 			////This is where we'd want to change the default location of new haptic assets
@@ -760,64 +769,6 @@ namespace Hardlight.SDK.UEditor
 
 			return JustCreated;
 
-		}
-		private void CreateHapticAsset(string path)
-		{
-			//If they clicked away from the file dialog, we won't have a valid path
-			if (path == "")
-			{
-				return;
-			}
-
-			//Attempt to get json of the haptic definition file from the tool
-			var json = "";
-
-			try
-			{
-				json = _assetTool.GetHapticDefinitionFileJson(path);
-			}
-			catch (InvalidOperationException e)
-			{
-				//The filename was not set. This could be if the registry key was not found
-				Debug.LogError("[HLVR] Could not locate the HapticAssetTools.exe program, make sure the HLVR Service was installed. Try reinstalling if the problem persists." + e.Message);
-				return;
-			}
-			catch (System.ComponentModel.Win32Exception e)
-			{
-				Debug.LogError("[HLVR] Could not open the HapticAssetTools.exe program (was it renamed? Does it exist within the service install directory?): " + e.Message);
-				return;
-			}
-
-
-			//If the asset tool succeeded in running, but returned nothing, it's an error
-			if (json == "")
-			{
-				Debug.LogError("[HLVR] Unable to communicate with HapticAssetTools.exe");
-				return;
-			}
-
-			//Create our simple json holder. Later, this could be a complex object
-			var asset = CreateInstance<JsonAsset>();
-			asset.SetJson(json);
-
-			var fileName = System.IO.Path.GetFileNameWithoutExtension(path);
-
-			//If we don't replace . with _, then Unity has serious trouble locating the file
-			var newAssetName = fileName.Replace('.', '_') + ".asset";
-
-
-			//This is where we'd want to change the default location of new haptic assets
-			CreateAssetFolderIfNotExists();
-
-			var newAssetPath = "Assets/Resources/Haptics/" + newAssetName;
-			asset.name = newAssetName;
-
-			AssetDatabase.CreateAsset(asset, newAssetPath);
-			Undo.RegisterCreatedObjectUndo(asset, "Create " + asset.name);
-			AssetDatabase.SaveAssets();
-			AssetDatabase.Refresh();
-
-			Selection.activeObject = asset;
 		}
 
 		private static void CreateAssetFolderIfNotExists()

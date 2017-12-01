@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>UnityPluginWrapperExe</name>
+        <name>HardlightUnity</name>
     </assembly>
     <members>
         <member name="T:Hardlight.SDK.FileUtilities.AssetTool">
@@ -313,6 +313,269 @@
             At any level of haptics, you can adjust timing or strength of elements. This represents that.
             </summary>
         </member>
+        <member name="M:Hardlight.SDK.HapticExperience.#ctor">
+            <summary>
+            DO NOT use new HapticExperience(). It will not work.
+            Use HapticExperience.CreateNew()
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.HapticExperience.AddPattern(Hardlight.SDK.HapticPattern,System.Double,System.Double)">
+            <summary>
+            Adds a HapticPattern to this HapticExperience with a given time offset and default strength of 1.0
+            </summary>
+            <param name="pattern">The pattern with time/strength attributes</param>
+            <param name="time">Time offset (fractional seconds)</param>
+            <param name="strength">Strength of the Pattern (for switching which effects are used)</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticExperience.AddPattern(Hardlight.SDK.ParameterizedPattern)">
+            <summary>
+            Add a HapticPattern to this HapticExperience with a given time offset and default strength of 1.0
+            </summary>
+            <param name="pattern">The pattern with time/strength attributes</param>
+        </member>
+        <member name="M:Hardlight.SDK.HapticExperience.CreateHandle">
+            <summary>
+            Create a HapticHandle from this HapticExperience, which can be used to manipulate the effect. 
+            </summary>
+            <returns>A new HapticHandle</returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticExperience.CreateHandle(System.Double)">
+            <summary>
+            Create a HapticHandle from this HapticExperience, passing in a given strength. 
+            </summary>
+            <param name="strength"></param>
+            <returns>A new HapticHandle</returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticExperience.Play">
+            <summary>
+            <para>If you want to play an experience but don't care about controlling playback, use this method. It will automatically clean up resources.</para>
+            <para>Synonymous with someExperience.CreateHandle().Play()</para>
+            </summary>
+            <returns>A new HapticHandle</returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticExperience.Play(System.Double)">
+            <summary>
+            <para>If you want to play an experience but don't care about controlling playback, use this method. It will automatically clean up resources.</para>
+            <para>Synonymous with someExperience.CreateHandle(strength).Play().Release()</para>
+            </summary>
+            <returns>A new HapticHandle</returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticExperience.Clone">
+            <summary>
+            Create an independent copy of this HapticExperience
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticExperience.ToString">
+            <summary>
+            Returns a representation of this HapticExperience for debugging purposes, including the representation of child patterns
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticExperience.CreateNew(System.String)">
+            <summary>
+            Use this instead of new HapticExperience()
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticExperience.LoadFromAsset(System.String)">
+            <summary>
+            Attempts to load an existing HapticSequence asset file
+            If the path does not exist, it will return CreateNew()
+            </summary>
+            <param name="resourcesPath">Files should be located in a Resources/Haptics folder. This does not append the Haptics folder (include it on your end)</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticExperience.LoadFromAssetBundle(System.String,UnityEngine.AssetBundle)">
+            <summary>
+            Attempts to load an existing HapticExperience asset file from the provided asset bundle
+            If the path does not exist, it will return CreateNew()
+            </summary>
+            <param name="experienceAssetName"></param>
+            <param name="bundle"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticPattern.#ctor">
+            <summary>
+            DO NOT use new HapticPattern(). It will not work.
+            Use HapticPattern.CreateNew()
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.HapticPattern.OnEnable">
+            <summary>
+            Construct an empty HapticSequence
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.HapticPattern.AddSequence(Hardlight.SDK.ParameterizedSequence)">
+            <summary>
+            Add a HapticSequence to this HapticPattern with a given time offset and AreaFlag, and default strength of 1.0
+            </summary>
+            <param name="time">Time offset (fractional seconds)</param>
+            <param name="area">AreaFlag on which to play the HapticSequence</param>
+            <param name="sequence">The HapticSequence to be added</param>
+        </member>
+        <member name="M:Hardlight.SDK.HapticPattern.AddSequence(System.Double,Hardlight.SDK.AreaFlag,System.Double,Hardlight.SDK.ParameterizedSequence)">
+            <summary>
+            Add a HapticSequence to this HapticPattern with a given time offset, AreaFlag, and strength.
+            </summary>
+            <param name="time">Time offset (fractional seconds)</param>
+            <param name="area">AreaFlag on which to play the HapticSequence</param>
+            <param name="strength">Strength of the HapticSequence (0.0 - 1.0)</param>
+            <param name="sequence">The HapticSequence to be added</param>
+        </member>
+        <member name="M:Hardlight.SDK.HapticPattern.CreateHandle">
+            <summary>
+            Create a HapticHandle from this HapticPattern, which can be used to manipulate the effect. 
+            </summary>
+            <returns>A new HapticHandle</returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticPattern.CreateHandle(System.Double)">
+            <summary>
+            Create a HapticHandle from this HapticPattern, passing in a given strength. 
+            </summary>
+            <param name="strength"></param>
+            <returns>A new HapticHandle</returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticPattern.Play">
+            <summary>
+            <para>If you want to play a pattern but don't care about controlling playback, use this method. It will automatically clean up resources.</para>
+            <para>Synonymous with somePattern.CreateHandle().Play().Release()</para>
+            </summary>
+            <returns>A new HapticHandle</returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticPattern.Play(System.Double)">
+            <summary>
+            <para>If you want to play a pattern but don't care about controlling playback, use this method. It will automatically clean up resources.</para>
+            <para>Synonymous with somePattern.CreateHandle(strength).Play().Release()</para>
+            </summary>
+            <returns>A new HapticHandle</returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticPattern.Clone">
+            <summary>
+            Create an independent copy of this HapticPattern
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticPattern.ToString">
+            <summary>
+            Returns a string representation of this HapticPattern for debugging purposes, including all child sequences
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.HapticPattern.CreateNew(System.String)">
+            <summary>
+            Use this instead of new HapticPattern()
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticPattern.LoadFromAsset(System.String)">
+            <summary>
+            Attempts to load an existing HapticPattern asset file
+            If the path does not exist, it will return CreateNew()
+            </summary>
+            <param name="resourcesPath">Files should be located in a Resources/Haptics folder. This does not append the Haptics folder (include it on your end)</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticPattern.LoadFromAssetBundle(System.String,UnityEngine.AssetBundle)">
+            <summary>
+            Attempts to load an existing HapticPattern asset file from the provided asset bundle
+            If the path does not exist, it will return CreateNew()
+            </summary>
+            <param name="patternAssetName"></param>
+            <param name="bundle"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Hardlight.SDK.HapticSequence">
+            <summary>
+            Don't use HapticSequence seq = new HapticSequence
+            Use HapticSequence.CreateNew()
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.HapticSequence.#ctor">
+            <summary>
+            DO NOT use new HapticSequence(). It will not work.
+            Use HapticSequence.CreateNew()
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.HapticSequence.OnEnable">
+            <summary>
+            Construct an empty HapticSequence
+            </summary>
+        </member>
+        <member name="M:Hardlight.SDK.HapticSequence.AddEffect(Hardlight.SDK.Effect,System.Single,System.Double,System.Single)">
+            <summary>
+            Adds a HapticEffect (these parameters go right to it)
+            Returns self for a builder pattern
+            </summary>
+            <param name="effect"></param>
+            <param name="time"></param>
+            <param name="duration"></param>
+            <param name="strength"></param>
+        </member>
+        <member name="M:Hardlight.SDK.HapticSequence.AddEffect(Hardlight.SDK.HapticEffect)">
+            <summary>
+            Add a preconstructed HapticEffect
+            Returns self for a builder pattern
+            </summary>
+            <param name="effect">The HapticEffect to add</param>
+        </member>
+        <member name="M:Hardlight.SDK.HapticSequence.CreateHandle(Hardlight.SDK.AreaFlag)">
+            <summary>
+            Create a HapticHandle from this HapticSequence, specifying an AreaFlag to play on.
+            </summary>
+            <param name="area">The AreaFlag where this HapticSequence should play</param>
+            <returns>A new HapticHandle bound to this effect playing on the given area</returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticSequence.CreateHandle(Hardlight.SDK.AreaFlag,System.Double)">
+            <summary>
+            Create a HapticHandle for this HapticSequence, specifying an AreaFlag and a strength.
+            </summary>
+            <param name="area">The AreaFlag where this HapticSequence should play</param>
+            <param name="strength">The strength of this HapticSequence (0.0-1.0)</param>
+            <returns>A new HapticHandle bound to this effect playing on the given area</returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticSequence.Play(Hardlight.SDK.AreaFlag)">
+            <summary>
+            <para>If you want to play a sequence but don't care about controlling playback, use this method. It will automatically clean up resources.</para>
+            <para>Synonymous with someSequence.CreateHandle(area).Play().Release() </para>
+            </summary>
+            <param name="area">The area on which to play this sequence</param>
+            <returns>A new HapticHandle bound to this effect playing on the given area</returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticSequence.Play(Hardlight.SDK.AreaFlag,System.Double)">
+            <summary>
+            <para>A helper which calls Play on a newly created HapticHandle.</para>
+            <para>Synonymous with someSequence.CreateHandle(area, strength).Play()</para>
+            </summary>
+            <param name="area">The area on which to play this sequence</param>
+            <param name="strength">The strength with which to play this sequence</param>
+            <returns>A new HapticHandle bound to this effect playing on the given area</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Hardlight.SDK.HapticSequence.ToString" -->
+        <member name="M:Hardlight.SDK.HapticSequence.CreateNew(System.String)">
+            <summary>
+            Use this instead of new HapticSequence()
+            </summary>
+            <param name="name">Assigns the new SO's name</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticSequence.LoadFromAsset(System.String)">
+            <summary>
+            Attempts to load an existing HapticSequence asset file
+            If the path does not exist, it will return CreateNew()
+            </summary>
+            <param name="resourcesPath">Files should be located in a Resources/Haptics folder. This does not append the Haptics folder (include it on your end)</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hardlight.SDK.HapticSequence.LoadFromAssetBundle(System.String,UnityEngine.AssetBundle)">
+            <summary>
+            Attempts to load an existing HapticSequence asset file from the provided asset bundle
+            If the path does not exist, it will return CreateNew()
+            </summary>
+            <param name="sequenceAssetName"></param>
+            <param name="bundle"></param>
+            <returns></returns>
+        </member>
         <member name="M:Hardlight.SDK.AreaFlagExtensions.ContainsArea(Hardlight.SDK.AreaFlag,Hardlight.SDK.AreaFlag)">
             <summary>
             Checks if an AreaFlag contains another AreaFlag
@@ -330,6 +593,11 @@
             <returns></returns>
         </member>
         <!-- Badly formed XML comment ignored for member "M:Hardlight.SDK.AreaFlagExtensions.RemoveArea(Hardlight.SDK.AreaFlag,Hardlight.SDK.AreaFlag)" -->
+        <member name="T:Hardlight.SDK.GeneratorLocation">
+            <summary>
+            An incomplete stub class for handling the future feature of generators (such as randomization of which location to pick)
+            </summary>
+        </member>
         <member name="T:Hardlight.SDK.VersionInfo">
             <summary>
             Represents version information, containing a major and minor version
@@ -355,20 +623,6 @@
             <summary>
             Main point of access to the plugin, implements IDisposable
             </summary>
-        </member>
-        <member name="M:Hardlight.SDK.HLVR.HLVR_Plugin.ControlDirectly(Hardlight.SDK.AreaFlag,System.Double)">
-            <summary>
-            Control the volume of an area directly. 
-            </summary>
-            <param name="singleArea">An AreaFlag representing a single area</param>
-            <param name="strength">Strength to play, from 0.0 - 1.0</param>
-        </member>
-        <member name="M:Hardlight.SDK.HLVR.HLVR_Plugin.ControlDirectly(Hardlight.SDK.AreaFlag[],System.UInt16[])">
-            <summary>
-            Control the volume of multiple areas directly. 
-            </summary>
-            <param name="singleAreas">List of AreaFlags, each representing a single area</param>
-            <param name="strengths">Strength to play, from 0-255</param>
         </member>
         <member name="M:Hardlight.SDK.HLVR.HLVR_Plugin.PauseAll">
             END INTERNAL *
@@ -502,295 +756,6 @@
             Create an independent copy of this ParameterizedSequence
             </summary>
             <returns>A copy</returns>
-        </member>
-        <member name="M:Hardlight.SDK.HapticExperience.#ctor">
-            <summary>
-            DO NOT use new HapticExperience(). It will not work.
-            Use HapticExperience.CreateNew()
-            </summary>
-        </member>
-        <member name="M:Hardlight.SDK.HapticExperience.AddPattern(Hardlight.SDK.HapticPattern,System.Double,System.Double)">
-            <summary>
-            Adds a HapticPattern to this HapticExperience with a given time offset and default strength of 1.0
-            </summary>
-            <param name="pattern">The pattern with time/strength attributes</param>
-            <param name="time">Time offset (fractional seconds)</param>
-            <param name="strength">Strength of the Pattern (for switching which effects are used)</param>
-            <returns></returns>
-        </member>
-        <member name="M:Hardlight.SDK.HapticExperience.AddPattern(Hardlight.SDK.ParameterizedPattern)">
-            <summary>
-            Add a HapticPattern to this HapticExperience with a given time offset and default strength of 1.0
-            </summary>
-            <param name="pattern">The pattern with time/strength attributes</param>
-        </member>
-        <member name="M:Hardlight.SDK.HapticExperience.CreateHandle">
-            <summary>
-            Create a HapticHandle from this HapticExperience, which can be used to manipulate the effect. 
-            </summary>
-            <returns>A new HapticHandle</returns>
-        </member>
-        <member name="M:Hardlight.SDK.HapticExperience.CreateHandle(System.Double)">
-            <summary>
-            Create a HapticHandle from this HapticExperience, passing in a given strength. 
-            </summary>
-            <param name="strength"></param>
-            <returns>A new HapticHandle</returns>
-        </member>
-        <member name="M:Hardlight.SDK.HapticExperience.Play">
-            <summary>
-            <para>If you want to play an experience but don't care about controlling playback, use this method. It will automatically clean up resources.</para>
-            <para>Synonymous with someExperience.CreateHandle().Play()</para>
-            </summary>
-            <returns>A new HapticHandle</returns>
-        </member>
-        <member name="M:Hardlight.SDK.HapticExperience.Play(System.Double)">
-            <summary>
-            <para>If you want to play an experience but don't care about controlling playback, use this method. It will automatically clean up resources.</para>
-            <para>Synonymous with someExperience.CreateHandle(strength).Play().Release()</para>
-            </summary>
-            <returns>A new HapticHandle</returns>
-        </member>
-        <member name="M:Hardlight.SDK.HapticExperience.Clone">
-            <summary>
-            Create an independent copy of this HapticExperience
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Hardlight.SDK.HapticExperience.ToString">
-            <summary>
-            Returns a representation of this HapticExperience for debugging purposes, including the representation of child patterns
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Hardlight.SDK.HapticExperience.CreateNew(System.String)">
-            <summary>
-            Use this instead of new HapticExperience()
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Hardlight.SDK.HapticExperience.SaveAsset(System.String,Hardlight.SDK.HapticExperience)">
-            <summary>
-            Only available in UnityEditor
-            </summary>
-            <param name="fileNameWithoutExtension"></param>
-            <param name="experience"></param>
-        </member>
-        <member name="M:Hardlight.SDK.HapticExperience.LoadFromAsset(System.String)">
-            <summary>
-            Attempts to load an existing HapticSequence asset file
-            If the path does not exist, it will return CreateNew()
-            </summary>
-            <param name="resourcesPath">Files should be located in a Resources/Haptics folder. This does not append the Haptics folder (include it on your end)</param>
-            <returns></returns>
-        </member>
-        <member name="M:Hardlight.SDK.HapticExperience.LoadFromAssetBundle(System.String,UnityEngine.AssetBundle)">
-            <summary>
-            Attempts to load an existing HapticExperience asset file from the provided asset bundle
-            If the path does not exist, it will return CreateNew()
-            </summary>
-            <param name="experienceAssetName"></param>
-            <param name="bundle"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Hardlight.SDK.HapticPattern.#ctor">
-            <summary>
-            DO NOT use new HapticPattern(). It will not work.
-            Use HapticPattern.CreateNew()
-            </summary>
-        </member>
-        <member name="M:Hardlight.SDK.HapticPattern.OnEnable">
-            <summary>
-            Construct an empty HapticSequence
-            </summary>
-        </member>
-        <member name="M:Hardlight.SDK.HapticPattern.AddSequence(Hardlight.SDK.ParameterizedSequence)">
-            <summary>
-            Add a HapticSequence to this HapticPattern with a given time offset and AreaFlag, and default strength of 1.0
-            </summary>
-            <param name="time">Time offset (fractional seconds)</param>
-            <param name="area">AreaFlag on which to play the HapticSequence</param>
-            <param name="sequence">The HapticSequence to be added</param>
-        </member>
-        <member name="M:Hardlight.SDK.HapticPattern.AddSequence(System.Double,Hardlight.SDK.AreaFlag,System.Double,Hardlight.SDK.ParameterizedSequence)">
-            <summary>
-            Add a HapticSequence to this HapticPattern with a given time offset, AreaFlag, and strength.
-            </summary>
-            <param name="time">Time offset (fractional seconds)</param>
-            <param name="area">AreaFlag on which to play the HapticSequence</param>
-            <param name="strength">Strength of the HapticSequence (0.0 - 1.0)</param>
-            <param name="sequence">The HapticSequence to be added</param>
-        </member>
-        <member name="M:Hardlight.SDK.HapticPattern.CreateHandle">
-            <summary>
-            Create a HapticHandle from this HapticPattern, which can be used to manipulate the effect. 
-            </summary>
-            <returns>A new HapticHandle</returns>
-        </member>
-        <member name="M:Hardlight.SDK.HapticPattern.CreateHandle(System.Double)">
-            <summary>
-            Create a HapticHandle from this HapticPattern, passing in a given strength. 
-            </summary>
-            <param name="strength"></param>
-            <returns>A new HapticHandle</returns>
-        </member>
-        <member name="M:Hardlight.SDK.HapticPattern.Play">
-            <summary>
-            <para>If you want to play a pattern but don't care about controlling playback, use this method. It will automatically clean up resources.</para>
-            <para>Synonymous with somePattern.CreateHandle().Play().Release()</para>
-            </summary>
-            <returns>A new HapticHandle</returns>
-        </member>
-        <member name="M:Hardlight.SDK.HapticPattern.Play(System.Double)">
-            <summary>
-            <para>If you want to play a pattern but don't care about controlling playback, use this method. It will automatically clean up resources.</para>
-            <para>Synonymous with somePattern.CreateHandle(strength).Play().Release()</para>
-            </summary>
-            <returns>A new HapticHandle</returns>
-        </member>
-        <member name="M:Hardlight.SDK.HapticPattern.Clone">
-            <summary>
-            Create an independent copy of this HapticPattern
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Hardlight.SDK.HapticPattern.ToString">
-            <summary>
-            Returns a string representation of this HapticPattern for debugging purposes, including all child sequences
-            </summary>
-        </member>
-        <member name="M:Hardlight.SDK.HapticPattern.CreateNew(System.String)">
-            <summary>
-            Use this instead of new HapticPattern()
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Hardlight.SDK.HapticPattern.SaveAsset(System.String,Hardlight.SDK.HapticPattern)">
-            <summary>
-            Only available in UnityEditor
-            </summary>
-            <param name="fileNameWithoutExtension"></param>
-            <param name="pattern"></param>
-        </member>
-        <member name="M:Hardlight.SDK.HapticPattern.LoadFromAsset(System.String)">
-            <summary>
-            Attempts to load an existing HapticPattern asset file
-            If the path does not exist, it will return CreateNew()
-            </summary>
-            <param name="resourcesPath">Files should be located in a Resources/Haptics folder. This does not append the Haptics folder (include it on your end)</param>
-            <returns></returns>
-        </member>
-        <member name="M:Hardlight.SDK.HapticPattern.LoadFromAssetBundle(System.String,UnityEngine.AssetBundle)">
-            <summary>
-            Attempts to load an existing HapticPattern asset file from the provided asset bundle
-            If the path does not exist, it will return CreateNew()
-            </summary>
-            <param name="patternAssetName"></param>
-            <param name="bundle"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Hardlight.SDK.HapticSequence">
-            <summary>
-            Don't use HapticSequence seq = new HapticSequence
-            Use HapticSequence.CreateNew()
-            </summary>
-        </member>
-        <member name="M:Hardlight.SDK.HapticSequence.#ctor">
-            <summary>
-            DO NOT use new HapticSequence(). It will not work.
-            Use HapticSequence.CreateNew()
-            </summary>
-        </member>
-        <member name="M:Hardlight.SDK.HapticSequence.OnEnable">
-            <summary>
-            Construct an empty HapticSequence
-            </summary>
-        </member>
-        <member name="M:Hardlight.SDK.HapticSequence.AddEffect(Hardlight.SDK.Effect,System.Single,System.Double,System.Single)">
-            <summary>
-            Adds a HapticEffect (these parameters go right to it)
-            Returns self for a builder pattern
-            </summary>
-            <param name="effect"></param>
-            <param name="time"></param>
-            <param name="duration"></param>
-            <param name="strength"></param>
-        </member>
-        <member name="M:Hardlight.SDK.HapticSequence.AddEffect(Hardlight.SDK.HapticEffect)">
-            <summary>
-            Add a preconstructed HapticEffect
-            Returns self for a builder pattern
-            </summary>
-            <param name="effect">The HapticEffect to add</param>
-        </member>
-        <member name="M:Hardlight.SDK.HapticSequence.CreateHandle(Hardlight.SDK.AreaFlag)">
-            <summary>
-            Create a HapticHandle from this HapticSequence, specifying an AreaFlag to play on.
-            </summary>
-            <param name="area">The AreaFlag where this HapticSequence should play</param>
-            <returns>A new HapticHandle bound to this effect playing on the given area</returns>
-        </member>
-        <member name="M:Hardlight.SDK.HapticSequence.CreateHandle(Hardlight.SDK.AreaFlag,System.Double)">
-            <summary>
-            Create a HapticHandle for this HapticSequence, specifying an AreaFlag and a strength.
-            </summary>
-            <param name="area">The AreaFlag where this HapticSequence should play</param>
-            <param name="strength">The strength of this HapticSequence (0.0-1.0)</param>
-            <returns>A new HapticHandle bound to this effect playing on the given area</returns>
-        </member>
-        <member name="M:Hardlight.SDK.HapticSequence.Play(Hardlight.SDK.AreaFlag)">
-            <summary>
-            <para>If you want to play a sequence but don't care about controlling playback, use this method. It will automatically clean up resources.</para>
-            <para>Synonymous with someSequence.CreateHandle(area).Play().Release() </para>
-            </summary>
-            <param name="area">The area on which to play this sequence</param>
-            <returns>A new HapticHandle bound to this effect playing on the given area</returns>
-        </member>
-        <member name="M:Hardlight.SDK.HapticSequence.Play(Hardlight.SDK.AreaFlag,System.Double)">
-            <summary>
-            <para>A helper which calls Play on a newly created HapticHandle.</para>
-            <para>Synonymous with someSequence.CreateHandle(area, strength).Play()</para>
-            </summary>
-            <param name="area">The area on which to play this sequence</param>
-            <param name="strength">The strength with which to play this sequence</param>
-            <returns>A new HapticHandle bound to this effect playing on the given area</returns>
-        </member>
-        <!-- Badly formed XML comment ignored for member "M:Hardlight.SDK.HapticSequence.ToString" -->
-        <member name="M:Hardlight.SDK.HapticSequence.CreateNew(System.String)">
-            <summary>
-            Use this instead of new HapticSequence()
-            </summary>
-            <param name="name">Assigns the new SO's name</param>
-            <returns></returns>
-        </member>
-        <member name="M:Hardlight.SDK.HapticSequence.LoadFromAsset(System.String)">
-            <summary>
-            Attempts to load an existing HapticSequence asset file
-            If the path does not exist, it will return CreateNew()
-            </summary>
-            <param name="resourcesPath">Files should be located in a Resources/Haptics folder. This does not append the Haptics folder (include it on your end)</param>
-            <returns></returns>
-        </member>
-        <member name="M:Hardlight.SDK.HapticSequence.LoadFromAssetBundle(System.String,UnityEngine.AssetBundle)">
-            <summary>
-            Attempts to load an existing HapticSequence asset file from the provided asset bundle
-            If the path does not exist, it will return CreateNew()
-            </summary>
-            <param name="sequenceAssetName"></param>
-            <param name="bundle"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Hardlight.SDK.HapticSequence.SaveAsset(System.String,Hardlight.SDK.HapticSequence)">
-            <summary>
-            Only available in UnityEditor
-            </summary>
-            <param name="fileNameWithoutExtension"></param>
-            <param name="sequence"></param>
-        </member>
-        <member name="T:Hardlight.SDK.GeneratorLocation">
-            <summary>
-            An incomplete stub class for handling the future feature of generators (such as randomization of which location to pick)
-            </summary>
         </member>
         <member name="T:MiniJSON.Json">
              <summary>

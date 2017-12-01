@@ -15,7 +15,6 @@ namespace Hardlight.SDK.UEditor
 		#region Plugin Init/Dispose
 		public void OnEnable()
 		{
-			EnsurePluginIsValid();
 		}
 
 		public void OnDisable()
@@ -109,10 +108,7 @@ namespace Hardlight.SDK.UEditor
 
 		protected void EnsurePluginIsValid()
 		{
-			//poke the singleton
-			var whatever = HardlightManager.Instance;
-
-		//	HardlightManager.Instance.InitPluginIfNull();
+			var pokeManager = HardlightManager.Instance;
 		}
 		
 		//protected void DirtyThing()

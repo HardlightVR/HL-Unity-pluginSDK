@@ -52,11 +52,7 @@ namespace Hardlight.SDK.UEditor
 
 			EditorGUILayout.EndVertical();
 			EditorGUILayout.EndHorizontal();
-
-			EditorGUILayout.Space();
-			EditorGUILayout.Space();
-			EditorGUILayout.Space();
-
+			
 			if (Dirty)
 			{
 				EditorUtility.SetDirty(target);

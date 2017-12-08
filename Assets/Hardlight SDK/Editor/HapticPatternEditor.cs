@@ -218,15 +218,17 @@ namespace Hardlight.SDK.UEditor
 			if (GUILayout.Button("Preview"))
 			{
 				EnsurePluginIsValid();
-
-				try
+				if (pat.Sequences.Count > 0)
 				{
-					handle = pat.CreateHandle();
-					handle.Play();
-				}
-				catch (System.Exception e)
-				{
-					Debug.LogError("An exception was caught while previewing " + pat.name + "\n" + e.Message);
+					try
+					{
+						handle = pat.CreateHandle();
+						handle.Play();
+					}
+					catch (System.Exception e)
+					{
+						Debug.LogError("An exception was caught while previewing " + pat.name + "\n" + e.Message);
+					}
 				}
 			}
 		}

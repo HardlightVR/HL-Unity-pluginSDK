@@ -48,9 +48,7 @@ namespace Hardlight.SDK.Tracking {
 		public void ReceiveUpdate(TrackingUpdate update)
 		{
 			_rawQuaternions[Imu.Chest].Orientation = update.Chest;
-			_rawQuaternions[Imu.Left_Forearm].Orientation = update.LeftForearm;
 			_rawQuaternions[Imu.Left_Upper_Arm].Orientation = update.LeftUpperArm;
-			_rawQuaternions[Imu.Right_Forearm].Orientation = update.RightForearm;
 			_rawQuaternions[Imu.Right_Upper_Arm].Orientation = update.RightUpperArm;
 		}
 

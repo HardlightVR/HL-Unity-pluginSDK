@@ -239,6 +239,7 @@
             </summary>
             <param name="jsonPath">Ex: StreamingAssets/Haptics/NS Demos/experiences/mech_stomp.experience</param>
         </member>
+        <!-- Badly formed XML comment ignored for member "M:Hardlight.SDK.FileUtilities.HapticResources.CleanName(System.String)" -->
         <member name="M:Hardlight.SDK.FileUtilities.ParsingUtils.tryParseFloatFromObject(System.Collections.Generic.IDictionary{System.String,System.Object},System.String,System.Single)">
             <summary>
             Attempt to parse a float from a json object representing a double

@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Hardlight.SDK.Demos
 {
-	public class SuitEmulationDemo : SuitDemo
+	public class SuitVisualizationDemo : SuitDemo
 	{
 		public Color notPlayingColor = new Color(227 / 255f, 227 / 255f, 227 / 255f, 1f);
 		public Color playingColor = new Color(227 / 255f, 227 / 255f, 227 / 255f, 1f);
@@ -52,7 +52,7 @@ namespace Hardlight.SDK.Demos
 			}
 		}
 
-		private Color GetColorByFamily(uint family)
+		private Color GetColorByFamily(int family)
 		{
 			if ((Effect)family == Effect.Click)
 			{
@@ -90,7 +90,7 @@ namespace Hardlight.SDK.Demos
 			{
 				return Color.yellow;
 			}
-			return Color.black;
+			return notPlayingColor;
 		}
 
 		public override void OnSuitClicked(HardlightCollider clicked, RaycastHit hit)

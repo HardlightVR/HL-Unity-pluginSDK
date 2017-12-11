@@ -189,11 +189,11 @@ namespace Hardlight.SDK
 			{
 				dict.Add(RegionToAreaFlag.GetAreaFlag(ele.Key), ele.Value);
 			}
-			//string playingThisFrame = "" + playing.Count + "\n";
-			//foreach (var ele in dict)
-			//{
-			//	playingThisFrame += ele.Key.ToString() + "  " + ele.Value.ToString() + "\n";
-			//}
+			string playingThisFrame = "" + playing.Count + "\n";
+			foreach (var ele in dict)
+			{
+				playingThisFrame += ele.Key.ToString() + "  " + ele.Value.ToString() + "\n";
+			}
 			//Debug.Log(playingThisFrame);
 			return dict;
 		}

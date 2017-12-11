@@ -78,7 +78,7 @@ namespace Hardlight.SDK
 		{
 			get
 			{
-				
+
 				lock (_lock)
 				{
 					if (instance == null)
@@ -89,7 +89,7 @@ namespace Hardlight.SDK
 						{
 							Debug.LogError("[HardlightManager] .Instance access: There is more than one HardlightManager Singleton\n" +
 								"There shouldn't be multiple HardlightManager objects");
-							
+
 						}
 
 						else if (instance == null)
@@ -98,9 +98,10 @@ namespace Hardlight.SDK
 							GameObject singleton = new GameObject();
 							instance = singleton.AddComponent<HardlightManager>();
 							singleton.name = "HardlightManager [Runtime Singleton]";
-						} else
+						}
+						else
 						{
-						//	Debug.Log("[HardlightManager] .Instance access: Instance was not null, using that");
+							//	Debug.Log("[HardlightManager] .Instance access: Instance was not null, using that");
 						}
 
 					}
@@ -180,7 +181,32 @@ namespace Hardlight.SDK
 		}
 		public Dictionary<AreaFlag, EffectSampleInfo> SamplePlayingStatus()
 		{
-			throw new NotImplementedException("There is a big problem.\n\tSample Playing Status has not been reimplemented.\n");
+			var dict = new Dictionary<AreaFlag, EffectSampleInfo>();
+
+			var playing = _plugin.PollBodyView();
+
+			foreach (var ele in playing)
+			{
+				dict.Add(RegionToAreaFlag.GetAreaFlag(ele.Key), ele.Value);
+			}
+			//string playingThisFrame = "" + playing.Count + "\n";
+			//foreach (var ele in dict)
+			//{
+			//	playingThisFrame += ele.Key.ToString() + "  " + ele.Value.ToString() + "\n";
+			//}
+			//Debug.Log(playingThisFrame);
+			return dict;
+		}
+		public Dictionary<Region, EffectSampleInfo> SamplePlayingRegions()
+		{
+			var playing = _plugin.PollBodyView();
+			string playingThisFrame = "" + playing.Count + "\n";
+			foreach (var ele in playing)
+			{
+				playingThisFrame += ele.Key.ToString() + "  " + ele.Value.ToString() + "\n";
+			}
+			//Debug.Log(playingThisFrame);
+			return playing;
 			//return _plugin.PollBodyView();
 			//return _plugin.SampleCurrentlyPlayingEffects();
 			//return _plugin.SampleStrengths();
@@ -193,7 +219,7 @@ namespace Hardlight.SDK
 		///// <param name="strength">Strength to play, from 0.0-1.0</param>
 		//public void ControlDirectly(AreaFlag singleArea, double strength)
 		//{
-			//_plugin.ControlDirectly(singleArea, strength * .66f);
+		//_plugin.ControlDirectly(singleArea, strength * .66f);
 		//}
 
 		///// <summary>
@@ -203,7 +229,7 @@ namespace Hardlight.SDK
 		///// <param name="strengths">Strength to play, from 0-255</param>
 		//public void ControlDirectly(AreaFlag[] singleAreas, ushort[] strengths)
 		//{
-			//_plugin.ControlDirectly(singleAreas, strengths);
+		//_plugin.ControlDirectly(singleAreas, strengths);
 		//}
 
 		/// <summary>
@@ -262,13 +288,13 @@ namespace Hardlight.SDK
 
 			_imuCalibrator = new CalibratorWrapper(new MockImuCalibrator());
 
-			
+
 		}
 		public void InstantiateNativePlugin()
 		{
 			if (_plugin == null)
 			{
-				
+
 				//Debug.Log("[HardlightManager] Gotta make a new instance");
 
 				//create a new one because user didn't make an asset
@@ -276,7 +302,7 @@ namespace Hardlight.SDK
 				_cachedTempPlugin.name = "T " + System.DateTime.Now.ToString();
 				_plugin = _cachedTempPlugin.Plugin;
 
-				
+
 
 				Debug.Assert(_plugin != null);
 			}
@@ -386,7 +412,7 @@ namespace Hardlight.SDK
 		{
 			while (true)
 			{
-				if(true)
+				if (true)
 				{
 					var devices = _plugin.GetKnownDevices();
 					bool hasSuit = false;
@@ -473,7 +499,7 @@ namespace Hardlight.SDK
 		//	_plugin = null;
 		//}
 
-	
+
 		/// <summary>
 		/// Retrieve the current IMU calibration utility
 		/// </summary>

@@ -34,9 +34,13 @@ namespace Hardlight.SDK.Demos
 			//Our initial emulation techniques 
 			var samples = HardlightManager.Instance.SamplePlayingStatus();
 
+			//foreach (var sample in samples)
+			//{
+			//	if(sample.Key
+			//}
+
 			for (int i = 0; i < SuitObjects.Count; i++)
 			{
-				//Debug.Log(thing.Count);
 				if (samples.ContainsKey(SuitObjects[i].regionID))
 				{
 					float val = (samples[SuitObjects[i].regionID].Strength) / 1000.0f;
@@ -86,7 +90,7 @@ namespace Hardlight.SDK.Demos
 			{
 				return Color.yellow;
 			}
-			return Color.white;
+			return Color.black;
 		}
 
 		public override void OnSuitClicked(HardlightCollider clicked, RaycastHit hit)

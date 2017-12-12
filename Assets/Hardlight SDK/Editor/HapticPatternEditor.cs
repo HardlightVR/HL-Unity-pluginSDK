@@ -9,9 +9,8 @@ namespace Hardlight.SDK.UEditor
 	[CustomEditor(typeof(HapticPattern), true)]
 	public class HapticPatternEditor : HapticAssetEditor
 	{
-		private bool showKeys = true;
 		private bool useRanges = false;
-		private List<string> Keys = new List<string>();
+		//private List<string> Keys = new List<string>();
 
 		private int[] widths = { 24, 26, 105, 40, 125, 80, 65, 65 };
 
@@ -200,16 +199,16 @@ namespace Hardlight.SDK.UEditor
 
 		private void CreateKeyArray()
 		{
-			var pat = (HapticPattern)target;
-			Keys.Clear();
-			Debug.LogError("Sequence Keys is commented out.\n");
-			for (int i = 0; i < pat.Sequences.Count; i++)
-			{
-				//if (pat.SequenceKeys[i] != null)
-				//{
-				//	Keys.Add(pat.SequenceKeys[i].name);
-				//}
-			}
+			//var pat = (HapticPattern)target;
+			//Keys.Clear();
+			//Debug.LogError("Sequence Keys is commented out.\n");
+			//for (int i = 0; i < pat.Sequences.Count; i++)
+			//{
+			//	//if (pat.SequenceKeys[i] != null)
+			//	//{
+			//	//	Keys.Add(pat.SequenceKeys[i].name);
+			//	//}
+			//}
 		}
 
 		protected override void DrawPreview()

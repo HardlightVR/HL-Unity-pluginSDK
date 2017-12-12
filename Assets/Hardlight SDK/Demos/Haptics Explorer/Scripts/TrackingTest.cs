@@ -14,7 +14,6 @@ namespace Hardlight.SDK.Experimental
 {
 	public class TrackingTest : MonoBehaviour
 	{
-		private IImuCalibrator imus;
 		public GameObject TrackedRepresentation;
 		public GameObject ParentObject;
 		public Imu whichIMU = Imu.Chest;
@@ -25,7 +24,6 @@ namespace Hardlight.SDK.Experimental
 
 		void Start()
 		{
-			imus = GetComponent<DefaultImuCalibrator>();
 			HardlightManager.Instance.SetImuCalibrator(GetComponent<DefaultImuCalibrator>());
 
 			if (ParentObject != null)

@@ -22,14 +22,14 @@ namespace Hardlight.SDK
 		[System.Serializable]
 		public class TemporaryColoring
 		{
-			[SerializeField]
-			float timeValue = .25f;
+			//[SerializeField]
+			//float timeValue = .25f;
 			public Color color;
 
 			public TemporaryColoring(float time, Color col)
 			{
 				color = col;
-				timeValue = Mathf.Clamp(time, 0, float.MaxValue);
+				//timeValue = Mathf.Clamp(time, 0, float.MaxValue);
 			}
 		}
 		public float timeLeft;

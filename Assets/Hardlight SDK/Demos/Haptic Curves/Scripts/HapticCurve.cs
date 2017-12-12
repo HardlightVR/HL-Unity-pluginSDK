@@ -135,8 +135,8 @@ namespace Hardlight.SDK.Demos
 
 			Playing = true;
 			StartPlaying = false;
-			float eval = 0.0f;
-			float vol = 0.0f;
+			//float eval = 0.0f;
+			//float vol = 0.0f;
 			counter = 0;
 			Duration = Mathf.Clamp(Duration, 0, float.MaxValue);
 			AreaFlag[] areas = Where.ToArray();
@@ -151,8 +151,8 @@ namespace Hardlight.SDK.Demos
 					//HardlightManager.Instance.ControlDirectly(areas[i], vol);
 				}
 				counter = Mathf.Clamp(counter + Time.deltaTime, 0.0f, Duration);
-				eval = MyCurve.Evaluate(counter / Duration);
-				vol = minVolume + eval * (maxVolume - minVolume);
+				//eval = MyCurve.Evaluate(counter / Duration);
+				//vol = minVolume + eval * (maxVolume - minVolume);
 
 
 				//Wait a frame
@@ -161,8 +161,8 @@ namespace Hardlight.SDK.Demos
 
 			if (endingSustain > 0 && PlaySustainAtEnd)
 			{
-				eval = MyCurve.Evaluate(1.0f);
-				vol = minVolume + eval * (maxVolume - minVolume);
+				//eval = MyCurve.Evaluate(1.0f);
+				//vol = minVolume + eval * (maxVolume - minVolume);
 
 				for (int i = 0; i < areas.Length; i++)
 				{

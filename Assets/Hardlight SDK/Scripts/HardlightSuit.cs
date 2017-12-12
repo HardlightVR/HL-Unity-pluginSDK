@@ -276,8 +276,6 @@ namespace Hardlight.SDK
 		/// <param name="newCollider"></param>
 		public bool ModifyValidRegions(AreaFlag SingleFlagToModify, GameObject SingleHolder, HardlightCollider newCollider)
 		{
-			bool Succeeded = false;
-
 			if (!SingleFlagToModify.IsSingleArea())
 			{
 				Debug.LogError("Attempted to modify the valid regions of the Hardlight Suit by providing a complex AreaFlag.\n\tThis function does not yet support complex area flags. Call it individually for each flag if you need to do this.");
@@ -307,7 +305,7 @@ namespace Hardlight.SDK
 
 			var indexOfFlag = -1;
 			GameObject oldHolder = null;
-			HardlightCollider oldCollider = null;
+			//HardlightCollider oldCollider = null;
 			//If we have the area flag already
 			if (Definition.DefinedAreas.Contains(SingleFlagToModify))
 			{
@@ -318,7 +316,7 @@ namespace Hardlight.SDK
 
 				//Store the old holder and old collider
 				oldHolder = Definition.ZoneHolders[indexOfFlag];
-				oldCollider = Definition.SceneReferences[indexOfFlag];
+				//oldCollider = Definition.SceneReferences[indexOfFlag];
 				if (oldHolder != null && oldHolder != SingleHolder)
 				{
 					oldHolder.SetActive(false);

@@ -33,7 +33,6 @@ namespace Hardlight.SDK.Demos
 		private int counter = 0;
 		private int levelUpCounter = 10;
 		private int level = 0;
-		private System.DateTime start;
 
 		/// <summary>
 		/// Our level-up indicator.
@@ -47,7 +46,6 @@ namespace Hardlight.SDK.Demos
 
 		void Start()
 		{
-			start = System.DateTime.Now;
 			StartCoroutine(AutoPitch());
 		}
 

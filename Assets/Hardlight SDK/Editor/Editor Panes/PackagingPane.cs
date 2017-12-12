@@ -704,7 +704,6 @@ namespace Hardlight.SDK.UEditor
 		protected ScriptableObjectHaptic CreateHapticAsset(string oldPath, string json, int undoGroup = 0)
 		{
 			//Create our simple json holder. Later, this could be a complex object
-			var assetPath = "Assets/Resources/Haptics/";
 			//var asset = CreateInstance<JsonAsset>();
 			//asset.SetJson(json);
 

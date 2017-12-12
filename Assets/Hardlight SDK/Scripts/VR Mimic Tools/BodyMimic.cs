@@ -167,7 +167,6 @@ namespace Hardlight.SDK
 
 		[Header("Shoulder Bar Effigy Attributes")]
 		bool ShoulderBarDataInitialized = false;
-		bool StomachInitialized = false;
 		public GameObject ShoulderBarData;
 		
 		#region Calculated Poses Class & Usage
@@ -514,9 +513,6 @@ namespace Hardlight.SDK
 			newLowerBackTracker.Setup(gameObject, Tracker);
 
 			newLowerBackTracker.name = "Absolute Lower Back Tracker";
-			//var offset = Quaternion.Inverse(Tracker.transform.rotation) * newLowerBackTracker.transform.rotation;
-			var offset = Quaternion.Inverse(newLowerBackTracker.transform.rotation) * Tracker.transform.rotation;
-			var before = newLowerBackTracker.transform.rotation;
 
 			LowerBack = newLowerBackTracker;
 
@@ -659,9 +655,6 @@ namespace Hardlight.SDK
 
 				if (LowerBack)
 				{
-					float shoulderDistance = CalculateShoulderDistance();
-					Vector3 CenterPosition = CalculateShoulderCenterPosition(shoulderDistance);
-
 					if (ShouldCreateVisuals)
 					{
 						var back = (LowerBack as AbsoluteLowerBackTracker);

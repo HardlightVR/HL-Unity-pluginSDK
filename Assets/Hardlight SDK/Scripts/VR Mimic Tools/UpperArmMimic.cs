@@ -35,7 +35,6 @@ namespace Hardlight.SDK.Experimental
 				Quaternion euler = Quaternion.identity;
 				euler.eulerAngles = TrackerEulerOffset;
 
-				Quaternion rot = transform.rotation;
 				var newOffset = euler * rotatedOffset;
 				
 				//Incorporate our ability to offset based on euler angles.

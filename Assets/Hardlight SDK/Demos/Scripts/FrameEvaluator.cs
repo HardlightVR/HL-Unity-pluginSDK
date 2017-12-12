@@ -135,16 +135,16 @@ namespace Hardlight.SDK
 				DisplayB.Update(Quaternion.Euler(difference) * IMUObject.rotation);
 
 				Vector3 up = Vector3.up * .3f;
-				Vector3 right = Vector3.right * .3f;
-				Vector3 fwd = Vector3.forward * .3f;
+				//Vector3 right = Vector3.right * .3f;
+				//Vector3 fwd = Vector3.forward * .3f;
 				Vector3 imuUp = IMUObject.rotation * up;
 				Vector3 absUp = AbsoluteObject.rotation * up;
 
-				Vector3 imuRight = IMUObject.rotation * right;
-				Vector3 absRight = AbsoluteObject.rotation * right;
+				//Vector3 imuRight = IMUObject.rotation * right;
+				//Vector3 absRight = AbsoluteObject.rotation * right;
 
-				Vector3 imuFwd = IMUObject.rotation * fwd;
-				Vector3 absFwd = AbsoluteObject.rotation * fwd;
+				//Vector3 imuFwd = IMUObject.rotation * fwd;
+				//Vector3 absFwd = AbsoluteObject.rotation * fwd;
 
 				//Debug.DrawLine(absolute.pos, absolute.pos + absUp, Color.green);
 				//Debug.DrawLine(absolute.pos, absolute.pos + absUp, Color.green);

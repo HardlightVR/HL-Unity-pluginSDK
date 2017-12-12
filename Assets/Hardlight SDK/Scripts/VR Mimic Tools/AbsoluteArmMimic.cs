@@ -257,7 +257,7 @@ namespace Hardlight.SDK.Experimental
 		private void HandleForearmOrientation()
 		{
 			//Debug.DrawLine(Vector3.zero, elbowToWrist, Color.black);
-			Vector3 cross = Vector3.Cross(WristObject.transform.right, ControllerConnection.transform.up);
+			//Vector3 cross = Vector3.Cross(WristObject.transform.right, ControllerConnection.transform.up);
 			Vector3 dir = elbowObject.transform.forward;
 			ForearmData.transform.LookAt(WristObject.transform, dir);
 		}

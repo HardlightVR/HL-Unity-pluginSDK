@@ -181,7 +181,7 @@ namespace Hardlight.SDK.Demos
 				worldDirection = transform.rotation * localDirection;
 				startLocation = SpherecastStartObject.transform.position;
 
-				var scaledDir = SphereCastRange * (Vector3.Dot(worldDirection, transform.lossyScale));
+				//var scaledDir = SphereCastRange * (Vector3.Dot(worldDirection, transform.lossyScale));
 				//Debug.Log(Vector3.Dot(worldDirection, transform.lossyScale) + "\n" + worldDirection + "  " + transform.lossyScale + "\n",this);
 
 				scaledRange = GrowRangeWithScale ? SphereCastRange * transform.lossyScale.z : SphereCastRange;

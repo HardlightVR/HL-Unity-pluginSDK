@@ -235,11 +235,6 @@ namespace Hardlight.SDK.Demos
 		{
 
 		}
-		public void ChangeColorDelayed(GameObject targetObject, Color setColor, float delay, float minDuration = .15f)
-		{
-			throw new System.NotImplementedException();
-			var DelayedColoring = StartCoroutine(ApplyDelayedColorToRenderer(targetObject, setColor, delay, minDuration));
-		}
 		public IEnumerator ApplyDelayedColorToRenderer(GameObject targetObject, Color setColor, float delay, float minDuration = .15f)
 		{
 			throw new System.NotImplementedException();

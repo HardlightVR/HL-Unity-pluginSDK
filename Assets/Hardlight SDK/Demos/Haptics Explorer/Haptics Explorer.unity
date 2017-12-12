@@ -15524,8 +15524,6 @@ GameObject:
   m_Component:
   - 224: {fileID: 657724154}
   - 114: {fileID: 657724155}
-  - 114: {fileID: 657724156}
-  - 114: {fileID: 657724157}
   - 114: {fileID: 657724158}
   m_Layer: 5
   m_Name: LibraryManager
@@ -15591,58 +15589,6 @@ MonoBehaviour:
   LastSequenceName: 
   currentFolderSelected: 
   lastFileSelected: 
---- !u!114 &657724156
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 657724153}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98fab11ae713ca34f830e111dd869f8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MediatorName: Horizontal Halves
-  FirstRect: {fileID: 1546676389}
-  FirstRectAnchor:
-    minAnchor: {x: 0, y: 0.73}
-    maxAnchor: {x: 0.5, y: 1}
-  TargetFirstRectAnchor:
-    minAnchor: {x: 0, y: 0.85}
-    maxAnchor: {x: 0.5, y: 1}
-  SecondRect: {fileID: 357798139}
-  SecondRectAnchor:
-    minAnchor: {x: 0, y: 0}
-    maxAnchor: {x: 0.5, y: 0.73}
-  TargetSecondRectAnchor:
-    minAnchor: {x: 0, y: 0}
-    maxAnchor: {x: 0.5, y: 0.85}
---- !u!114 &657724157
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 657724153}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98fab11ae713ca34f830e111dd869f8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MediatorName: Package/Panel Split
-  FirstRect: {fileID: 862420303}
-  FirstRectAnchor:
-    minAnchor: {x: 0, y: 0.73}
-    maxAnchor: {x: 0.5, y: 1}
-  TargetFirstRectAnchor:
-    minAnchor: {x: 0, y: 0.85}
-    maxAnchor: {x: 0.5, y: 1}
-  SecondRect: {fileID: 1969315216}
-  SecondRectAnchor:
-    minAnchor: {x: 0, y: 0}
-    maxAnchor: {x: 0.5, y: 0.73}
-  TargetSecondRectAnchor:
-    minAnchor: {x: 0, y: 0}
-    maxAnchor: {x: 0.5, y: 0.85}
 --- !u!114 &657724158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32825,7 +32771,7 @@ Prefab:
     - target: {fileID: 224000013846922606, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 300.25
+      value: 326.75
       objectReference: {fileID: 0}
     - target: {fileID: 224000013846922606, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -32835,7 +32781,7 @@ Prefab:
     - target: {fileID: 224000013846922606, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 596.5
+      value: 649.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000013846922606, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -32855,7 +32801,7 @@ Prefab:
     - target: {fileID: 224000012050577180, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 300.25
+      value: 326.75
       objectReference: {fileID: 0}
     - target: {fileID: 224000012050577180, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -32865,7 +32811,7 @@ Prefab:
     - target: {fileID: 224000012050577180, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 596.5
+      value: 649.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000012050577180, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -32875,7 +32821,7 @@ Prefab:
     - target: {fileID: 224000012628470334, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: -562
       objectReference: {fileID: 0}
     - target: {fileID: 224000013871009870, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -32886,6 +32832,14 @@ Prefab:
         type: 2}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012616292356, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
+        type: 2}
+      propertyPath: DetailedTooltip
+      value: 'All elements below are created at runtime from JSON assets.
+
+        JSON assets can be imported through UnityEditor->Tools->Hardlight Window->Package
+        Import'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1, type: 2}
@@ -45921,7 +45875,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Haptics Explorer
 
-    v0.3.2'
+    v0.4'
 --- !u!222 &1868340534
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -50049,7 +50003,7 @@ Prefab:
     - target: {fileID: 224000013709841350, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 287.75
+      value: 314.25
       objectReference: {fileID: 0}
     - target: {fileID: 224000013709841350, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -50059,7 +50013,7 @@ Prefab:
     - target: {fileID: 224000013709841350, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 571.5
+      value: 624.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000013709841350, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -50169,7 +50123,7 @@ Prefab:
     - target: {fileID: 224000010744236894, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 251.25
+      value: 277.75
       objectReference: {fileID: 0}
     - target: {fileID: 224000010744236894, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -50179,7 +50133,7 @@ Prefab:
     - target: {fileID: 224000010744236894, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 354.5
+      value: 407.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000010744236894, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -50199,7 +50153,7 @@ Prefab:
     - target: {fileID: 224000013214566312, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 465.5
+      value: 518.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000013214566312, guid: fda388f219754884ba8781131933ed46,
         type: 2}
@@ -50229,7 +50183,7 @@ Prefab:
     - target: {fileID: 224000013187125872, guid: fda388f219754884ba8781131933ed46,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 534.5
+      value: 587.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000013187125872, guid: fda388f219754884ba8781131933ed46,
         type: 2}

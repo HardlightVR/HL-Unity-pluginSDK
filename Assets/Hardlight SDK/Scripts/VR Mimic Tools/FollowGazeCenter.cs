@@ -152,7 +152,7 @@ namespace Hardlight.SDK.Experimental
 		{
 			Vector3 targ = (follower.transform.position - CameraToFollow.transform.position) * 1.1f;
 			Vector3 up = FollowOrientation == Orientation.WorldUp ? Vector3.up : CameraToFollow.transform.up;
-			Vector3 target = CameraToFollow.transform.position + CameraToFollow.transform.forward * gazeUIDistanceFromCamera * 2;
+			//Vector3 target = CameraToFollow.transform.position + CameraToFollow.transform.forward * gazeUIDistanceFromCamera * 2;
 			follower.transform.LookAt(CameraToFollow.transform.position + targ, up);
 
 			potentialTargetPosition = GetCameraTargetPosition();
@@ -266,7 +266,7 @@ namespace Hardlight.SDK.Experimental
 				Gizmos.DrawSphere(follower.transform.position, .05f);
 				var targ = follower.transform.position - targetPosition;
 				float val = tweenCurve.Evaluate(tweenCounter / tweenDuration);
-				Vector3 tweenedPosition = Vector3.Lerp(oldPosition, targetPosition, val);
+				//Vector3 tweenedPosition = Vector3.Lerp(oldPosition, targetPosition, val);
 				Gizmos.DrawLine(follower.transform.position, follower.transform.position + targ.normalized * val);
 				Gizmos.color = Color.red;
 				Gizmos.DrawLine(follower.transform.position + targ.normalized * val, targetPosition);

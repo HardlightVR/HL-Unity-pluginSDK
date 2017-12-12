@@ -503,9 +503,6 @@ namespace Hardlight.SDK.Demos
 			//Save the beginning in local scope in case it gets changed by additional input 
 			HardlightCollider start = ImpulseOrigin;
 
-			var duration = Mathf.Clamp(EffectDuration, .1f, 100.0f);
-			//I clamp this to a min of .1 for user visibility.
-
 			//List of Lists
 			//Stage 1: The pad clicked
 			//Stage 2: One adjacent pad
@@ -542,8 +539,6 @@ namespace Hardlight.SDK.Demos
 		{
 			//Save the beginning in local scope in case it gets changed by additional input 
 			HardlightCollider end = ImpulseOrigin;
-			var duration = Mathf.Clamp(EffectDuration, .1f, 100.0f);
-			//I clamp this to a min of .1 for user visibility.
 
 			colorController.ColorSuitObject(ImpulseOrigin, OriginColor);
 			//List of Lists
@@ -584,9 +579,6 @@ namespace Hardlight.SDK.Demos
 			//Save the beginning and end in local scope in case they get changed by additional input (Which could cause some null refs/index out of bounds)
 			HardlightCollider start = ImpulseOrigin;
 			HardlightCollider destination = ImpulseDestination;
-
-			var duration = Mathf.Clamp(EffectDuration, .1f, 100.0f);
-			//I clamp this to a min of .1 for user visibility.
 
 			List<GraphEngine.SuitNode> nodes = ImpulseGenerator._grapher.Dijkstras(start.regionID, destination.regionID);
 			if (nodes != null && nodes.Count > 0)

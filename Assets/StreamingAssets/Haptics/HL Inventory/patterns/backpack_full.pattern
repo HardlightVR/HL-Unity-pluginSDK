@@ -1,9 +1,0 @@
-{
-	"pattern" : [
-
-		{"time" : 0.0, "sequence" : "hl.inventory.invalid_touch", 	"area": "Shoulder_Left"},
-		{"time" : 0.0, "sequence" : "hl.inventory.invalid_touch", 	"area": "Shoulder_Left"},
-		{"time" : 0.0, "sequence" : "hl.inventory.invalid_touch", 	"area": "Back_Left"},
-		{"time" : 0.0, "sequence" : "hl.inventory.invalid_touch", 	"area": "Back_Left"}
-	]
-}

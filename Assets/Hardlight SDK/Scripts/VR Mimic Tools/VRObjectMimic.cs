@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Hardlight.SDK.Tracking
+namespace Hardlight.SDK
 {
 	/// <summary>
 	/// The core class for the VR Mimic tools. It is used to mimic cameras, controllers, camera rigs and tracked objects.
@@ -18,16 +18,26 @@ namespace Hardlight.SDK.Tracking
 		public enum DetectionState { Active, Idle }
 		public enum TypeOfMimickedObject { Camera, ControllerA, ControllerB, CameraRig, TrackedObject }
 		public TypeOfMimickedObject MimickedObjectType;
-
-		//All three of these variables might be replaced with at transformation matrix, allowing for better mimic usage.
-		//This would be used for controlling a giant entity that towers above you, copying your movements
-		public Vector3 ScaleMultiplier;
-		//This would be used for controlling an entity N units away from you, copying your movements.
-		public Vector3 PositionOffset;
-		//This is a temporarily feature, it will be replaced with better rotation changes.
-		public Vector3 EulerOffset;
-
 		private bool initialized = false;
+
+		[SerializeField]
+		private MimickingOptions _mimicOptions;
+		public MimickingOptions Options
+		{
+			get
+			{
+				if (_mimicOptions == null)
+					_mimicOptions = new MimickingOptions();
+				return _mimicOptions;
+			}
+
+			set
+			{
+				if (_mimicOptions == null && value == null)
+					_mimicOptions = new MimickingOptions();
+				_mimicOptions = value;
+			}
+		}
 
 		public void Init(GameObject NewMimicTarget, Vector3 rotationOffset = default(Vector3))
 		{
@@ -43,11 +53,12 @@ namespace Hardlight.SDK.Tracking
 					Debug.Log(name + " - New mimic target is null\n");
 				}
 
-				EulerOffset = rotationOffset;
-
-				transform.position = ObjectToMimic.transform.position + PositionOffset;
-				transform.rotation = ObjectToMimic.transform.rotation * CalculateOffsetQuaternion();
-				transform.localScale = ObjectToMimic.transform.localScale + ScaleMultiplier;
+				if (Options.MimicPosition)
+					transform.position = ObjectToMimic.transform.position + Options.PositionOffset;
+				if (Options.MimicRotation)
+					transform.rotation = ObjectToMimic.transform.rotation * CalculateOffsetQuaternion();
+				if (Options.MimicScale)
+					transform.localScale = ObjectToMimic.transform.localScale + Options.ScaleMultiplier;
 				initialized = true;
 
 				WatchedByMimic watching = NewMimicTarget.GetComponent<WatchedByMimic>();
@@ -63,15 +74,18 @@ namespace Hardlight.SDK.Tracking
 
 		void Update()
 		{
-			transform.position = ObjectToMimic.transform.position + PositionOffset;
-			transform.rotation =  ObjectToMimic.transform.rotation * CalculateOffsetQuaternion();
-			transform.localScale = ObjectToMimic.transform.localScale + ScaleMultiplier;
+			if (Options.MimicPosition)
+				transform.position = ObjectToMimic.transform.position + Options.PositionOffset;
+			if (Options.MimicRotation)
+				transform.rotation = ObjectToMimic.transform.rotation * CalculateOffsetQuaternion();
+			if (Options.MimicScale)
+				transform.localScale = ObjectToMimic.transform.localScale + Options.ScaleMultiplier;
 		}
 
 		private Quaternion CalculateOffsetQuaternion()
 		{
 			Quaternion offset = Quaternion.identity;
-			offset.eulerAngles = EulerOffset;
+			offset.eulerAngles = Options.EulerOffset;
 			return offset;
 		}
 

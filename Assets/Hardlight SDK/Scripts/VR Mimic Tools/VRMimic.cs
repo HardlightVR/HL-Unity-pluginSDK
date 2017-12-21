@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Hardlight.SDK.Tracking;
 
 namespace Hardlight.SDK
 {
@@ -141,7 +140,7 @@ namespace Hardlight.SDK
 		/// </summary>
 		/// <param name="objectToMimic"></param>
 		/// <param name="mimicType"></param>
-		public VRObjectMimic AddTrackedObject(GameObject objectToMimic, VRObjectMimic.TypeOfMimickedObject mimicType = VRObjectMimic.TypeOfMimickedObject.TrackedObject)
+		public VRObjectMimic AddTrackedObject(GameObject objectToMimic, VRObjectMimic.TypeOfMimickedObject mimicType = VRObjectMimic.TypeOfMimickedObject.TrackedObject, MimickingOptions options = null)
 		{
 			WatchedByMimic watching = objectToMimic.GetComponent<WatchedByMimic>();
 			bool AlreadyTracked = (watching != null);
@@ -157,6 +156,7 @@ namespace Hardlight.SDK
 				newTracked.ObjectToMimic = objectToMimic;
 				TrackedObjects.Add(newTracked);
 				newTracked.MimickedObjectType = mimicType;
+				newTracked.Options = (options == null) ? (new MimickingOptions()) : options;
 
 				RecordTrackedObject(mimicType, newTracked);
 

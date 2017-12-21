@@ -8,7 +8,6 @@ namespace Hardlight.SDK.Internal
 	[CreateAssetMenu(menuName = "Hardlight/HardlightPlugin")]
 	public class HardlightPlugin : ScriptableObject
 	{
-
 		private HLVR.HLVR_Plugin _plugin = null;
 
 		public HLVR.HLVR_Plugin Plugin
@@ -25,7 +24,6 @@ namespace Hardlight.SDK.Internal
 			}
 		}
 
-
 		public void Awake()
 		{
 
@@ -34,9 +32,6 @@ namespace Hardlight.SDK.Internal
 			_plugin = new HLVR.HLVR_Plugin();
 			this.hideFlags = HideFlags.HideAndDontSave;
 		}
-
-	
-	
 
 		public void OnDestroy()
 		{
@@ -49,5 +44,11 @@ namespace Hardlight.SDK.Internal
 				_plugin = null;
 			}
 		}
+
+		protected void EnsurePluginIsValid()
+		{
+			HardlightManager.Instance.InstantiateNativePlugin();
+		}
+
 	}
 }

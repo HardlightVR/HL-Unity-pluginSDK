@@ -26,6 +26,7 @@ namespace Hardlight.SDK.Experimental
 		/// <summary>
 		/// Creates a prefab data clone (not the original so we don't encounter asset breaking problems)
 		/// </summary>
+		/// <returns></returns>
 		public BodyVisualPrefabData Clone()
 		{
 			hideFlags = HideFlags.DontSave;

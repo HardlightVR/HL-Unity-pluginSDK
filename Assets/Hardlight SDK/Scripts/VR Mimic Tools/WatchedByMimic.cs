@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace Hardlight.SDK.Tracking
+namespace Hardlight.SDK
 {
 	/// <summary>
 	/// This component is attached to objects that are registered with the VRMimic systems.

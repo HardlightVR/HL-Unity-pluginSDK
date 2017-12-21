@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 
 //Contents of this namespace are subject to change
-namespace Hardlight.SDK.Experimental
+namespace Hardlight.SDK
 {
 	/// <summary>
 	/// A 'To Do' class for disposing of visuals and the behavior in which they should be disposed of.

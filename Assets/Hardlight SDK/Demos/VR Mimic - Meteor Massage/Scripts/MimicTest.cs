@@ -5,8 +5,8 @@ namespace Hardlight.SDK
 {
 	public class MimicTest : MonoBehaviour
 	{
-		public LayerMask ValidLayers;
 		public Camera targetCamera;
+		public LayerMask ValidLayers;
 		HardlightSuit suit;
 		void Awake()
 		{

@@ -13400,8 +13400,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1717757312}
   m_HandleRect: {fileID: 1717757311}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.18755457
+  m_Value: 0.99999994
+  m_Size: 0.19611157
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -15777,7 +15777,7 @@ MonoBehaviour:
   PercentOfNewData: 0.95
   preChiralOffset: {x: 0, y: 0, z: 0}
   Offset: {x: -270, y: 0, z: 90}
-  additionalZOffsetAmount: 40
+  _trackingCalibration: {fileID: 0}
 --- !u!1 &672001515
 GameObject:
   m_ObjectHideFlags: 0
@@ -31394,7 +31394,7 @@ MonoBehaviour:
   PercentOfNewData: 0.95
   preChiralOffset: {x: 0, y: 15, z: 270}
   Offset: {x: -270, y: 0, z: 180}
-  additionalZOffsetAmount: 40
+  _trackingCalibration: {fileID: 0}
 --- !u!1 &1317129744
 GameObject:
   m_ObjectHideFlags: 0
@@ -32593,7 +32593,7 @@ MonoBehaviour:
   PercentOfNewData: 0.95
   preChiralOffset: {x: 0, y: 0, z: 0}
   Offset: {x: -270, y: 0, z: 90}
-  additionalZOffsetAmount: 40
+  _trackingCalibration: {fileID: 0}
 --- !u!4 &1336833128
 Transform:
   m_ObjectHideFlags: 0
@@ -33063,7 +33063,7 @@ Prefab:
     - target: {fileID: 224000011595414456, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -285.5
+      value: -300
       objectReference: {fileID: 0}
     - target: {fileID: 224000011595414456, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -33073,7 +33073,7 @@ Prefab:
     - target: {fileID: 224000011595414456, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 571
+      value: 600
       objectReference: {fileID: 0}
     - target: {fileID: 224000013846922606, guid: 933b7ac777ba9ba4abf0cfd5fcfd2fb1,
         type: 2}
@@ -36967,14 +36967,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hmd: {fileID: 0}
   PositionTechnique: 0
-  NeckVerticalAnchor: 0.15
-  NeckFwdAnchor: 0
   HmdPoseWeight: 1
   ArmTrackerPoseWeight: 1.25
   LowerBackTrackerWeight: 1.25
   UseDevHeight: 0
   devHeightPercentage: -0.15
   LastUpdatedPosition: {x: 0, y: 0, z: 0}
+  _targetPose:
+    Name: 
+    _rootPosition: {x: 0, y: 0, z: 0}
+    _position: {x: 0, y: 0, z: 0}
+    _forward: {x: 0, y: 0, z: 1}
+    _hmdForward: {x: 0, y: 0, z: 0}
+    _up: {x: 0, y: 1, z: 0}
+  PoseEulerOffset: {x: 0, y: 0, z: 0}
+  CollisionTorso: {fileID: 0}
   LeftShoulder: {fileID: 1123503590}
   RightShoulder: {fileID: 1745556757}
   LeftArm: {fileID: 0}
@@ -36985,8 +36992,10 @@ MonoBehaviour:
   ShouldCreateVisuals: 1
   DataModelPrefabs: {fileID: 0}
   VisualPrefabs: {fileID: 0}
-  BodyDimensions: {fileID: 0}
+  _bodyDimensions: {fileID: 0}
   ShoulderBarVisual: {fileID: 0}
+  ShoulderBarEulerOffset: {x: 0, y: 0, z: 0}
+  DrawDebug: 0
   SnapUpdateDist: 1
   ShoulderBarData: {fileID: 0}
 --- !u!1 &1524804213
@@ -41506,7 +41515,7 @@ MonoBehaviour:
   PercentOfNewData: 0.95
   preChiralOffset: {x: 0, y: 0, z: 0}
   Offset: {x: -270, y: 0, z: 90}
-  additionalZOffsetAmount: 40
+  _trackingCalibration: {fileID: 0}
 --- !u!1 &1661082390
 GameObject:
   m_ObjectHideFlags: 0
@@ -43437,13 +43446,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5af0fa4574684824fbe005a0bb0e50a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotateX: 1
-  XRotationSpeed: 0
-  rotateY: 0
-  YRotationSpeed: 25
-  rotateZ: 1
-  ZRotationSpeed: 0
-  AllowControls: 0
 --- !u!4 &1755342449
 Transform:
   m_ObjectHideFlags: 0
@@ -46219,7 +46221,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 84164899}
   m_HandleRect: {fileID: 84164898}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:

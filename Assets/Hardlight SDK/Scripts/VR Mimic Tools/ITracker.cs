@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Hardlight.SDK.Tracking;
 
 //Contents of this namespace are subject to change
 namespace Hardlight.SDK.Experimental
@@ -41,7 +40,7 @@ namespace Hardlight.SDK.Experimental
 	/// </summary>
 	public abstract class AbstractTracker : MonoBehaviour, ITracker
 	{
-		[Header("Arm Torso Attributes")]
+		[Header("Abstract Tracker Attributes")]
 		[SerializeField]
 		protected bool _mimicEnabled = true;
 		public bool MimicEnabled

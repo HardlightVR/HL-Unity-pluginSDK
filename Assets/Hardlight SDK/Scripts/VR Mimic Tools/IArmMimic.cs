@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
-using Hardlight.SDK.Tracking;
 
 //Contents of this namespace are subject to change
 namespace Hardlight.SDK.Experimental
@@ -9,7 +8,7 @@ namespace Hardlight.SDK.Experimental
 	/// <summary>
 	/// This enum will grow to encompass the IMU arm modes as our internal development & tests move forward.
 	/// </summary>
-	public enum ArmKinematicMode { ControllerOnly, ViveUpperArms, ArmsDisabled }
+	public enum ArmKinematicMode { ControllerOnly, ViveUpperArms, ArmsDisabled, ImuUpperArms }
 
 	/// <summary>
 	/// Unfortunately, we aren't leaving the door open to support more than two arms.

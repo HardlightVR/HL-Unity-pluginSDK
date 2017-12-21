@@ -2,7 +2,6 @@
 using System.Collections;
 using System;
 using System.Collections.Generic;
-using Hardlight.SDK.Tracking;
 
 //Contents of this namespace are subject to change
 namespace Hardlight.SDK.Experimental
@@ -34,12 +33,16 @@ namespace Hardlight.SDK.Experimental
 		public GameObject ShoulderJointVisual;
 
 		public Color GizmoColor = Color.green;
-		public float ForearmLength = .5f;
+		public float ForearmLength = .15f;
 
 		[Range(0, 1)]
 		public float PercentagePlacement = .5f;
 		[Range(0, 4)]
 		public float ArmScale = .5f;
+		public float UpperArmScale
+		{
+			get { return VRMimic.Instance.ActiveBodyMimic.BodyDimensions.VerticalShoulderOffset; }
+		}
 
 		[Header("Modified each Update")]
 		public Vector3 elbowToWrist = Vector3.zero;
@@ -61,6 +64,7 @@ namespace Hardlight.SDK.Experimental
 
 		public Vector3 shoulderOffsetAmount = new Vector3(0, -.2f, 0);
 		public Vector3 ControllerOffsetAmount = new Vector3(0, 0, -.122f);
+		public bool DrawDebug = false;
 
 		public override void Setup(ArmSide WhichSide, GameObject ShoulderMountConnector, VRObjectMimic Tracker, VRObjectMimic Controller)
 		{
@@ -111,7 +115,8 @@ namespace Hardlight.SDK.Experimental
 			UpperArmCollider = UpperArmData.UpperArmCollider;
 			if (WhichSide == ArmSide.Right)
 			{
-				UpperArmData.Mirror();
+				Debug.LogError("Disabled mirroring of right arm.\n", UpperArmData);
+				//UpperArmData.Mirror();
 			}
 			elbowObject = UpperArmData.Elbow;
 		}
@@ -224,7 +229,7 @@ namespace Hardlight.SDK.Experimental
 		private void HandleObjectOffsets()
 		{
 			if (WristObject)
-			{	WristObject.transform.localPosition = ControllerOffsetAmount; }
+			{ WristObject.transform.localPosition = ControllerOffsetAmount; }
 			if (ShoulderJoint)
 			{ ShoulderJoint.transform.localPosition = shoulderOffsetAmount; }
 		}
@@ -233,8 +238,23 @@ namespace Hardlight.SDK.Experimental
 		{
 			if (UpperArmData != null && TrackerMount != null)
 			{
-				UpperArmData.transform.position = TrackerMount.transform.position;
-				UpperArmData.transform.rotation = TrackerMount.transform.rotation;
+				if (TrackerMount.Options.MimicPosition)
+				{
+					UpperArmData.transform.position = TrackerMount.transform.position;
+				}
+				else
+				{
+					if (DrawDebug)
+					{
+						Debug.DrawLine(ShoulderMount.transform.position, ShoulderMount.transform.position + Vector3.up * .1f, Color.cyan, .15f);
+					}
+
+					UpperArmData.transform.position = ShoulderMount.transform.position + TrackerMount.transform.rotation * (Vector3.up * UpperArmScale / 2);
+				}
+				if (TrackerMount.Options.MimicRotation)
+				{
+					UpperArmData.transform.rotation = TrackerMount.transform.rotation;
+				}
 			}
 		}
 
@@ -257,7 +277,7 @@ namespace Hardlight.SDK.Experimental
 		private void HandleForearmOrientation()
 		{
 			//Debug.DrawLine(Vector3.zero, elbowToWrist, Color.black);
-			//Vector3 cross = Vector3.Cross(WristObject.transform.right, ControllerConnection.transform.up);
+			Vector3 cross = Vector3.Cross(WristObject.transform.right, ControllerConnection.transform.up);
 			Vector3 dir = elbowObject.transform.forward;
 			ForearmData.transform.LookAt(WristObject.transform, dir);
 		}

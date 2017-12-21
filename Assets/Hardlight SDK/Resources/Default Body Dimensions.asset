@@ -11,11 +11,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60d8a64adc6830843bdf674f691ba264, type: 3}
   m_Name: Default Body Dimensions
   m_EditorClassIdentifier: 
-  NeckSize: 0.1
-  ForwardAmount: -0.1
-  ShoulderWidth: 0
-  UpperArmLength: 0
-  UpperTorsoDepth: 0
-  LowerTorsoDepth: 0
-  UpperTorsoWidth: 0
-  LowerTorsoWidth: 0
+  UpdateEveryFrame: 0
+  neckSize: 0.051807165
+  forwardAmount: -0.44819272
+  shoulderWidth: 0.25
+  torsoHeight: 0.4
+  verticalShoulderOffset: 0.4
+  upperTorsoWidth: 0.35
+  upperTorsoHeight: 0.4
+  upperTorsoDepth: 0.15
+  lowerTorsoWidth: 0.3
+  lowerTorsoHeight: 0.3
+  lowerTorsoDepth: 0.1
